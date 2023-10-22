@@ -1,21 +1,39 @@
 # Dime
 
-Dime is a beautiful expense tracker built with iOS design guidelines in mind. 
+<p align="center">
+  <img src="./ReadmeAssets/hero.png" height="400" />
+</p>
 
-Why You’ll Love Dime:
+A 100% free personal finance tracker built with iOS design guidelines in mind.
+
+## App Preview
+
+<p align="center">
+  <img src="./ReadmeAssets/3.png" height="300" /> 
+  <img src="./ReadmeAssets/4.png" height="300" /> 
+  <img src="./ReadmeAssets/5.png" height="300" />
+  <img src="./ReadmeAssets/6.png" height="300" />
+</p>
+<p align="center">
+  <img src="./ReadmeAssets/7.png" height="300" />
+  <img src="./ReadmeAssets/8.png" height="300" />
+  <img src="./ReadmeAssets/9.png" height="300" />
+</p>
+
+## Why You’ll Love Dime
 
 - 100% free forever, with no paywall or ads.
 - Beautifully iOS-centric design, with simplicity at its core.
 - Insightful expenditure breakdowns over various time periods.
 - Create budgets based on expense categories and stick to them.
-- Create recurring daily/weekly/monthly expenses.
+- Create recurring expenses with custom time frames.
 - Sync your expenses, categories and budgets with other devices via iCloud.
 - Custom reminders to input your expenses.
 - Biometric authentication to protect your data.
 - Home screen quick actions make capturing new expenses a breeze.
 - A gorgeous night theme for dark mode fanatics.
-- Informative widgets keep you updated at a glance.
+- Informative home and lock screen widgets keep you updated at a glance.
 
-Dime was built by a solo student developer looking to kickstart his programming journey. If you have any questions or feedback, feel free to get in touch through the app or via Instagram @camerafael. Alternatively, you may reach out directly by emailing rafasohhh@gmail.com
+## Licence
 
-Start monitoring your expenditure and take ownership over your finances with Dime.
+This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details.
