@@ -1,0 +1,9 @@
+Date,Note,Amount,Category,Type
+2023-09-26 14:42:00 +0000,Doctor’s Appointment,70.30,Healthcare,Expense
+2023-09-26 01:48:00 +0000,Spotify,9.80,Subscriptions,Expense
+2023-09-24 19:50:00 +0000,Uber,35.20,Transport,Expense
+2023-09-24 01:50:00 +0000,Bills,25.00,Groceries,Expense
+2023-09-23 01:51:00 +0000,Groceries,40.00,Groceries,Expense
+2023-09-18 07:53:00 +0000,Mother’s Day Gift,57.14,Family,Expense
+2023-09-13 01:49:00 +0000,T Shirt,35.60,Fashion,Expense
+2023-09-10 16:32:00 +0000,McDonalds,10.20,Food,Expense

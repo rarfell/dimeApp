@@ -1,0 +1,502 @@
+[
+   {
+      "identifier":"iPhone1,1",
+      "model":"iPhone"
+   },
+   {
+      "identifier":"iPhone1,2",
+      "model":"iPhone 3G"
+   },
+   {
+      "identifier":"iPhone2,1",
+      "model":"iPhone 3GS"
+   },
+   {
+      "identifier":"iPhone3,1",
+      "model":"iPhone 4"
+   },
+   {
+      "identifier":"iPhone3,2",
+      "model":"iPhone 4 GSM Rev A"
+   },
+   {
+      "identifier":"iPhone3,3",
+      "model":"iPhone 4 CDMA"
+   },
+   {
+      "identifier":"iPhone4,1",
+      "model":"iPhone 4S"
+   },
+   {
+      "identifier":"iPhone5,1",
+      "model":"iPhone 5 (GSM)"
+   },
+   {
+      "identifier":"iPhone5,2",
+      "model":"iPhone 5 (GSM+CDMA)"
+   },
+   {
+      "identifier":"iPhone5,3",
+      "model":"iPhone 5C (GSM)"
+   },
+   {
+      "identifier":"iPhone5,4",
+      "model":"iPhone 5C (Global)"
+   },
+   {
+      "identifier":"iPhone6,1",
+      "model":"iPhone 5S (GSM)"
+   },
+   {
+      "identifier":"iPhone6,2",
+      "model":"iPhone 5S (Global)"
+   },
+   {
+      "identifier":"iPhone7,1",
+      "model":"iPhone 6 Plus"
+   },
+   {
+      "identifier":"iPhone7,2",
+      "model":"iPhone 6"
+   },
+   {
+      "identifier":"iPhone8,1",
+      "model":"iPhone 6s"
+   },
+   {
+      "identifier":"iPhone8,2",
+      "model":"iPhone 6s Plus"
+   },
+   {
+      "identifier":"iPhone8,4",
+      "model":"iPhone SE (GSM)"
+   },
+   {
+      "identifier":"iPhone9,1",
+      "model":"iPhone 7"
+   },
+   {
+      "identifier":"iPhone9,2",
+      "model":"iPhone 7 Plus"
+   },
+   {
+      "identifier":"iPhone9,3",
+      "model":"iPhone 7"
+   },
+   {
+      "identifier":"iPhone9,4",
+      "model":"iPhone 7 Plus"
+   },
+   {
+      "identifier":"iPhone10,1",
+      "model":"iPhone 8"
+   },
+   {
+      "identifier":"iPhone10,2",
+      "model":"iPhone 8 Plus"
+   },
+   {
+      "identifier":"iPhone10,3",
+      "model":"iPhone X Global"
+   },
+   {
+      "identifier":"iPhone10,4",
+      "model":"iPhone 8"
+   },
+   {
+      "identifier":"iPhone10,5",
+      "model":"iPhone 8 Plus"
+   },
+   {
+      "identifier":"iPhone10,6",
+      "model":"iPhone X GSM"
+   },
+   {
+      "identifier":"iPhone11,2",
+      "model":"iPhone XS"
+   },
+   {
+      "identifier":"iPhone11,4",
+      "model":"iPhone XS Max"
+   },
+   {
+      "identifier":"iPhone11,6",
+      "model":"iPhone XS Max Global"
+   },
+   {
+      "identifier":"iPhone11,8",
+      "model":"iPhone XR"
+   },
+   {
+      "identifier":"iPhone12,1",
+      "model":"iPhone 11"
+   },
+   {
+      "identifier":"iPhone12,3",
+      "model":"iPhone 11 Pro"
+   },
+   {
+      "identifier":"iPhone12,5",
+      "model":"iPhone 11 Pro Max"
+   },
+   {
+      "identifier":"iPhone12,8",
+      "model":"iPhone SE 2nd Gen"
+   },
+   {
+      "identifier":"iPhone13,1",
+      "model":"iPhone 12 Mini"
+   },
+   {
+      "identifier":"iPhone13,2",
+      "model":"iPhone 12"
+   },
+   {
+      "identifier":"iPhone13,3",
+      "model":"iPhone 12 Pro"
+   },
+   {
+      "identifier":"iPhone13,4",
+      "model":"iPhone 12 Pro Max"
+   },
+   {
+      "identifier":"iPhone14,2",
+      "model":"iPhone 13 Pro"
+   },
+   {
+      "identifier":"iPhone14,3",
+      "model":"iPhone 13 Pro Max"
+   },
+   {
+      "identifier":"iPhone14,4",
+      "model":"iPhone 13 Mini"
+   },
+   {
+      "identifier":"iPhone14,5",
+      "model":"iPhone 13"
+   },
+   {
+      "identifier":"iPod1,1",
+      "model":"1st Gen iPod"
+   },
+   {
+      "identifier":"iPod2,1",
+      "model":"2nd Gen iPod"
+   },
+   {
+      "identifier":"iPod3,1",
+      "model":"3rd Gen iPod"
+   },
+   {
+      "identifier":"iPod4,1",
+      "model":"4th Gen iPod"
+   },
+   {
+      "identifier":"iPod5,1",
+      "model":"5th Gen iPod"
+   },
+   {
+      "identifier":"iPod7,1",
+      "model":"6th Gen iPod"
+   },
+   {
+      "identifier":"iPod9,1",
+      "model":"7th Gen iPod"
+   },
+   {
+      "identifier":"iPad1,1",
+      "model":"iPad"
+   },
+   {
+      "identifier":"iPad1,2",
+      "model":"iPad 3G"
+   },
+   {
+      "identifier":"iPad2,1",
+      "model":"2nd Gen iPad"
+   },
+   {
+      "identifier":"iPad2,2",
+      "model":"2nd Gen iPad GSM"
+   },
+   {
+      "identifier":"iPad2,3",
+      "model":"2nd Gen iPad CDMA"
+   },
+   {
+      "identifier":"iPad2,4",
+      "model":"2nd Gen iPad New Revision"
+   },
+   {
+      "identifier":"iPad3,1",
+      "model":"3rd Gen iPad"
+   },
+   {
+      "identifier":"iPad3,2",
+      "model":"3rd Gen iPad CDMA"
+   },
+   {
+      "identifier":"iPad3,3",
+      "model":"3rd Gen iPad GSM"
+   },
+   {
+      "identifier":"iPad2,5",
+      "model":"iPad mini"
+   },
+   {
+      "identifier":"iPad2,6",
+      "model":"iPad mini GSM+LTE"
+   },
+   {
+      "identifier":"iPad2,7",
+      "model":"iPad mini CDMA+LTE"
+   },
+   {
+      "identifier":"iPad3,4",
+      "model":"4th Gen iPad"
+   },
+   {
+      "identifier":"iPad3,5",
+      "model":"4th Gen iPad GSM+LTE"
+   },
+   {
+      "identifier":"iPad3,6",
+      "model":"4th Gen iPad CDMA+LTE"
+   },
+   {
+      "identifier":"iPad4,1",
+      "model":"iPad Air (WiFi)"
+   },
+   {
+      "identifier":"iPad4,2",
+      "model":"iPad Air (GSM+CDMA)"
+   },
+   {
+      "identifier":"iPad4,3",
+      "model":"1st Gen iPad Air (China)"
+   },
+   {
+      "identifier":"iPad4,4",
+      "model":"iPad mini Retina (WiFi)"
+   },
+   {
+      "identifier":"iPad4,5",
+      "model":"iPad mini Retina (GSM+CDMA)"
+   },
+   {
+      "identifier":"iPad4,6",
+      "model":"iPad mini Retina (China)"
+   },
+   {
+      "identifier":"iPad4,7",
+      "model":"iPad mini 3 (WiFi)"
+   },
+   {
+      "identifier":"iPad4,8",
+      "model":"iPad mini 3 (GSM+CDMA)"
+   },
+   {
+      "identifier":"iPad4,9",
+      "model":"iPad Mini 3 (China)"
+   },
+   {
+      "identifier":"iPad5,1",
+      "model":"iPad mini 4 (WiFi)"
+   },
+   {
+      "identifier":"iPad5,2",
+      "model":"4th Gen iPad mini (WiFi+Cellular)"
+   },
+   {
+      "identifier":"iPad5,3",
+      "model":"iPad Air 2 (WiFi)"
+   },
+   {
+      "identifier":"iPad5,4",
+      "model":"iPad Air 2 (Cellular)"
+   },
+   {
+      "identifier":"iPad6,3",
+      "model":"iPad Pro (9.7 inch, WiFi)"
+   },
+   {
+      "identifier":"iPad6,4",
+      "model":"iPad Pro (9.7 inch, WiFi+LTE)"
+   },
+   {
+      "identifier":"iPad6,7",
+      "model":"iPad Pro (12.9 inch, WiFi)"
+   },
+   {
+      "identifier":"iPad6,8",
+      "model":"iPad Pro (12.9 inch, WiFi+LTE)"
+   },
+   {
+      "identifier":"iPad6,11",
+      "model":"iPad (2017)"
+   },
+   {
+      "identifier":"iPad6,12",
+      "model":"iPad (2017)"
+   },
+   {
+      "identifier":"iPad7,1",
+      "model":"iPad Pro 2nd Gen (WiFi)"
+   },
+   {
+      "identifier":"iPad7,2",
+      "model":"iPad Pro 2nd Gen (WiFi+Cellular)"
+   },
+   {
+      "identifier":"iPad7,3",
+      "model":"iPad Pro 10.5-inch 2nd Gen"
+   },
+   {
+      "identifier":"iPad7,4",
+      "model":"iPad Pro 10.5-inch 2nd Gen"
+   },
+   {
+      "identifier":"iPad7,5",
+      "model":"iPad 6th Gen (WiFi)"
+   },
+   {
+      "identifier":"iPad7,6",
+      "model":"iPad 6th Gen (WiFi+Cellular)"
+   },
+   {
+      "identifier":"iPad7,11",
+      "model":"iPad 7th Gen 10.2-inch (WiFi)"
+   },
+   {
+      "identifier":"iPad7,12",
+      "model":"iPad 7th Gen 10.2-inch (WiFi+Cellular)"
+   },
+   {
+      "identifier":"iPad8,1",
+      "model":"iPad Pro 11 inch 3rd Gen (WiFi)"
+   },
+   {
+      "identifier":"iPad8,2",
+      "model":"iPad Pro 11 inch 3rd Gen (1TB, WiFi)"
+   },
+   {
+      "identifier":"iPad8,3",
+      "model":"iPad Pro 11 inch 3rd Gen (WiFi+Cellular)"
+   },
+   {
+      "identifier":"iPad8,4",
+      "model":"iPad Pro 11 inch 3rd Gen (1TB, WiFi+Cellular)"
+   },
+   {
+      "identifier":"iPad8,5",
+      "model":"iPad Pro 12.9 inch 3rd Gen (WiFi)"
+   },
+   {
+      "identifier":"iPad8,6",
+      "model":"iPad Pro 12.9 inch 3rd Gen (1TB, WiFi)"
+   },
+   {
+      "identifier":"iPad8,7",
+      "model":"iPad Pro 12.9 inch 3rd Gen (WiFi+Cellular)"
+   },
+   {
+      "identifier":"iPad8,8",
+      "model":"iPad Pro 12.9 inch 3rd Gen (1TB, WiFi+Cellular)"
+   },
+   {
+      "identifier":"iPad8,9",
+      "model":"iPad Pro 11 inch 4th Gen (WiFi)"
+   },
+   {
+      "identifier":"iPad8,10",
+      "model":"iPad Pro 11 inch 4th Gen (WiFi+Cellular)"
+   },
+   {
+      "identifier":"iPad8,11",
+      "model":"iPad Pro 12.9 inch 4th Gen (WiFi)"
+   },
+   {
+      "identifier":"iPad8,12",
+      "model":"iPad Pro 12.9 inch 4th Gen (WiFi+Cellular)"
+   },
+   {
+      "identifier":"iPad11,1",
+      "model":"iPad mini 5th Gen (WiFi)"
+   },
+   {
+      "identifier":"iPad11,2",
+      "model":"iPad mini 5th Gen"
+   },
+   {
+      "identifier":"iPad11,3",
+      "model":"iPad Air 3rd Gen (WiFi)"
+   },
+   {
+      "identifier":"iPad11,4",
+      "model":"iPad Air 3rd Gen"
+   },
+   {
+      "identifier":"iPad11,6",
+      "model":"iPad 8th Gen (WiFi)"
+   },
+   {
+      "identifier":"iPad11,7",
+      "model":"iPad 8th Gen (WiFi+Cellular)"
+   },
+   {
+      "identifier":"iPad12,1",
+      "model":"iPad 9th Gen (WiFi)"
+   },
+   {
+      "identifier":"iPad12,2",
+      "model":"iPad 9th Gen (WiFi+Cellular)"
+   },
+   {
+      "identifier":"iPad14,1",
+      "model":"iPad mini 6th Gen (WiFi)"
+   },
+   {
+      "identifier":"iPad14,2",
+      "model":"iPad mini 6th Gen (WiFi+Cellular)"
+   },
+   {
+      "identifier":"iPad13,1",
+      "model":"iPad Air 4th Gen (WiFi)"
+   },
+   {
+      "identifier":"iPad13,2",
+      "model":"iPad Air 4th Gen (WiFi+Cellular)"
+   },
+   {
+      "identifier":"iPad13,4",
+      "model":"iPad Pro 11 inch 5th Gen"
+   },
+   {
+      "identifier":"iPad13,5",
+      "model":"iPad Pro 11 inch 5th Gen"
+   },
+   {
+      "identifier":"iPad13,6",
+      "model":"iPad Pro 11 inch 5th Gen"
+   },
+   {
+      "identifier":"iPad13,7",
+      "model":"iPad Pro 11 inch 5th Gen"
+   },
+   {
+      "identifier":"iPad13,8",
+      "model":"iPad Pro 12.9 inch 5th Gen"
+   },
+   {
+      "identifier":"iPad13,9",
+      "model":"iPad Pro 12.9 inch 5th Gen"
+   },
+   {
+      "identifier":"iPad13,10",
+      "model":"iPad Pro 12.9 inch 5th Gen"
+   },
+   {
+      "identifier":"iPad13,11",
+      "model":"iPad Pro 12.9 inch 5th Gen"
+   }
+]

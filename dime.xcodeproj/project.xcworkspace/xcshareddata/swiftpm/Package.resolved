@@ -1,0 +1,86 @@
+{
+  "pins" : [
+    {
+      "identity" : "alamofire",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Alamofire/Alamofire",
+      "state" : {
+        "revision" : "b2fa556e4e48cbf06cf8c63def138c98f4b811fa",
+        "version" : "5.8.0"
+      }
+    },
+    {
+      "identity" : "cloudkitsyncmonitor",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ggruen/CloudKitSyncMonitor.git",
+      "state" : {
+        "revision" : "8f8de8e71928df27bf023cc6ed808a8b6270a0d3",
+        "version" : "1.2.1"
+      }
+    },
+    {
+      "identity" : "confettiswiftui",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/simibac/ConfettiSwiftUI",
+      "state" : {
+        "revision" : "8d3a15d0aa2991e0761749b767ef8d89bca6275a",
+        "version" : "1.0.1"
+      }
+    },
+    {
+      "identity" : "crookedtext",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/duemunk/CrookedText",
+      "state" : {
+        "revision" : "70ae8691bdfb62698571e69bd855acf4030795ea",
+        "version" : "0.0.1"
+      }
+    },
+    {
+      "identity" : "isscrolling",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/fatbobman/IsScrolling.git",
+      "state" : {
+        "revision" : "7def8d8f789a326b6f725a76cee8ec3fa69511df",
+        "version" : "1.1.2"
+      }
+    },
+    {
+      "identity" : "popovers",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/aheze/Popovers",
+      "state" : {
+        "branch" : "main",
+        "revision" : "05033a2a1ab619369756933803f45431eae4f6ab"
+      }
+    },
+    {
+      "identity" : "scrollviewstyle",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/TimmysApp/ScrollViewStyle",
+      "state" : {
+        "revision" : "adc7413f6b32781dc5970c54d1a734cafa230ba7",
+        "version" : "1.0.0"
+      }
+    },
+    {
+      "identity" : "stools",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/TimmysApp/STools",
+      "state" : {
+        "revision" : "ea876036fc53be40f564b24d3c267b447416dc1d",
+        "version" : "1.0.81"
+      }
+    },
+    {
+      "identity" : "swiftui-introspect",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/siteline/SwiftUI-Introspect.git",
+      "state" : {
+        "branch" : "master",
+        "revision" : "7ef0df639079491ee1aaf6b83b6fd4d08df80393"
+      }
+    }
+  ],
+  "version" : 2
+}
