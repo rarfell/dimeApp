@@ -23,7 +23,9 @@ struct CategoryView: View {
 
     @State var newCategory = false
 
-    @FetchRequest(sortDescriptors: [SortDescriptor(\.order)], predicate: NSPredicate(format: "income = %d", false)) private var expenseCategories: FetchedResults<Category>
+    @FetchRequest(sortDescriptors: [
+        NSSortDescriptor(keyPath: \Category.name, ascending: true)
+    ], predicate: NSPredicate(format: "income = %d", false)) private var expenseCategories: FetchedResults<Category>
 
     @State var showToast = false
     @State var toastTitle = ""
@@ -157,7 +159,9 @@ struct CategoryListView: View {
 
     @State var isEditing = false
 
-    @FetchRequest(sortDescriptors: [SortDescriptor(\.order)]) private var allCategories: FetchedResults<Category>
+    @FetchRequest(sortDescriptors: [
+        NSSortDescriptor(keyPath: \Category.name, ascending: true)
+    ]) private var allCategories: FetchedResults<Category>
 
     // delete mode
     @State private var deleteMode = false
@@ -730,7 +734,7 @@ struct CategoryListView: View {
 
     init(income: Binding<Bool>, mode: CategoryViewMode, showToast: Binding<Bool>, toastTitle: Binding<String>, toastImage: Binding<String>, positive: Binding<Bool>) {
         _categories = FetchRequest<Category>(sortDescriptors: [
-            SortDescriptor(\.order),
+            NSSortDescriptor(keyPath: \Category.name, ascending: true)
         ], predicate: NSPredicate(format: "income = %d", income.wrappedValue))
 
         _income = income
@@ -756,8 +760,12 @@ struct NewCategoryAlert: View {
 
     // existing categories
 
-    @FetchRequest(sortDescriptors: [SortDescriptor(\.order)], predicate: NSPredicate(format: "income = %d", false)) private var expenseCategories: FetchedResults<Category>
-    @FetchRequest(sortDescriptors: [SortDescriptor(\.order)], predicate: NSPredicate(format: "income = %d", true)) private var incomeCategories: FetchedResults<Category>
+    @FetchRequest(sortDescriptors: [
+        NSSortDescriptor(keyPath: \Category.name, ascending: true)
+    ], predicate: NSPredicate(format: "income = %d", false)) private var expenseCategories: FetchedResults<Category>
+    @FetchRequest(sortDescriptors: [
+        NSSortDescriptor(keyPath: \Category.name, ascending: true)
+    ], predicate: NSPredicate(format: "income = %d", true)) private var incomeCategories: FetchedResults<Category>
     @State private var availableColours: [String] = Color.colorArray
 
     // state
@@ -1226,7 +1234,9 @@ struct EditCategoryAlert: View {
 
     // existing categories
 
-    @FetchRequest(sortDescriptors: [SortDescriptor(\.order)], predicate: NSPredicate(format: "income = %d", false)) private var expenseCategories: FetchedResults<Category>
+    @FetchRequest(sortDescriptors: [
+        NSSortDescriptor(keyPath: \Category.name, ascending: true)
+    ], predicate: NSPredicate(format: "income = %d", false)) private var expenseCategories: FetchedResults<Category>
 
     // state
     @State private var newName = ""
@@ -1780,7 +1790,7 @@ struct SuggestedCategoriesView: View {
 
     init(income: Bool) {
         _categories = FetchRequest<Category>(sortDescriptors: [
-            SortDescriptor(\.order),
+            NSSortDescriptor(keyPath: \Category.name, ascending: true)
         ], predicate: NSPredicate(format: "income = %d", income))
 
         self.income = income
