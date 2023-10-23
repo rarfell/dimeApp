@@ -18,7 +18,7 @@ struct OffsetKey: PreferenceKey {
 
 extension View {
     @ViewBuilder
-    func offsetExtractor(coordinateSpace: String, completion: @escaping (CGRect) -> ()) -> some View {
+    func offsetExtractor(coordinateSpace: String, completion: @escaping (CGRect) -> Void) -> some View {
         self
             .overlay(alignment: .top) {
                 GeometryReader {
@@ -31,7 +31,7 @@ extension View {
     }
 }
 //
-//class ScrollViewModel: NSObject, ObservableObject, UIGestureRecognizerDelegate {
+// class ScrollViewModel: NSObject, ObservableObject, UIGestureRecognizerDelegate {
 //    let gestureID: String = UUID().uuidString
 //    let gestureEnded = PassthroughSubject<Void, Never>()
 //    
@@ -74,5 +74,4 @@ extension View {
 //        }
 //    }
 //    
-//}
-
+// }

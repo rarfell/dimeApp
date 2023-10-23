@@ -21,11 +21,11 @@ struct SupportEmail {
     --------------------------------------
     """
     }
-    
+
     func send(openURL: OpenURLAction) {
         let urlString = "mailto:\(toAddress)?subject=\(subject.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? "")&body=\(body.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? "")"
         guard let url = URL(string: urlString) else { return }
         openURL(url)
     }
-    
+
 }

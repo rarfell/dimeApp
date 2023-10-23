@@ -19,81 +19,78 @@ enum DeletionType {
 }
 
 class OverallTransactionManager: ObservableObject {
-    @Published var toEdit: Transaction? = nil
-    @Published var toDelete: Transaction? = nil
+    @Published var toEdit: Transaction?
+    @Published var toDelete: Transaction?
     @Published var showToast: Bool = false
     @Published var showPopup: Bool = false
     @Published var future: Bool = false
-   
+
 }
 
 struct HomeView: View {
     @EnvironmentObject var appLockVM: AppLockViewModel
-    
+
     @StateObject var toastPresenter = OverallToastPresenter()
     @StateObject var transactionManager = OverallTransactionManager()
     @Environment(\.managedObjectContext) var moc
     @EnvironmentObject var dataController: DataController
-   
-    
+
     @State var currentTab = "Log"
-    
+
     var topEdge: CGFloat
     var bottomEdge: CGFloat
-    
+
     @State var fromURL1: Bool = false
     @State var fromURL2: Bool = false
     @State var fromURL3: Bool = false
     @State var fromURL4: Bool = false
-    
+
     @State var launchAdd: Bool = false
     @State var launchSearch: Bool = false
-    
+
     @State var counter = 0
-    
+
     @EnvironmentObject var tabBarManager: TabBarManager
-    
+
     @State var showPopup = false
-    
-    
+
     // Hiding Native TabBar...
-    init(topEdge: CGFloat, bottomEdge: CGFloat){
+    init(topEdge: CGFloat, bottomEdge: CGFloat) {
         UITabBar.appearance().isHidden = true
         self.topEdge = topEdge
         self.bottomEdge = bottomEdge
     }
-    
-    
+
     var body: some View {
         ZStack(alignment: .bottom) {
-            
+
             TabView(selection: $currentTab) {
-                
+
                 LogView(topEdge: topEdge, bottomEdge: bottomEdge, launchSearch: launchSearch)
                     .ignoresSafeArea(.all)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .tag("Log")
-                
+
                 InsightsView()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .tag("Insights")
-                
+
                 BudgetView()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .tag("Budget")
-                
+
                 SettingsView()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .tag("Settings")
-                
+
             }
             .allowsHitTesting(showPopup ? false : true)
             .environmentObject(toastPresenter)
             .environmentObject(transactionManager)
-            
+
             CustomTabBar(currentTab: $currentTab, topEdge: topEdge, bottomEdge: bottomEdge, counter: $counter, launchAdd: launchAdd)
                 .offset(y: tabBarManager.hideTab ? (70 + bottomEdge) : 0)
-            
+
             if showPopup {
                 Rectangle()
                     .fill(Color.clear)
@@ -103,16 +100,16 @@ struct HomeView: View {
                         transactionManager.showPopup = false
                     }
             }
-            
+
             DeleteTransactionAlert()
                 .offset(y: showPopup ? 0 : 300)
                 .environmentObject(transactionManager)
-            
+
             if appLockVM.isAppLockEnabled && !appLockVM.isAppUnLocked {
                 AppLockView()
                     .ignoresSafeArea(.all)
                     .onOpenURL { url in
-                        
+
                         if url.host == "newExpense" {
                             fromURL1 = true
                         } else if url.host == "search" {
@@ -170,32 +167,31 @@ struct HomeView: View {
         }
         .confettiCannon(counter: $counter, num: 50, openingAngle: Angle(degrees: 0), closingAngle: Angle(degrees: 360), radius: 200)
         .onAppear {
-            
-            
+
             if appLockVM.isAppLockEnabled && fromURL1 {
-                
+
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     launchAdd.toggle()
                 }
-                
+
                 fromURL1 = false
             }
-            
+
             if appLockVM.isAppLockEnabled && fromURL2 {
-                
+
                 currentTab = "Log"
-                
+
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     launchSearch.toggle()
                 }
-                
+
                 fromURL2 = false
             }
-            
+
             if appLockVM.isAppLockEnabled && fromURL3 {
                 currentTab = "Insights"
             }
-            
+
             if appLockVM.isAppLockEnabled && fromURL4 {
                 currentTab = "Budget"
             }
@@ -210,30 +206,29 @@ struct HomeView: View {
             }
         }
 
-                
     }
 }
 
 struct AppLockView: View {
     @EnvironmentObject var appLockVM: AppLockViewModel
-   
+
     var body: some View {
         VStack(spacing: 15) {
             Image(systemName: "lock.fill")
                 .font(.system(size: 65))
                 .foregroundColor(Color.DarkIcon.opacity(0.7))
-            
+
             Text("App Locked")
                 .font(.system(size: 28, weight: .semibold, design: .rounded))
                 .foregroundColor(Color.PrimaryText)
                 .padding(.bottom, 30)
-            
+
             Button {
                 appLockVM.appLockValidation()
             } label: {
                 HStack {
                     Image(systemName: "faceid")
-                    
+
                     Text("Unlock App")
                 }
                 .font(.system(size: 20, weight: .medium, design: .rounded))
@@ -245,14 +240,14 @@ struct AppLockView: View {
                         .stroke(Color.Outline)
                 }
             }
-            
+
             if appLockVM.enrollmentError {
                 Text("Please re-enable Face ID access in the Settings app to unlock application.")
                     .font(.system(size: 15, weight: .regular, design: .rounded))
                     .foregroundColor(Color.SubtitleText)
                     .multilineTextAlignment(.center)
             }
-            
+
         }
         .padding(.horizontal, 30)
         .frame(maxWidth: .infinity, maxHeight: .infinity)

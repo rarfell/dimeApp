@@ -5,11 +5,11 @@
 //  Created by Rafael Soh on 11/9/23.
 //
 
-//import WidgetKit
-//import SwiftUI
-//import AppIntents
+// import WidgetKit
+// import SwiftUI
+// import AppIntents
 //
-//struct TemplateTransactionWidget: Widget {
+// struct TemplateTransactionWidget: Widget {
 //    let kind: String = "TemplateTransactions"
 //
 ////    private var supportedFamilies: [WidgetFamily] {
@@ -30,9 +30,9 @@
 //        .configurationDisplayName("New Expense")
 //        .description("A convenient button to log new purchases.")
 //    }
-//}
+// }
 //
-//struct TemplateTransactionWidgetProvider: TimelineProvider {
+// struct TemplateTransactionWidgetProvider: TimelineProvider {
 //    
 //    typealias Entry = TemplateTransactionWidgetEntry
 //    
@@ -74,21 +74,21 @@
 //        
 //        return (holding, addedTransaction)
 //    }
-//}
+// }
 //
-//struct TemplateTransactionWidgetEntry: TimelineEntry, Hashable {
+// struct TemplateTransactionWidgetEntry: TimelineEntry, Hashable {
 //    let date: Date
 //    let added: Bool
 //    let gridItems: [HoldingTemplateTransaction]
-//}
+// }
 //
-//struct HoldingTemplateTransaction: Hashable, Identifiable {
+// struct HoldingTemplateTransaction: Hashable, Identifiable {
 //    let id: Int
 //    let transaction: TemplateTransaction?
-//}
+// }
 //
 //
-//struct TemplateTransactionWidgetEntryView: View {
+// struct TemplateTransactionWidgetEntryView: View {
 //    
 //    let entry: TemplateTransactionWidgetProvider.Entry
 //    
@@ -174,9 +174,9 @@
 //        }
 //        
 //    }
-//}
+// }
 //
-//struct SingleTemplateWidgetButton: View {
+// struct SingleTemplateWidgetButton: View {
 //    let transaction: TemplateTransaction
 //    let showCents: Bool
 //    let currencySymbol: String
@@ -238,17 +238,17 @@
 //        .background(blend(over: transactionColor, withAlpha: 0.8), in: RoundedRectangle(cornerRadius: cornerRadius))
 //        .shadow(color: transactionColor.opacity(0.8), radius: 6)
 //    }
-//}
+// }
 //
-//func getDollarOffset(big: CGFloat, small: CGFloat) -> CGFloat {
+// func getDollarOffset(big: CGFloat, small: CGFloat) -> CGFloat {
 //    let bigFont = UIFont.rounded(ofSize: big, weight: .semibold)
 //    let smallFont = UIFont.rounded(ofSize: small, weight: .semibold)
 //    
 //    return bigFont.capHeight - smallFont.capHeight
-//}
+// }
 
-//@available(iOS 16.0, *)
-//struct TemplateTransactionIntent: AppIntent {
+// @available(iOS 16.0, *)
+// struct TemplateTransactionIntent: AppIntent {
 //    static var title: LocalizedStringResource = "Quick Add Transaction"
 //    static var description = IntentDescription("Log a drink and its caffeine amount.")
 //
@@ -276,4 +276,4 @@
 //
 //        
 //    }
-//}
+// }

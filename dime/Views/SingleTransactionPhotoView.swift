@@ -17,26 +17,26 @@ struct SingleDayPhotoView: View {
     let currency: String
     let swapTimeLabel: Bool
     let future: Bool
-    
+
     @AppStorage("colourScheme", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var colourScheme: Int = 0
-            
+
     @Environment(\.colorScheme) var systemColorScheme
-    
+
     var darkMode: Bool {
         ((colourScheme == 0 && systemColorScheme == .dark) || colourScheme == 2)
     }
-    
+
     var body: some View {
         VStack(alignment: .trailing, spacing: 50) {
-            
+
             VStack(spacing: 25) {
                 VStack(spacing: 10) {
                     HStack {
                         Text(dateText)
                         Spacer()
-                        
+
                         Text(amountText)
-                        
+
                     }
                     .font(.system(size: 35, weight: .semibold, design: .rounded))
                     .foregroundColor(Color.SubtitleText)
@@ -44,7 +44,7 @@ struct SingleDayPhotoView: View {
                     Line()
                         .stroke(Color.Outline, style: StrokeStyle(lineWidth: 3, lineCap: .round))
                 }
-                
+
                 ForEach(transactions, id: \.id) { transaction in
                     SingleTransactionPhotoView(transaction: transaction, showCents: showCents, currencySymbol: currencySymbol, currency: currency, swapTimeLabel: swapTimeLabel, future: future)
                 }
@@ -70,22 +70,21 @@ struct SingleTransactionPhotoView: View {
     let currency: String
     let swapTimeLabel: Bool
     let future: Bool
-    
-    
+
     var transactionAmountString: String {
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .currency
         numberFormatter.currencyCode = currency
-        
+
         if showCents {
             numberFormatter.maximumFractionDigits = 2
         } else {
             numberFormatter.maximumFractionDigits = 0
         }
-        
+
         return numberFormatter.string(from: NSNumber(value: transaction.amount)) ?? "$0"
     }
-    
+
     var body: some View {
         HStack(spacing: 25) {
             EmojiLogView(emoji: (transaction.category?.wrappedEmoji ?? "")
@@ -103,12 +102,12 @@ struct SingleTransactionPhotoView: View {
                 }
 
             VStack(alignment: .leading, spacing: 5.5) {
-                
+
                 Text(transaction.wrappedNote)
                     .font(.system(size: 42, weight: .medium, design: .rounded))
                     .foregroundColor(future ? Color.SubtitleText : Color.PrimaryText)
                     .lineLimit(1)
-                
+
                 if future {
                     if transaction.wrappedDate > Date.now {
                         Text(dateFormatter(date: transaction.wrappedDate))
@@ -121,7 +120,7 @@ struct SingleTransactionPhotoView: View {
                            .foregroundColor(Color.EvenLighterText)
                            .lineLimit(1)
                     }
-                    
+
                 } else {
                     if swapTimeLabel {
                         Text(transaction.wrappedCategoryName)
@@ -135,14 +134,11 @@ struct SingleTransactionPhotoView: View {
                            .lineLimit(1)
                     }
                 }
-                
-               
 
-               
             }
 
             Spacer()
-            
+
             if transaction.income {
                 Text("+\(transactionAmountString)")
                     .font(.system(size: 45, weight: .medium, design: .rounded))
@@ -158,16 +154,14 @@ struct SingleTransactionPhotoView: View {
                     .lineLimit(1)
                     .layoutPriority(1)
             }
-            
 
-                
         }
 //        .background(Color.SecondaryBackground, in: RoundedRectangle(cornerRadius: 40))
-    
+
         .frame(maxWidth: .infinity)
-        
+
     }
-    
+
     func dateFormatter(date: Date) -> String {
         let dateFormatter = DateFormatter()
 

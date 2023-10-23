@@ -15,50 +15,50 @@ class AppLockViewModel: ObservableObject {
     @Published var isAppLockEnabled: Bool = false
     // Publishing if the app is curretly unlocked or not
     @Published var isAppUnLocked: Bool = false
-    
+
     @Published var enrollmentError: Bool = false
-    
+
     init() {
         getAppLockState()
     }
-    
+
     // To enable the AppLock in UserDefaults
     func enableAppLock() {
         UserDefaults.standard.set(true, forKey: "appLockEnabled")
         self.isAppLockEnabled = true
     }
-    
+
     // To disable the AppLock in UserDefaults
     func disableAppLock() {
         UserDefaults.standard.set(false, forKey: "appLockEnabled")
         self.isAppLockEnabled = false
     }
-    
+
     // To Publish the AppLock state
     func getAppLockState() {
         isAppLockEnabled = UserDefaults.standard.bool(forKey: "appLockEnabled")
     }
-    
+
     // Checking if the device is having BioMetric hardware and enrolled
     func checkIfBioMetricAvailable() -> Bool {
         var error: NSError?
         let laContext = LAContext()
-        
+
         let isBiometricAvailable = laContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error)
-        
+
         if let error = error {
             print(error.localizedDescription)
         }
-        
+
         if isBiometricAvailable {
             enrollmentError = false
         } else {
             enrollmentError = true
         }
-        
+
         return isBiometricAvailable
     }
-    
+
     // This method used to change the AppLock state.
     // If user is going to enable the AppLock then 'appLockState' should be 'true' and vice versa
     func appLockStateChange(appLockState: Bool) {
@@ -70,7 +70,7 @@ class AppLockViewModel: ObservableObject {
             } else {
                 reason = "Provice Touch ID/Face ID to disable App Lock"
             }
-            
+
             laContext.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason) { (success, error) in
                 if success {
                     if appLockState {
@@ -93,14 +93,14 @@ class AppLockViewModel: ObservableObject {
                 }
             }
         } else {
-            
-                if let settingsURL = URL(string: UIApplication.openSettingsURLString){
+
+                if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
                    UIApplication.shared.open(settingsURL)
                 }
-            
+
         }
     }
-    
+
     // This method will call on every launch of the app if user has enabled AppLock
     func appLockValidation() {
         let laContext = LAContext()
@@ -120,7 +120,7 @@ class AppLockViewModel: ObservableObject {
                 }
             }
         } else {
-            if let settingsURL = URL(string: UIApplication.openSettingsURLString){
+            if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
                UIApplication.shared.open(settingsURL)
             }
         }

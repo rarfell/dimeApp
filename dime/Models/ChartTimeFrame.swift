@@ -8,7 +8,5 @@
 import Foundation
 
 enum ChartTimeFrame: String, CaseIterable {
-    case week = "week"
-    case month = "month"
-    case year = "year"
+    case week, month, year
 }

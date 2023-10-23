@@ -20,25 +20,24 @@ struct CategoryView: View {
 //    @Environment(\.colorScheme) var colorScheme
     @State var income = false
     @Namespace var animation
-    
+
     @State var newCategory = false
-    
-    
+
     @FetchRequest(sortDescriptors: [SortDescriptor(\.order)], predicate: NSPredicate(format: "income = %d", false)) private var expenseCategories: FetchedResults<Category>
-    
+
     @State var showToast = false
     @State var toastTitle = ""
     @State var toastImage = ""
     @State var positive = false
-    
+
     var disabled: Bool {
         income == false && expenseCategories.count >= 24
     }
-    
+
     var body: some View {
         VStack(spacing: 5) {
             CategoryListView(income: $income, mode: mode, showToast: $showToast, toastTitle: $toastTitle, toastImage: $toastImage, positive: $positive)
-            
+
             HStack {
                 HStack(spacing: 0) {
                     Text("Expense")
@@ -63,7 +62,7 @@ struct CategoryView: View {
                                 }
                             }
                         }
-                    
+
                     Text("Income")
                         .font(.system(.body, design: .rounded).weight(.semibold))
                         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
@@ -90,22 +89,21 @@ struct CategoryView: View {
                 .padding(3)
                 .layoutPriority(1)
                 .overlay(Capsule().stroke(Color.Outline.opacity(0.4), lineWidth: 1.3))
-                
+
                 Spacer()
-                
-                
+
                 HStack(spacing: 3) {
                     Image(systemName: "plus")
                         .font(.system(.subheadline, design: .rounded).weight(.semibold))
                         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                        .font(.system(size: 14.5, weight: .semibold, design: .rounded))
-                    
+
                     Text("New")
                         .font(.system(.body, design: .rounded).weight(.semibold))
                         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                        .font(.system(size: 18, weight: .semibold, design: .rounded))
                         .lineLimit(1)
-                    
+
                 }
                 .foregroundColor(Color.PrimaryText)
                 .padding(6)
@@ -125,8 +123,7 @@ struct CategoryView: View {
                 }
             }
             .padding(25)
-            
-            
+
         }
         .sheet(isPresented: $newCategory) {
             if #available(iOS 16.0, *) {
@@ -145,45 +142,45 @@ struct CategoryView: View {
 struct CategoryListView: View {
     @Binding var income: Bool
     var mode: CategoryViewMode
-    
+
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @Environment(\.dismiss) var dismiss
     @Environment(\.managedObjectContext) var moc
     @Environment(\.colorScheme) var systemColorScheme
-    
+
     @AppStorage("bottomEdge", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var bottomEdge: Double = 15
-    
+
     @AppStorage("categorySuggestions", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var showSuggestions: Bool = true
     @State var suggestionsToast = false
-    
+
     @State private var offset: CGFloat = 0
-    
+
     @FetchRequest private var categories: FetchedResults<Category>
-    
+
     @State var isEditing = false
-    
+
     @FetchRequest(sortDescriptors: [SortDescriptor(\.order)]) private var allCategories: FetchedResults<Category>
-    
+
     // delete mode
     @State private var deleteMode = false
     @State private var toDelete: Category?
     var alertMessage: String {
         "Delete '" + (toDelete?.wrappedName ?? "") + "'?"
     }
-    
+
     // edit mode
     @State private var toEdit: Category?
-    
+
     // toasts
     @Binding var showToast: Bool
     @Binding var toastTitle: String
     @Binding var toastImage: String
     @Binding var positive: Bool
-    
+
     var toastColor: Color {
         positive ? Color.IncomeGreen : Color.AlertRed
     }
-    
+
     var sectionHeader: LocalizedStringKey {
         if income {
             return "INCOME CATEGORIES"
@@ -191,12 +188,12 @@ struct CategoryListView: View {
             return "EXPENSE CATEGORIES"
         }
     }
-    
+
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
-    
+
     var body: some View {
         VStack(spacing: 5) {
-            
+
             if showToast {
                 HStack(spacing: 6.5) {
                     Image(systemName: toastImage)
@@ -204,7 +201,7 @@ struct CategoryListView: View {
                         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                        .font(.system(size: 15, weight: .semibold))
                         .foregroundColor(toastColor)
-                    
+
                     Text(toastTitle)
                         .font(.system(.body, design: .rounded).weight(.semibold))
                         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
@@ -255,7 +252,7 @@ struct CategoryListView: View {
                                     }
                             }
                         }
-                        
+
                         Circle()
                             .fill(Color.SecondaryBackground)
                             .frame(width: 33, height: 33)
@@ -271,11 +268,9 @@ struct CategoryListView: View {
                                     showSuggestions.toggle()
                                 }
                             }
-                        
-                        
-                        
+
                         Spacer()
-                        
+
                         Circle()
                             .fill(!allCategories.isEmpty ? Color.IncomeGreen.opacity(0.23) : Color.clear)
                             .frame(width: 33, height: 33)
@@ -285,14 +280,14 @@ struct CategoryListView: View {
                                         .font(.system(.callout, design: .rounded).weight(.semibold))
                                         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
                                         .foregroundColor(!allCategories.isEmpty ? Color.IncomeGreen : Color.Outline.opacity(0.8))
-                                    
+
                                     if allCategories.count == 0 {
                                         Circle()
                                             .stroke(Color.Outline.opacity(0.4), lineWidth: 1.3)
                                             .frame(width: 33, height: 33)
                                     }
                                 }
-                                
+
                             }
                             .onTapGesture {
                                 if allCategories.count > 0 {
@@ -300,9 +295,6 @@ struct CategoryListView: View {
                                 }
                             }
 
-                        
-                        
-                        
                     }
                     .frame(height: 35)
                     .frame(maxWidth: .infinity)
@@ -313,7 +305,7 @@ struct CategoryListView: View {
 //                            .font(.system(size: 20, weight: .medium, design: .rounded))
                     }
                     .padding(20)
-                    
+
                 } else {
                     HStack(spacing: 8) {
                         if mode == .settings {
@@ -346,11 +338,9 @@ struct CategoryListView: View {
                                     dismiss()
                                 }
                         }
-                        
-                        
-                        
+
                         Spacer()
-                        
+
                         Circle()
                             .fill(Color.SecondaryBackground)
                             .frame(width: 33, height: 33)
@@ -367,7 +357,7 @@ struct CategoryListView: View {
                                     showSuggestions.toggle()
                                 }
                             }
-                        
+
                         if categories.count > 1 {
                             if isEditing {
                                 Circle()
@@ -403,8 +393,7 @@ struct CategoryListView: View {
                                     }
                             }
                         }
-                        
-                        
+
                     }
                     .frame(height: 35)
                     .frame(maxWidth: .infinity)
@@ -415,26 +404,23 @@ struct CategoryListView: View {
 //                            .font(.system(size: 20, weight: mode == .settings ? .semibold : .medium, design: .rounded))
                     }
                     .padding(20)
-                    
+
                 }
             }
-            
-            
-            
-            
+
             VStack {
-        
+
                 if #available(iOS 16.0, *) {
                     List {
                         Section(header: Text(sectionHeader).foregroundColor(Color.SubtitleText)) {
                             if categories.isEmpty {
                                 VStack(spacing: 10) {
-                                    Image(systemName:"tray")
+                                    Image(systemName: "tray")
                                         .font(.system(.largeTitle, design: .rounded).weight(.light))
                                         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                                        .font(.system(size: 37, weight: .light))
                                         .foregroundColor(Color.SubtitleText)
-                                    
+
                                     Group {
                                         if income {
                                             Text("no_income_categories")
@@ -465,17 +451,15 @@ struct CategoryListView: View {
 //                                            .font(.system(size: 18.5, weight: .regular, design: .rounded))
                                             .lineLimit(1)
                                             .foregroundColor(toDelete == category ? Color.AlertRed : Color.PrimaryText)
-                                        
+
                                         Spacer()
-                                        
+
                                         if !income {
                                             RoundedRectangle(cornerRadius: 5, style: .continuous)
                                                 .fill(Color(hex: category.wrappedColour))
                                                 .frame(width: 20, height: 20)
                                         }
-                                        
-                                        
-                                        
+
                                     }
                                     .padding(.vertical, 5)
                                     .listRowBackground(Color.SettingsBackground)
@@ -500,18 +484,18 @@ struct CategoryListView: View {
                                         }
                                         .tint(Color("Yellow"))
                                     }
-                                    
+
                                 }
                                 .onMove(perform: moveItem)
                             }
-                            
+
 //                                .onDelete(perform: deleteItem)
                         }
-                        
+
                         if showSuggestions {
                             SuggestedCategoriesView(income: income)
                         }
-                        
+
                     }
                     .scrollContentBackground(.hidden)
                     .scrollIndicators(.hidden)
@@ -521,12 +505,12 @@ struct CategoryListView: View {
                         Section(header: Text("\(income ? "INCOME" : "EXPENSE") CATEGORIES").foregroundColor(Color.SubtitleText)) {
                             if categories.isEmpty {
                                 VStack(spacing: 10) {
-                                    Image(systemName:"tray")
+                                    Image(systemName: "tray")
                                         .font(.system(.largeTitle, design: .rounded).weight(.light))
                                         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                                        .font(.system(size: 37, weight: .light))
                                         .foregroundColor(Color.SubtitleText)
-                                    
+
                                     Text("No \(income ? "income" : "expense") categories found,\nclick the 'New' button to add some.")
                                         .font(.system(.body, design: .rounded).weight(.medium))
                                         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
@@ -551,17 +535,15 @@ struct CategoryListView: View {
 //                                            .font(.system(size: 18.5, weight: .regular, design: .rounded))
                                             .lineLimit(1)
                                             .foregroundColor(toDelete == category ? Color.AlertRed : Color.PrimaryText)
-                                        
+
                                         Spacer()
-                                        
+
                                         if !income {
                                             RoundedRectangle(cornerRadius: 5, style: .continuous)
                                                 .fill(Color(hex: category.wrappedColour))
                                                 .frame(width: 20, height: 20)
                                         }
-                                        
-                                        
-                                        
+
                                     }
                                     .padding(.vertical, 5)
                                     .listRowBackground(Color.SettingsBackground)
@@ -586,23 +568,22 @@ struct CategoryListView: View {
                                         }
                                         .tint(Color("Yellow"))
                                     }
-                                    
+
                                 }
                                 .onMove(perform: moveItem)
                             }
-                            
+
 //                                .onDelete(perform: deleteItem)
                         }
-                        
+
                         if showSuggestions {
                             SuggestedCategoriesView(income: income)
                         }
-                        
+
                     }
                     .environment(\.editMode, .constant(self.isEditing ? EditMode.active : EditMode.inactive))
                 }
-       
-                
+
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
@@ -623,27 +604,26 @@ struct CategoryListView: View {
                     .onTapGesture {
                         deleteMode = false
                     }
-                
-                
+
                 VStack(alignment: .leading, spacing: 1.5) {
                     Text("Delete '\(toDelete?.wrappedName ?? "")'?")
                         .font(.system(size: 20, weight: .medium, design: .rounded))
                         .foregroundColor(.PrimaryText)
-                    
+
                     Text("This action cannot be undone, and all \(toDelete?.wrappedName ?? "") transactions would be deleted.")
                         .font(.system(size: 16, weight: .medium, design: .rounded))
                         .foregroundColor(.SubtitleText)
                         .padding(.bottom, 15)
-                    
+
                     Button {
                         withAnimation {
                             if let gonnaDelete = toDelete {
                                 moc.delete(gonnaDelete)
                             }
-                            
+
                             try? moc.save()
                         }
-                                                
+
                         toDelete = nil
                         deleteMode = false
 
@@ -656,13 +636,13 @@ struct CategoryListView: View {
                             .background(Color.AlertRed, in: RoundedRectangle(cornerRadius: 9, style: .continuous))
                     }
                     .padding(.bottom, 8)
-                    
+
                     Button {
                         withAnimation(.easeOut(duration: 0.7)) {
                             deleteMode = false
                             offset = 0
                         }
-                        
+
                     } label: {
                         Text("Cancel")
                             .font(.system(size: 20, weight: .semibold, design: .rounded))
@@ -675,7 +655,7 @@ struct CategoryListView: View {
                 }
                 .padding(13)
                 .background(RoundedRectangle(cornerRadius: 13).fill(Color.PrimaryBackground).shadow(color: systemColorScheme == .dark ? Color.clear : Color.gray.opacity(0.25), radius: 6))
-                .overlay(RoundedRectangle(cornerRadius: 13).stroke(systemColorScheme == .dark ? Color.gray.opacity(0.1) : Color.clear , lineWidth: 1.3))
+                .overlay(RoundedRectangle(cornerRadius: 13).stroke(systemColorScheme == .dark ? Color.gray.opacity(0.1) : Color.clear, lineWidth: 1.3))
                 .offset(y: offset)
                 .gesture(
                     DragGesture()
@@ -694,16 +674,12 @@ struct CategoryListView: View {
                                 withAnimation {
                                     offset = 0
                                 }
-                                
+
                             }
                         }
                 )
                 .padding(.horizontal, 17)
                 .padding(.bottom, bottomEdge == 0 ? 13 : bottomEdge)
-                
-                
-                    
-                
 
             }
             .edgesIgnoringSafeArea(.all)
@@ -735,49 +711,47 @@ struct CategoryListView: View {
             }
         }
     }
-    
-    private func moveItem(at sets:IndexSet, destination:Int){
+
+    private func moveItem(at sets: IndexSet, destination: Int) {
         let itemToMove = sets.first!
-        
-        if itemToMove < destination{
+
+        if itemToMove < destination {
             var startIndex = itemToMove + 1
             let endIndex = destination - 1
             var startOrder = categories[itemToMove].order
-            while startIndex <= endIndex{
+            while startIndex <= endIndex {
                 categories[startIndex].order = startOrder
                 startOrder = startOrder + 1
                 startIndex = startIndex + 1
             }
             categories[itemToMove].order = startOrder
-        }
-        else if destination < itemToMove{
+        } else if destination < itemToMove {
             var startIndex = destination
             let endIndex = itemToMove - 1
             var startOrder = categories[destination].order + 1
             let newOrder = categories[destination].order
-            while startIndex <= endIndex{
+            while startIndex <= endIndex {
                 categories[startIndex].order = startOrder
                 startOrder = startOrder + 1
                 startIndex = startIndex + 1
             }
             categories[itemToMove].order = newOrder
         }
-        
-        do{
+
+        do {
             try moc.save()
-        }
-        catch{
+        } catch {
             print(error.localizedDescription)
         }
-        
+
     }
-    
+
     init(income: Binding<Bool>, mode: CategoryViewMode, showToast: Binding<Bool>, toastTitle: Binding<String>, toastImage: Binding<String>, positive: Binding<Bool>) {
         _categories = FetchRequest<Category>(sortDescriptors: [
             SortDescriptor(\.order)
         ], predicate: NSPredicate(format: "income = %d", income.wrappedValue)
         )
-        
+
         _income = income
         _showToast = showToast
         _toastTitle = toastTitle
@@ -791,57 +765,56 @@ struct NewCategoryAlert: View {
     @Binding var income: Bool
     let budgetMode: Bool
     let bottomSpacers: Bool
-    
+
     @Environment(\.dismiss) var dismiss
     @Environment(\.managedObjectContext) var moc
     @Environment(\.colorScheme) var systemColorScheme
     @EnvironmentObject var dataController: DataController
-    
-    
+
     @Namespace var animation
-    
+
     // existing categories
-    
+
     @FetchRequest(sortDescriptors: [SortDescriptor(\.order)], predicate: NSPredicate(format: "income = %d", false)) private var expenseCategories: FetchedResults<Category>
     @FetchRequest(sortDescriptors: [SortDescriptor(\.order)], predicate: NSPredicate(format: "income = %d", true)) private var incomeCategories: FetchedResults<Category>
     @State private var availableColours: [String] = Color.colorArray
-    
+
     // state
     @State private var newName = ""
     @State private var newEmoji = ""
     @State private var showingColourPicker = false
     @State private var selectedColour: String = "#FFFFFF"
-    
+
     @FocusState var focusedField: FocusedField?
-    
-    enum FocusedField:Hashable{
+
+    enum FocusedField: Hashable {
         case emoji, name
     }
-    
+
     // toasts
     @State var outcome = CategoryError.none
     @State var showToast = false
     @State var toastTitle = ""
     @State var toastImage = ""
     @State var positive = false
-    
+
     var toastColor: Color {
         positive ? Color.IncomeGreen : Color.AlertRed
     }
-    
+
     var addButtonDisabled: Bool {
         return newName.trimmingCharacters(in: .whitespacesAndNewlines) ==  "" || newEmoji == ""
     }
-    
+
     @State var showNativePicker: Bool = false
     @State var customSelectedColor = Color.white
-    
+
 //    @State var isFetching = false
-    
+
     var body: some View {
         VStack {
             VStack {
-                
+
                 VStack {
                     if showToast {
                         HStack(spacing: 5) {
@@ -850,7 +823,7 @@ struct NewCategoryAlert: View {
                                 .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                                .font(.system(size: 16, weight: .semibold))
                                 .foregroundColor(toastColor)
-                            
+
                             Text(toastTitle)
                                 .font(.system(.callout, design: .rounded).weight(.semibold))
                                 .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
@@ -899,7 +872,7 @@ struct NewCategoryAlert: View {
                                             }
                                         }
                                     }
-                                
+
                                 Text("Income")
                                     .font(.system(.callout, design: .rounded).weight(.semibold))
                                     .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
@@ -907,7 +880,7 @@ struct NewCategoryAlert: View {
                                     .foregroundColor(income == true ? Color.PrimaryText : Color.SubtitleText)
                                     .padding(5)
                                     .padding(.horizontal, 7)
-                                    .background{
+                                    .background {
                                         if income == true {
                                             Capsule()
                                                 .fill(Color.SecondaryBackground)
@@ -943,15 +916,13 @@ struct NewCategoryAlert: View {
                             .padding(7)
                             .background(Color.SecondaryBackground, in: Circle())
                             .contentShape(Circle())
-                        
+
                     }
                 }
-                
+
                 Spacer()
-               
+
                 ZStack {
-
-
 
                     EmojiTextField(text: $newEmoji)
                         .focused($focusedField, equals: .emoji)
@@ -970,7 +941,6 @@ struct NewCategoryAlert: View {
                                 .strokeBorder((focusedField == .emoji && !showingColourPicker) ? Color.SubtitleText : Color.clear, lineWidth: 2.2)
                                 .background(RoundedRectangle(cornerRadius: 13, style: .continuous).fill(Color.SecondaryBackground))
                         }
-                        
 
                     if newEmoji == "" {
                         Image("emoji-happy")
@@ -980,9 +950,9 @@ struct NewCategoryAlert: View {
                             .allowsHitTesting(false)
                     }
                 }
-                
+
                 Spacer()
-                
+
                 HStack {
                     if !income {
                         Button {
@@ -999,21 +969,21 @@ struct NewCategoryAlert: View {
                                             .stroke(Color.SubtitleText, lineWidth: 2.2)
                                     }
                                 }
-                            
+
                         }
                         .popover(present: $showingColourPicker, attributes: {
                             $0.position = .absolute(
                                 originAnchor: .topLeft,
                                 popoverAnchor: .bottomLeft
-                            );
-                            $0.rubberBandingMode = .none;
-                            $0.sourceFrameInset = UIEdgeInsets(top: -10, left: 0, bottom: 0, right: 0);
-                            $0.presentation.animation = .easeInOut(duration: 0.2);
+                            )
+                            $0.rubberBandingMode = .none
+                            $0.sourceFrameInset = UIEdgeInsets(top: -10, left: 0, bottom: 0, right: 0)
+                            $0.presentation.animation = .easeInOut(duration: 0.2)
                             $0.dismissal.animation = .easeInOut(duration: 0.3)
                         }) {
                             ColourPickerView(selectedColor: $selectedColour, showMenu: $showingColourPicker, showNativePicker: $showNativePicker)
                                 .environment(\.managedObjectContext, self.moc)
-                            
+
                         } background: {
                             Color.PrimaryBackground.opacity(0.3)
                         }
@@ -1042,7 +1012,7 @@ struct NewCategoryAlert: View {
                         .padding(.horizontal, 15)
                         .padding(.vertical, 5)
                         .foregroundColor(Color.PrimaryText)
-                        
+
                     .frame(height: 50)
                     .background {
                         RoundedRectangle(cornerRadius: 13, style: .continuous)
@@ -1060,14 +1030,11 @@ struct NewCategoryAlert: View {
 //                            .font(.system(size: 20, weight: .semibold))
                             .frame(width: 50, height: 50)
                             .background(Color.DarkBackground, in: RoundedRectangle(cornerRadius: 13, style: .continuous))
-                            
+
                     }
-                    
-                    
+
                 }
-                
-                
-               
+
             }
             .padding(13)
             .frame(maxHeight: bottomSpacers ? 350 : .infinity)
@@ -1088,22 +1055,22 @@ struct NewCategoryAlert: View {
                 }
             }
         }
-        .onChange(of: customSelectedColor) { newValue in
+        .onChange(of: customSelectedColor) { _ in
             selectedColour = customSelectedColor.toHex() ?? "#FFFFFF"
         }
         .colorPickerSheet(isPresented: $showNativePicker, selection: $customSelectedColor, supportsAlpha: false, title: "")
-        .onAppear() {
+        .onAppear {
             if expenseCategories.count == 24 {
                 income = true
             }
-            
+
             if !income {
                 expenseCategories.forEach { category in
                     if availableColours.contains(category.wrappedColour) {
                         availableColours.remove(at: availableColours.firstIndex(of: category.wrappedColour) ?? 0)
                     }
                 }
-                
+
                 if availableColours.isEmpty {
                     selectedColour = "#FFFFFF"
                 } else {
@@ -1113,16 +1080,16 @@ struct NewCategoryAlert: View {
         }
 
     }
-    
+
     func verification() {
         let results = dataController.categoryCheck(name: newName, emoji: newEmoji, income: income)
-        
+
         outcome = results.error
-        
+
         if outcome != .none {
             let generator = UINotificationFeedbackGenerator()
             generator.notificationOccurred(.error)
-            
+
             switch outcome {
             case .incomplete:
                 toastTitle = "Incomplete Entry"
@@ -1130,12 +1097,12 @@ struct NewCategoryAlert: View {
             case .missingEmoji:
                 toastTitle = "Missing Emoji"
                 toastImage = "person.fill"
-                
+
                 focusedField = .emoji
             case .missingName:
                 toastTitle = "Missing Name"
                 toastImage = "character.cursor.ibeam"
-                
+
                 focusedField = .name
             case .duplicate:
                 toastTitle = "Duplicate Found"
@@ -1143,26 +1110,26 @@ struct NewCategoryAlert: View {
             case .duplicateEmoji:
                 toastTitle = "Duplicate Emoji"
                 toastImage = "person.fill"
-                
+
                 focusedField = .emoji
             case .duplicateName:
                 toastTitle = "Duplicate Name"
                 toastImage = "character.cursor.ibeam"
-                
+
                 focusedField = .name
             default:
                 return
             }
-            
+
             positive = false
             showToast = true
-            
+
         } else {
             toastTitle = "Added \(newName)"
-            
+
             let generator = UINotificationFeedbackGenerator()
             generator.notificationOccurred(.success)
-            
+
             if income {
                 let category = Category(context: moc)
                 category.name = newName.trimmingCharacters(in: .whitespaces).capitalized
@@ -1173,7 +1140,7 @@ struct NewCategoryAlert: View {
                 category.order = results.order
                 category.income = true
                 dataController.save()
-                
+
                 newName = ""
                 newEmoji = ""
             } else {
@@ -1186,26 +1153,26 @@ struct NewCategoryAlert: View {
 
                 category.colour = selectedColour
                 category.order = results.order
-                
+
                 dataController.save()
-                
+
                 newName = ""
                 newEmoji = ""
-                
+
                 availableColours = Color.colorArray
                 expenseCategories.forEach { category in
                     if availableColours.contains(category.wrappedColour) {
                         availableColours.remove(at: availableColours.firstIndex(of: category.wrappedColour) ?? 0)
                     }
                 }
-                
+
                 if availableColours.isEmpty {
                     selectedColour = "#FFFFFF"
                 } else {
                     selectedColour = availableColours[0]
                 }
             }
-            
+
             if budgetMode {
                 dismiss()
                 return
@@ -1217,7 +1184,7 @@ struct NewCategoryAlert: View {
             }
         }
     }
-    
+
 //    func GPTRecommendations(emoji: String, income: Bool) {
 //        guard let url = URL(string: "https://api.openai.com/v1/completions") else {
 //            return
@@ -1261,14 +1228,13 @@ struct NewCategoryAlert: View {
 //        
 //        task.resume()
 //    }
-    
-    
+
     init(income: Binding<Bool>, bottomSpacers: Bool, budgetMode: Bool = false) {
         _income = income
         self.budgetMode = budgetMode
         self.bottomSpacers = bottomSpacers
     }
-    
+
 }
 
 struct EditCategoryAlert: View {
@@ -1277,56 +1243,52 @@ struct EditCategoryAlert: View {
     @Binding var rootToastTitle: String
     @Binding var rootToastImage: String
     @Binding var positive: Bool
-    
+
     let bottomSpacers: Bool
-  
+
     @Environment(\.dismiss) var dismiss
     @Environment(\.managedObjectContext) var moc
     @Environment(\.colorScheme) var systemColorScheme
     @EnvironmentObject var dataController: DataController
-    
-    
+
     @Namespace var animation
-    
+
     // existing categories
-    
+
     @FetchRequest(sortDescriptors: [SortDescriptor(\.order)], predicate: NSPredicate(format: "income = %d", false)) private var expenseCategories: FetchedResults<Category>
-    
+
     // state
     @State private var newName = ""
     @State private var newEmoji = ""
     @State private var showingColourPicker = false
     @State private var selectedColour: String = "#FFFFFF"
-    
+
     @FocusState var focusedField: FocusedField?
-    
-    enum FocusedField:Hashable{
+
+    enum FocusedField: Hashable {
         case emoji, name
     }
-    
+
     // toasts
     @State var outcome = CategoryError.none
     @State var showToast = false
     @State var toastTitle = ""
     @State var toastImage = ""
-    
-    
+
     // delete mode
     @State private var deleteMode = false
     @State private var toDelete: Category?
     var alertMessage: String {
         "Delete '" + (toDelete?.wrappedName ?? "") + "'?"
     }
-    
-    
+
     @State var showNativePicker: Bool = false
     @State var customSelectedColor = Color.white
-    
-    
+
     var body: some View {
         VStack {
             VStack {
-               
+
                 HStack {
                     Button {
                         dismiss()
@@ -1339,11 +1301,11 @@ struct EditCategoryAlert: View {
                             .padding(7)
                             .background(Color.SecondaryBackground, in: Circle())
                             .contentShape(Circle())
-                        
+
                     }
-                    
+
                     Spacer()
-                    
+
                     if showToast {
                         HStack(spacing: 5) {
                             Image(systemName: toastImage)
@@ -1351,7 +1313,7 @@ struct EditCategoryAlert: View {
                                 .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                                .font(.system(size: 16, weight: .semibold))
                                 .foregroundColor(Color.AlertRed)
-                            
+
                             Text(toastTitle)
                                 .font(.system(.callout, design: .rounded).weight(.semibold))
                                 .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
@@ -1369,9 +1331,9 @@ struct EditCategoryAlert: View {
                             .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                            .font(.system(size: 18, weight: .semibold, design: .rounded))
                     }
-                    
+
                     Spacer()
-                    
+
                     Button {
                         toDelete = toEdit
                     } label: {
@@ -1383,14 +1345,14 @@ struct EditCategoryAlert: View {
                             .padding(7)
                             .background(Color.AlertRed.opacity(0.23), in: Circle())
                             .contentShape(Circle())
-                        
+
                     }
-                    
+
                 }
                 .frame(height: 30)
-                    
+
                 Spacer()
-               
+
                 ZStack {
                     EmojiTextField(text: $newEmoji)
                         .focused($focusedField, equals: .emoji)
@@ -1409,7 +1371,7 @@ struct EditCategoryAlert: View {
                                 .strokeBorder((focusedField == .emoji && !showingColourPicker) ? Color.SubtitleText : Color.clear, lineWidth: 2.2)
                                 .background(RoundedRectangle(cornerRadius: 13, style: .continuous).fill(Color.SecondaryBackground))
                         }
-                    
+
                     if newEmoji == "" {
                         Image("emoji-happy")
                             .resizable()
@@ -1418,9 +1380,9 @@ struct EditCategoryAlert: View {
                             .allowsHitTesting(false)
                     }
                 }
-                
+
                 Spacer()
-                
+
                 HStack {
                     if !toEdit.income {
                         Button {
@@ -1437,26 +1399,26 @@ struct EditCategoryAlert: View {
                                             .stroke(Color.SubtitleText, lineWidth: 2.2)
                                     }
                                 }
-                            
+
                         }
                         .popover(present: $showingColourPicker, attributes: {
                             $0.position = .absolute(
                                 originAnchor: .topLeft,
                                 popoverAnchor: .bottomLeft
-                            );
-                            $0.rubberBandingMode = .none;
-                            $0.sourceFrameInset = UIEdgeInsets(top: -10, left: 0, bottom: 0, right: 0);
-                            $0.presentation.animation = .easeInOut(duration: 0.2);
+                            )
+                            $0.rubberBandingMode = .none
+                            $0.sourceFrameInset = UIEdgeInsets(top: -10, left: 0, bottom: 0, right: 0)
+                            $0.presentation.animation = .easeInOut(duration: 0.2)
                             $0.dismissal.animation = .easeInOut(duration: 0.3)
                         }) {
                             ColourPickerView(selectedColor: $selectedColour, showMenu: $showingColourPicker, showNativePicker: $showNativePicker, toEdit: toEdit)
                                 .environment(\.managedObjectContext, self.moc)
-                            
+
                         } background: {
                             Color.PrimaryBackground.opacity(0.3)
                         }
                     }
-                    
+
                     NormalTextField(text: $newName, placeholder: "Category Name", action: verification)
                         .focused($focusedField, equals: .name)
                         .padding(.horizontal, 15)
@@ -1468,8 +1430,7 @@ struct EditCategoryAlert: View {
                                 .strokeBorder((focusedField == .name && !showingColourPicker) ? Color.SubtitleText : Color.clear, lineWidth: 2.2)
                                 .background(RoundedRectangle(cornerRadius: 13, style: .continuous).fill(Color.SecondaryBackground))
                         }
-                    
-                    
+
                     Button {
                         verification()
                     } label: {
@@ -1480,10 +1441,9 @@ struct EditCategoryAlert: View {
 //                            .font(.system(size: 20, weight: .semibold))
                             .frame(width: 50, height: 50)
                             .background(Color.DarkBackground, in: RoundedRectangle(cornerRadius: 13, style: .continuous))
-                            
+
                     }
-                    
-                    
+
                 }
             }
             .padding(13)
@@ -1509,7 +1469,7 @@ struct EditCategoryAlert: View {
                 dismiss()
             }
         }
-        .onChange(of: customSelectedColor) { newValue in
+        .onChange(of: customSelectedColor) { _ in
             print("changed")
             selectedColour = customSelectedColor.toHex() ?? "#FFFFFF"
         }
@@ -1517,7 +1477,7 @@ struct EditCategoryAlert: View {
         .onChange(of: deleteMode) { _ in
             dismiss()
         }
-        .onAppear() {
+        .onAppear {
             newName = toEdit.wrappedName
             newEmoji = toEdit.wrappedEmoji
             selectedColour = toEdit.wrappedColour
@@ -1527,13 +1487,13 @@ struct EditCategoryAlert: View {
 
     func verification() {
         let results = dataController.categoryCheckEdit(name: newName, emoji: newEmoji, toEdit: toEdit)
-        
+
         outcome = results.error
-        
+
         if outcome != .none {
             let generator = UINotificationFeedbackGenerator()
             generator.notificationOccurred(.error)
-            
+
             switch outcome {
             case .incomplete:
                 toastTitle = "Incomplete Entry"
@@ -1541,12 +1501,12 @@ struct EditCategoryAlert: View {
             case .missingEmoji:
                 toastTitle = "Missing Emoji"
                 toastImage = "person.fill"
-                
+
                 focusedField = .emoji
             case .missingName:
                 toastTitle = "Missing Name"
                 toastImage = "character.cursor.ibeam"
-                
+
                 focusedField = .name
             case .duplicate:
                 toastTitle = "Duplicate Found"
@@ -1554,43 +1514,43 @@ struct EditCategoryAlert: View {
             case .duplicateEmoji:
                 toastTitle = "Duplicate Emoji"
                 toastImage = "person.fill"
-                
+
                 focusedField = .emoji
             case .duplicateName:
                 toastTitle = "Duplicate Name"
                 toastImage = "character.cursor.ibeam"
-                
+
                 focusedField = .name
             default:
                 return
             }
-            
+
             showToast = true
         } else {
-            
+
             let generator = UINotificationFeedbackGenerator()
             generator.notificationOccurred(.success)
-            
+
             if toEdit.income {
-                
+
                 toEdit.name = newName.trimmingCharacters(in: .whitespaces).capitalized
                 toEdit.emoji = newEmoji
-                
+
                 dataController.save()
             } else {
                 toEdit.name = newName.trimmingCharacters(in: .whitespaces).capitalized
                 toEdit.emoji = newEmoji
                 toEdit.colour = selectedColour
-                
+
                 dataController.save()
-                
+
             }
-            
+
             rootToastTitle = "Edited \(newName)"
             rootToastImage = "checkmark.circle.fill"
             positive = true
             showRootToast = true
-            
+
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
                 dismiss()
             }
@@ -1605,11 +1565,11 @@ struct DeleteCategoryAlert: View {
     let toDelete: Category
     @Binding var deleted: Bool
     @Environment(\.colorScheme) var systemColorScheme
-    
+
     @AppStorage("bottomEdge", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var bottomEdge: Double = 15
-    
+
     @State private var offset: CGFloat = 0
-    
+
     var body: some View {
         ZStack(alignment: .bottom) {
             Color.clear
@@ -1618,14 +1578,14 @@ struct DeleteCategoryAlert: View {
                 .onTapGesture {
                     dismiss()
                 }
-            
+
             VStack(alignment: .leading, spacing: 1.5) {
                 Text("Delete '\(toDelete.wrappedName)'?")
                     .font(.system(.title2, design: .rounded).weight(.medium))
                     .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                    .font(.system(size: 20, weight: .medium, design: .rounded))
                     .foregroundColor(.PrimaryText)
-                
+
                 Text("This action cannot be undone.")
                     .font(.system(.title3, design: .rounded).weight(.medium))
                     .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
@@ -1633,21 +1593,17 @@ struct DeleteCategoryAlert: View {
                     .foregroundColor(.SubtitleText)
                     .padding(.bottom, 15)
                     .accessibility(hidden: true)
-                
+
                 Button {
                     deleted = true
                     dismiss()
-                    
+
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                         withAnimation {
                             moc.delete(toDelete)
                             dataController.save()
                         }
                     }
-                    
-                    
-                    
-                    
 
                 } label: {
                     Text("Delete")
@@ -1659,12 +1615,12 @@ struct DeleteCategoryAlert: View {
                         .background(Color.AlertRed, in: RoundedRectangle(cornerRadius: 9, style: .continuous))
                 }
                 .padding(.bottom, 8)
-                
+
                 Button {
                     withAnimation(.easeOut(duration: 0.7)) {
                         dismiss()
                     }
-                    
+
                 } label: {
                     Text("Cancel")
                         .font(.system(.title3, design: .rounded).weight(.semibold))
@@ -1679,7 +1635,7 @@ struct DeleteCategoryAlert: View {
             .padding(13)
 //            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 13, style: .continuous))
             .background(RoundedRectangle(cornerRadius: 13).fill(Color.PrimaryBackground).shadow(color: systemColorScheme == .dark ? Color.clear : Color.gray.opacity(0.25), radius: 6))
-            .overlay(RoundedRectangle(cornerRadius: 13).stroke(systemColorScheme == .dark ? Color.gray.opacity(0.1) : Color.clear , lineWidth: 1.3))
+            .overlay(RoundedRectangle(cornerRadius: 13).stroke(systemColorScheme == .dark ? Color.gray.opacity(0.1) : Color.clear, lineWidth: 1.3))
             .offset(y: offset)
             .gesture(
                 DragGesture()
@@ -1697,7 +1653,7 @@ struct DeleteCategoryAlert: View {
                             withAnimation {
                                 offset = 0
                             }
-                            
+
                         }
                     }
             )
@@ -1709,11 +1665,6 @@ struct DeleteCategoryAlert: View {
 //                }))
             .padding(.horizontal, 17)
             .padding(.bottom, bottomEdge == 0 ? 13 : bottomEdge)
-            
-            
-            
-                
-            
 
         }
         .edgesIgnoringSafeArea(.all)
@@ -1724,33 +1675,33 @@ struct DeleteCategoryAlert: View {
 struct SuggestedCategoriesView: View {
     let income: Bool
     @FetchRequest private var categories: FetchedResults<Category>
-    
+
     @Environment(\.managedObjectContext) var moc
     @EnvironmentObject var dataController: DataController
-    
+
     var nameArray: [String] {
         var emptyArray = [String]()
-        
+
         categories.forEach { category in
             emptyArray.append(category.wrappedName)
         }
-        
+
         return emptyArray
     }
-    
+
     var emojiArray: [String] {
         var emptyArray = [String]()
-        
+
         categories.forEach { category in
             emptyArray.append(category.wrappedEmoji)
         }
-        
+
         return emptyArray
     }
-    
+
     var suggestions: [SuggestedCategory] {
         var holding = [SuggestedCategory]()
-        
+
         if income {
             SuggestedCategory.incomes.forEach { category in
                 if !nameArray.contains(category.name) && !emojiArray.contains(category.emoji) {
@@ -1764,15 +1715,14 @@ struct SuggestedCategoriesView: View {
                 }
             }
         }
-        
+
         return holding
-        
-        
+
     }
-    
+
     @State private var availableColours: [String] = Color.colorArray
     @State private var selectedColour = "1"
-    
+
     var body: some View {
         if !suggestions.isEmpty {
             Section(header: Text("SUGGESTED").foregroundColor(Color.SubtitleText)) {
@@ -1787,10 +1737,9 @@ struct SuggestedCategoriesView: View {
                             .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                            .font(.system(size: 18.5, weight: .regular, design: .rounded))
                             .lineLimit(1)
-                        
+
                         Spacer()
-                        
-                        
+
                         Image(systemName: "plus")
                             .font(.system(.subheadline, design: .rounded).weight(.semibold))
                             .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
@@ -1799,25 +1748,25 @@ struct SuggestedCategoriesView: View {
                             .padding(4)
                             .background(Color.SecondaryBackground, in: Circle())
                             .contentShape(Circle())
-                        
+
                     }
-                    .padding(.vertical,5)
+                    .padding(.vertical, 5)
                     .foregroundColor(Color.PrimaryText)
                     .listRowBackground(Color.SettingsBackground)
                     .listRowSeparatorTint(Color.Outline)
                     .contentShape(Rectangle())
                     .onTapGesture {
                         // double check
-                        
+
                         let (outcome, _) = dataController.categoryCheck(name: category.name, emoji: category.emoji, income: income)
-                        
+
                         if outcome != .none {
                             return
                         }
-                        
+
                         let impactMed = UIImpactFeedbackGenerator(style: .light)
                         impactMed.impactOccurred()
-                        
+
                         if !income {
                             let suggestedCategory = Category(context: moc)
                             suggestedCategory.name = NSLocalizedString(category.name, comment: "category name")
@@ -1828,14 +1777,14 @@ struct SuggestedCategoriesView: View {
                             suggestedCategory.order = (categories.last?.order ?? 0) + 1
                             suggestedCategory.income = false
                             dataController.save()
-                            
+
                             availableColours = Color.colorArray
                             categories.forEach { category in
                                 if availableColours.contains(category.wrappedColour) {
                                     availableColours.remove(at: availableColours.firstIndex(of: category.wrappedColour) ?? 0)
                                 }
                             }
-                            
+
                             if availableColours.isEmpty {
                                 selectedColour = "#FFFFFF"
                             } else {
@@ -1852,21 +1801,19 @@ struct SuggestedCategoriesView: View {
                             suggestedCategory.income = true
                             dataController.save()
                         }
-                  
-                        
-                        
+
                     }
-                    
+
                 }
             }
-            .onAppear() {
+            .onAppear {
                 if !income {
                     categories.forEach { category in
                         if availableColours.contains(category.wrappedColour) {
                             availableColours.remove(at: availableColours.firstIndex(of: category.wrappedColour) ?? 0)
                         }
                     }
-                    
+
                     if availableColours.isEmpty {
                         selectedColour = "#FFFFFF"
                     } else {
@@ -1875,15 +1822,15 @@ struct SuggestedCategoriesView: View {
                 }
            }
         }
-        
+
     }
-    
+
     init(income: Bool) {
         _categories = FetchRequest<Category>(sortDescriptors: [
             SortDescriptor(\.order)
         ], predicate: NSPredicate(format: "income = %d", income)
         )
-        
+
         self.income = income
     }
 }
@@ -1893,17 +1840,17 @@ class UIEmojiTextField: UITextField {
     override var textInputMode: UITextInputMode? {
             .activeInputModes.first(where: { $0.primaryLanguage == "emoji" })
         }
-    
+
     override func caretRect(for position: UITextPosition) -> CGRect {
         return CGRect.zero
     }
 }
 
 struct EmojiTextField: UIViewRepresentable {
-    
+
     @Binding var text: String
     var placeholder: String = ""
-    
+
     func makeUIView(context: Context) -> UIEmojiTextField {
         let emojiTextField = UIEmojiTextField()
         emojiTextField.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
@@ -1916,37 +1863,37 @@ struct EmojiTextField: UIViewRepresentable {
         emojiTextField.becomeFirstResponder()
         return emojiTextField
     }
-    
+
     func updateUIView(_ uiView: UIEmojiTextField, context: Context) {
         uiView.text = text
     }
-    
+
     func makeCoordinator() -> Coordinator {
         Coordinator(parent: self)
     }
-    
+
     class Coordinator: NSObject, UITextFieldDelegate {
         var parent: EmojiTextField
-        
+
         init(parent: EmojiTextField) {
             self.parent = parent
         }
-        
+
         func textFieldDidChangeSelection(_ textField: UITextField) {
             DispatchQueue.main.async { [weak self] in
                 self?.parent.text = textField.text ?? ""
             }
         }
-        
+
     }
 }
 
 struct NormalTextField: UIViewRepresentable {
-    
+
     @Binding var text: String
     var placeholder: String = ""
     var action: () -> Void
-    
+
     func makeUIView(context: Context) -> UITextField {
         let textField = UITextField(frame: .zero)
         textField.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
@@ -1954,56 +1901,55 @@ struct NormalTextField: UIViewRepresentable {
         textField.autocapitalizationType = .words
         textField.text = text
         textField.delegate = context.coordinator
-        
+
         textField.font = UIFont.roundedSpecial(ofStyle: .title2, weight: .medium)
 //
 //        UIFont.rounded(ofSize: 20, weight: .medium)
         return textField
     }
-    
+
     func updateUIView(_ uiView: UITextField, context: Context) {
         uiView.text = text
     }
-    
+
     func makeCoordinator() -> Coordinator {
         Coordinator(parent: self)
     }
-    
+
     class Coordinator: NSObject, UITextFieldDelegate {
         var parent: NormalTextField
-        
+
         init(parent: NormalTextField) {
             self.parent = parent
         }
-        
+
         func textFieldDidChangeSelection(_ textField: UITextField) {
             DispatchQueue.main.async { [weak self] in
                 self?.parent.text = textField.text ?? ""
             }
         }
-        
+
         func textFieldShouldReturn(_ textField: UITextField) -> Bool {
             parent.action()
-            
+
             return true
         }
-        
+
     }
 }
 
 struct ColourPickerView: View {
 
     var selectedColours: [String]
-    
+
     @Binding var showMenu: Bool
     @Binding var selectedColour: String
 
     @Binding var showNativePicker: Bool
-    
+
     @State var customMode: Bool = false
     @State var customSelectedColor = Color.white
-    
-    
+
     @State var testing = false
     let columns = [
         GridItem(.fixed(40), spacing: 6),
@@ -2013,33 +1959,32 @@ struct ColourPickerView: View {
         GridItem(.fixed(40), spacing: 6),
         GridItem(.fixed(40))
     ]
-    
+
     @AppStorage("colourScheme", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var colourScheme: Int = 0
-            
+
     @Environment(\.colorScheme) var systemColorScheme
-    
+
     var darkMode: Bool {
         ((colourScheme == 0 && systemColorScheme == .dark) || colourScheme == 2)
     }
-    
+
     var body: some View {
-        
+
         LazyVGrid(columns: columns, spacing: 6) {
             ForEach(Color.colorArray, id: \.self) { suggestedColor in
                 if suggestedColor == "#" {
                     ZStack {
                         RoundedRectangle(cornerRadius: 9)
-                            .fill(AngularGradient(gradient: Gradient(colors: [.red,.yellow,.green,.blue,.purple,.pink]), center:.center))
+                            .fill(AngularGradient(gradient: Gradient(colors: [.red, .yellow, .green, .blue, .purple, .pink]), center: .center))
 
-                        
                         RoundedRectangle(cornerRadius: 6)
                             .fill(darkMode ? Color("AlwaysDarkBackground") : Color("AlwaysLightBackground"))
                                 .padding(4)
-                                  
+
                         RoundedRectangle(cornerRadius: 3)
                                 .fill(customSelectedColor)
                                 .padding(8)
-                        
+
                         if customMode {
                             Image(systemName: "checkmark")
                                 .font(.system(size: 15, weight: .bold))
@@ -2075,41 +2020,40 @@ struct ColourPickerView: View {
                                     .font(.system(size: 15, weight: .bold))
                                     .foregroundColor(Color.black)
                             }
-                            
+
                         }
                 }
-                
+
             }
         }
         .padding(6)
         .frame(width: 282)
         .background(RoundedRectangle(cornerRadius: 9).fill(darkMode ? Color("AlwaysDarkBackground") : Color("AlwaysLightBackground")).shadow(color: darkMode ? Color.clear : Color.gray.opacity(0.25), radius: 6))
-        .overlay(RoundedRectangle(cornerRadius: 9).stroke(darkMode ? Color.gray.opacity(0.1) : Color.clear , lineWidth: 1.3))
-        
+        .overlay(RoundedRectangle(cornerRadius: 9).stroke(darkMode ? Color.gray.opacity(0.1) : Color.clear, lineWidth: 1.3))
 
     }
-    
+
     init(selectedColor: Binding<String>, showMenu: Binding<Bool>, showNativePicker: Binding<Bool>, toEdit: Category? = nil) {
         _selectedColour = selectedColor
         _showMenu = showMenu
         _showNativePicker = showNativePicker
-        
+
         if !Color.colorArray.contains(selectedColor.wrappedValue) {
             _customMode = State(initialValue: true)
             _customSelectedColor = State(initialValue: Color(hex: selectedColor.wrappedValue))
         }
-        
+
         var selectedColours = [String]()
         let categories = DataController.shared.getAllCategories(income: false)
-        
+
         categories.forEach { category in
             selectedColours.append(category.wrappedColour)
         }
-        
+
         if let editted = toEdit {
             selectedColours.remove(at: selectedColours.firstIndex(of: editted.wrappedColour) ?? 0)
         }
-        
+
         self.selectedColours = selectedColours
     }
 }
