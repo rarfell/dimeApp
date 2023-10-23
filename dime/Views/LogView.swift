@@ -180,7 +180,6 @@ struct LogView: View {
                         }) {
                             FilterPickerView(filterType: $filter, showMenu: $showFilter)
                         }
-                        
                     }
                     
                     switch filter {
@@ -915,7 +914,7 @@ struct FilterPickerView: View {
         VStack(alignment: .leading, spacing: 1) {
             ForEach(FilterType.allCases, id: \.self) { filter in
                 HStack {
-                    Image(systemName: FilterType.imageDictionary[filter.rawValue] ?? "")
+                    Image(systemName: FilterType.imageDictionary[filter] ?? "")
 //                        .font(.system(size: 16))
                         .font(.system(.callout, design: .rounded).weight(.regular))
                         .dynamicTypeSize(...DynamicTypeSize.xxLarge)
