@@ -9,11 +9,11 @@ import Foundation
 import SwiftUI
 
 #if canImport(UIKit)
-extension View {
-    func hideKeyboard() {
-        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    extension View {
+        func hideKeyboard() {
+            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+        }
     }
-}
 #endif
 
 extension View {
@@ -24,9 +24,7 @@ extension View {
             simultaneousGesture(DragGesture(minimumDistance: 0),
                                 including: .all)
         }
-
     }
-
 }
 
 extension HorizontalAlignment {
@@ -45,13 +43,12 @@ extension UINavigationController: UIGestureRecognizerDelegate {
         interactivePopGestureRecognizer?.delegate = self
     }
 
-    public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+    public func gestureRecognizerShouldBegin(_: UIGestureRecognizer) -> Bool {
         return viewControllers.count > 1
     }
 }
 
 class Utilities {
-
     @AppStorage("colourScheme") var selectedAppearance = 0
     var userInterfaceStyle: ColorScheme? = .dark
 
@@ -67,6 +64,6 @@ class Utilities {
         }
 
         (UIApplication.shared.connectedScenes.first as?
-          UIWindowScene)?.windows.first!.overrideUserInterfaceStyle = userInterfaceStyle
+            UIWindowScene)?.windows.first!.overrideUserInterfaceStyle = userInterfaceStyle
     }
 }

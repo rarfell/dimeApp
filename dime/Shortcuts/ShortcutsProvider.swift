@@ -5,8 +5,8 @@
 //  Created by Rafael Soh on 5/8/23.
 //
 
-import Foundation
 import AppIntents
+import Foundation
 
 @available(iOS 16.4, *)
 struct DimeShortcuts: AppShortcutsProvider {

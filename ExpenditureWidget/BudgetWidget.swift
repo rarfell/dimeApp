@@ -5,14 +5,13 @@
 //  Created by Rafael Soh on 17/8/22.
 //
 
-import WidgetKit
 import SwiftUI
+import WidgetKit
 
 struct BudgetWidget: Widget {
     let kind: String = "BudgetWidget"
 
     var body: some WidgetConfiguration {
-
         IntentConfiguration(kind: kind, intent: BudgetWidgetConfigurationIntent.self, provider: BudgetWidgetProvider()) { entry in
             BudgetWidgetEntryView(entry: entry)
         }
@@ -27,24 +26,20 @@ struct BudgetWidgetProvider: IntentTimelineProvider {
 
     public typealias Entry = BudgetWidgetEntry
 
-    func placeholder(in context: Context) -> BudgetWidgetEntry {
-
+    func placeholder(in _: Context) -> BudgetWidgetEntry {
         let loaded = loadData(budgetId: "")
 
         return BudgetWidgetEntry(date: Date(), totalSpent: loaded.total, percentageOfDays: loaded.percentage, budget: loaded.budget, configuration: BudgetWidgetConfigurationIntent())
-
     }
 
-    func getSnapshot(for configuration: BudgetWidgetConfigurationIntent, in context: Context, completion: @escaping (BudgetWidgetEntry) -> Void) {
-
+    func getSnapshot(for configuration: BudgetWidgetConfigurationIntent, in _: Context, completion: @escaping (BudgetWidgetEntry) -> Void) {
         let loaded = loadData(budgetId: configuration.budget?.identifier ?? "")
 
         let entry = BudgetWidgetEntry(date: Date(), totalSpent: loaded.total, percentageOfDays: loaded.percentage, budget: loaded.budget, configuration: configuration)
         completion(entry)
     }
 
-    func getTimeline(for configuration: BudgetWidgetConfigurationIntent, in context: Context, completion: @escaping (Timeline<Entry>) -> Void) {
-
+    func getTimeline(for configuration: BudgetWidgetConfigurationIntent, in _: Context, completion: @escaping (Timeline<Entry>) -> Void) {
         let loaded = loadData(budgetId: configuration.budget?.identifier ?? "")
 
         let entry = BudgetWidgetEntry(date: Date(), totalSpent: loaded.total, percentageOfDays: loaded.percentage, budget: loaded.budget, configuration: configuration)
@@ -88,7 +83,7 @@ struct BudgetWidgetProvider: IntentTimelineProvider {
                 let components2 = calendar.dateComponents([.day], from: budget.startDate!, to: Date.now)
                 let numberOfDaysPast = components2.day!
 
-                percentageOfDays = Double(numberOfDaysPast)/Double(numberOfDays)
+                percentageOfDays = Double(numberOfDaysPast) / Double(numberOfDays)
             }
 
             return (holdingTotal, percentageOfDays, returnBudget)
@@ -97,7 +92,6 @@ struct BudgetWidgetProvider: IntentTimelineProvider {
             return (0, 0, budget)
         }
     }
-
 }
 
 struct BudgetWidgetEntry: TimelineEntry {
@@ -139,7 +133,7 @@ struct BudgetWidgetEntryView: View {
     }
 
     var percentString1: String {
-        return "\(Int(round((entry.totalSpent/entry.budget.budgetAmount) * 100)))%"
+        return "\(Int(round((entry.totalSpent / entry.budget.budgetAmount) * 100)))%"
     }
 
     var systemSmallWidgetText: String {
@@ -214,7 +208,6 @@ struct BudgetWidgetEntryView: View {
                             Text("SPENT: \(percentString1)")
                                 .font(.system(size: 10, weight: .medium, design: .rounded))
                                 .foregroundColor(Color.SubtitleText)
-
                         }
 
                         Spacer()
@@ -227,21 +220,17 @@ struct BudgetWidgetEntryView: View {
 
                     GeometryReader { proxy in
                         VStack(spacing: 6) {
-
                             ZStack(alignment: .bottom) {
-
                                 ZStack {
+                                    DonutSemicircle(percent: 1, cornerRadius: 4, width: 15)
+                                        .fill(Color.SecondaryBackground)
+                                        .frame(width: proxy.size.width, height: proxy.size.width / 2)
 
-                                        DonutSemicircle(percent: 1, cornerRadius: 4, width: 15)
-                                            .fill(Color.SecondaryBackground)
-                                            .frame(width: proxy.size.width, height: proxy.size.width / 2)
-
-                                    if entry.totalSpent/entry.budget.budgetAmount < 0.97 {
-                                        DonutSemicircle(percent: 1 - (entry.totalSpent/entry.budget.budgetAmount), cornerRadius: 4, width: 15)
+                                    if entry.totalSpent / entry.budget.budgetAmount < 0.97 {
+                                        DonutSemicircle(percent: 1 - (entry.totalSpent / entry.budget.budgetAmount), cornerRadius: 4, width: 15)
                                             .fill(Color(hex: entry.budget.colour))
                                             .frame(width: proxy.size.width, height: proxy.size.width / 2)
                                     }
-
                                 }
                                 .frame(width: proxy.size.width)
 
@@ -263,9 +252,7 @@ struct BudgetWidgetEntryView: View {
                                                 .foregroundColor(Color.SubtitleText)
                                         }
                                     }
-
                                 }
-
                             }
                             .frame(width: proxy.size.width)
 
@@ -288,7 +275,6 @@ struct BudgetWidgetEntryView: View {
                             .foregroundColor(Color.SubtitleText)
                         }
                         .frame(width: proxy.size.width, height: proxy.size.height, alignment: .bottom)
-
                     }
                     .frame(maxHeight: .infinity, alignment: .bottom)
                 }
@@ -313,7 +299,6 @@ struct BudgetWidgetEntryView: View {
                             Text("SPENT: \(percentString1)")
                                 .font(.system(size: 10, weight: .medium, design: .rounded))
                                 .foregroundColor(Color.SubtitleText)
-
                         }
 
                         Spacer()
@@ -326,21 +311,17 @@ struct BudgetWidgetEntryView: View {
 
                     GeometryReader { proxy in
                         VStack(spacing: 6) {
-
                             ZStack(alignment: .bottom) {
-
                                 ZStack {
+                                    DonutSemicircle(percent: 1, cornerRadius: 4, width: 15)
+                                        .fill(Color.SecondaryBackground)
+                                        .frame(width: proxy.size.width, height: proxy.size.width / 2)
 
-                                        DonutSemicircle(percent: 1, cornerRadius: 4, width: 15)
-                                            .fill(Color.SecondaryBackground)
-                                            .frame(width: proxy.size.width, height: proxy.size.width / 2)
-
-                                    if entry.totalSpent/entry.budget.budgetAmount < 0.97 {
-                                        DonutSemicircle(percent: 1 - (entry.totalSpent/entry.budget.budgetAmount), cornerRadius: 4, width: 15)
+                                    if entry.totalSpent / entry.budget.budgetAmount < 0.97 {
+                                        DonutSemicircle(percent: 1 - (entry.totalSpent / entry.budget.budgetAmount), cornerRadius: 4, width: 15)
                                             .fill(Color(hex: entry.budget.colour))
                                             .frame(width: proxy.size.width, height: proxy.size.width / 2)
                                     }
-
                                 }
                                 .frame(width: proxy.size.width)
 
@@ -362,9 +343,7 @@ struct BudgetWidgetEntryView: View {
                                                 .foregroundColor(Color.SubtitleText)
                                         }
                                     }
-
                                 }
-
                             }
                             .frame(width: proxy.size.width)
 
@@ -387,7 +366,6 @@ struct BudgetWidgetEntryView: View {
                             .foregroundColor(Color.SubtitleText)
                         }
                         .frame(width: proxy.size.width, height: proxy.size.height, alignment: .bottom)
-
                     }
                     .frame(maxHeight: .infinity, alignment: .bottom)
                 }
@@ -396,9 +374,7 @@ struct BudgetWidgetEntryView: View {
                 .background(Color.PrimaryBackground)
                 .widgetURL(URL(string: "dimeapp://budget?budget=\(entry.budget.name)"))
             }
-
         }
-
     }
 }
 
@@ -444,9 +420,9 @@ struct WidgetBudgetDollarView: View {
     var size: CGFloat
 
     @AppStorage("currency", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var currency: String = Locale.current.currencyCode!
-        var currencySymbol: String {
-            return Locale.current.localizedCurrencySymbol(forCurrencyCode: currency)!
-        }
+    var currencySymbol: String {
+        return Locale.current.localizedCurrencySymbol(forCurrencyCode: currency)!
+    }
 
     var downsize: (big: CGFloat, small: CGFloat) {
         let amountText: String
@@ -474,17 +450,16 @@ struct WidgetBudgetDollarView: View {
                 .baselineOffset(getDollarOffset(big: downsize.big, small: downsize.small))
 
             if showCents && amount < 100 {
-               Text("\(amount, specifier: "%.2f")")
+                Text("\(amount, specifier: "%.2f")")
                     .font(.system(size: downsize.big, weight: .medium, design: .rounded))
-                   .foregroundColor(red ? Color("BudgetRed") : Color.PrimaryText)
-                   .lineLimit(1)
-           } else {
-               Text("\(amount, specifier: "%.0f")")
-                   .font(.system(size: downsize.big, weight: .medium, design: .rounded))
-                   .foregroundColor(red ? Color("BudgetRed") : Color.PrimaryText)
-                   .lineLimit(1)
-           }
-
+                    .foregroundColor(red ? Color("BudgetRed") : Color.PrimaryText)
+                    .lineLimit(1)
+            } else {
+                Text("\(amount, specifier: "%.0f")")
+                    .font(.system(size: downsize.big, weight: .medium, design: .rounded))
+                    .foregroundColor(red ? Color("BudgetRed") : Color.PrimaryText)
+                    .lineLimit(1)
+            }
         }
     }
 

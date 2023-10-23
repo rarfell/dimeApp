@@ -21,13 +21,13 @@ struct SheetPresentationForSwiftUI<Content>: UIViewRepresentable where Content: 
         detents: [UISheetPresentationController.Detent] = [.medium()],
         @ViewBuilder content: () -> Content
     ) {
-        self._isPresented = isPresented
+        _isPresented = isPresented
         self.onDismiss = onDismiss
         self.detents = detents
         self.content = content()
     }
 
-    func makeUIView(context: Context) -> UIView {
+    func makeUIView(context _: Context) -> UIView {
         let view = UIView()
         return view
     }
@@ -73,8 +73,8 @@ struct SheetPresentationForSwiftUI<Content>: UIViewRepresentable where Content: 
     }
 
     /* Creates the custom instance that you use to communicate changes
-    from your view controller to other parts of your SwiftUI interface.
-     */
+     from your view controller to other parts of your SwiftUI interface.
+      */
     func makeCoordinator() -> Coordinator {
         Coordinator(isPresented: $isPresented, onDismiss: onDismiss)
     }
@@ -84,11 +84,11 @@ struct SheetPresentationForSwiftUI<Content>: UIViewRepresentable where Content: 
         let onDismiss: (() -> Void)?
 
         init(isPresented: Binding<Bool>, onDismiss: (() -> Void)? = nil) {
-            self._isPresented = isPresented
+            _isPresented = isPresented
             self.onDismiss = onDismiss
         }
 
-        func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        func presentationControllerDidDismiss(_: UIPresentationController) {
             isPresented = false
             if let onDismiss = onDismiss {
                 onDismiss()
@@ -105,9 +105,9 @@ struct SheetWithDetentsViewModifier<SwiftUIContent>: ViewModifier where SwiftUIC
     let swiftUIContent: SwiftUIContent
 
     init(isPresented: Binding<Bool>, detents: [UISheetPresentationController.Detent] = [.medium()], onDismiss: (() -> Void)? = nil, content: () -> SwiftUIContent) {
-        self._isPresented = isPresented
+        _isPresented = isPresented
         self.onDismiss = onDismiss
-        self.swiftUIContent = content()
+        swiftUIContent = content()
         self.detents = detents
     }
 
@@ -127,13 +127,15 @@ extension View {
         isPresented: Binding<Bool>,
         detents: [UISheetPresentationController.Detent],
         onDismiss: (() -> Void)?,
-        content: @escaping () -> Content) -> some View where Content: View {
-            modifier(
-                SheetWithDetentsViewModifier(
-                    isPresented: isPresented,
-                    detents: detents,
-                    onDismiss: onDismiss,
-                    content: content)
+        content: @escaping () -> Content
+    ) -> some View where Content: View {
+        modifier(
+            SheetWithDetentsViewModifier(
+                isPresented: isPresented,
+                detents: detents,
+                onDismiss: onDismiss,
+                content: content
             )
-        }
+        )
+    }
 }

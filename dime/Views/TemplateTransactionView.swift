@@ -5,10 +5,10 @@
 //  Created by Rafael Soh on 4/9/23.
 //
 
-import Foundation
-import SwiftUI
 import Combine
+import Foundation
 import Popovers
+import SwiftUI
 import WidgetKit
 
 struct TemplateTransactionView: View {
@@ -53,7 +53,6 @@ struct TemplateTransactionView: View {
 
             return string
         } else {
-
             if numbers1.isEmpty {
                 return "0"
             }
@@ -63,7 +62,6 @@ struct TemplateTransactionView: View {
 
             return string
         }
-
     }
 
     var transactionValue: Double {
@@ -149,7 +147,7 @@ struct TemplateTransactionView: View {
     @Environment(\.colorScheme) var systemColorScheme
 
     var darkMode: Bool {
-        ((colourScheme == 0 && systemColorScheme == .dark) || colourScheme == 2)
+        (colourScheme == 0 && systemColorScheme == .dark) || colourScheme == 2
     }
 
     var backgroundColor: Color {
@@ -168,7 +166,6 @@ struct TemplateTransactionView: View {
     @Namespace var animation
 
     var body: some View {
-
 //        ScrollView {
         GeometryReader { proxy in
             VStack(spacing: 8) {
@@ -251,7 +248,6 @@ struct TemplateTransactionView: View {
                                 .padding(7)
                                 .background(Color.SecondaryBackground, in: Circle())
                                 .contentShape(Circle())
-
                         }
 
                         Spacer()
@@ -268,7 +264,6 @@ struct TemplateTransactionView: View {
                                     .padding(7)
                                     .background(Color.AlertRed.opacity(0.23), in: Circle())
                                     .contentShape(Circle())
-
                             }
                             .accessibilityLabel("delete transaction")
                         }
@@ -285,7 +280,6 @@ struct TemplateTransactionView: View {
                                             .foregroundColor(Color.IncomeGreen)
                                             .frame(width: 10, alignment: .leading)
                                             .offset(x: 5.7, y: 1.5)
-
                                     }
                                     .foregroundColor(Color.IncomeGreen)
                                     .padding(7)
@@ -304,8 +298,8 @@ struct TemplateTransactionView: View {
                         .accessibilityLabel(repeatButtonAccessibility)
                         .popover(present: $showRecurring, attributes: {
                             $0.position = .absolute(
-                              originAnchor: .bottom,
-                              popoverAnchor: .top
+                                originAnchor: .bottom,
+                                popoverAnchor: .top
                             )
                             $0.rubberBandingMode = .none
                             $0.sourceFrameInset = UIEdgeInsets(top: 0, left: 0, bottom: -10, right: 0)
@@ -368,7 +362,7 @@ struct TemplateTransactionView: View {
 
                 // date and category picker
                 CategoryRowPickerView(category: $category, income: income)
-                .padding(.bottom, 5)
+                    .padding(.bottom, 5)
 
                 // num pad
                 GeometryReader { proxy in
@@ -432,7 +426,7 @@ struct TemplateTransactionView: View {
                                     if #available(iOS 17.0, *) {
                                         Image(systemName: "checkmark.square.fill")
                                             .font(.system(size: 30, weight: .medium, design: .rounded))
-                                            .symbolEffect(.bounce.up.byLayer, value: (transactionValue != 0 && category != nil))
+                                            .symbolEffect(.bounce.up.byLayer, value: transactionValue != 0 && category != nil)
 //                                            .symbolEffectsRemoved()
                                     } else {
                                         Image(systemName: "checkmark.square.fill")
@@ -442,7 +436,6 @@ struct TemplateTransactionView: View {
                                 .frame(width: proxy.size.width * 0.3, height: proxy.size.height * 0.22)
                                 .foregroundColor(Color.LightIcon)
                                 .background(Color.DarkBackground, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
-
                             }
                             .buttonStyle(NumPadButton())
                         }
@@ -536,7 +529,6 @@ struct TemplateTransactionView: View {
                                     withAnimation {
                                         offset = 0
                                     }
-
                                 }
                             }
                     )
@@ -562,12 +554,11 @@ struct TemplateTransactionView: View {
         .onAppear {
             DispatchQueue.main.async {
                 if let transaction = toEdit {
-
                     let string = String(format: "%.2f", transaction.wrappedAmount)
 
                     var stringArray = string.compactMap { String($0) }
 
-                    numbers = stringArray.compactMap { Int($0)}
+                    numbers = stringArray.compactMap { Int($0) }
 
                     if round(transaction.wrappedAmount) == transaction.wrappedAmount {
                         stringArray.removeLast()
@@ -577,9 +568,7 @@ struct TemplateTransactionView: View {
                     } else {
                         numbers1 = stringArray
                     }
-
                 }
-
             }
         }
         .sheet(isPresented: $showCategorySheet) {
@@ -593,7 +582,6 @@ struct TemplateTransactionView: View {
                 CustomRecurringView(repeatType: $repeatType, repeatCoefficient: $repeatCoefficient, showPicker: $showPicker)
             }
         }
-
     }
 
     @ViewBuilder
@@ -642,7 +630,6 @@ struct TemplateTransactionView: View {
                         numbers1.append(String(number))
                     }
                 }
-
             }
         } label: {
             Text("\(number)")
@@ -731,7 +718,6 @@ struct TemplateTransactionView: View {
         }
 
         WidgetCenter.shared.reloadAllTimelines()
-
     }
 
     init(order: Int) {
@@ -754,13 +740,11 @@ struct TemplateTransactionView: View {
             _repeatCoefficient = State(initialValue: Int(transaction.recurringCoefficient))
 
             print("IM HERE")
-
         }
 
         self.order = order
         self.toEdit = toEdit
     }
-
 }
 
 struct CategoryRowPickerView: View {
@@ -815,8 +799,7 @@ struct CategoryRowPickerView: View {
                                             if selectedCategory != item {
                                                 RoundedRectangle(cornerRadius: 10, style: .continuous)
                                                     .strokeBorder(Color.Outline,
-                                                        style: StrokeStyle(lineWidth: 1.5)
-                                                    )
+                                                                  style: StrokeStyle(lineWidth: 1.5))
                                             }
                                         }
                                         .onTapGesture {
@@ -824,10 +807,8 @@ struct CategoryRowPickerView: View {
                                             withAnimation {
                                                 value.scrollTo(item.id, anchor: .leading)
                                             }
-
                                         }
                                     }
-
                                 }
                                 .onChange(of: income) { newValue in
                                     if newValue {
@@ -856,12 +837,12 @@ struct CategoryRowPickerView: View {
                             .fill(
                                 LinearGradient(gradient: Gradient(stops: [
                                     .init(color: Color.PrimaryBackground.opacity(0.01), location: 0),
-                                    .init(color: Color.PrimaryBackground, location: 1)
+                                    .init(color: Color.PrimaryBackground, location: 1),
                                 ]), startPoint: .leading, endPoint: .trailing)
                             ).frame(width: 0.1 * gp.size.width)
                             .frame(maxWidth: .infinity, alignment: .trailing)
 
-                            .allowsHitTesting(false)  // << now works !!
+                            .allowsHitTesting(false) // << now works !!
 
                     }.fixedSize(horizontal: false, vertical: true)
                 }
@@ -899,7 +880,6 @@ struct CategoryRowPickerView: View {
         .sheet(isPresented: $showCategorySheet) {
             CategoryView(mode: .transaction, income: income)
         }
-
     }
 
     func getBackground(category: Category) -> Color {
@@ -916,7 +896,6 @@ struct CategoryRowPickerView: View {
                 return Color.PrimaryBackground
             }
         }
-
     }
 
     init(category: Binding<Category?>?, income: Bool) {
@@ -930,7 +909,6 @@ struct CategoryRowPickerView: View {
 }
 
 struct SettingsQuickAddWidgetView: View {
-
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
 
     var body: some View {
@@ -950,10 +928,8 @@ struct SettingsQuickAddWidgetView: View {
                                 Image(systemName: "chevron.left")
                                     .font(.system(size: 16, weight: .semibold))
                                     .foregroundColor(Color.SubtitleText)
-
                             }
                     }
-
                 }
                 .padding(.bottom, 40)
 
@@ -966,11 +942,9 @@ struct SettingsQuickAddWidgetView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .background(Color.PrimaryBackground)
     }
-
 }
 
 struct SettingsQuickAddWidgetDraggingView: View {
-
     @AppStorage("showCents", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var showCents: Bool = true
 
     @AppStorage("currency", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var currency: String = Locale.current.currencyCode!
@@ -986,7 +960,7 @@ struct SettingsQuickAddWidgetDraggingView: View {
     @State var refreshID = UUID()
 
     @FetchRequest(sortDescriptors: [
-        SortDescriptor(\.order)
+        SortDescriptor(\.order),
     ]) private var transactions: FetchedResults<TemplateTransaction>
 
     let columns = Array(repeating: GridItem(.fixed(100), spacing: 15), count: 2)
@@ -994,7 +968,7 @@ struct SettingsQuickAddWidgetDraggingView: View {
     var body: some View {
         ZStack {
             LazyVGrid(columns: columns, spacing: 15, content: {
-                ForEach(0..<4) { index in
+                ForEach(0 ..< 4) { index in
 
                     Image(systemName: "plus")
                         .font(.system(size: 25, weight: .semibold, design: .rounded))
@@ -1048,7 +1022,6 @@ struct SettingsQuickAddWidgetDraggingView: View {
                         print(grid.index)
                         lastSelectedIndex = grid.index
                     }
-
                 }
             })
             .id(refreshID)
@@ -1058,7 +1031,6 @@ struct SettingsQuickAddWidgetDraggingView: View {
 //                    Text(transaction.category?.wrappedName ?? "")
 //                }
 //            }
-
         }
         .padding(15)
         .frame(width: 245)
@@ -1133,16 +1105,13 @@ struct SingleTemplateButton: View {
                 Text(downsize.amountText)
                     .font(.system(size: downsize.big, weight: .semibold, design: .rounded))
                     .foregroundColor(Color.PrimaryText)
-
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-
         }
         .padding(10)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
         .background(blend(over: transactionColor, withAlpha: 0.8), in: RoundedRectangle(cornerRadius: 15))
         .shadow(color: transactionColor.opacity(0.8), radius: 6)
-
     }
 
     func getDollarOffset(big: CGFloat, small: CGFloat) -> CGFloat {
@@ -1159,15 +1128,14 @@ struct Grid: Identifiable {
     var transaction: TemplateTransaction?
 
     init(index: Int) {
-        self.id = UUID()
+        id = UUID()
 
-        self.transaction = DataController.shared.getTemplateTransaction(order: index)
+        transaction = DataController.shared.getTemplateTransaction(order: index)
         self.index = index
     }
 }
 
 class GridViewModel: ObservableObject {
-
     @Published var currentGrid: Grid?
     @Published var dragging = false
 
@@ -1175,7 +1143,7 @@ class GridViewModel: ObservableObject {
         Grid(index: 0),
         Grid(index: 1),
         Grid(index: 2),
-        Grid(index: 3)
+        Grid(index: 3),
     ]
 
     func reset() {
@@ -1184,7 +1152,7 @@ class GridViewModel: ObservableObject {
                 Grid(index: 0),
                 Grid(index: 1),
                 Grid(index: 2),
-                Grid(index: 3)
+                Grid(index: 3),
             ]
         }
     }
@@ -1198,22 +1166,20 @@ class GridViewModel: ObservableObject {
         }
         dataController.save()
     }
-
 }
 
 struct DropViewDelegate: DropDelegate {
-
     var grid: Grid
     var gridData: GridViewModel
 
-    func performDrop(info: DropInfo) -> Bool {
+    func performDrop(info _: DropInfo) -> Bool {
         gridData.updateIndices()
         gridData.currentGrid = nil
         gridData.dragging = false
         return true
     }
 
-    func dropEntered(info: DropInfo) {
+    func dropEntered(info _: DropInfo) {
         gridData.dragging = true
 
         if let unwrapped = gridData.currentGrid {
@@ -1222,12 +1188,12 @@ struct DropViewDelegate: DropDelegate {
             }
         }
 
-        let fromIndex = gridData.gridItems.firstIndex { (grid) -> Bool in
-            return grid.id == gridData.currentGrid?.id
+        let fromIndex = gridData.gridItems.firstIndex { grid -> Bool in
+            grid.id == gridData.currentGrid?.id
         } ?? 0
 
-        let toIndex = gridData.gridItems.firstIndex { (grid) -> Bool in
-            return grid.id == self.grid.id
+        let toIndex = gridData.gridItems.firstIndex { grid -> Bool in
+            grid.id == self.grid.id
         } ?? 0
 
         if fromIndex != toIndex {
@@ -1239,7 +1205,7 @@ struct DropViewDelegate: DropDelegate {
         }
     }
 
-    func dropUpdated(info: DropInfo) -> DropProposal? {
+    func dropUpdated(info _: DropInfo) -> DropProposal? {
         return DropProposal(operation: .move)
     }
 }

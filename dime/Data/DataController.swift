@@ -6,9 +6,9 @@
 //
 
 import CoreData
+import Foundation
 import SwiftUI
 import WidgetKit
-import Foundation
 
 @available(iOS 16, *)
 enum CustomError: Swift.Error, CustomLocalizedStringResourceConvertible {
@@ -19,10 +19,10 @@ enum CustomError: Swift.Error, CustomLocalizedStringResourceConvertible {
 
     var localizedStringResource: LocalizedStringResource {
         switch self {
-            case .unknownError(let message): return "An unknown error occurred: \(message)"
-            case .unknownId(let id): return "No category with an ID matching: \(id)"
-            case .notFound: return "Category not found"
-            case .coreDataSave: return "Couldn't save to CoreData"
+        case let .unknownError(message): return "An unknown error occurred: \(message)"
+        case let .unknownId(id): return "No category with an ID matching: \(id)"
+        case .notFound: return "Category not found"
+        case .coreDataSave: return "Couldn't save to CoreData"
         }
     }
 }
@@ -33,7 +33,6 @@ class DataController: ObservableObject {
     var container = NSPersistentCloudKitContainer(name: "MainModel")
 
     init() {
-
         let description = NSPersistentStoreDescription()
         description.shouldMigrateStoreAutomatically = true
         description.shouldInferMappingModelAutomatically = true
@@ -58,7 +57,7 @@ class DataController: ObservableObject {
             description.url = url.appendingPathComponent("Main.sqlite")
         }
 
-        container.persistentStoreDescriptions =  [description]
+        container.persistentStoreDescriptions = [description]
 
         container.loadPersistentStores { description, error in
 
@@ -67,17 +66,16 @@ class DataController: ObservableObject {
             }
 
             self.container.viewContext.automaticallyMergesChangesFromParent = true
-
         }
 
-#if DEBUG
-        do {
-            // Use the container to initialize the development schema.
-            try container.initializeCloudKitSchema(options: [])
-        } catch {
-            // Handle any errors.
-        }
-#endif
+        #if DEBUG
+            do {
+                // Use the container to initialize the development schema.
+                try container.initializeCloudKitSchema(options: [])
+            } catch {
+                // Handle any errors.
+            }
+        #endif
 //        do {
 //            try container.initializeCloudKitSchema()
 //        } catch {
@@ -125,7 +123,6 @@ class DataController: ObservableObject {
         let fetchRequest4: NSFetchRequest<NSFetchRequestResult> = MainBudget.fetchRequest()
         let batchDeleteRequest4 = NSBatchDeleteRequest(fetchRequest: fetchRequest4)
         _ = try? container.viewContext.executeAndMergeChanges(using: batchDeleteRequest4)
-
     }
 
     func save() {
@@ -175,7 +172,6 @@ class DataController: ObservableObject {
                 }
 
                 holdingDate = newDate!
-
             }
 
             transaction.recurringType = 0
@@ -235,7 +231,7 @@ class DataController: ObservableObject {
         save()
     }
 
-    func newTransaction(note: String, category: Category?, income: Bool, amount: Double, date: Date, repeatType: Int, repeatCoefficient: Int, delay: Bool) -> Transaction {
+    func newTransaction(note: String, category: Category?, income: Bool, amount: Double, date: Date, repeatType: Int, repeatCoefficient: Int, delay _: Bool) -> Transaction {
         let transaction = Transaction(context: container.viewContext)
 
         if note.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
@@ -266,10 +262,10 @@ class DataController: ObservableObject {
             transaction.onceRecurring = true
             transaction.recurringType = Int16(repeatType)
             transaction.recurringCoefficient = Int16(repeatCoefficient)
-            self.updateRecurringTransaction(transaction: transaction)
+            updateRecurringTransaction(transaction: transaction)
         }
 
-        self.save()
+        save()
 
         return transaction
     }
@@ -280,7 +276,6 @@ class DataController: ObservableObject {
                 _ = newTransaction(note: match.note ?? "", category: unwrappedCategory, income: match.income, amount: match.amount, date: Date.now, repeatType: Int(match.recurringType), repeatCoefficient: Int(match.recurringCoefficient), delay: false)
 
                 addedTransaction = true
-
             }
         }
     }
@@ -303,7 +298,7 @@ class DataController: ObservableObject {
         if results.count > 1 {
             let output = results.first
 
-            for i in 1..<results.count {
+            for i in 1 ..< results.count {
                 container.viewContext.delete(results[i])
             }
 
@@ -313,7 +308,6 @@ class DataController: ObservableObject {
         } else {
             return results.first
         }
-
     }
 
     func getAllTemplateTransactions() -> [TemplateTransaction] {
@@ -344,7 +338,7 @@ class DataController: ObservableObject {
 
             itemRequest.predicate = andPredicate
             itemRequest.sortDescriptors = [
-                NSSortDescriptor(keyPath: \Transaction.date, ascending: false)
+                NSSortDescriptor(keyPath: \Transaction.date, ascending: false),
             ]
 
             return itemRequest
@@ -361,7 +355,7 @@ class DataController: ObservableObject {
 
             itemRequest.predicate = andPredicate
             itemRequest.sortDescriptors = [
-                NSSortDescriptor(keyPath: \Transaction.date, ascending: false)
+                NSSortDescriptor(keyPath: \Transaction.date, ascending: false),
             ]
 
             return itemRequest
@@ -378,7 +372,7 @@ class DataController: ObservableObject {
 
             itemRequest.predicate = andPredicate
             itemRequest.sortDescriptors = [
-                NSSortDescriptor(keyPath: \Transaction.date, ascending: false)
+                NSSortDescriptor(keyPath: \Transaction.date, ascending: false),
             ]
 
             return itemRequest
@@ -395,7 +389,7 @@ class DataController: ObservableObject {
 
             itemRequest.predicate = andPredicate
             itemRequest.sortDescriptors = [
-                NSSortDescriptor(keyPath: \Transaction.date, ascending: false)
+                NSSortDescriptor(keyPath: \Transaction.date, ascending: false),
             ]
 
             return itemRequest
@@ -418,7 +412,6 @@ class DataController: ObservableObject {
         } else {
             return itemRequest
         }
-
     }
 
     func fetchRequestForCategories(income: Bool) -> NSFetchRequest<Category> {
@@ -447,7 +440,6 @@ class DataController: ObservableObject {
         let incomePredicate = NSPredicate(format: "income = %d", income)
 
         if let unwrappedCategory = category {
-
             let categoryPredicate = NSPredicate(format: "%K == %@", #keyPath(Transaction.category), unwrappedCategory)
 
             let andPredicate = NSCompoundPredicate(type: .and, subpredicates: [compound, categoryPredicate, incomePredicate])
@@ -461,7 +453,7 @@ class DataController: ObservableObject {
         let transactions = results(for: itemRequest)
 
         var seen = [Transaction]()
-        let filtered = transactions.filter { (entity) -> Bool in
+        let filtered = transactions.filter { entity -> Bool in
             if seen.contains(where: { $0.wrappedNote == entity.wrappedNote }) {
                 return false
             } else {
@@ -471,9 +463,9 @@ class DataController: ObservableObject {
         }
 
         return filtered
-//        
+//
 //        let notes = transactions.map { $0.wrappedNote }
-//        
+//
 //        return Array(Set(notes))
     }
 
@@ -516,9 +508,9 @@ class DataController: ObservableObject {
     }
 
     func categoryCheck(name: String, emoji: String, income: Bool) -> (error: CategoryError, order: Int64) {
-        if name.trimmingCharacters(in: .whitespacesAndNewlines) ==  "" && emoji == "" {
+        if name.trimmingCharacters(in: .whitespacesAndNewlines) == "" && emoji == "" {
             return (CategoryError.incomplete, 0)
-        } else if name.trimmingCharacters(in: .whitespacesAndNewlines) ==  "" {
+        } else if name.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
             return (CategoryError.missingName, 0)
         } else if emoji == "" {
             return (CategoryError.missingEmoji, 0)
@@ -572,9 +564,9 @@ class DataController: ObservableObject {
     }
 
     func categoryCheckEdit(name: String, emoji: String, toEdit: Category) -> (error: CategoryError, order: Int64) {
-        if name.trimmingCharacters(in: .whitespacesAndNewlines) ==  "" && emoji == "" {
+        if name.trimmingCharacters(in: .whitespacesAndNewlines) == "" && emoji == "" {
             return (CategoryError.incomplete, 0)
-        } else if name.trimmingCharacters(in: .whitespacesAndNewlines) ==  "" {
+        } else if name.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
             return (CategoryError.missingName, 0)
         } else if emoji == "" {
             return (CategoryError.missingEmoji, 0)
@@ -697,7 +689,6 @@ class DataController: ObservableObject {
             andPredicate = NSCompoundPredicate(type: .and, subpredicates: [startPredicate, dateCapPredicate])
 
             superPredicate = NSCompoundPredicate(type: .and, subpredicates: [andPredicate, categoryCompoundPredicate])
-
         }
 
         if categoryFilters.isEmpty {
@@ -837,7 +828,6 @@ class DataController: ObservableObject {
 
                 let finalDate = LineGraphDataPoint(date: today, amount: totalForDay)
                 holdingDataPoints.append(finalDate)
-
             }
         } else if type == 3 {
             let lastMonth = Calendar.current.date(byAdding: .month, value: -1, to: today)!
@@ -883,7 +873,6 @@ class DataController: ObservableObject {
 
                 let finalDate = LineGraphDataPoint(date: today, amount: totalForDay)
                 holdingDataPoints.append(finalDate)
-
             }
         } else if type == 4 {
             let dateComponents = calendar.dateComponents([.month, .year], from: Date.now)
@@ -935,12 +924,10 @@ class DataController: ObservableObject {
 
                 let finalDate = LineGraphDataPoint(date: today, amount: totalForDay)
                 holdingDataPoints.append(finalDate)
-
             }
         }
 
         return holdingDataPoints
-
     }
 
     func getLineGraphData(income: Bool, type: Int) -> [LineGraphDataPoint] {
@@ -993,7 +980,6 @@ class DataController: ObservableObject {
 
                 let finalDate = LineGraphDataPoint(date: today, amount: totalForDay)
                 holdingDataPoints.append(finalDate)
-
             }
         } else if type == 3 {
             let lastMonth = Calendar.current.date(byAdding: .month, value: -1, to: today)!
@@ -1034,7 +1020,6 @@ class DataController: ObservableObject {
 
                 let finalDate = LineGraphDataPoint(date: today, amount: 0)
                 holdingDataPoints.append(finalDate)
-
             }
         } else if type == 4 {
             let dateComponents = calendar.dateComponents([.month, .year], from: Date.now)
@@ -1082,12 +1067,10 @@ class DataController: ObservableObject {
 
                 let finalDate = LineGraphDataPoint(date: today, amount: 0)
                 holdingDataPoints.append(finalDate)
-
             }
         }
 
         return holdingDataPoints
-
     }
 
     func getBudgetLeftover(budget: Budget? = nil, overallBudget: MainBudget? = nil) -> Double {
@@ -1119,7 +1102,7 @@ class DataController: ObservableObject {
     func fetchRequestForMainBudgetTransactions(budget: MainBudget) -> NSFetchRequest<Transaction> {
         let itemRequest: NSFetchRequest<Transaction> = Transaction.fetchRequest()
 
-        let startPredicate = NSPredicate(format: "%K >= %@", #keyPath(Transaction.date), budget.startDate!  as CVarArg)
+        let startPredicate = NSPredicate(format: "%K >= %@", #keyPath(Transaction.date), budget.startDate! as CVarArg)
         let endPredicate = NSPredicate(format: "%K <= %@", #keyPath(Transaction.date), Date.now as CVarArg)
         let incomePredicate = NSPredicate(format: "income = %d", false)
 
@@ -1133,7 +1116,7 @@ class DataController: ObservableObject {
     func fetchRequestForBudgetTransactions(budget: Budget) -> NSFetchRequest<Transaction> {
         let itemRequest: NSFetchRequest<Transaction> = Transaction.fetchRequest()
 
-        let startPredicate = NSPredicate(format: "%K >= %@", #keyPath(Transaction.date), budget.startDate!  as CVarArg)
+        let startPredicate = NSPredicate(format: "%K >= %@", #keyPath(Transaction.date), budget.startDate! as CVarArg)
         let endPredicate = NSPredicate(format: "%K <= %@", #keyPath(Transaction.date), Date.now as CVarArg)
         let categoryPredicate = NSPredicate(format: "%K == %@", #keyPath(Transaction.category), budget.category!)
         let incomePredicate = NSPredicate(format: "income = %d", false)
@@ -1164,7 +1147,6 @@ class DataController: ObservableObject {
     }
 
     func getInsights(type: Int, date: Date, income: Bool) -> (amount: Double, maximum: Double, average: Double, numberOfDays: Int, dates: [Date], dateDictionary: [Date: Double]) {
-
         let currentItemRequest: NSFetchRequest<Transaction> = fetchRequestForInsights(type: type, date: date, income: income)
         let currentTransactions = results(for: currentItemRequest)
 
@@ -1187,7 +1169,7 @@ class DataController: ObservableObject {
             var numberOfDays = 0
             var weekAverage = 0.0
 
-            for _ in 1...7 {
+            for _ in 1 ... 7 {
                 nextDate = calendar.date(byAdding: .day, value: 1, to: iterativeDate)!
 
                 let holding = currentTransactions.filter {
@@ -1245,7 +1227,7 @@ class DataController: ObservableObject {
             var numberOfDays = 0
             var monthAverage = 0.0
 
-            for _ in 1...range.count {
+            for _ in 1 ... range.count {
                 nextDate = calendar.date(byAdding: .day, value: 1, to: iterativeDate)!
 
                 let holding = currentTransactions.filter {
@@ -1298,7 +1280,7 @@ class DataController: ObservableObject {
             var numberOfDays = 0
             var monthAverage = 0.0
 
-            for _ in 1...12 {
+            for _ in 1 ... 12 {
                 nextDate = calendar.date(byAdding: .month, value: 1, to: iterativeDate)!
 
                 let holding = currentTransactions.filter {
@@ -1370,17 +1352,17 @@ class DataController: ObservableObject {
             let next = calendar.date(byAdding: .month, value: 1, to: date) ?? Date.now
 
 //            let endOfPeriod = calendar.date(byAdding: .day, value: -1, to: next) ?? Date.now
-//            
+//
             if next > Date.now {
                 endPredicate = NSPredicate(format: "%K < %@", #keyPath(Transaction.date), Date.now as CVarArg)
             } else {
                 endPredicate = NSPredicate(format: "%K < %@", #keyPath(Transaction.date), next as CVarArg)
             }
-//            
+//
 //            if calendar.isDate(date, equalTo: Date.now, toGranularity: .month) {
 //                endPredicate = NSPredicate(format: "%K < %@", #keyPath(Transaction.date), Date.now as CVarArg)
 //            } else {
-//                
+//
 //                endPredicate = NSPredicate(format: "%K < %@", #keyPath(Transaction.date), next as CVarArg)
 //            }
         } else {
@@ -1445,7 +1427,6 @@ class DataController: ObservableObject {
                 return (holdingSpent, holdingIncome, absoluteNet, positive, abs(net) / 7)
             }
         } else if type == 2 {
-
             let next = calendar.date(byAdding: .month, value: 1, to: date) ?? Date.now
 
             if next > Date.now {
@@ -1476,7 +1457,6 @@ class DataController: ObservableObject {
             } else {
                 return (holdingSpent, holdingIncome, absoluteNet, positive, abs(net) / 12)
             }
-
         }
     }
 
@@ -1523,7 +1503,7 @@ class DataController: ObservableObject {
 
         itemRequest.predicate = andPredicate
         itemRequest.sortDescriptors = [
-            NSSortDescriptor(keyPath: \Transaction.date, ascending: false)
+            NSSortDescriptor(keyPath: \Transaction.date, ascending: false),
         ]
 
         return (itemRequest, startDate)
@@ -1550,7 +1530,7 @@ class DataController: ObservableObject {
 
             itemRequest.predicate = andPredicate
             itemRequest.sortDescriptors = [
-                NSSortDescriptor(keyPath: \Transaction.date, ascending: false)
+                NSSortDescriptor(keyPath: \Transaction.date, ascending: false),
             ]
             itemRequest.fetchLimit = count
 
@@ -1567,7 +1547,7 @@ class DataController: ObservableObject {
 
             itemRequest.predicate = andPredicate
             itemRequest.sortDescriptors = [
-                NSSortDescriptor(keyPath: \Transaction.date, ascending: false)
+                NSSortDescriptor(keyPath: \Transaction.date, ascending: false),
             ]
             itemRequest.fetchLimit = count
 
@@ -1584,7 +1564,7 @@ class DataController: ObservableObject {
 
             itemRequest.predicate = andPredicate
             itemRequest.sortDescriptors = [
-                NSSortDescriptor(keyPath: \Transaction.date, ascending: false)
+                NSSortDescriptor(keyPath: \Transaction.date, ascending: false),
             ]
             itemRequest.fetchLimit = count
 
@@ -1601,7 +1581,7 @@ class DataController: ObservableObject {
 
             itemRequest.predicate = andPredicate
             itemRequest.sortDescriptors = [
-                NSSortDescriptor(keyPath: \Transaction.date, ascending: false)
+                NSSortDescriptor(keyPath: \Transaction.date, ascending: false),
             ]
             itemRequest.fetchLimit = count
 
@@ -1636,7 +1616,7 @@ class DataController: ObservableObject {
                 let components2 = calendar.dateComponents([.day], from: budget.startDate!, to: Date.now)
                 let numberOfDaysPast = components2.day!
 
-                percentageOfDays = Double(numberOfDaysPast)/Double(numberOfDays)
+                percentageOfDays = Double(numberOfDaysPast) / Double(numberOfDays)
             }
 
             return (true, holdingTotal, budget.amount, percentageOfDays, Int(budget.type), budget.startDate!)
@@ -1647,14 +1627,12 @@ class DataController: ObservableObject {
     }
 
     func results<T: NSManagedObject>(for fetchRequest: NSFetchRequest<T>) -> [T] {
-
         return (try? container.viewContext.fetch(fetchRequest)) ?? []
     }
 }
 
-extension NSManagedObjectContext {
-
-    public func executeAndMergeChanges(using batchDeleteRequest: NSBatchDeleteRequest) throws {
+public extension NSManagedObjectContext {
+    func executeAndMergeChanges(using batchDeleteRequest: NSBatchDeleteRequest) throws {
         batchDeleteRequest.resultType = .resultTypeObjectIDs
         let result = try execute(batchDeleteRequest) as? NSBatchDeleteResult
         let changes: [AnyHashable: Any] = [NSDeletedObjectsKey: result?.result as? [NSManagedObjectID] ?? []]
@@ -1711,7 +1689,6 @@ func getStartOfMonth(startDay: Int) -> Date {
 }
 
 func calculateStartOfMonthPeriod(earliestDate: Date, startOfMonthDay: Int) -> Date {
-
     var components = Calendar.current.dateComponents([.year, .month, .day], from: earliestDate)
     components.day = startOfMonthDay
 

@@ -5,10 +5,10 @@
 //  Created by Rafael Soh on 16/5/22.
 //
 
-import Foundation
-import UIKit
 import Combine
+import Foundation
 import SwiftUI
+import UIKit
 
 class KeyboardHeightHelper: ObservableObject {
     @Published var keyboardHeight: CGFloat = 0
@@ -16,12 +16,12 @@ class KeyboardHeightHelper: ObservableObject {
     private func listenForKeyboardNotifications() {
         NotificationCenter.default.addObserver(forName: UIResponder.keyboardDidShowNotification,
                                                object: nil,
-                                               queue: .main) { (notification) in
+                                               queue: .main)
+        { notification in
             guard let userInfo = notification.userInfo,
-                let keyboardRect = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
+                  let keyboardRect = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
 
             self.keyboardHeight = keyboardRect.height
-
         }
 
 //        NotificationCenter.default.addObserver(forName: UIResponder.keyboardDidHideNotification,
@@ -32,7 +32,7 @@ class KeyboardHeightHelper: ObservableObject {
     }
 
     init() {
-        self.listenForKeyboardNotifications()
+        listenForKeyboardNotifications()
     }
 }
 
@@ -62,8 +62,8 @@ extension View {
     func placeholder<Content: View>(
         when shouldShow: Bool,
         alignment: Alignment = .leading,
-        @ViewBuilder placeholder: () -> Content) -> some View {
-
+        @ViewBuilder placeholder: () -> Content
+    ) -> some View {
         ZStack(alignment: alignment) {
             placeholder().opacity(shouldShow ? 1 : 0)
             self
@@ -78,7 +78,7 @@ extension UIApplication {
 }
 
 struct KeyboardAwareModifier: ViewModifier {
-    @AppStorage("keyboard", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var savedKeyboardHeight: Double = Double((UIScreen.main.bounds.height / 2.5))
+    @AppStorage("keyboard", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var savedKeyboardHeight: Double = .init(UIScreen.main.bounds.height / 2.5)
     var showToolbar: Bool
 //    @State private var keyboardHeight: CGFloat = 250
 
@@ -91,7 +91,7 @@ struct KeyboardAwareModifier: ViewModifier {
             NotificationCenter.default
                 .publisher(for: UIResponder.keyboardWillHideNotification)
                 .map { _ in CGFloat(0) }
-       ).eraseToAnyPublisher()
+        ).eraseToAnyPublisher()
     }
 
     func body(content: Content) -> some View {

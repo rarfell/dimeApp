@@ -52,28 +52,25 @@ struct CustomRefreshView<Content: View>: View {
 
                 content
                     .offset(coordinateSpace: "SCROLL") { offset in
-                    scrollDelegate.contentOffset = offset
+                        scrollDelegate.contentOffset = offset
 
-                    // Checking if refresh action should be triggered
-                    if !scrollDelegate.isEligible {
-                        var progress = offset / 100
-                        progress = (progress < 0 ? 0 : progress)
-                        progress = (progress > 1 ? 1 : progress)
-                        scrollDelegate.scrollOffset = offset
-                        scrollDelegate.progress = progress
-                        print(progress)
+                        // Checking if refresh action should be triggered
+                        if !scrollDelegate.isEligible {
+                            var progress = offset / 100
+                            progress = (progress < 0 ? 0 : progress)
+                            progress = (progress > 1 ? 1 : progress)
+                            scrollDelegate.scrollOffset = offset
+                            scrollDelegate.progress = progress
+                            print(progress)
+                        }
+
+                        // Additional haptic feedback at "success"
+                        if scrollDelegate.isEligible && !scrollDelegate.isRefreshing {
+                            scrollDelegate.isRefreshing = true
+                            UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
+                        } else {}
                     }
-
-                    // Additional haptic feedback at "success"
-                    if scrollDelegate.isEligible && !scrollDelegate.isRefreshing {
-                        scrollDelegate.isRefreshing = true
-                        UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
-                    } else {
-                    }
-                }
-
             }
-
         }
         .coordinateSpace(name: "SCROLL")
         .onAppear(perform: scrollDelegate.addGesture)
@@ -102,28 +99,30 @@ struct CustomRefreshView<Content: View>: View {
 struct CustomRefreshView_Previews: PreviewProvider {
     static var previews: some View {
         CustomRefreshView(showsIndicator: false) {
-           Rectangle()
+            Rectangle()
                 .fill(Color.red)
                 .frame(width: 200, height: 200)
         } onRefresh: {
-            try? await Task.sleep(nanoseconds: 1000000000)
+            try? await Task.sleep(nanoseconds: 1_000_000_000)
         }
     }
 }
 
 class ScrollViewModel: NSObject, ObservableObject, UIGestureRecognizerDelegate {
-
     // MARK: Properties
+
     @Published var isEligible: Bool = false
     @Published var isRefreshing: Bool = false
 
     // MARK: Gesture Properties
+
     @Published var scrollOffset: CGFloat = 0
     @Published var contentOffset: CGFloat = 0
     @Published var progress: CGFloat = 0
     let gestureID: String = UUID().uuidString
 
     // MARK: Haptic Feedback Properties
+
 //    @Published var vibrateAt25: Bool = false
 //    @Published var vibrateAt50: Bool = false
 //    @Published var vibrateAt75: Bool = false
@@ -131,11 +130,12 @@ class ScrollViewModel: NSObject, ObservableObject, UIGestureRecognizerDelegate {
     // Adding Pan Gesture To UI Main Application Window
     // With Simultaneous Gesture Desture
     // Thus it Wont disturb SwiftUI Scroll's And Gesture's
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+    func gestureRecognizer(_: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith _: UIGestureRecognizer) -> Bool {
         return true
     }
 
     // MARK: Adding Gesture
+
     func addGesture() {
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(onGestureChange(gesture:)))
         panGesture.delegate = self
@@ -144,6 +144,7 @@ class ScrollViewModel: NSObject, ObservableObject, UIGestureRecognizerDelegate {
     }
 
     // MARK: Removing When Leaving The View
+
     func removeGesture() {
         rootController().view.gestureRecognizers?.removeAll(where: { gesture in
             gesture.name == gestureID
@@ -151,6 +152,7 @@ class ScrollViewModel: NSObject, ObservableObject, UIGestureRecognizerDelegate {
     }
 
     // MARK: Finding Root Controller
+
     func rootController() -> UIViewController {
         guard let screen = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
             return .init()

@@ -123,7 +123,6 @@ struct BrandNewBudgetView: View {
 
             return string
         } else {
-
             if numbers1.isEmpty {
                 return "0"
             }
@@ -133,7 +132,6 @@ struct BrandNewBudgetView: View {
 
             return string
         }
-
     }
 
     let numberArray = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
@@ -193,14 +191,12 @@ struct BrandNewBudgetView: View {
             InstructionHeadings(title: "Select a category", subtitle: "Begin by linking this budget to an existing category."),
             InstructionHeadings(title: "Choose a time frame", subtitle: "The budget will periodically refresh according to your preference."),
             InstructionHeadings(title: "Pick a start date", subtitle: "Which day of the \(timeFrameString) do you want your budget to start from?"),
-            InstructionHeadings(title: "Set budget amount", subtitle: "Try your best to stay under this limit! Also, feel free to change this in the future.")
+            InstructionHeadings(title: "Set budget amount", subtitle: "Try your best to stay under this limit! Also, feel free to change this in the future."),
         ]
     }
 
     var body: some View {
-
         VStack(spacing: 0) {
-
             HStack {
                 if #available(iOS 17.0, *) {
                     Button {
@@ -219,7 +215,6 @@ struct BrandNewBudgetView: View {
                         }
                     } label: {
                         ZStack {
-
                             Circle()
                                 .fill(Color.SecondaryBackground)
                                 .frame(width: 28, height: 28)
@@ -227,11 +222,8 @@ struct BrandNewBudgetView: View {
                                     Image(systemName: showBackButton ? "chevron.left" : "xmark")
                                         .font(.system(size: 16, weight: .semibold))
                                         .foregroundColor(Color.SubtitleText)
-
                                 }
-
                         }
-
                     }
                     .contentTransition(.symbolEffect(.replace.downUp.wholeSymbol))
                 } else {
@@ -251,7 +243,6 @@ struct BrandNewBudgetView: View {
                         }
                     } label: {
                         ZStack {
-
                             Circle()
                                 .fill(Color.SecondaryBackground)
                                 .frame(width: 28, height: 28)
@@ -259,19 +250,15 @@ struct BrandNewBudgetView: View {
                                     Image(systemName: showBackButton ? "chevron.left" : "xmark")
                                         .font(.system(size: 16, weight: .semibold))
                                         .foregroundColor(Color.SubtitleText)
-
                                 }
-
                         }
-
                     }
                 }
 
                 Spacer()
 
-                CustomCapsuleProgress(percent: (Double(progress) - initialProgress + 1)/(6 - initialProgress), width: 3, topStroke: Color.DarkBackground, bottomStroke: Color.SecondaryBackground)
+                CustomCapsuleProgress(percent: (Double(progress) - initialProgress + 1) / (6 - initialProgress), width: 3, topStroke: Color.DarkBackground, bottomStroke: Color.SecondaryBackground)
                     .frame(width: 50, height: 25)
-
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -280,8 +267,7 @@ struct BrandNewBudgetView: View {
 
             VStack(alignment: .leading, spacing: 5) {
                 HStack {
-
-                    Text(instructions[progress-1].title)
+                    Text(instructions[progress - 1].title)
                         .foregroundColor(.PrimaryText)
                         .font(.system(size: 26, weight: .semibold, design: .rounded))
 
@@ -295,16 +281,14 @@ struct BrandNewBudgetView: View {
                                 .padding(4)
                                 .background(Color.SecondaryBackground, in: Circle())
                                 .contentShape(Circle())
-
                         }
-
                     }
 
                     Spacer()
                 }
                 .frame(maxWidth: .infinity)
 
-                Text(instructions[progress-1].subtitle)
+                Text(instructions[progress - 1].subtitle)
                     .foregroundColor(.SubtitleText)
                     .font(.system(size: 17, weight: .medium, design: .rounded))
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -313,9 +297,7 @@ struct BrandNewBudgetView: View {
 
             if progress == 1 {
                 VStack {
-
                     VStack(alignment: .leading, spacing: 0) {
-
                         HStack {
                             Text("Overall Budget")
                             Spacer()
@@ -375,16 +357,12 @@ struct BrandNewBudgetView: View {
                     .modifier(PickerStyle(colorScheme: colorScheme))
 
                     Spacer()
-
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else if progress == 2 {
                 VStack {
-
                     if categories.isEmpty {
-
                         VStack(spacing: 12) {
-
                             Image(systemName: "tray.full.fill")
                                 .font(.system(size: 38, weight: .regular, design: .rounded))
                                 .foregroundColor(Color.SubtitleText.opacity(0.7))
@@ -395,14 +373,14 @@ struct BrandNewBudgetView: View {
                                 .multilineTextAlignment(.center)
                                 .foregroundColor(Color.SubtitleText.opacity(0.7))
                                 .padding(.bottom, 20)
-//                            
+//
 //                            HStack(spacing: 6) {
-//                                                            
+//
 //                                Image(systemName: "plus")
 //                                    .font(.system(size: 13, weight: .semibold))
 //                                Text("Add Category")
 //                                    .font(.system(size: 16, weight: .semibold, design: .rounded))
-//                                
+//
 //                            }
 //                            .padding(10)
 //                            .padding(.horizontal, 5)
@@ -420,11 +398,9 @@ struct BrandNewBudgetView: View {
                     } else {
                         ScrollView(showsIndicators: false) {
                             VStack(spacing: 10) {
-
                                 ForEach(getRows(), id: \.self) { rows in
 
                                     HStack(spacing: 10) {
-
                                         ForEach(rows) { row in
 
                                             // Row View....
@@ -437,7 +413,6 @@ struct BrandNewBudgetView: View {
                         }
                         .frame(maxWidth: .infinity)
                         .padding(.bottom, 15)
-
                     }
 
                     Spacer()
@@ -445,9 +420,7 @@ struct BrandNewBudgetView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else if progress == 3 {
                 VStack {
-
                     VStack(alignment: .leading, spacing: 0) {
-
                         ForEach(BudgetTimeFrame.allCases, id: \.self) { time in
                             HStack {
                                 Text(LocalizedStringKey(time.rawValue))
@@ -485,7 +458,6 @@ struct BrandNewBudgetView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else if progress == 4 {
                 VStack {
-
                     switch budgetTimeFrame {
                     case .day:
                         EmptyView()
@@ -528,7 +500,6 @@ struct BrandNewBudgetView: View {
                                     value.scrollTo(chosenDayWeek)
                                 }
                             }
-
                         }
                         .modifier(PickerStyle(colorScheme: colorScheme))
                         .frame(height: 210)
@@ -536,7 +507,7 @@ struct BrandNewBudgetView: View {
                         ScrollView(showsIndicators: false) {
                             ScrollViewReader { value in
                                 VStack(alignment: .leading, spacing: 0) {
-                                    ForEach(1..<29) { day in
+                                    ForEach(1 ..< 29) { day in
                                         HStack {
                                             if Int(day) == 1 {
                                                 Text("Start of month")
@@ -581,12 +552,11 @@ struct BrandNewBudgetView: View {
                         .frame(height: 210)
                     case .year:
                         // in: oneYearAgo...Date.now,
-                        DatePicker("Date", selection: $chosenDayYear, in: oneYearAgo...Date.now, displayedComponents: .date)
+                        DatePicker("Date", selection: $chosenDayYear, in: oneYearAgo ... Date.now, displayedComponents: .date)
                             .datePickerStyle(.graphical)
                             .tint(Color.AlertRed)
                             .padding(.horizontal, 5)
                             .modifier(PickerStyle(colorScheme: colorScheme))
-
                     }
 
                     Spacer()
@@ -594,7 +564,6 @@ struct BrandNewBudgetView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else if progress == 5 {
                 VStack(spacing: 10) {
-
                     if numberEntryType == 1 {
                         HStack(alignment: .lastTextBaseline, spacing: 4) {
                             Text(currencySymbol)
@@ -607,7 +576,6 @@ struct BrandNewBudgetView: View {
                         }
                     } else {
                         if numbers1.isEmpty {
-
                             HStack(alignment: .lastTextBaseline, spacing: 4) {
                                 Text(currencySymbol)
                                     .font(.system(size: 32, weight: .light, design: .rounded))
@@ -732,10 +700,8 @@ struct BrandNewBudgetView: View {
                                     .frame(width: proxy.size.width * 0.3, height: proxy.size.height * 0.22)
                                     .foregroundColor(Color.LightIcon)
                                     .background(Color.DarkBackground, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
-
                                 }
                             }
-
                         }
                         .frame(width: proxy.size.width, height: proxy.size.height)
                     }
@@ -790,7 +756,6 @@ struct BrandNewBudgetView: View {
                         }
                 }
                 .buttonStyle(BouncyButton(duration: 0.2, scale: 0.8))
-
             }
         }
         .padding(20)
@@ -820,7 +785,7 @@ struct BrandNewBudgetView: View {
 
                     var stringArray = string.compactMap { String($0) }
 
-                    numbers = stringArray.compactMap { Int($0)}
+                    numbers = stringArray.compactMap { Int($0) }
 
                     if round(unwrappedEditedBudget.amount) == unwrappedEditedBudget.amount {
                         stringArray.removeLast()
@@ -856,7 +821,7 @@ struct BrandNewBudgetView: View {
 
                     var stringArray = string.compactMap { String($0) }
 
-                    numbers = stringArray.compactMap { Int($0)}
+                    numbers = stringArray.compactMap { Int($0) }
 
                     if round(unwrappedEditedMainBudget.amount) == unwrappedEditedMainBudget.amount {
                         stringArray.removeLast()
@@ -871,7 +836,6 @@ struct BrandNewBudgetView: View {
                     chosenDayMonth = firstDayOfMonth
                 }
             }
-
         }
         .sheet(isPresented: $showingCategoryView) {
             if #available(iOS 16.0, *) {
@@ -889,7 +853,6 @@ struct BrandNewBudgetView: View {
                 }
             }
         }
-
     }
 
     func submit() {
@@ -918,7 +881,7 @@ struct BrandNewBudgetView: View {
 
             let sunday = calendar.date(from: dateComponents)!
 
-            let holdingDate = calendar.date(byAdding: .day, value: (chosenDayWeek - 1), to: sunday)!
+            let holdingDate = calendar.date(byAdding: .day, value: chosenDayWeek - 1, to: sunday)!
 
             if holdingDate > today {
                 let newHoldingDate = calendar.date(byAdding: .day, value: -7, to: holdingDate)!
@@ -934,7 +897,7 @@ struct BrandNewBudgetView: View {
 
             let startOfMonth = calendar.date(from: dateComponents)!
 
-            let holdingDate = calendar.date(byAdding: .day, value: (chosenDayMonth - 1), to: startOfMonth)!
+            let holdingDate = calendar.date(byAdding: .day, value: chosenDayMonth - 1, to: startOfMonth)!
 
             if holdingDate > today {
                 let newHoldingDate = calendar.date(byAdding: .month, value: -1, to: holdingDate)!
@@ -1015,7 +978,6 @@ struct BrandNewBudgetView: View {
             totalWidth += (size.width + 12 + 12 + 10)
 
             if totalWidth > screenWidth {
-
                 totalWidth = (!currentRow.isEmpty || rows.isEmpty ? (size.width + 12 + 12 + 10) : 0)
 
                 rows.append(currentRow)
@@ -1060,8 +1022,7 @@ struct BrandNewBudgetView: View {
                 if selectedCategory != category {
                     RoundedRectangle(cornerRadius: 10, style: .continuous)
                         .strokeBorder(Color.Outline,
-                                      style: StrokeStyle(lineWidth: 1.5)
-                        )
+                                      style: StrokeStyle(lineWidth: 1.5))
                 }
             }
             .opacity(selectedCategory == nil ? 1 : (selectedCategory == category ? 1 : 0.4))
@@ -1136,21 +1097,21 @@ struct BrandNewBudgetView: View {
             self.overallBudgetCreated = overallBudgetCreated
             _progress = State(initialValue: 3)
             _categoryBudget = State(initialValue: true)
-            self.initialProgress = 3
+            initialProgress = 3
         } else if toEditMainBudget != nil {
             self.overallBudgetCreated = overallBudgetCreated
             _progress = State(initialValue: 3)
             _categoryBudget = State(initialValue: false)
-            self.initialProgress = 3
+            initialProgress = 3
         } else {
             if overallBudgetCreated {
                 self.overallBudgetCreated = true
                 _progress = State(initialValue: 2)
                 _categoryBudget = State(initialValue: true)
-                self.initialProgress = 2
+                initialProgress = 2
             } else {
                 self.overallBudgetCreated = false
-                self.initialProgress = 1
+                initialProgress = 1
             }
         }
 
@@ -1165,7 +1126,7 @@ struct BrandNewBudgetView: View {
 //        self.toEdit = toEdit
 
         _categories = FetchRequest<Category>(sortDescriptors: [
-            SortDescriptor(\.order)
+            SortDescriptor(\.order),
         ], predicate: andPredicate)
     }
 }
@@ -1180,7 +1141,7 @@ struct RowProgressIndicator: View {
 //            Rectangle()
 //                .foregroundColor(Color.SecondaryBackground)
 //                .frame(maxWidth: .infinity)
-//            
+//
 //            GeometryReader { proxy in
 //                Rectangle()
 //                    .foregroundColor(Color.DarkBackground)
@@ -1199,14 +1160,14 @@ struct RowProgressIndicator: View {
 //                        .onTapGesture {
 //                            print("tapped")
 //                        }
-//                    
+//
 //                }
 //            }
 //        }
-//        
+//
 
         HStack(spacing: 6) {
-            ForEach(0..<Int(count), id: \.self) { num in
+            ForEach(0 ..< Int(count), id: \.self) { num in
                 Capsule()
                     .frame(width: 15, height: 5)
                     .foregroundColor(num == progress - Int(initialProgess) ? Color.DarkBackground : Color.SecondaryBackground)
@@ -1217,7 +1178,6 @@ struct RowProgressIndicator: View {
 //                    .onTapGesture {
 //                        print("tapped")
 //                    }
-
             }
         }
         .padding(.bottom, 20)

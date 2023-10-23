@@ -5,8 +5,8 @@
 //  Created by Rafael Soh on 25/7/22.
 //
 
-import WidgetKit
 import SwiftUI
+import WidgetKit
 
 @main
 struct DimeWidgets: WidgetBundle {

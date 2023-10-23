@@ -6,9 +6,9 @@
 //
 
 import Foundation
-import SwiftUI
-import Popovers
 import Introspect
+import Popovers
+import SwiftUI
 
 struct InsightsView: View {
     @FetchRequest(sortDescriptors: []) private var transactions: FetchedResults<Transaction>
@@ -16,7 +16,7 @@ struct InsightsView: View {
     @State private var showTimeMenu = false
     @AppStorage("chartTimeFrame", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var chartType = 1
 
-    private var didSave =  NotificationCenter.default.publisher(for: .NSManagedObjectContextDidSave)
+    private var didSave = NotificationCenter.default.publisher(for: .NSManagedObjectContextDidSave)
     @State private var refreshID = UUID()
 
 //    @State private var holdingIncome = false
@@ -39,7 +39,6 @@ struct InsightsView: View {
                     .font(.system(size: 18, weight: .medium, design: .rounded))
                     .foregroundColor(Color.SubtitleText.opacity(0.7))
                     .multilineTextAlignment(.center)
-
             }
             .padding(.horizontal, 30)
             .frame(height: 250, alignment: .top)
@@ -90,7 +89,6 @@ struct InsightsView: View {
                         $0.dismissal.animation = .easeInOut(duration: 0.3)
                     }) {
                         ChartTimePickerView(showMenu: $showTimeMenu)
-
                     }
                 }
                 .padding(.horizontal, 30)
@@ -105,7 +103,6 @@ struct InsightsView: View {
                     YearGraphView()
                         .id(refreshID)
                 }
-
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.PrimaryBackground)
@@ -113,7 +110,6 @@ struct InsightsView: View {
                 self.refreshID = UUID()
             }
         }
-
     }
 }
 
@@ -156,13 +152,13 @@ struct HorizontalPieChartView: View {
                 continue
             }
 
-            let newCategory = PowerCategory(id: category.id ?? UUID(), category: category, percent: (holdingTotal/total))
+            let newCategory = PowerCategory(id: category.id ?? UUID(), category: category, percent: holdingTotal / total)
 
             holding.append(newCategory)
         }
 
         holding.sort(by: { lhs, rhs in
-            return lhs.percent > rhs.percent
+            lhs.percent > rhs.percent
         })
 
         return holding
@@ -179,7 +175,6 @@ struct HorizontalPieChartView: View {
                             AnimatedHorizontalBarGraph(category: category, index: categories.firstIndex(of: category) ?? 0)
                                 .frame(width: (proxy.size.width * (1.0 - (0.015 * Double(categories.count - 1)))) * category.percent)
                                 .onTapGesture {
-
                                     withAnimation(.easeIn(duration: 0.2)) {
                                         if categoryFilter == category.category {
                                             selectedDate = nil
@@ -202,11 +197,9 @@ struct HorizontalPieChartView: View {
                                     }
                                 }
                         }
-
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
-
             }
             .frame(height: 28)
 
@@ -230,9 +223,7 @@ struct HorizontalPieChartView: View {
                                 Text("\(category.percent * 100, specifier: "%.0f")%")
                                     .font(.system(size: 14, weight: .regular, design: .rounded))
                                     .foregroundColor(Color.SubtitleText)
-
                             }
-
                         }
                         .padding(.vertical, 4)
                         .padding(.horizontal, 6)
@@ -259,13 +250,9 @@ struct HorizontalPieChartView: View {
                             }
                         }
                         .opacity(categoryFilterMode ? (categoryFilter == category.category ? 1 : 0.5) : 1)
-
                     }
-
                 }
-
             }
-
         }
     }
 
@@ -379,17 +366,16 @@ struct FilteredCategoryInsightsView: View {
             let andPredicate = NSCompoundPredicate(type: .and, subpredicates: [startPredicate, endPredicate, categoryPredicate, incomePredicate])
 
             _transactions = SectionedFetchRequest<Date?, Transaction>(sectionIdentifier: \.day, sortDescriptors: [
-                    SortDescriptor(\.day, order: .reverse),
-                    SortDescriptor(\.date, order: .reverse)
-                ], predicate: andPredicate)
+                SortDescriptor(\.day, order: .reverse),
+                SortDescriptor(\.date, order: .reverse),
+            ], predicate: andPredicate)
 
         } else {
             _transactions = SectionedFetchRequest<Date?, Transaction>(sectionIdentifier: \.day, sortDescriptors: [
-                    SortDescriptor(\.day, order: .reverse),
-                    SortDescriptor(\.date, order: .reverse)
-                ])
+                SortDescriptor(\.day, order: .reverse),
+                SortDescriptor(\.date, order: .reverse),
+            ])
         }
-
     }
 }
 
@@ -400,6 +386,7 @@ struct FilteredDateInsightsView: View {
     var currencySymbol: String {
         return Locale.current.localizedCurrencySymbol(forCurrencyCode: currency)!
     }
+
     @AppStorage("swapTimeLabel", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var swapTimeLabel: Bool = false
     @AppStorage("showCents", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var showCents: Bool = true
 
@@ -434,10 +421,8 @@ struct FilteredDateInsightsView: View {
         let andPredicate = NSCompoundPredicate(type: .and, subpredicates: [startPredicate, incomePredicate, endPredicate])
 
         _transactions = FetchRequest<Transaction>(sortDescriptors: [
-                SortDescriptor(\.date, order: .reverse)
-        ], predicate: andPredicate
-        )
-
+            SortDescriptor(\.date, order: .reverse),
+        ], predicate: andPredicate)
     }
 }
 
@@ -499,14 +484,13 @@ struct FilteredInsightsView: View {
         }
 
         _transactions = SectionedFetchRequest<Date?, Transaction>(sectionIdentifier: \.day, sortDescriptors: [
-                SortDescriptor(\.day, order: .reverse),
-                SortDescriptor(\.date, order: .reverse)
+            SortDescriptor(\.day, order: .reverse),
+            SortDescriptor(\.date, order: .reverse),
         ], predicate: andPredicate)
     }
 }
 
 struct SingleGraphView: View {
-
     @EnvironmentObject var dataController: DataController
     var date: Date
     let type: Int
@@ -536,6 +520,7 @@ struct SingleGraphView: View {
             return ""
         }
     }
+
     @State var selectedDateAmount: Double = 0
 
     var currencySymbol: String
@@ -665,9 +650,7 @@ struct SingleGraphView: View {
                                 .opacity(currentNet == 0 || lastNet == 0 ? 0 : 1)
                                 .lineLimit(1)
                         }
-
                     }
-
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -680,7 +663,6 @@ struct SingleGraphView: View {
 
                         InsightsDollarView(amount: selectedCategoryAmount, currencySymbol: currencySymbol, showCents: showCents)
                             .layoutPriority(1)
-
                     }
                 } else if selectedDate != nil {
                     VStack(alignment: .trailing, spacing: 1.3) {
@@ -690,7 +672,6 @@ struct SingleGraphView: View {
                             .foregroundColor(Color.SubtitleText)
                         InsightsDollarView(amount: selectedDateAmount, currencySymbol: currencySymbol, showCents: showCents)
                             .layoutPriority(1)
-
                     }
                 } else if incomeFiltering {
                     VStack(alignment: .trailing, spacing: 1.3) {
@@ -700,7 +681,6 @@ struct SingleGraphView: View {
                             .foregroundColor(Color.SubtitleText)
                         InsightsDollarView(amount: incomeAverage, currencySymbol: currencySymbol, showCents: showCents)
                             .layoutPriority(1)
-
                     }
                 } else {
                     VStack(alignment: .trailing, spacing: 1.3) {
@@ -710,10 +690,8 @@ struct SingleGraphView: View {
                             .foregroundColor(Color.SubtitleText)
                         InsightsDollarView(amount: average, currencySymbol: currencySymbol, showCents: showCents, net: netPositive)
                             .layoutPriority(1)
-
                     }
                 }
-
             }
             .padding(.bottom, 5)
             .onTapGesture {
@@ -724,7 +702,6 @@ struct SingleGraphView: View {
 
             if incomeTracking {
                 HStack(spacing: 11) {
-
                     HStack(spacing: 6) {
                         Image(systemName: "arrow.up.right")
                             .font(.system(size: 18, weight: .semibold))
@@ -746,7 +723,6 @@ struct SingleGraphView: View {
                                 .lineLimit(1)
                                 .minimumScaleFactor(0.8)
                         }
-
                     }
                     .padding(7)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -760,7 +736,6 @@ struct SingleGraphView: View {
                                 incomeFiltering = true
                             }
                         }
-
                     }
                     .background(Color.SecondaryBackground.opacity(0.8), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
                     .overlay {
@@ -804,7 +779,6 @@ struct SingleGraphView: View {
                                 incomeFiltering = true
                             }
                         }
-
                     }
                     .background(Color.SecondaryBackground.opacity(0.8), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
                     .overlay {
@@ -826,9 +800,7 @@ struct SingleGraphView: View {
                 } else if type == 3 {
                     SingleYearBarGraphView(year: date, date: $selectedDate, mode: $categoryFilterMode, amount: $selectedDateAmount, dataController: dataController, income: income)
                 }
-
             }
-
         }
     }
 
@@ -860,24 +832,24 @@ struct SingleGraphView: View {
         _income = income
         _incomeFiltering = incomeFiltering
         self.date = showingDate
-        self.selectedCategoryName = categoryName
-        self.selectedCategoryAmount = categoryAmount
+        selectedCategoryName = categoryName
+        selectedCategoryAmount = categoryAmount
         self.currencySymbol = currencySymbol
         self.showCents = showCents
         self.type = type
 
         let loaded = dataController.getInsightsSummary(type: type, date: showingDate)
 
-        self.totalIncome = loaded.income
-        self.totalSpent = loaded.spent
-        self.netPositive = loaded.positive
-        self.totalNet = loaded.net
-        self.average = loaded.average
+        totalIncome = loaded.income
+        totalSpent = loaded.spent
+        netPositive = loaded.positive
+        totalNet = loaded.net
+        average = loaded.average
 
         if loaded.positive {
-            self.currentNet = loaded.net
+            currentNet = loaded.net
         } else {
-            self.currentNet = -loaded.net
+            currentNet = -loaded.net
         }
 
         let lastDate: Date
@@ -893,27 +865,27 @@ struct SingleGraphView: View {
         let lastDateData = dataController.getInsightsSummary(type: type, date: lastDate)
 
         if lastDateData.positive {
-            self.lastNet = lastDateData.net
+            lastNet = lastDateData.net
         } else {
-            self.lastNet = -lastDateData.net
+            lastNet = -lastDateData.net
         }
-
     }
 }
 
 struct WeekGraphView: View {
     @EnvironmentObject var dataController: DataController
-    private var didSave =  NotificationCenter.default.publisher(for: .NSManagedObjectContextDidSave)
+    private var didSave = NotificationCenter.default.publisher(for: .NSManagedObjectContextDidSave)
     @State private var refreshID = UUID()
 
     @FetchRequest(sortDescriptors: [
-        SortDescriptor(\.day)
+        SortDescriptor(\.day),
     ]) private var transactions: FetchedResults<Transaction>
 
     @AppStorage("currency", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var currency: String = Locale.current.currencyCode!
     var currencySymbol: String {
         return Locale.current.localizedCurrencySymbol(forCurrencyCode: currency)!
     }
+
     @AppStorage("showCents", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var showCents: Bool = true
 
     @State var categoryFilterMode = false
@@ -928,7 +900,7 @@ struct WeekGraphView: View {
 
         let dateComponents = calendar.dateComponents([.weekOfYear, .yearForWeekOfYear], from: Date.now)
 
-        return  calendar.date(from: dateComponents) ?? Date.now
+        return calendar.date(from: dateComponents) ?? Date.now
     }
 
     // start of week of final transaction
@@ -984,7 +956,7 @@ struct WeekGraphView: View {
     @State var chosenCategoryName = ""
     @State var chosenCategoryAmount = 0.0
 
-    @AppStorage("insightsViewIncomeFiltering", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var  income: Bool = true
+    @AppStorage("insightsViewIncomeFiltering", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var income: Bool = true
     @AppStorage("incomeTracking", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var incomeTracking: Bool = true
 
     var graphHeight: CGFloat {
@@ -1004,7 +976,6 @@ struct WeekGraphView: View {
     var body: some View {
         ScrollView(showsIndicators: false) {
             VStack(spacing: 18) {
-
                 ZStack {
                     SingleGraphView(showingDate: showingWeek, date: $selectedDate, mode: $categoryFilterMode, categoryName: chosenCategoryName, categoryAmount: chosenCategoryAmount, currencySymbol: currencySymbol, showCents: showCents, dataController: dataController, income: $income, incomeFiltering: $incomeFiltering, type: 1)
                         .drawingGroup()
@@ -1020,7 +991,7 @@ struct WeekGraphView: View {
                                 VStack(spacing: 8) {
                                     Image(systemName: "arrow.backward.circle.fill")
                                         .font(.system(size: 18, weight: .medium))
-        //                                .scaleEffect(changeTime ? 1.3 : 1)
+                                        //                                .scaleEffect(changeTime ? 1.3 : 1)
                                         .foregroundColor(changeTime ? Color.PrimaryText : Color.SecondaryBackground)
 
                                     Text(swipeStrings.backward.uppercased())
@@ -1053,7 +1024,6 @@ struct WeekGraphView: View {
                         }
 
                         HStack {
-
                             Spacer()
 
                             if showingWeek != startOfCurrentWeek {
@@ -1087,37 +1057,33 @@ struct WeekGraphView: View {
                                 .offset(x: 120)
                                 .offset(x: max(-120, offset))
                             }
-
                         }
                     }
-
                 }
                 .contentShape(Rectangle())
                 .padding(.horizontal, 30)
                 .simultaneousGesture(
                     DragGesture()
-                        .updating($isDragging, body: { (_, state, _) in
+                        .updating($isDragging, body: { _, state, _ in
                             state = true
                         })
-                        .onChanged({ value in
+                        .onChanged { value in
                             withAnimation {
-                                if value.translation.width < 0 && showingWeek != startOfCurrentWeek {
+                                if value.translation.width < 0, showingWeek != startOfCurrentWeek {
                                     offset = value.translation.width * 0.9
-                                } else if value.translation.width < 0 && showingWeek == startOfCurrentWeek {
+                                } else if value.translation.width < 0, showingWeek == startOfCurrentWeek {
                                     offset = value.translation.width * 0.5
-                                } else if value.translation.width > 0 && showingWeek != startOfLastWeek {
+                                } else if value.translation.width > 0, showingWeek != startOfLastWeek {
                                     offset = value.translation.width * 0.9
-                                } else if value.translation.width > 0 && showingWeek == startOfLastWeek {
+                                } else if value.translation.width > 0, showingWeek == startOfLastWeek {
                                     offset = value.translation.width * 0.5
                                 }
                             }
-//                            
-//                           
-                        }).onEnded({ _ in
+//
+//
+                        }.onEnded { _ in
                             if changeTime {
-
-                                if offset < 0 && showingWeek != startOfCurrentWeek {
-
+                                if offset < 0, showingWeek != startOfCurrentWeek {
                                     changeDate = true
 
                                     offset = UIScreen.main.bounds.width
@@ -1127,7 +1093,7 @@ struct WeekGraphView: View {
                                     withAnimation(.easeInOut(duration: 0.3)) {
                                         offset = 0
                                     }
-                                } else if offset > 0 && showingWeek != startOfLastWeek {
+                                } else if offset > 0, showingWeek != startOfLastWeek {
                                     changeDate = true
 
                                     offset = -UIScreen.main.bounds.width
@@ -1140,13 +1106,12 @@ struct WeekGraphView: View {
                                 }
 
                                 withAnimation(.easeInOut(duration: 0.3)) {
-                                   offset = 0
+                                    offset = 0
                                 }
 
                                 changeDate = false
                             }
-
-                        })
+                        }
                 )
                 .onChange(of: changeTime) { _ in
                     if changeTime {
@@ -1156,10 +1121,9 @@ struct WeekGraphView: View {
                 .onChange(of: isDragging) { _ in
                     if !isDragging && !changeDate {
                         withAnimation(.easeInOut(duration: 0.3)) {
-                           offset = 0
+                            offset = 0
                         }
                     }
-
                 }
                 .animation(.easeInOut, value: changeTime)
                 .onChange(of: showingWeek) { _ in
@@ -1213,7 +1177,6 @@ struct WeekGraphView: View {
             self.refreshID = UUID()
             self.refreshID1 = UUID()
         }
-
     }
 }
 
@@ -1234,11 +1197,10 @@ struct SingleWeekBarGraphView: View {
     var getMax: Int {
         let maximum = max * 1.1
 
-        return Int(ceil(maximum/10) * 10)
+        return Int(ceil(maximum / 10) * 10)
     }
 
     var body: some View {
-
         GeometryReader { proxy in
             ZStack(alignment: .top) {
                 HStack(alignment: .top, spacing: 8) {
@@ -1253,7 +1215,6 @@ struct SingleWeekBarGraphView: View {
                         Text("0")
                             .font(.system(size: 12, weight: .regular, design: .rounded))
                             .foregroundColor(Color.SubtitleText)
-
                     }
                     .frame(height: proxy.size.height * 0.85)
                     .padding(.trailing, 3)
@@ -1275,7 +1236,6 @@ struct SingleWeekBarGraphView: View {
                                 Text(getWeekday(day: day).prefix(1))
                                     .font(.system(size: 12, weight: .bold, design: .rounded))
                                     .foregroundColor(Color.SubtitleText)
-
                             }
                             .opacity(day > Date.now ? 0.3 : 1)
                             .frame(maxWidth: .infinity)
@@ -1294,32 +1254,27 @@ struct SingleWeekBarGraphView: View {
                         }
                     }
                     .frame(maxWidth: .infinity)
-
                 }
                 .frame(width: proxy.size.width)
                 .frame(maxHeight: .infinity)
 
                 // average line
                 HStack(spacing: 8) {
-
                     Text(getAverageText(average: weekAverage))
                         .lineLimit(1)
                         .font(.system(size: 12, weight: .bold, design: .rounded))
                         .foregroundColor(Color.SubtitleText)
                         .offset(y: -1)
-                        .opacity((weekAverage/Double(getMax)) < 0.2 || (weekAverage/Double(getMax)) > 0.8 ? 0 : 1)
+                        .opacity((weekAverage / Double(getMax)) < 0.2 || (weekAverage / Double(getMax)) > 0.8 ? 0 : 1)
 
                     Line()
                         .stroke(Color.SubtitleText, style: StrokeStyle(lineWidth: 2, lineCap: .round, dash: [5]))
                         .frame(height: 1)
                         .frame(maxWidth: .infinity)
-
                 }
                 .opacity(actualDays <= 1 ? 0 : 1)
                 .offset(y: getOffset(size: proxy.size, maxi: getMax, average: weekAverage) - 5)
-
             }
-
         }
         .onChange(of: selectedDate) { _ in
             selectedDateAmount = dayDictionary[selectedDate ?? Date.now] ?? 0.0
@@ -1341,23 +1296,22 @@ struct SingleWeekBarGraphView: View {
 
         let loaded = dataController.getInsights(type: 1, date: week, income: income)
 
-        self.daysOfWeek = loaded.dates
-        self.dayDictionary = loaded.dateDictionary
+        daysOfWeek = loaded.dates
+        dayDictionary = loaded.dateDictionary
         self.max = loaded.maximum
-        self.weekTotal = loaded.amount
-        self.weekAverage = loaded.average
-        self.actualDays = loaded.numberOfDays
-
+        weekTotal = loaded.amount
+        weekAverage = loaded.average
+        actualDays = loaded.numberOfDays
     }
 }
 
 struct MonthGraphView: View {
     @EnvironmentObject var dataController: DataController
-    private var didSave =  NotificationCenter.default.publisher(for: .NSManagedObjectContextDidSave)
+    private var didSave = NotificationCenter.default.publisher(for: .NSManagedObjectContextDidSave)
     @State private var refreshID = UUID()
 
     @FetchRequest(sortDescriptors: [
-        SortDescriptor(\.day)
+        SortDescriptor(\.day),
     ]) private var transactions: FetchedResults<Transaction>
 
     @AppStorage("firstDayOfMonth", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var firstDayOfMonth: Int = 1
@@ -1366,6 +1320,7 @@ struct MonthGraphView: View {
     var currencySymbol: String {
         return Locale.current.localizedCurrencySymbol(forCurrencyCode: currency)!
     }
+
     @AppStorage("showCents", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var showCents: Bool = true
 
     @State var categoryFilterMode = false
@@ -1376,9 +1331,9 @@ struct MonthGraphView: View {
     var startOfCurrentMonth: Date {
         return getStartOfMonth(startDay: firstDayOfMonth)
 //        let calendar = Calendar(identifier: .gregorian)
-//        
+//
 //        let dateComponents = calendar.dateComponents([.month, .year], from: Date.now)
-//        
+//
 //        return  calendar.date(from: dateComponents) ?? Date.now
     }
 
@@ -1392,7 +1347,7 @@ struct MonthGraphView: View {
             return calculateStartOfMonthPeriod(earliestDate: date, startOfMonthDay: firstDayOfMonth)
 //
 //            let dateComponents = calendar.dateComponents([.month, .year], from: date)
-//            
+//
 //            return  calendar.date(from: dateComponents) ?? Date.now
         }
     }
@@ -1431,7 +1386,7 @@ struct MonthGraphView: View {
     @State var chosenCategoryName = ""
     @State var chosenCategoryAmount = 0.0
 
-    @AppStorage("insightsViewIncomeFiltering", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var  income: Bool = true
+    @AppStorage("insightsViewIncomeFiltering", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var income: Bool = true
     @AppStorage("incomeTracking", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var incomeTracking: Bool = true
 
     var graphHeight: CGFloat {
@@ -1445,6 +1400,7 @@ struct MonthGraphView: View {
             return UIScreen.main.bounds.height / 3.5
         }
     }
+
     @State var incomeFiltering: Bool = true
 
     var body: some View {
@@ -1465,7 +1421,7 @@ struct MonthGraphView: View {
                                 VStack(spacing: 8) {
                                     Image(systemName: "arrow.backward.circle.fill")
                                         .font(.system(size: changeTime ? 25 : 18, weight: .medium))
-        //                                .scaleEffect(changeTime ? 1.3 : 1)
+                                        //                                .scaleEffect(changeTime ? 1.3 : 1)
                                         .foregroundColor(changeTime ? Color.PrimaryText : Color.SecondaryBackground)
 
                                     Text(swipeStrings.backward.uppercased())
@@ -1498,7 +1454,6 @@ struct MonthGraphView: View {
                         }
 
                         HStack {
-
                             Spacer()
 
                             if showingMonth != startOfCurrentMonth {
@@ -1532,35 +1487,31 @@ struct MonthGraphView: View {
                                 .offset(x: 120)
                                 .offset(x: max(-120, offset))
                             }
-
                         }
                     }
-
                 }
                 .contentShape(Rectangle())
                 .padding(.horizontal, 30)
                 .simultaneousGesture(
                     DragGesture()
-                        .updating($isDragging, body: { (_, state, _) in
+                        .updating($isDragging, body: { _, state, _ in
                             state = true
                         })
-                        .onChanged({ value in
+                        .onChanged { value in
                             withAnimation {
-                                if value.translation.width < 0 && showingMonth != startOfCurrentMonth {
+                                if value.translation.width < 0, showingMonth != startOfCurrentMonth {
                                     offset = value.translation.width * 0.9
-                                } else if value.translation.width < 0 && showingMonth == startOfCurrentMonth {
+                                } else if value.translation.width < 0, showingMonth == startOfCurrentMonth {
                                     offset = value.translation.width * 0.5
-                                } else if value.translation.width > 0 && showingMonth != startOfLastMonth {
+                                } else if value.translation.width > 0, showingMonth != startOfLastMonth {
                                     offset = value.translation.width * 0.9
-                                } else if value.translation.width > 0 && showingMonth == startOfLastMonth {
+                                } else if value.translation.width > 0, showingMonth == startOfLastMonth {
                                     offset = value.translation.width * 0.5
                                 }
                             }
-                        }).onEnded({ _ in
+                        }.onEnded { _ in
                             if changeTime {
-
-                                if offset < 0 && showingMonth != startOfCurrentMonth {
-
+                                if offset < 0, showingMonth != startOfCurrentMonth {
                                     changeDate = true
 
                                     offset = UIScreen.main.bounds.width
@@ -1570,7 +1521,7 @@ struct MonthGraphView: View {
                                     withAnimation(.easeInOut(duration: 0.3)) {
                                         offset = 0
                                     }
-                                } else if offset > 0 && showingMonth != startOfLastMonth {
+                                } else if offset > 0, showingMonth != startOfLastMonth {
                                     changeDate = true
 
                                     offset = -UIScreen.main.bounds.width
@@ -1583,13 +1534,12 @@ struct MonthGraphView: View {
                                 }
 
                                 withAnimation(.easeInOut(duration: 0.3)) {
-                                   offset = 0
+                                    offset = 0
                                 }
 
                                 changeDate = false
                             }
-
-                        })
+                        }
                 )
                 .onChange(of: changeTime) { _ in
                     if changeTime {
@@ -1599,10 +1549,9 @@ struct MonthGraphView: View {
                 .onChange(of: isDragging) { _ in
                     if !isDragging && !changeDate {
                         withAnimation(.easeInOut(duration: 0.3)) {
-                           offset = 0
+                            offset = 0
                         }
                     }
-
                 }
                 .animation(.easeInOut, value: changeTime)
                 .onChange(of: showingMonth) { _ in
@@ -1650,7 +1599,6 @@ struct MonthGraphView: View {
                     selectedDate = nil
                     categoryFilterMode = false
                 }
-
             }
         }
         .onReceive(self.didSave) { _ in
@@ -1679,7 +1627,7 @@ struct SingleMonthBarGraphView: View {
     var getMax: Int {
         let maximum = max * 1.1
 
-        return Int(ceil(maximum/10) * 10)
+        return Int(ceil(maximum / 10) * 10)
     }
 
     let numberArray = [1, 8, 15, 22, 29]
@@ -1699,7 +1647,6 @@ struct SingleMonthBarGraphView: View {
                         Text("0")
                             .font(.system(size: 12, weight: .regular, design: .rounded))
                             .foregroundColor(Color.SubtitleText)
-
                     }
                     .frame(height: proxy.size.height * 0.86)
                     .padding(.trailing, 3)
@@ -1718,7 +1665,7 @@ struct SingleMonthBarGraphView: View {
                                     .opacity(selectedDate == nil ? 1 : (selectedDate == day ? 1 : 0.4))
                                     .zIndex(0)
                                     .overlay(alignment: .bottom) {
-                                        if numberArray.contains(((daysOfMonth.firstIndex(of: day) ?? -1) + 1)) && firstDayOfMonth == 1 {
+                                        if numberArray.contains((daysOfMonth.firstIndex(of: day) ?? -1) + 1) && firstDayOfMonth == 1 {
                                             Text("\((daysOfMonth.firstIndex(of: day) ?? -1) + 1)")
                                                 .font(.system(size: 12, weight: .bold, design: .rounded))
                                                 .foregroundColor(Color.SubtitleText)
@@ -1745,7 +1692,6 @@ struct SingleMonthBarGraphView: View {
                         }
                     }
                     .frame(maxWidth: .infinity)
-
                 }
                 .frame(width: proxy.size.width, height: proxy.size.height)
 //                .frame(maxHeight: .infinity)
@@ -1757,19 +1703,16 @@ struct SingleMonthBarGraphView: View {
                         .font(.system(size: 12, weight: .bold, design: .rounded))
                         .foregroundColor(Color.SubtitleText)
                         .offset(y: -1)
-                        .opacity((monthAverage/Double(getMax)) < 0.2 || (monthAverage/Double(getMax)) > 0.8 ? 0 : 1)
+                        .opacity((monthAverage / Double(getMax)) < 0.2 || (monthAverage / Double(getMax)) > 0.8 ? 0 : 1)
 
                     Line()
                         .stroke(Color.SubtitleText, style: StrokeStyle(lineWidth: 2, lineCap: .round, dash: [5]))
                         .frame(height: 1)
                         .frame(maxWidth: .infinity)
-
                 }
                 .opacity(actualDays <= 1 ? 0 : 1)
                 .offset(y: getOffset(size: proxy.size, maxi: getMax, average: monthAverage) - 5)
-
             }
-
         }
         .onChange(of: selectedDate) { _ in
             selectedDateAmount = dayDictionary[selectedDate ?? Date.now] ?? 0.0
@@ -1783,29 +1726,29 @@ struct SingleMonthBarGraphView: View {
 
         let loaded = dataController.getInsights(type: 2, date: month, income: income)
 
-        self.daysOfMonth = loaded.dates
-        self.dayDictionary = loaded.dateDictionary
+        daysOfMonth = loaded.dates
+        dayDictionary = loaded.dateDictionary
         self.max = loaded.maximum
-        self.monthTotal = loaded.amount
-        self.monthAverage = loaded.average
-        self.actualDays = loaded.numberOfDays
-
+        monthTotal = loaded.amount
+        monthAverage = loaded.average
+        actualDays = loaded.numberOfDays
     }
 }
 
 struct YearGraphView: View {
     @EnvironmentObject var dataController: DataController
-    private var didSave =  NotificationCenter.default.publisher(for: .NSManagedObjectContextDidSave)
+    private var didSave = NotificationCenter.default.publisher(for: .NSManagedObjectContextDidSave)
     @State private var refreshID = UUID()
 
     @FetchRequest(sortDescriptors: [
-        SortDescriptor(\.day)
+        SortDescriptor(\.day),
     ]) private var transactions: FetchedResults<Transaction>
 
     @AppStorage("currency", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var currency: String = Locale.current.currencyCode!
     var currencySymbol: String {
         return Locale.current.localizedCurrencySymbol(forCurrencyCode: currency)!
     }
+
     @AppStorage("showCents", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var showCents: Bool = true
 
     @State var categoryFilterMode = false
@@ -1818,7 +1761,7 @@ struct YearGraphView: View {
 
         let dateComponents = calendar.dateComponents([.year], from: Date.now)
 
-        return  calendar.date(from: dateComponents) ?? Date.now
+        return calendar.date(from: dateComponents) ?? Date.now
     }
 
     var startOfLastYear: Date {
@@ -1831,7 +1774,7 @@ struct YearGraphView: View {
 
             let dateComponents = calendar.dateComponents([.year], from: date)
 
-            return  calendar.date(from: dateComponents) ?? Date.now
+            return calendar.date(from: dateComponents) ?? Date.now
         }
     }
 
@@ -1869,7 +1812,7 @@ struct YearGraphView: View {
     @State var chosenCategoryName = ""
     @State var chosenCategoryAmount = 0.0
 
-    @AppStorage("insightsViewIncomeFiltering", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var  income: Bool = true
+    @AppStorage("insightsViewIncomeFiltering", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var income: Bool = true
     @AppStorage("incomeTracking", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var incomeTracking: Bool = true
 
     var graphHeight: CGFloat {
@@ -1904,7 +1847,7 @@ struct YearGraphView: View {
                                 VStack(spacing: 8) {
                                     Image(systemName: "arrow.backward.circle.fill")
                                         .font(.system(size: changeTime ? 25 : 18, weight: .medium))
-        //                                .scaleEffect(changeTime ? 1.3 : 1)
+                                        //                                .scaleEffect(changeTime ? 1.3 : 1)
                                         .foregroundColor(changeTime ? Color.PrimaryText : Color.SecondaryBackground)
 
                                     Text(swipeStrings.backward.uppercased())
@@ -1937,7 +1880,6 @@ struct YearGraphView: View {
                         }
 
                         HStack {
-
                             Spacer()
 
                             if showingYear != startOfCurrentYear {
@@ -1971,35 +1913,31 @@ struct YearGraphView: View {
                                 .offset(x: 120)
                                 .offset(x: max(-120, offset))
                             }
-
                         }
                     }
-
                 }
                 .contentShape(Rectangle())
                 .padding(.horizontal, 30)
                 .simultaneousGesture(
                     DragGesture()
-                        .updating($isDragging, body: { (_, state, _) in
+                        .updating($isDragging, body: { _, state, _ in
                             state = true
                         })
-                        .onChanged({ value in
+                        .onChanged { value in
                             withAnimation {
-                                if value.translation.width < 0 && showingYear != startOfCurrentYear {
+                                if value.translation.width < 0, showingYear != startOfCurrentYear {
                                     offset = value.translation.width * 0.9
-                                } else if value.translation.width < 0 && showingYear == startOfCurrentYear {
+                                } else if value.translation.width < 0, showingYear == startOfCurrentYear {
                                     offset = value.translation.width * 0.5
-                                } else if value.translation.width > 0 && showingYear != startOfLastYear {
+                                } else if value.translation.width > 0, showingYear != startOfLastYear {
                                     offset = value.translation.width * 0.9
-                                } else if value.translation.width > 0 && showingYear == startOfLastYear {
+                                } else if value.translation.width > 0, showingYear == startOfLastYear {
                                     offset = value.translation.width * 0.5
                                 }
                             }
-                        }).onEnded({ _ in
+                        }.onEnded { _ in
                             if changeTime {
-
-                                if offset < 0 && showingYear != startOfCurrentYear {
-
+                                if offset < 0, showingYear != startOfCurrentYear {
                                     changeDate = true
 
                                     offset = UIScreen.main.bounds.width
@@ -2009,7 +1947,7 @@ struct YearGraphView: View {
                                     withAnimation(.easeInOut(duration: 0.3)) {
                                         offset = 0
                                     }
-                                } else if offset > 0 && showingYear != startOfLastYear {
+                                } else if offset > 0, showingYear != startOfLastYear {
                                     changeDate = true
 
                                     offset = -UIScreen.main.bounds.width
@@ -2022,13 +1960,12 @@ struct YearGraphView: View {
                                 }
 
                                 withAnimation(.easeInOut(duration: 0.3)) {
-                                   offset = 0
+                                    offset = 0
                                 }
 
                                 changeDate = false
                             }
-
-                        })
+                        }
                 )
                 .onChange(of: changeTime) { _ in
                     if changeTime {
@@ -2038,10 +1975,9 @@ struct YearGraphView: View {
                 .onChange(of: isDragging) { _ in
                     if !isDragging && !changeDate {
                         withAnimation(.easeInOut(duration: 0.3)) {
-                           offset = 0
+                            offset = 0
                         }
                     }
-
                 }
                 .animation(.easeInOut, value: changeTime)
                 .onChange(of: showingYear) { _ in
@@ -2089,7 +2025,6 @@ struct YearGraphView: View {
                     selectedDate = nil
                     categoryFilterMode = false
                 }
-
             }
         }
         .onReceive(self.didSave) { _ in
@@ -2113,7 +2048,7 @@ struct SingleYearBarGraphView: View {
     var getMax: Int {
         let maximum = max * 1.1
 
-        return Int(ceil(maximum/10) * 10)
+        return Int(ceil(maximum / 10) * 10)
     }
 
     var yearTotal: Double = 0
@@ -2139,7 +2074,6 @@ struct SingleYearBarGraphView: View {
                         Text("0")
                             .font(.system(size: 12, weight: .regular, design: .rounded))
                             .foregroundColor(Color.SubtitleText)
-
                     }
                     .frame(height: proxy.size.height * 0.85)
                     .padding(.trailing, 3)
@@ -2158,8 +2092,8 @@ struct SingleYearBarGraphView: View {
                                     .opacity(selectedDate == nil ? 1 : (selectedDate == month ? 1 : 0.4))
                                     .zIndex(0)
                                     .overlay(alignment: .bottom) {
-                                        if numberArray.contains(((monthsOfYear.firstIndex(of: month) ?? 0) + 1)) {
-                                            Text(LocalizedStringKey(monthNames[((monthsOfYear.firstIndex(of: month) ?? 0) + 1)] ?? ""))
+                                        if numberArray.contains((monthsOfYear.firstIndex(of: month) ?? 0) + 1) {
+                                            Text(LocalizedStringKey(monthNames[(monthsOfYear.firstIndex(of: month) ?? 0) + 1] ?? ""))
                                                 .font(.system(size: 12, weight: .bold, design: .rounded))
                                                 .foregroundColor(Color.SubtitleText)
                                                 .frame(width: 30)
@@ -2185,32 +2119,27 @@ struct SingleYearBarGraphView: View {
                         }
                     }
                     .frame(maxWidth: .infinity)
-
                 }
                 .frame(width: proxy.size.width)
                 .frame(maxHeight: .infinity)
 
                 // average line
                 HStack(spacing: 8) {
-
                     Text(getAverageText(average: yearAverage))
                         .lineLimit(1)
                         .font(.system(size: 12, weight: .bold, design: .rounded))
                         .foregroundColor(Color.SubtitleText)
                         .offset(y: -1)
-                        .opacity((yearAverage/Double(getMax)) < 0.2 || (yearAverage/Double(getMax)) > 0.8 ? 0 : 1)
+                        .opacity((yearAverage / Double(getMax)) < 0.2 || (yearAverage / Double(getMax)) > 0.8 ? 0 : 1)
 
                     Line()
                         .stroke(Color.SubtitleText, style: StrokeStyle(lineWidth: 2, lineCap: .round, dash: [5]))
                         .frame(height: 1)
                         .frame(maxWidth: .infinity)
-
                 }
                 .opacity(actualMonths <= 1 ? 0 : 1)
                 .offset(y: getOffset(size: proxy.size, maxi: getMax, average: yearAverage) - 5)
-
             }
-
         }
         .onChange(of: selectedDate) { _ in
             selectedDateAmount = monthDictionary[selectedDate ?? Date.now] ?? 0.0
@@ -2232,17 +2161,16 @@ struct SingleYearBarGraphView: View {
 
         let loaded = dataController.getInsights(type: 3, date: year, income: income)
 
-        self.monthsOfYear = loaded.dates
-        self.monthDictionary = loaded.dateDictionary
+        monthsOfYear = loaded.dates
+        monthDictionary = loaded.dateDictionary
         self.max = loaded.maximum
-        self.yearTotal = loaded.amount
-        self.yearAverage = loaded.average
-        self.actualMonths = loaded.numberOfDays
+        yearTotal = loaded.amount
+        yearAverage = loaded.average
+        actualMonths = loaded.numberOfDays
     }
 }
 
 func getMaxText(maxi: Int) -> String {
-
     if maxi == 0 {
         return "10"
     }
@@ -2251,12 +2179,12 @@ func getMaxText(maxi: Int) -> String {
 
     let stringArray = string.compactMap { String($0) }
 
-    if maxi >= 1000000 {
+    if maxi >= 1_000_000 {
         return stringArray[0] + "M"
-    } else if maxi >= 100000 {
-        return string.prefix(3)  + "k"
+    } else if maxi >= 100_000 {
+        return string.prefix(3) + "k"
     } else if maxi >= 10000 {
-        return string.prefix(2)  + "k"
+        return string.prefix(2) + "k"
     } else if maxi >= 1000 {
         let string = String(maxi)
 
@@ -2280,12 +2208,11 @@ struct ChartTimePickerView: View {
     @Environment(\.colorScheme) var systemColorScheme
 
     var darkMode: Bool {
-        ((colourScheme == 0 && systemColorScheme == .dark) || colourScheme == 2)
+        (colourScheme == 0 && systemColorScheme == .dark) || colourScheme == 2
     }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 1) {
-
             ForEach(ChartTimeFrame.allCases, id: \.self) { time in
                 HStack {
                     Text(LocalizedStringKey(time.rawValue))
@@ -2345,9 +2272,7 @@ struct ChartTimePickerView: View {
                 timeframe = ChartTimeFrame.year
             }
         }
-
     }
-
 }
 
 struct AnimatedBarGraph: View {
@@ -2373,7 +2298,6 @@ struct AnimatedBarGraph: View {
                         showBar = true
                     }
                 }
-
             }
         }
     }
@@ -2388,7 +2312,6 @@ struct AnimatedHorizontalBarGraph: View {
 
     var body: some View {
         HStack(spacing: 0) {
-
             RoundedRectangle(cornerRadius: 6)
                 .fill(category.category.income ? Color(hex: Color.colorArray[index]) : Color(hex: category.category.wrappedColour))
                 .frame(width: showBar ? nil : 0, alignment: .leading)
@@ -2404,7 +2327,6 @@ struct AnimatedHorizontalBarGraph: View {
                         showBar = true
                     }
                 }
-
             }
         }
     }
@@ -2463,7 +2385,6 @@ struct InsightsDollarView: View {
                 }
             }
         }
-
     }
 
     init(amount: Double, currencySymbol: String, showCents: Bool, net: Bool? = nil) {
@@ -2479,12 +2400,12 @@ func getAverageText(average: Double) -> String {
 
     let stringArray = string.compactMap { String($0) }
 
-    if average >= 1000000 {
+    if average >= 1_000_000 {
         return stringArray[0] + "M"
-    } else if average >= 100000 {
-        return string.prefix(3)  + "k"
+    } else if average >= 100_000 {
+        return string.prefix(3) + "k"
     } else if average >= 10000 {
-        return string.prefix(2)  + "k"
+        return string.prefix(2) + "k"
     } else if average >= 1000 {
         return stringArray[0] + "." + stringArray[1] + "k"
     } else {
@@ -2496,7 +2417,7 @@ func getOffset(size: CGSize, maxi: Int, average: Double) -> Double {
     if maxi == 0 {
         return 0
     } else {
-        let height = (size.height*0.85) - ((average / Double(maxi)) * (size.height*0.85))
+        let height = (size.height * 0.85) - ((average / Double(maxi)) * (size.height * 0.85))
         return height
     }
 }
@@ -2505,7 +2426,7 @@ func getBarHeight(point: CGFloat, size: CGSize, maxi: Int) -> CGFloat {
     if maxi == 0 {
         return 0
     } else {
-        let height = (point / CGFloat(maxi)) * (size.height*0.85)
+        let height = (point / CGFloat(maxi)) * (size.height * 0.85)
         return height
     }
 }

@@ -38,7 +38,7 @@ struct WiggleBounceModifier: GeometryEffect {
         set { amount = newValue }
     }
 
-    func effectValue(size: CGSize) -> ProjectionTransform {
+    func effectValue(size _: CGSize) -> ProjectionTransform {
         let bounce = sin(.pi * 2 * animatableData) * bounceAmount
         let translationEffect = CGAffineTransform(translationX: 0, y: CGFloat(bounce))
         return ProjectionTransform(translationEffect)
@@ -47,8 +47,7 @@ struct WiggleBounceModifier: GeometryEffect {
 
 extension View {
     func wiggling(isWiggling: Binding<Bool>, rotationAmount: Double = 3, bounceAmount: Double = 1) -> some View {
-        self
-            .modifier(WiggleRotationModifier(isWiggling: isWiggling, rotationAmount: rotationAmount))
+        modifier(WiggleRotationModifier(isWiggling: isWiggling, rotationAmount: rotationAmount))
             .modifier(WiggleBounceModifier(amount: isWiggling.wrappedValue ? 1 : 0, bounceAmount: bounceAmount))
             .animation(isWiggling.wrappedValue ? AnimationUtils.wiggleAnimation(interval: 0.3, variance: 0.025).repeatForever(autoreverses: true) : .default, value: isWiggling.wrappedValue)
     }

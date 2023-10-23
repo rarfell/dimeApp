@@ -15,17 +15,15 @@ import IntentsUI
 // "Send a message using <myApp>"
 
 class IntentViewController: UIViewController, INUIHostedViewControlling {
-
     // MARK: - INUIHostedViewControlling
 
     // Prepare your view controller for the interaction to handle.
-    func configureView(for parameters: Set<INParameter>, of interaction: INInteraction, interactiveBehavior: INUIInteractiveBehavior, context: INUIHostedViewContext, completion: @escaping (Bool, Set<INParameter>, CGSize) -> Void) {
+    func configureView(for parameters: Set<INParameter>, of _: INInteraction, interactiveBehavior _: INUIInteractiveBehavior, context _: INUIHostedViewContext, completion: @escaping (Bool, Set<INParameter>, CGSize) -> Void) {
         // Do configuration here, including preparing views and calculating a desired size for presentation.
-        completion(true, parameters, self.desiredSize)
+        completion(true, parameters, desiredSize)
     }
 
     var desiredSize: CGSize {
-        return self.extensionContext!.hostedViewMaximumAllowedSize
+        return extensionContext!.hostedViewMaximumAllowedSize
     }
-
 }

@@ -26,7 +26,7 @@ struct UpdateAlert: View {
         WelcomeSheetFeatureRow(icon: "circle.grid.2x2.fill", header: "Re-designed Screens", subtitle: "Budget and category creation screens have been completely reworked."),
         WelcomeSheetFeatureRow(icon: "swatchpalette.fill", header: "Custom Category Colors", subtitle: "Using the stock iOS color picker, give your categories a long-awaited aesthetic refresh."),
         WelcomeSheetFeatureRow(icon: "exclamationmark.octagon.fill", header: "New Toasts", subtitle: "Similarly, alert toasts across the app have been re-designed."),
-        WelcomeSheetFeatureRow(icon: "calendar", header: "Custom Time Frames", subtitle: "Change the start of a month's cycle to align with payday.")
+        WelcomeSheetFeatureRow(icon: "calendar", header: "Custom Time Frames", subtitle: "Change the start of a month's cycle to align with payday."),
     ]
 
     var body: some View {
@@ -82,7 +82,6 @@ struct UpdateAlert: View {
                             .padding(7)
                             .background(Color.SecondaryBackground, in: Circle())
                             .contentShape(Circle())
-
                     }
                     .offset(x: 5, y: -5)
                 }
@@ -109,11 +108,8 @@ struct UpdateAlert: View {
                                         .fixedSize(horizontal: false, vertical: true)
                                         .foregroundColor(Color.SubtitleText)
                                 }
-
                             }
-
                         }
-
                     }
                     .padding(.horizontal, 10)
                 }
@@ -130,10 +126,8 @@ struct UpdateAlert: View {
             .offset(y: offset)
             .padding(.horizontal, 17)
             .padding(.bottom, bottomEdge == 0 ? 13 : bottomEdge)
-
         }
         .edgesIgnoringSafeArea(.all)
         .background(BackgroundBlurView())
     }
-
 }

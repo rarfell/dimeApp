@@ -3,8 +3,8 @@
 //  xpenz
 //
 //  Created by Rafael Soh on 21/5/22.
-import SwiftUI
 import Foundation
+import SwiftUI
 
 struct DonutSemicircle: Shape {
     var percent: Double
@@ -25,14 +25,14 @@ struct DonutSemicircle: Shape {
         let weirdLength = sqrt(((radius - cornerRadius) * (radius - cornerRadius)) - (cornerRadius * cornerRadius))
         let weirderLength = radius - weirdLength
         let innerRadius = radius - width
-        let stupidAngle = acos(((innerRadius + cornerRadius) * (innerRadius + cornerRadius) + (innerRadius + weirderLength) * (innerRadius + weirderLength) - cornerRadius * cornerRadius)/(2 * (innerRadius + cornerRadius) * (innerRadius + weirderLength)))
-        let dumbassAngle = asin((cornerRadius)/(innerRadius + cornerRadius))
+        let stupidAngle = acos(((innerRadius + cornerRadius) * (innerRadius + cornerRadius) + (innerRadius + weirderLength) * (innerRadius + weirderLength) - cornerRadius * cornerRadius) / (2 * (innerRadius + cornerRadius) * (innerRadius + weirderLength)))
+        let dumbassAngle = asin(cornerRadius / (innerRadius + cornerRadius))
 
         var path = Path()
         path.move(to: CGPoint(x: radius - weirdLength, y: rect.maxY))
 //        path.move(to:CGPoint(x: rect.width * 0.3, y: rect.maxY))
 
-        let firstControlPoint = CGPoint(x: (radius - radius * cos(cornerAngle)), y: (rect.maxY - radius * sin(cornerAngle)))
+        let firstControlPoint = CGPoint(x: radius - radius * cos(cornerAngle), y: rect.maxY - radius * sin(cornerAngle))
 
         path.addQuadCurve(to: firstControlPoint, control: CGPoint(x: 0, y: rect.maxY))
 
@@ -54,11 +54,11 @@ struct DonutSemicircle: Shape {
             thirdControlPointTo = CGPoint(x: radius + innerRadius * cos(stupidAngle + CGFloat(180 * (1 - percent)).toRadians()), y: radius - innerRadius * sin(stupidAngle + CGFloat(180 * (1 - percent)).toRadians()))
 
         } else if percent < 0.5 {
-            secondControlPoint = CGPoint(x: radius - radius * cos(CGFloat(180 * (percent)).toRadians()), y: radius - radius * sin(CGFloat(180 * (percent)).toRadians()))
-            secondControlPointTo = CGPoint(x: radius - weirdLength * cos(CGFloat(180 * (percent)).toRadians()), y: radius - weirdLength * sin(CGFloat(180 * (percent)).toRadians()))
-            thirdControlPointFrom = CGPoint(x: radius - (innerRadius + weirderLength) * cos(CGFloat(180 * (percent)).toRadians()), y: radius - (innerRadius + weirderLength) * sin(CGFloat(180 * (percent)).toRadians()))
-            thirdControlPoint = CGPoint(x: radius - innerRadius * cos(CGFloat(180 * (percent)).toRadians()), y: radius - innerRadius * sin(CGFloat(180 * (percent)).toRadians()))
-           thirdControlPointTo = CGPoint(x: radius - innerRadius * cos(-stupidAngle + CGFloat(180 * (percent)).toRadians()), y: radius - innerRadius * sin(-stupidAngle + CGFloat(180 * (percent)).toRadians()))
+            secondControlPoint = CGPoint(x: radius - radius * cos(CGFloat(180 * percent).toRadians()), y: radius - radius * sin(CGFloat(180 * percent).toRadians()))
+            secondControlPointTo = CGPoint(x: radius - weirdLength * cos(CGFloat(180 * percent).toRadians()), y: radius - weirdLength * sin(CGFloat(180 * percent).toRadians()))
+            thirdControlPointFrom = CGPoint(x: radius - (innerRadius + weirderLength) * cos(CGFloat(180 * percent).toRadians()), y: radius - (innerRadius + weirderLength) * sin(CGFloat(180 * percent).toRadians()))
+            thirdControlPoint = CGPoint(x: radius - innerRadius * cos(CGFloat(180 * percent).toRadians()), y: radius - innerRadius * sin(CGFloat(180 * percent).toRadians()))
+            thirdControlPointTo = CGPoint(x: radius - innerRadius * cos(-stupidAngle + CGFloat(180 * percent).toRadians()), y: radius - innerRadius * sin(-stupidAngle + CGFloat(180 * percent).toRadians()))
         } else {
             secondControlPoint = CGPoint(x: rect.midX, y: rect.minY)
             secondControlPointTo = CGPoint(x: rect.midX, y: radius - weirdLength)
@@ -102,7 +102,7 @@ struct RoundedTriangle: Shape {
         let firstCentre = CGPoint(x: weirdLength, y: cornerRadius)
 
         path.move(to: firstControlPointFrom)
-        path.addArc(center: firstCentre, radius: cornerRadius, startAngle: Angle(degrees: 270), endAngle: (Angle(degrees: 270) - Angle(radians: (CGFloat.pi - cornerAngle))), clockwise: true)
+        path.addArc(center: firstCentre, radius: cornerRadius, startAngle: Angle(degrees: 270), endAngle: Angle(degrees: 270) - Angle(radians: CGFloat.pi - cornerAngle), clockwise: true)
 //        path.addQuadCurve(to: firstControlPointTo, control: firstControlPoint)
 
         let weirdHypot = cornerRadius / tan((CGFloat.pi / 2) - cornerAngle)
@@ -110,7 +110,7 @@ struct RoundedTriangle: Shape {
         let weirdWidth = weirdHypot * cos(cornerAngle)
         let weirdHeight = weirdHypot * sin(cornerAngle)
 
-        let secondControlPointFrom = CGPoint(x: ((rect.width / 2) - weirdWidth), y: (rect.height - weirdHeight))
+        let secondControlPointFrom = CGPoint(x: (rect.width / 2) - weirdWidth, y: rect.height - weirdHeight)
 //        let secondControlPoint = CGPoint(x: rect.midX, y: rect.maxY)
 //        let secondControlPointTo = CGPoint(x: ((rect.width / 2) + weirdWidth), y: (rect.height - weirdHeight))
 
@@ -118,7 +118,7 @@ struct RoundedTriangle: Shape {
         let secondCentre = CGPoint(x: rect.midX, y: rect.height - weirderLength)
 
         path.addLine(to: secondControlPointFrom)
-        path.addArc(center: secondCentre, radius: cornerRadius, startAngle: (Angle(degrees: 90) + Angle(radians: cornerAngle)), endAngle: (Angle(degrees: 90) - Angle(radians: cornerAngle)), clockwise: true)
+        path.addArc(center: secondCentre, radius: cornerRadius, startAngle: Angle(degrees: 90) + Angle(radians: cornerAngle), endAngle: Angle(degrees: 90) - Angle(radians: cornerAngle), clockwise: true)
 //        path.addQuadCurve(to: secondControlPointTo, control: secondControlPoint)
 
         let thirdControlPointFrom = CGPoint(x: rect.width - weirdLength + (cornerRadius * cos(CGFloat.pi / 2 - cornerAngle)), y: cornerRadius + (cornerRadius * sin(CGFloat.pi / 2 - cornerAngle)))
@@ -128,7 +128,7 @@ struct RoundedTriangle: Shape {
         let thirdCentre = CGPoint(x: rect.width - weirdLength, y: cornerRadius)
 
         path.addLine(to: thirdControlPointFrom)
-        path.addArc(center: thirdCentre, radius: cornerRadius, startAngle: (Angle(degrees: 90) - Angle(radians: cornerAngle)), endAngle: Angle(degrees: 270), clockwise: true)
+        path.addArc(center: thirdCentre, radius: cornerRadius, startAngle: Angle(degrees: 90) - Angle(radians: cornerAngle), endAngle: Angle(degrees: 270), clockwise: true)
 //        path.addQuadCurve(to: thirdControlPointTo, control: thirdControlPoint)
         path.closeSubpath()
 
@@ -182,7 +182,6 @@ struct CustomCapsuleProgress: View {
                 .font(.system(.footnote, design: .rounded).weight(.bold))
                 .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                .font(.system(size: 12, weight: .bold, design: .rounded))
-
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
@@ -208,7 +207,6 @@ struct RingView: View {
                     .trim(from: 0, to: percent)
                     .stroke(topStroke, style: StrokeStyle(lineWidth: width, lineCap: .round))
             }
-
         }
         .rotationEffect(.init(degrees: -90))
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -231,7 +229,6 @@ struct Donut: Shape {
 }
 
 struct TestView: View {
-
     @State var time = Date()
     @State var strength: Float = 2.0
 
@@ -247,14 +244,12 @@ struct TestView: View {
                     .animation(.linear(duration: 1), value: self.strength)
             }
         }
-
     }
-
 }
 
 struct ShaderPlaygroundShowcase: View {
     var body: some View {
-       Text("hello world")
+        Text("hello world")
         // .frame(width: 295, height: 360)
         // .frame(width: 295)
     }

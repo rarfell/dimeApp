@@ -5,8 +5,8 @@
 //  Created by Rafael Soh on 9/9/22.
 //
 
-import WidgetKit
 import SwiftUI
+import WidgetKit
 
 struct LockBudgetWidget: Widget {
     let kind: String = "LockBudgetWidget"
@@ -16,7 +16,7 @@ struct LockBudgetWidget: Widget {
             return [
                 .accessoryCircular,
                 .accessoryRectangular,
-                .accessoryInline
+                .accessoryInline,
             ]
         } else {
             return [WidgetFamily]()
@@ -24,7 +24,6 @@ struct LockBudgetWidget: Widget {
     }
 
     var body: some WidgetConfiguration {
-
         IntentConfiguration(kind: kind, intent: BudgetWidgetConfigurationIntent.self, provider: LockBudgetWidgetProvider()) { entry in
             LockBudgetWidgetEntryView(entry: entry)
         }
@@ -39,24 +38,20 @@ struct LockBudgetWidgetProvider: IntentTimelineProvider {
 
     public typealias Entry = LockBudgetWidgetEntry
 
-    func placeholder(in context: Context) -> LockBudgetWidgetEntry {
-
+    func placeholder(in _: Context) -> LockBudgetWidgetEntry {
         let loaded = loadData(budgetId: "")
 
         return LockBudgetWidgetEntry(date: Date(), totalSpent: loaded.total, timeLeft: loaded.timeLeft, budget: loaded.budget, configuration: BudgetWidgetConfigurationIntent())
-
     }
 
-    func getSnapshot(for configuration: BudgetWidgetConfigurationIntent, in context: Context, completion: @escaping (LockBudgetWidgetEntry) -> Void) {
-
+    func getSnapshot(for configuration: BudgetWidgetConfigurationIntent, in _: Context, completion: @escaping (LockBudgetWidgetEntry) -> Void) {
         let loaded = loadData(budgetId: configuration.budget?.identifier ?? "")
 
         let entry = LockBudgetWidgetEntry(date: Date(), totalSpent: loaded.total, timeLeft: loaded.timeLeft, budget: loaded.budget, configuration: configuration)
         completion(entry)
     }
 
-    func getTimeline(for configuration: BudgetWidgetConfigurationIntent, in context: Context, completion: @escaping (Timeline<Entry>) -> Void) {
-
+    func getTimeline(for configuration: BudgetWidgetConfigurationIntent, in _: Context, completion: @escaping (Timeline<Entry>) -> Void) {
         let loaded = loadData(budgetId: configuration.budget?.identifier ?? "")
 
         let entry = LockBudgetWidgetEntry(date: Date(), totalSpent: loaded.total, timeLeft: loaded.timeLeft, budget: loaded.budget, configuration: configuration)
@@ -115,7 +110,6 @@ struct LockBudgetWidgetProvider: IntentTimelineProvider {
             return (0, "", budget)
         }
     }
-
 }
 
 struct LockBudgetWidgetEntry: TimelineEntry {
@@ -158,17 +152,18 @@ struct LockBudgetWidgetEntryView: View {
     }
 
     var percent: Double {
-        return entry.totalSpent/entry.budget.budgetAmount
+        return entry.totalSpent / entry.budget.budgetAmount
     }
 
     var percentString: String {
-        return String(localized: "\(Int(round((entry.totalSpent/entry.budget.budgetAmount) * 100)))% spent")
+        return String(localized: "\(Int(round((entry.totalSpent / entry.budget.budgetAmount) * 100)))% spent")
     }
 
     @AppStorage("currency", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var currency: String = Locale.current.currencyCode!
     var currencySymbol: String {
         return Locale.current.localizedCurrencySymbol(forCurrencyCode: currency)!
     }
+
     @AppStorage("showCents", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var showCents: Bool = true
 
     var body: some View {
@@ -184,7 +179,6 @@ struct LockBudgetWidgetEntryView: View {
         case .accessoryCircular:
             if #available(iOS 17.0, *) {
                 if entry.configuration.budget == nil {
-
                     ZStack {
                         AccessoryWidgetBackground()
 
@@ -251,7 +245,6 @@ struct LockBudgetWidgetEntryView: View {
                                     Text("•")
                                     Text(percentString)
                                 }
-
                             }
                             .font(.system(size: 15, weight: .semibold, design: .rounded))
 
@@ -259,7 +252,7 @@ struct LockBudgetWidgetEntryView: View {
                                 .font(.system(size: 14, weight: .regular, design: .rounded))
                                 .foregroundColor(Color.SubtitleText)
 
-                            Gauge(value: percent, in: 0...1) {
+                            Gauge(value: percent, in: 0 ... 1) {
                                 Text("Percent Spent")
                             } currentValueLabel: {
                                 EmptyView()
@@ -295,7 +288,6 @@ struct LockBudgetWidgetEntryView: View {
                                     Text("•")
                                     Text(percentString)
                                 }
-
                             }
                             .font(.system(size: 15, weight: .semibold, design: .rounded))
 
@@ -304,7 +296,7 @@ struct LockBudgetWidgetEntryView: View {
                                 .foregroundColor(Color.SubtitleText)
 
                             if #available(iOS 16.0, *) {
-                                Gauge(value: percent, in: 0...1) {
+                                Gauge(value: percent, in: 0 ... 1) {
                                     Text("Percent Spent")
                                 } currentValueLabel: {
                                     EmptyView()
@@ -317,7 +309,6 @@ struct LockBudgetWidgetEntryView: View {
                                 }
                                 .frame(height: 5)
                                 .gaugeStyle(.accessoryLinear)
-
                             }
                         }
                         .frame(width: proxy.size.width, height: proxy.size.height, alignment: .top)
@@ -330,7 +321,6 @@ struct LockBudgetWidgetEntryView: View {
         default:
             EmptyView()
         }
-
     }
 
     func showPercent(size: CGFloat) -> Bool {

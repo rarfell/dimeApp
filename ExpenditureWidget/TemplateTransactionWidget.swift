@@ -21,7 +21,7 @@
 ////            return [WidgetFamily]()
 ////        }
 ////    }
-//    
+//
 //    var body: some WidgetConfiguration {
 //        StaticConfiguration(kind: kind, provider: TemplateTransactionWidgetProvider()) { entry in
 //            TemplateTransactionWidgetEntryView(entry: entry)
@@ -33,45 +33,45 @@
 // }
 //
 // struct TemplateTransactionWidgetProvider: TimelineProvider {
-//    
+//
 //    typealias Entry = TemplateTransactionWidgetEntry
-//    
+//
 //    func placeholder(in context: Context) -> TemplateTransactionWidgetEntry {
 //        let fetched = loadData()
 //        return TemplateTransactionWidgetEntry(date: Date(), added: fetched.added, gridItems: fetched.transactions)
 //    }
-//    
+//
 //    func getSnapshot(in context: Context, completion: @escaping (TemplateTransactionWidgetEntry) -> Void) {
 //        let fetched = loadData()
 //        let entry = TemplateTransactionWidgetEntry(date: Date(), added: fetched.added, gridItems: fetched.transactions)
 //        completion(entry)
 //    }
-//    
+//
 //    func getTimeline(in context: Context, completion: @escaping (Timeline<TemplateTransactionWidgetEntry>) -> Void) {
 //        let fetched = loadData()
 //        let entry = TemplateTransactionWidgetEntry(date: Date(), added: fetched.added, gridItems: fetched.transactions)
-//        
+//
 //        let timeline = Timeline(entries: [entry], policy: .atEnd)
-//        
+//
 //        completion(timeline)
 //    }
-//    
+//
 //    func loadData() -> (transactions:[HoldingTemplateTransaction], added: Bool) {
 //        let dataController = DataController.shared
 //        let fetchedTemplates = dataController.getAllTemplateTransactions()
-//        
+//
 //        var holding = [HoldingTemplateTransaction]()
-//        
+//
 //        for i in 0...3 {
 //            let match = fetchedTemplates.first(where: {
 //                $0.order == i
 //            })
-//            
+//
 //            holding.append(HoldingTemplateTransaction(id: i, transaction: match))
 //        }
-//        
+//
 //        let addedTransaction = dataController.addedTransaction
-//        
+//
 //        return (holding, addedTransaction)
 //    }
 // }
@@ -89,19 +89,19 @@
 //
 //
 // struct TemplateTransactionWidgetEntryView: View {
-//    
+//
 //    let entry: TemplateTransactionWidgetProvider.Entry
-//    
+//
 //    @AppStorage("showCents", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var showCents: Bool = true
 //    @AppStorage("currency", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var currency: String = Locale.current.currencyCode!
 //    var currencySymbol: String {
 //        return Locale.current.localizedCurrencySymbol(forCurrencyCode: currency)!
 //    }
-//    
+//
 //    let columns = Array(repeating: GridItem(.flexible(), spacing: 10), count: 2)
-//    
+//
 //    let individualGridCornerRadius: CGFloat = 10
-//    
+//
 //    var body: some View {
 //        if #available(iOS 17.0, *) {
 //            if entry.added {
@@ -111,7 +111,7 @@
 //                        .foregroundColor(Color.IncomeGreen)
 //                        .frame(width: 30, height: 30)
 //                        .background(Color.IncomeGreen.opacity(0.3), in: Circle())
-//                    
+//
 //                    Text("Transaction Added")
 //                        .font(.system(size: 15, weight: .semibold, design: .rounded))
 //                        .foregroundColor(Color.IncomeGreen)
@@ -124,10 +124,10 @@
 //            } else {
 //                GeometryReader { proxy in
 //                    let square = (proxy.size.width - 10) / 2
-//                    
+//
 //                    LazyVGrid(columns: columns, spacing: 10) {
 //                        ForEach(entry.gridItems) { gridItem in
-//                            
+//
 //        //                        .frame(maxWidth: .infinity, maxHeight: .infinity)
 //                                if let transaction = gridItem.transaction {
 //                                    Button(intent: TemplateTransactionIntent(order: Int(transaction.order))) {
@@ -140,8 +140,8 @@
 //                                        .fill(Color.SecondaryBackground)
 //                                        .frame(width: square, height:square)
 //                                }
-//                    
-//                            
+//
+//
 //                        }
 //                    }
 //                    .frame(width: proxy.size.width, height: proxy.size.height)
@@ -153,13 +153,13 @@
 //                .id(entry)
 //                .transition(.push(from: .bottom))
 //            }
-//            
+//
 //        } else {
 //            ZStack {
 //                Circle()
 //                    .fill(Color.SecondaryBackground.opacity(0.5))
-//                
-//                
+//
+//
 //                Text("\(currencySymbol.count < 3 ? "+" : "")\(currencySymbol)")
 //                    .font(.system(size: currencySymbol.count < 3 ? 13 : 11, weight: .bold, design: .rounded))
 //                    .foregroundColor(Color.SecondaryBackground)
@@ -167,12 +167,12 @@
 //                    .frame(maxWidth: .infinity)
 //                    .background(Color.white, in: RoundedRectangle(cornerRadius: 4, style: .continuous))
 //                    .padding(.horizontal, 9)
-//                
+//
 //            }
 //            .padding(0.5)
 //            .widgetURL(URL(string: "dimeapp://newExpense"))
 //        }
-//        
+//
 //    }
 // }
 //
@@ -182,16 +182,16 @@
 //    let currencySymbol: String
 //    let size: CGFloat
 //    let cornerRadius: CGFloat
-//    
+//
 //    var downsize: (big: CGFloat, small: CGFloat, amountText: String) {
 //        let amountText: String
-//        
+//
 //        if showCents && transaction.amount < 100 {
 //            amountText = String(format: "%.2f", transaction.amount)
 //        } else {
 //            amountText = String(format: "%.0f", transaction.amount)
 //        }
-//        
+//
 //        if amountText.widthOfRoundedString(size: 12, weight: .semibold) + currencySymbol.widthOfRoundedString(size: 9, weight: .semibold) > size {
 //            return (10, 7.5, amountText)
 //        } else if amountText.widthOfRoundedString(size: 15, weight: .semibold) + currencySymbol.widthOfRoundedString(size: 12, weight: .semibold) > size {
@@ -200,8 +200,8 @@
 //            return (15, 12, amountText)
 //        }
 //    }
-//    
-//    
+//
+//
 //    var transactionColor: Color {
 //        if transaction.category?.income ?? false {
 //            return Color.IncomeGreen
@@ -209,29 +209,29 @@
 //            return Color(hex: transaction.wrappedColour)
 //        }
 //    }
-//    
+//
 //    var body: some View {
 //        VStack(spacing: 6) {
 //            Text(transaction.wrappedEmoji)
 //                .font(.system(size: 14, weight: .semibold, design: .rounded))
 ////                .padding(5)
 ////                .background(blend(over: transactionColor, withAlpha: 0.3), in: RoundedRectangle(cornerRadius: 8))
-//            
-//            
+//
+//
 //            HStack(alignment: .lastTextBaseline, spacing: 0.5) {
 //                Text(currencySymbol)
 //                    .font(.system(size: downsize.small, weight: .semibold, design: .rounded))
 //                    .foregroundColor(Color.PrimaryText.opacity(0.8))
 //                    .baselineOffset(getDollarOffset(big: downsize.big, small: downsize.small))
-//                
-//                
+//
+//
 //                Text(downsize.amountText)
 //                    .font(.system(size: downsize.big, weight: .semibold, design: .rounded))
 //                    .foregroundColor(Color.PrimaryText.opacity(0.8))
-//                
+//
 //            }
 //            .frame(height: size / 2.5, alignment: .bottom)
-//            
+//
 //        }
 //        .padding(5)
 //        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
@@ -243,7 +243,7 @@
 // func getDollarOffset(big: CGFloat, small: CGFloat) -> CGFloat {
 //    let bigFont = UIFont.rounded(ofSize: big, weight: .semibold)
 //    let smallFont = UIFont.rounded(ofSize: small, weight: .semibold)
-//    
+//
 //    return bigFont.capHeight - smallFont.capHeight
 // }
 
@@ -263,17 +263,17 @@
 //
 //    func perform() async throws -> some IntentResult & ProvidesDialog {
 //        let dataController = DataController.shared
-//        
+//
 //        dataController.newTemplateTransaction(order: order)
-//        
+//
 //        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
 //            dataController.addedTransaction = false
 //            WidgetCenter.shared.reloadTimelines(ofKind: "TemplateTransactions")
-//            
+//
 //        }
-//        
+//
 //        return .result(dialog: "Hello")
 //
-//        
+//
 //    }
 // }

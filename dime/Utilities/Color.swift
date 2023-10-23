@@ -5,12 +5,11 @@
 //  Created by Rafael Soh on 10/5/22.
 //
 
+import Combine
 import Foundation
 import SwiftUI
-import Combine
 
 extension Color {
-
     static let colourMigrationDictionary: [String: String] = [
         "1": "#279AF4",
         "2": "#EC7A58",
@@ -35,7 +34,7 @@ extension Color {
         "21": "#F1AF8A",
         "22": "#2D4B7B",
         "23": "#5FAF9F",
-        "24": "#D46D7F"
+        "24": "#D46D7F",
     ]
 
     static let colorArray: [String] = [
@@ -62,7 +61,7 @@ extension Color {
         "#F1AF8A",
         "#2D4B7B",
         "#5FAF9F",
-        "#D46D7F"
+        "#D46D7F",
     ]
 
     static let neuBackground = Color(hex: "f0f0f3")
@@ -111,7 +110,7 @@ extension Color {
         let r = components?[0] ?? 0
         let g = components?[1] ?? 0
         let b = components?[2] ?? 0
-        return (0.299 * Double(r) + 0.587 * Double(g) + 0.114 * Double(b))
+        return 0.299 * Double(r) + 0.587 * Double(g) + 0.114 * Double(b)
     }
 
     static var PrimaryBackground: Color {
@@ -179,10 +178,10 @@ extension Color {
     }
 }
 
-extension View {
+public extension View {
     @available(iOS 14.0, *)
-    public func colorPickerSheet(isPresented: Binding<Bool>, selection: Binding<Color>, supportsAlpha: Bool = true, title: String? = nil) -> some View {
-        self.background(ColorPickerSheet(isPresented: isPresented, selection: selection, supportsAlpha: supportsAlpha, title: title))
+    func colorPickerSheet(isPresented: Binding<Bool>, selection: Binding<Color>, supportsAlpha: Bool = true, title: String? = nil) -> some View {
+        background(ColorPickerSheet(isPresented: isPresented, selection: selection, supportsAlpha: supportsAlpha, title: title))
     }
 }
 
@@ -204,16 +203,15 @@ func blend(over color: Color, withAlpha alpha: CGFloat) -> Color {
     let whiteBlue = whiteComponents[2]
 
     // alpha blending
-    let red   = inputRed   * alphaClamped + whiteRed   * (1 - alphaClamped)
+    let red = inputRed * alphaClamped + whiteRed * (1 - alphaClamped)
     let green = inputGreen * alphaClamped + whiteGreen * (1 - alphaClamped)
-    let blue  = inputBlue  * alphaClamped + whiteBlue  * (1 - alphaClamped)
+    let blue = inputBlue * alphaClamped + whiteBlue * (1 - alphaClamped)
 
     return Color(UIColor(red: red, green: green, blue: blue, alpha: 1))
 }
 
 @available(iOS 14.0, *)
 private struct ColorPickerSheet: UIViewRepresentable {
-
     @Binding var isPresented: Bool
     @Binding var selection: Color
     var supportsAlpha: Bool
@@ -229,20 +227,20 @@ private struct ColorPickerSheet: UIViewRepresentable {
         var didPresent = false
 
         init(selection: Binding<Color>, isPresented: Binding<Bool>) {
-            self._selection = selection
-            self._isPresented = isPresented
+            _selection = selection
+            _isPresented = isPresented
         }
 
         func colorPickerViewControllerDidSelectColor(_ viewController: UIColorPickerViewController) {
-
-            self.selection = Color(viewController.selectedColor)
+            selection = Color(viewController.selectedColor)
         }
-        func colorPickerViewControllerDidFinish(_ viewController: UIColorPickerViewController) {
+
+        func colorPickerViewControllerDidFinish(_: UIColorPickerViewController) {
             isPresented = false
             didPresent = false
-
         }
-        func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+
+        func presentationControllerDidDismiss(_: UIPresentationController) {
             isPresented = false
             didPresent = false
             print("change3")
@@ -259,14 +257,13 @@ private struct ColorPickerSheet: UIViewRepresentable {
         return top
     }
 
-    func makeUIView(context: Context) -> UIView {
+    func makeUIView(context _: Context) -> UIView {
         let view = UIView()
         view.isHidden = true
         return view
     }
 
     func updateUIView(_ uiView: UIView, context: Context) {
-
         if isPresented && !context.coordinator.didPresent {
             let modal = UIColorPickerViewController()
             modal.selectedColor = UIColor(selection)

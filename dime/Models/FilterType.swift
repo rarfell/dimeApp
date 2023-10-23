@@ -14,8 +14,8 @@ enum FilterType: String, CaseIterable {
     case week = "by week"
     case month = "by month"
     case category = "by category"
-    case recurring = "recurring"
-    case upcoming = "upcoming"
+    case recurring
+    case upcoming
 
     static var imageDictionary: [FilterType: String] = [
         .all: "square.text.square.fill",
@@ -25,6 +25,6 @@ enum FilterType: String, CaseIterable {
         .month: "m.square.fill",
         .category: "circle.grid.2x2.fill",
         .recurring: "repeat.circle.fill",
-        .upcoming: "sun.min.fill"
+        .upcoming: "sun.min.fill",
     ]
 }
