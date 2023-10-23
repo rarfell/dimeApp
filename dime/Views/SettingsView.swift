@@ -522,6 +522,16 @@ struct TipJarAlert: View {
     @State var opacity = 0.0
     @State var counter = 0
 
+    var bottomCaption: String {
+        if unlockManager.failedTransaction {
+            return "Tip failed to go through, please try again!"
+        } else if unlockManager.purchaseCount > 0 {
+            return "Thanks a million, \(Image(systemName: "heart.fill")) Rafael"
+        } else {
+            return "Have a great day ahead!"
+        }
+    }
+
 //    var sortedProducts: [SKProduct] {
 //        let holding = unlockManager.loadedProducts.sorted {
 //            $0.price.doubleValue > $1.price.doubleValue
@@ -558,14 +568,18 @@ struct TipJarAlert: View {
                 case .loading:
                     ProgressView {
                         Text("Loading")
-                            .font(.system(size: 18, weight: .medium, design: .rounded))
+                            .font(.system(.body, design: .rounded).weight(.medium))
+                            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+//                            .font(.system(size: 18, weight: .medium, design: .rounded))
                             .foregroundColor(Color.SubtitleText)
                             .frame(maxWidth: .infinity)
                             .frame(height: 200)
                     }
                 case .failed:
                     Text("Unable to load tip options, please try again later 🥲")
-                        .font(.system(size: 18, weight: .medium, design: .rounded))
+                        .font(.system(.body, design: .rounded).weight(.medium))
+                        .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+//                        .font(.system(size: 18, weight: .medium, design: .rounded))
                         .multilineTextAlignment(.center)
                         .foregroundColor(Color.SubtitleText)
                         .frame(maxWidth: .infinity)
@@ -574,9 +588,13 @@ struct TipJarAlert: View {
                     VStack(alignment: .leading, spacing: 4) {
                         HStack {
                             Image(systemName: "heart.fill")
-                                .font(.system(size: 16))
+                                .font(.system(.callout, design: .rounded))
+                                .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+//                                .font(.system(size: 16))
                             Text("Tip Jar")
-                                .font(.system(size: 22, weight: .medium, design: .rounded))
+                                .font(.system(.title2, design: .rounded).weight(.medium))
+                                .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+//                                .font(.system(size: 22, weight: .medium, design: .rounded))
                         }
                         .foregroundColor(.PrimaryText)
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -591,7 +609,9 @@ struct TipJarAlert: View {
                                 }
                             } label: {
                                 Image(systemName: "xmark")
-                                    .font(.system(size: 14, weight: .semibold))
+                                    .font(.system(.subheadline, design: .rounded).weight(.semibold))
+                                    .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+//                                    .font(.system(size: 14, weight: .semibold))
                                     .foregroundColor(Color.SubtitleText)
                                     .padding(7)
                                     .background(Color.SecondaryBackground, in: Circle())
@@ -602,7 +622,9 @@ struct TipJarAlert: View {
                         }
 
                         Text("Hey! Dime was built by a solo student developer, and is intended to be completely free-of-charge, with no paywalls or ads. If you enjoy using Dime and want to support development, please consider a small tip.")
-                            .font(.system(size: 16, weight: .medium, design: .rounded))
+                            .font(.system(.callout, design: .rounded).weight(.medium))
+                            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+//                            .font(.system(size: 16, weight: .medium, design: .rounded))
                             .foregroundColor(.SubtitleText)
                             .padding(.bottom, 20)
 
@@ -611,23 +633,12 @@ struct TipJarAlert: View {
                         })
                             .padding(.bottom, 20)
 
-                        if unlockManager.failedTransaction {
-                            Text("Tip failed to go through, please try again!")
-                                .font(.system(size: 14, weight: .medium, design: .rounded))
-                                .multilineTextAlignment(.center)
-                                .frame(maxWidth: .infinity)
-                                .foregroundColor(.SubtitleText)
-                        } else if unlockManager.purchaseCount > 0 {
-                            Text("Thanks a million, \(Image(systemName: "heart.fill")) Rafael")
-                                .font(.system(size: 14, weight: .medium, design: .rounded))
-                                .frame(maxWidth: .infinity)
-                                .foregroundColor(.SubtitleText)
-                        } else {
-                            Text("Have a great day ahead!")
-                                .font(.system(size: 14, weight: .medium, design: .rounded))
-                                .frame(maxWidth: .infinity)
-                                .foregroundColor(.SubtitleText)
-                        }
+                        Text(bottomCaption)
+                            .font(.system(.subheadline, design: .rounded).weight(.medium))
+                            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+//                                .font(.system(size: 14, weight: .medium, design: .rounded))
+                            .frame(maxWidth: .infinity)
+                            .foregroundColor(.SubtitleText)
                     }
                 }
 
@@ -694,6 +705,7 @@ struct ProductView: View {
                         unlock(product)
                     } label: {
                         Text(product.localizedPrice)
+                            .monospacedDigit()
                             .padding(6)
                             .background(Color.SecondaryBackground, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
                     }
@@ -701,7 +713,9 @@ struct ProductView: View {
             }
         }
         .foregroundColor(.PrimaryText)
-        .font(.system(size: 18, weight: .semibold, design: .rounded))
+        .font(.system(.body, design: .rounded).weight(.semibold))
+        .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+//        .font(.system(size: 18, weight: .semibold, design: .rounded))
     }
 
     func unlock(_ product: SKProduct) {
