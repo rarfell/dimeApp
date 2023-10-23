@@ -605,10 +605,8 @@ struct CategoryListView: View {
                             if let gonnaDelete = toDelete {
                                 moc.delete(gonnaDelete)
                             }
-
                             try? moc.save()
                         }
-
                         toDelete = nil
                         deleteMode = false
 
@@ -627,7 +625,6 @@ struct CategoryListView: View {
                             deleteMode = false
                             offset = 0
                         }
-
                     } label: {
                         Text("Cancel")
                             .font(.system(size: 20, weight: .semibold, design: .rounded))

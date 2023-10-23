@@ -236,15 +236,28 @@ struct SettingsView: View {
                                         tabBarManager.navigationShowTab()
                                     }
                                 }
-
                             ) {
                                 SettingsRowView(systemImage: "rectangle.grid.2x2.fill", title: "Categories", colour: 110)
                             }
+                            
+//                            NavigationLink(destination: SettingsWalletView()
+//                                .onAppear {
+//                                    withAnimation(.easeOut.speed(1.5)) {
+//                                        tabBarManager.navigationHideTab()
+//                                    }
+//                                }
+//                                .onDisappear {
+//                                    withAnimation(.easeOut.speed(1.5)) {
+//                                        tabBarManager.navigationShowTab()
+//                                    }
+//                                }
+//                            ) {
+//                                SettingsRowView(systemImage: "menucard.fill", title: "Wallet", colour: 115)
+//                            }
 
                             NavigationLink(destination: SettingsCloudView()) {
                                 SettingsRowView(systemImage: "icloud.fill", title: "iCloud Sync", colour: 111, optionalText: iCloudString)
                             }
-
 //
 //                            NavigationLink(destination: SettingsQuickAddWidgetView()) {
 //                                SettingsRowView(systemImage: "bolt.square.fill", title: "Quick-Add Widget", colour: 115)
@@ -2085,6 +2098,18 @@ struct SettingsCategoryView: View {
             .navigationBarHidden(true)
 //        .padding(20)
 //        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+            .background(Color.PrimaryBackground)
+    }
+}
+
+struct SettingsWalletView: View {
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+
+    var body: some View {
+        WalletView()
+            .navigationBarBackButtonHidden(true)
+            .navigationBarTitle("")
+            .navigationBarHidden(true)
             .background(Color.PrimaryBackground)
     }
 }
