@@ -62,7 +62,7 @@ extension Color {
         "#F1AF8A",
         "#2D4B7B",
         "#5FAF9F",
-        "#",
+        "#D46D7F",
     ]
 
     static let neuBackground = Color(hex: "f0f0f3")
