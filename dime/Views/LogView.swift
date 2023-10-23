@@ -1232,7 +1232,8 @@ struct SingleTransactionView: View {
     @GestureState var isDragging = false
 
     var imageSize: Double {
-        return min(15, 10 + (abs(offset + 40) / 10)) 
+        let scale = min(1.5, 1 + (abs(offset + 40) / 100))
+        return scale * 10 as Double
     }
 
     var imageScale: Double {
