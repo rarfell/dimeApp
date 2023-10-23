@@ -5,13 +5,12 @@
 //  Created by Rafael Soh on 6/8/23.
 //
 
-import Foundation
 import AppIntents
+import Foundation
 import SwiftUI
 
 @available(iOS 16.4, *)
 struct BudgetIntent: AppIntent {
-
     static var title: LocalizedStringResource = "Get Budget Insights"
 
     static var description =
@@ -37,7 +36,6 @@ struct BudgetIntent: AppIntent {
         switch type {
         case .overall:
             if let mainBudget = dataController.results(for: dataController.fetchRequestForMainBudget()).first {
-
                 amount = dataController.getBudgetLeftover(overallBudget: mainBudget)
 
                 budgetType = mainBudget.type
@@ -84,7 +82,7 @@ extension ShortcutsBudgetsType: AppEnum {
 
     static var caseDisplayRepresentations: [ShortcutsBudgetsType: DisplayRepresentation] = [
         .overall: DisplayRepresentation(title: "overall budget"),
-        .category: DisplayRepresentation(title: "categorical budget")
+        .category: DisplayRepresentation(title: "categorical budget"),
     ]
 }
 

@@ -1,17 +1,16 @@
 //
-//  Shortcuts.swift
+//  NewTransactionIntent.swift
 //  dime
 //
 //  Created by Rafael Soh on 23/7/23.
 //
 
+import AppIntents
 import Foundation
 import SwiftUI
-import AppIntents
 
 @available(iOS 16.4, *)
 struct NewTransactionIntent: AppIntent {
-
     static var title: LocalizedStringResource = "New Transaction"
 
     static var description =
@@ -20,7 +19,7 @@ struct NewTransactionIntent: AppIntent {
     @Parameter(title: "Type", description: "Type of the transaction", requestValueDialog: IntentDialog("Would you like to log an income or expense?"))
     var income: TransactionType
 
-    @Parameter(title: "Amount", description: "Value of the transaction", controlStyle: .field, inclusiveRange: (lowerBound: 0.01, upperBound: 100000000), requestValueDialog: IntentDialog("How much was transacted?"))
+    @Parameter(title: "Amount", description: "Value of the transaction", controlStyle: .field, inclusiveRange: (lowerBound: 0.01, upperBound: 100_000_000), requestValueDialog: IntentDialog("How much was transacted?"))
     var amount: Double
 
     @Parameter(title: "Category", description: "Category associated with the transaction", requestValueDialog: IntentDialog("What category does it come under?"))
@@ -39,16 +38,16 @@ struct NewTransactionIntent: AppIntent {
     var recurringType: RepeatType
 
 //    struct CategoryOptionsProvider: DynamicOptionsProvider {
-//       
+//
 //        func results() async throws -> ItemCollection<CategoryEntity> {
 //            let dataController = DataController()
-//            
+//
 //            let categories = dataController.getAllCategories().map { CategoryEntity(id: $0.id!, name: $0.wrappedName, emoji: $0.wrappedEmoji, income: $0.income)
 //            }
-//            
+//
 //            let incomeCategories = categories.filter { $0.income }
 //            let expenseCategories = categories.filter { !$0.income }
-//            
+//
 //            return ItemCollection {
 //                ItemSection(
 //                    "Income Categories",
@@ -62,7 +61,7 @@ struct NewTransactionIntent: AppIntent {
 //                        IntentItem<CategoryEntity>.init($0)
 //                    }
 //                )
-//                
+//
 //            }
 //        }
 //    }
@@ -179,7 +178,7 @@ extension TransactionType: AppEnum {
         .income: DisplayRepresentation(title: "income",
                                        image: .init(systemName: "plus.square.fill")),
         .expense: DisplayRepresentation(title: "expense",
-                                        image: .init(systemName: "minus.square.fill"))
+                                        image: .init(systemName: "minus.square.fill")),
     ]
 }
 
@@ -196,7 +195,7 @@ extension RepeatType: AppEnum {
     static var caseDisplayRepresentations: [RepeatType: DisplayRepresentation] = [
         .daily: DisplayRepresentation(title: "Daily"),
         .weekly: DisplayRepresentation(title: "Weekly"),
-        .monthly: DisplayRepresentation(title: "Monthly")
+        .monthly: DisplayRepresentation(title: "Monthly"),
     ]
 }
 
@@ -223,8 +222,8 @@ struct ShortcutTransactionView: View {
 
     var body: some View {
         HStack(spacing: 12) {
-            EmojiLogView(emoji: (transaction.category?.wrappedEmoji ?? "")
-                         , colour: (transaction.category?.wrappedColour ?? ""), future: false)
+            EmojiLogView(emoji: (transaction.category?.wrappedEmoji ?? ""),
+                         colour: (transaction.category?.wrappedColour ?? ""), future: false)
                 .frame(width: 35, height: 35, alignment: .center)
                 .overlay(alignment: .bottomTrailing) {
                     if transaction.recurringType > 0 {
@@ -244,9 +243,9 @@ struct ShortcutTransactionView: View {
                     .lineLimit(1)
 
                 Text(transaction.wrappedDate, format: .dateTime.hour().minute())
-                   .font(.system(size: 12, weight: .medium, design: .rounded))
-                   .foregroundColor(Color.SubtitleText)
-                   .lineLimit(1)
+                    .font(.system(size: 12, weight: .medium, design: .rounded))
+                    .foregroundColor(Color.SubtitleText)
+                    .lineLimit(1)
             }
             Spacer()
             if transaction.income {

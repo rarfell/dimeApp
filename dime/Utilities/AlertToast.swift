@@ -5,9 +5,9 @@
 //  Created by Rafael Soh on 1/7/22.
 //
 
+import Combine
 import Foundation
 import SwiftUI
-import Combine
 
 @available(iOS 13, macOS 11, *)
 private struct AnimatedCheckmark: View {
@@ -83,82 +83,80 @@ private struct AnimatedXmark: View {
 }
 
 #if os(macOS)
-@available(macOS 11, *)
-struct ActivityIndicator: NSViewRepresentable {
-    func makeNSView(context: NSViewRepresentableContext<ActivityIndicator>) -> NSProgressIndicator {
-        let nsView = NSProgressIndicator()
+    @available(macOS 11, *)
+    struct ActivityIndicator: NSViewRepresentable {
+        func makeNSView(context: NSViewRepresentableContext<ActivityIndicator>) -> NSProgressIndicator {
+            let nsView = NSProgressIndicator()
 
-        nsView.isIndeterminate = true
-        nsView.style = .spinning
-        nsView.startAnimation(context)
+            nsView.isIndeterminate = true
+            nsView.style = .spinning
+            nsView.startAnimation(context)
 
-        return nsView
+            return nsView
+        }
+
+        func updateNSView(_: NSProgressIndicator, context _: NSViewRepresentableContext<ActivityIndicator>) {}
     }
-
-    func updateNSView(_ nsView: NSProgressIndicator, context: NSViewRepresentableContext<ActivityIndicator>) {
-    }
-}
 #else
-@available(iOS 13, *)
-struct ActivityIndicator: UIViewRepresentable {
-    func makeUIView(context: UIViewRepresentableContext<ActivityIndicator>) -> UIActivityIndicatorView {
-        let progressView = UIActivityIndicatorView(style: .large)
-        progressView.startAnimating()
+    @available(iOS 13, *)
+    struct ActivityIndicator: UIViewRepresentable {
+        func makeUIView(context _: UIViewRepresentableContext<ActivityIndicator>) -> UIActivityIndicatorView {
+            let progressView = UIActivityIndicatorView(style: .large)
+            progressView.startAnimating()
 
-        return progressView
+            return progressView
+        }
+
+        func updateUIView(_: UIActivityIndicatorView, context _: UIViewRepresentableContext<ActivityIndicator>) {}
     }
-
-    func updateUIView(_ uiView: UIActivityIndicatorView, context: UIViewRepresentableContext<ActivityIndicator>) {}
-}
 #endif
 
 #if os(macOS)
-@available(macOS 11, *)
-public struct BlurView: NSViewRepresentable {
-    public typealias NSViewType = NSVisualEffectView
+    @available(macOS 11, *)
+    public struct BlurView: NSViewRepresentable {
+        public typealias NSViewType = NSVisualEffectView
 
-    public func makeNSView(context: Context) -> NSVisualEffectView {
-        let effectView = NSVisualEffectView()
-        effectView.material = .hudWindow
-        effectView.blendingMode = .withinWindow
-        effectView.state = NSVisualEffectView.State.active
-        return effectView
-    }
+        public func makeNSView(context _: Context) -> NSVisualEffectView {
+            let effectView = NSVisualEffectView()
+            effectView.material = .hudWindow
+            effectView.blendingMode = .withinWindow
+            effectView.state = NSVisualEffectView.State.active
+            return effectView
+        }
 
-    public func updateNSView(_ nsView: NSVisualEffectView, context: Context) {
-        nsView.material = .hudWindow
-        nsView.blendingMode = .withinWindow
+        public func updateNSView(_ nsView: NSVisualEffectView, context _: Context) {
+            nsView.material = .hudWindow
+            nsView.blendingMode = .withinWindow
+        }
     }
-}
 
 #else
 
-@available(iOS 13, *)
-public struct BlurView: UIViewRepresentable {
-    public typealias UIViewType = UIVisualEffectView
+    @available(iOS 13, *)
+    public struct BlurView: UIViewRepresentable {
+        public typealias UIViewType = UIVisualEffectView
 
-    public func makeUIView(context: Context) -> UIVisualEffectView {
-        return UIVisualEffectView(effect: UIBlurEffect(style: .systemMaterial))
-    }
+        public func makeUIView(context _: Context) -> UIVisualEffectView {
+            return UIVisualEffectView(effect: UIBlurEffect(style: .systemMaterial))
+        }
 
-    public func updateUIView(_ uiView: UIVisualEffectView, context: Context) {
-        uiView.effect = UIBlurEffect(style: .systemMaterial)
+        public func updateUIView(_ uiView: UIVisualEffectView, context _: Context) {
+            uiView.effect = UIBlurEffect(style: .systemMaterial)
+        }
     }
-}
 
 #endif
 
 // MARK: - Main View
+
 @available(iOS 13, macOS 11, *)
 public struct AlertToast: View {
-
     public enum BannerAnimation {
         case slide, pop
     }
 
     /// Determine how the alert will be display
     public enum DisplayMode: Equatable {
-
         /// Present at the center of the screen
         case alert
 
@@ -171,7 +169,6 @@ public struct AlertToast: View {
 
     /// Determine what the alert will display
     public enum AlertType: Equatable {
-
         /// Animated checkmark
         case complete(_ color: Color)
 
@@ -202,7 +199,7 @@ public struct AlertToast: View {
         /// Get background color
         var backgroundColor: Color? {
             switch self {
-            case .style(backgroundColor: let color, _, _, _, _):
+            case let .style(backgroundColor: color, _, _, _, _):
                 return color
             }
         }
@@ -210,7 +207,7 @@ public struct AlertToast: View {
         /// Get title color
         var titleColor: Color? {
             switch self {
-            case .style(_, let color, _, _, _):
+            case let .style(_, color, _, _, _):
                 return color
             }
         }
@@ -218,7 +215,7 @@ public struct AlertToast: View {
         /// Get subTitle color
         var subtitleColor: Color? {
             switch self {
-            case .style(_, _, let color, _, _):
+            case let .style(_, _, color, _, _):
                 return color
             }
         }
@@ -226,7 +223,7 @@ public struct AlertToast: View {
         /// Get title font
         var titleFont: Font? {
             switch self {
-            case .style(_, _, _, titleFont: let font, _):
+            case let .style(_, _, _, titleFont: font, _):
                 return font
             }
         }
@@ -234,7 +231,7 @@ public struct AlertToast: View {
         /// Get subTitle font
         var subTitleFont: Font? {
             switch self {
-            case .style(_, _, _, _, subTitleFont: let font):
+            case let .style(_, _, _, _, subTitleFont: font):
                 return font
             }
         }
@@ -267,8 +264,8 @@ public struct AlertToast: View {
                 title: String? = nil,
                 subTitle: String? = nil,
                 style: AlertStyle? = nil,
-                onTap: (() -> Void)? = nil) {
-
+                onTap: (() -> Void)? = nil)
+    {
         self.displayMode = displayMode
         self.type = type
         self.title = title
@@ -280,8 +277,8 @@ public struct AlertToast: View {
     /// Short init with most used parameters
     public init(displayMode: DisplayMode,
                 type: AlertType,
-                title: String? = nil) {
-
+                title: String? = nil)
+    {
         self.displayMode = displayMode
         self.type = type
         self.title = title
@@ -296,16 +293,16 @@ public struct AlertToast: View {
             VStack(alignment: .leading, spacing: 10) {
                 HStack {
                     switch type {
-                    case .complete(let color):
+                    case let .complete(color):
                         Image(systemName: "checkmark")
                             .foregroundColor(color)
-                    case .error(let color):
+                    case let .error(color):
                         Image(systemName: "xmark")
                             .foregroundColor(color)
-                    case .systemImage(let name, let color):
+                    case let .systemImage(name, color):
                         Image(systemName: name)
                             .foregroundColor(color)
-                    case .image(let name, let color):
+                    case let .image(name, color):
                         Image(name)
                             .foregroundColor(color)
                     case .loading:
@@ -339,15 +336,15 @@ public struct AlertToast: View {
         Group {
             HStack(spacing: 16) {
                 switch type {
-                case .complete(let color):
+                case let .complete(color):
                     Image(systemName: "checkmark")
                         .hudModifier()
                         .foregroundColor(color)
-                case .error(let color):
+                case let .error(color):
                     Image(systemName: "xmark")
                         .hudModifier()
                         .foregroundColor(color)
-                case .systemImage(let name, let color):
+                case let .systemImage(name, color):
 //                    Image(systemName: name)
 //                        .hudModifier()
 //                        .foregroundColor(color)
@@ -360,7 +357,7 @@ public struct AlertToast: View {
                         .onTapGesture {
                             onTap?()
                         }
-                case .image(let name, let color):
+                case let .image(name, color):
                     Image(name)
                         .hudModifier()
                         .foregroundColor(color)
@@ -408,15 +405,15 @@ public struct AlertToast: View {
     public var alert: some View {
         VStack {
             switch type {
-            case .complete(let color):
+            case let .complete(color):
                 Spacer()
                 AnimatedCheckmark(color: color)
                 Spacer()
-            case .error(let color):
+            case let .error(color):
                 Spacer()
                 AnimatedXmark(color: color)
                 Spacer()
-            case .systemImage(let name, let color):
+            case let .systemImage(name, color):
                 Spacer()
                 Image(systemName: name)
                     .renderingMode(.template)
@@ -426,7 +423,7 @@ public struct AlertToast: View {
                     .foregroundColor(color)
                     .padding(.bottom)
                 Spacer()
-            case .image(let name, let color):
+            case let .image(name, color):
                 Spacer()
                 Image(name)
                     .resizable()
@@ -479,7 +476,6 @@ public struct AlertToast: View {
 
 @available(iOS 13, macOS 11, *)
 public struct AlertToastModifier: ViewModifier {
-
     /// Presentation `Binding<Bool>`
     @Binding var isPresenting: Bool
 
@@ -504,19 +500,19 @@ public struct AlertToastModifier: ViewModifier {
     @State private var alertRect: CGRect = .zero
 
     private var screen: CGRect {
-#if os(iOS)
-        return UIScreen.main.bounds
-#else
-        return NSScreen.main?.frame ?? .zero
-#endif
+        #if os(iOS)
+            return UIScreen.main.bounds
+        #else
+            return NSScreen.main?.frame ?? .zero
+        #endif
     }
 
     private var offset: CGFloat {
-#if os(iOS)
-        return -hostRect.midY + alertRect.height
-#else
-        return (-hostRect.midY + screen.midY) + alertRect.height
-#endif
+        #if os(iOS)
+            return -hostRect.midY + alertRect.height
+        #else
+            return (-hostRect.midY + screen.midY) + alertRect.height
+        #endif
     }
 
     @ViewBuilder
@@ -546,9 +542,7 @@ public struct AlertToastModifier: ViewModifier {
                             let rect = geo.frame(in: .global)
 
                             if rect.integral != alertRect.integral {
-
                                 DispatchQueue.main.async {
-
                                     self.alertRect = rect
                                 }
                             }
@@ -598,9 +592,9 @@ public struct AlertToastModifier: ViewModifier {
                     main()
                         .offset(y: offsetY)
                 }
-                    .animation(Animation.spring(), value: isPresenting)
+                .animation(Animation.spring(), value: isPresenting)
                 )
-                .valueChanged(value: isPresenting, onChange: { (presented) in
+                .valueChanged(value: isPresenting, onChange: { presented in
                     if presented { onAppearAction() }
                 })
         case .hud:
@@ -617,15 +611,15 @@ public struct AlertToastModifier: ViewModifier {
 
                         return AnyView(EmptyView())
                     }
-                        .overlay(ZStack {
-                            main()
-                                .offset(y: offsetY)
-                        }
-                            .frame(maxWidth: screen.width, maxHeight: screen.height)
-                            .offset(y: offset)
-                            .animation(Animation.spring(), value: isPresenting))
+                    .overlay(ZStack {
+                        main()
+                            .offset(y: offsetY)
+                    }
+                    .frame(maxWidth: screen.width, maxHeight: screen.height)
+                    .offset(y: offset)
+                    .animation(Animation.spring(), value: isPresenting))
                 )
-                .valueChanged(value: isPresenting, onChange: { (presented) in
+                .valueChanged(value: isPresenting, onChange: { presented in
                     if presented {
                         onAppearAction()
                     }
@@ -636,10 +630,10 @@ public struct AlertToastModifier: ViewModifier {
                     main()
                         .offset(y: offsetY)
                 }
-                            .frame(maxWidth: screen.width, maxHeight: screen.height, alignment: .center)
-                            .edgesIgnoringSafeArea(.all)
-                            .animation(Animation.spring(), value: isPresenting))
-                .valueChanged(value: isPresenting, onChange: { (presented) in
+                .frame(maxWidth: screen.width, maxHeight: screen.height, alignment: .center)
+                .edgesIgnoringSafeArea(.all)
+                .animation(Animation.spring(), value: isPresenting))
+                .valueChanged(value: isPresenting, onChange: { presented in
                     if presented {
                         onAppearAction()
                     }
@@ -721,10 +715,9 @@ private struct TextForegroundModifier: ViewModifier {
 }
 
 @available(iOS 13, macOS 11, *)
-fileprivate extension Image {
+private extension Image {
     func hudModifier() -> some View {
-        self
-            .renderingMode(.template)
+        renderingMode(.template)
             .resizable()
             .aspectRatio(contentMode: .fit)
             .frame(maxWidth: 23, maxHeight: 23, alignment: .center)
@@ -768,7 +761,7 @@ public extension View {
         if #available(iOS 14.0, *) {
             self.onChange(of: value, perform: onChange)
         } else {
-            self.onReceive(Just(value)) { (value) in
+            onReceive(Just(value)) { value in
                 onChange(value)
             }
         }

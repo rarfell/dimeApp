@@ -15,15 +15,14 @@ extension StringProtocol {
 
 extension String {
     var containsDigits: Bool {
-        return self.rangeOfCharacter(from: CharacterSet.decimalDigits) != nil
+        return rangeOfCharacter(from: CharacterSet.decimalDigits) != nil
     }
 
     func onlyEmoji() -> String {
-        return self.filter({$0.isEmoji})
+        return filter { $0.isEmoji }
     }
 
     func widthOfRoundedString(size: CGFloat, weight: UIFont.Weight) -> CGFloat {
-
         let systemFont = UIFont.systemFont(ofSize: size, weight: weight)
         let roundedFont: UIFont
         if let descriptor = systemFont.fontDescriptor.withDesign(.rounded) {
@@ -38,7 +37,6 @@ extension String {
     }
 
     func heightOfRoundedString(size: CGFloat, weight: UIFont.Weight) -> CGFloat {
-
         let systemFont = UIFont.systemFont(ofSize: size, weight: weight)
         let roundedFont: UIFont
         if let descriptor = systemFont.fontDescriptor.withDesign(.rounded) {

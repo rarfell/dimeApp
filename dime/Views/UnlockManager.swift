@@ -53,7 +53,7 @@ class UnlockManager: NSObject, ObservableObject, SKPaymentTransactionObserver, S
         }
     }
 
-    func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
+    func productsRequest(_: SKProductsRequest, didReceive response: SKProductsResponse) {
         DispatchQueue.main.async {
             // Store the returned products for later, if we need them.
             self.loadedProducts = response.products
@@ -97,7 +97,7 @@ class UnlockManager: NSObject, ObservableObject, SKPaymentTransactionObserver, S
         request = SKProductsRequest(productIdentifiers: productIDs)
 
         // This is required because we inherit from NSObject.
-        self.purchaseCount = dataController.tipCounter
+        purchaseCount = dataController.tipCounter
 
         super.init()
 

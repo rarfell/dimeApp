@@ -5,8 +5,8 @@
 //  Created by Rafael Soh on 12/1/23.
 //
 
-import WidgetKit
 import SwiftUI
+import WidgetKit
 
 struct MainBudgetWidget: Widget {
     let kind: String = "MainBudgetWidget"
@@ -16,7 +16,7 @@ struct MainBudgetWidget: Widget {
             return [
                 .accessoryCircular,
                 .accessoryRectangular,
-                .systemSmall
+                .systemSmall,
             ]
         } else {
             return [.systemSmall]
@@ -34,23 +34,22 @@ struct MainBudgetWidget: Widget {
 }
 
 struct MainBudgetWidgetProvider: TimelineProvider {
-
     typealias Entry = MainBudgetWidgetEntry
 
-    func placeholder(in context: Context) -> MainBudgetWidgetEntry {
+    func placeholder(in _: Context) -> MainBudgetWidgetEntry {
         let loaded = loadData()
 
         return MainBudgetWidgetEntry(date: Date(), totalSpent: loaded.totalSpent, percentageOfDays: loaded.percentage, type: loaded.type, budgetAmount: loaded.budgetAmount, startDate: loaded.startDate, found: loaded.found)
     }
 
-    func getSnapshot(in context: Context, completion: @escaping (MainBudgetWidgetEntry) -> Void) {
+    func getSnapshot(in _: Context, completion: @escaping (MainBudgetWidgetEntry) -> Void) {
         let loaded = loadData()
 
         let entry = MainBudgetWidgetEntry(date: Date(), totalSpent: loaded.totalSpent, percentageOfDays: loaded.percentage, type: loaded.type, budgetAmount: loaded.budgetAmount, startDate: loaded.startDate, found: loaded.found)
         completion(entry)
     }
 
-    func getTimeline(in context: Context, completion: @escaping (Timeline<MainBudgetWidgetEntry>) -> Void) {
+    func getTimeline(in _: Context, completion: @escaping (Timeline<MainBudgetWidgetEntry>) -> Void) {
         let loaded = loadData()
 
         let entry = MainBudgetWidgetEntry(date: Date(), totalSpent: loaded.totalSpent, percentageOfDays: loaded.percentage, type: loaded.type, budgetAmount: loaded.budgetAmount, startDate: loaded.startDate, found: loaded.found)
@@ -128,11 +127,11 @@ struct MainBudgetWidgetEntryView: View {
     }
 
     var percentString: String {
-        return String(localized: "\(Int(round((entry.totalSpent/entry.budgetAmount) * 100)))% spent")
+        return String(localized: "\(Int(round((entry.totalSpent / entry.budgetAmount) * 100)))% spent")
     }
 
     var percentString1: String {
-        return "\(Int(round((entry.totalSpent/entry.budgetAmount) * 100)))%"
+        return "\(Int(round((entry.totalSpent / entry.budgetAmount) * 100)))%"
     }
 
     var percent: Double {
@@ -159,6 +158,7 @@ struct MainBudgetWidgetEntryView: View {
     var currencySymbol: String {
         return Locale.current.localizedCurrencySymbol(forCurrencyCode: currency)!
     }
+
     @AppStorage("showCents", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var showCents: Bool = true
 
     var body: some View {
@@ -232,7 +232,6 @@ struct MainBudgetWidgetEntryView: View {
                                     Text("•")
                                     Text(percentString)
                                 }
-
                             }
                             .font(.system(size: 15, weight: .semibold, design: .rounded))
 
@@ -240,7 +239,7 @@ struct MainBudgetWidgetEntryView: View {
                                 .font(.system(size: 14, weight: .regular, design: .rounded))
                                 .foregroundColor(Color.SubtitleText)
 
-                            Gauge(value: percent, in: 0...1) {
+                            Gauge(value: percent, in: 0 ... 1) {
                                 Text("Percent Spent")
                             } currentValueLabel: {
                                 EmptyView()
@@ -274,7 +273,6 @@ struct MainBudgetWidgetEntryView: View {
                                     Text("•")
                                     Text(percentString)
                                 }
-
                             }
                             .font(.system(size: 15, weight: .semibold, design: .rounded))
 
@@ -283,7 +281,7 @@ struct MainBudgetWidgetEntryView: View {
                                 .foregroundColor(Color.SubtitleText)
 
                             if #available(iOS 16.0, *) {
-                                Gauge(value: percent, in: 0...1) {
+                                Gauge(value: percent, in: 0 ... 1) {
                                     Text("Percent Spent")
                                 } currentValueLabel: {
                                     EmptyView()
@@ -296,7 +294,6 @@ struct MainBudgetWidgetEntryView: View {
                                 }
                                 .frame(height: 5)
                                 .gaugeStyle(.accessoryLinear)
-
                             }
                         }
                         .frame(width: proxy.size.width, height: proxy.size.height, alignment: .top)
@@ -327,7 +324,6 @@ struct MainBudgetWidgetEntryView: View {
                                 Text("SPENT: \(percentString1)")
                                     .font(.system(size: 10, weight: .medium, design: .rounded))
                                     .foregroundColor(Color.SubtitleText)
-
                             }
 
                             Spacer()
@@ -340,21 +336,17 @@ struct MainBudgetWidgetEntryView: View {
 
                         GeometryReader { proxy in
                             VStack(spacing: 6) {
-
                                 ZStack(alignment: .bottom) {
-
                                     ZStack {
+                                        DonutSemicircle(percent: 1, cornerRadius: 4, width: 15)
+                                            .fill(Color.SecondaryBackground)
+                                            .frame(width: proxy.size.width, height: proxy.size.width / 2)
 
-                                            DonutSemicircle(percent: 1, cornerRadius: 4, width: 15)
-                                                .fill(Color.SecondaryBackground)
-                                                .frame(width: proxy.size.width, height: proxy.size.width / 2)
-
-                                        if entry.totalSpent/entry.budgetAmount < 0.97 {
-                                            DonutSemicircle(percent: 1 - (entry.totalSpent/entry.budgetAmount), cornerRadius: 4, width: 15)
+                                        if entry.totalSpent / entry.budgetAmount < 0.97 {
+                                            DonutSemicircle(percent: 1 - (entry.totalSpent / entry.budgetAmount), cornerRadius: 4, width: 15)
                                                 .fill(Color.DarkBackground)
                                                 .frame(width: proxy.size.width, height: proxy.size.width / 2)
                                         }
-
                                     }
                                     .frame(width: proxy.size.width)
 
@@ -376,9 +368,7 @@ struct MainBudgetWidgetEntryView: View {
                                                     .foregroundColor(Color.SubtitleText)
                                             }
                                         }
-
                                     }
-
                                 }
                                 .frame(width: proxy.size.width)
 
@@ -401,10 +391,8 @@ struct MainBudgetWidgetEntryView: View {
                                 .foregroundColor(Color.SubtitleText)
                             }
                             .frame(width: proxy.size.width, height: proxy.size.height, alignment: .bottom)
-
                         }
                         .frame(maxHeight: .infinity, alignment: .bottom)
-
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .containerBackground(for: .widget) { Color.PrimaryBackground }
@@ -430,7 +418,6 @@ struct MainBudgetWidgetEntryView: View {
                                 Text("SPENT: \(percentString1)")
                                     .font(.system(size: 10, weight: .medium, design: .rounded))
                                     .foregroundColor(Color.SubtitleText)
-
                             }
 
                             Spacer()
@@ -443,21 +430,17 @@ struct MainBudgetWidgetEntryView: View {
 
                         GeometryReader { proxy in
                             VStack(spacing: 6) {
-
                                 ZStack(alignment: .bottom) {
-
                                     ZStack {
+                                        DonutSemicircle(percent: 1, cornerRadius: 4, width: 15)
+                                            .fill(Color.SecondaryBackground)
+                                            .frame(width: proxy.size.width, height: proxy.size.width / 2)
 
-                                            DonutSemicircle(percent: 1, cornerRadius: 4, width: 15)
-                                                .fill(Color.SecondaryBackground)
-                                                .frame(width: proxy.size.width, height: proxy.size.width / 2)
-
-                                        if entry.totalSpent/entry.budgetAmount < 0.97 {
-                                            DonutSemicircle(percent: 1 - (entry.totalSpent/entry.budgetAmount), cornerRadius: 4, width: 15)
+                                        if entry.totalSpent / entry.budgetAmount < 0.97 {
+                                            DonutSemicircle(percent: 1 - (entry.totalSpent / entry.budgetAmount), cornerRadius: 4, width: 15)
                                                 .fill(Color.DarkBackground)
                                                 .frame(width: proxy.size.width, height: proxy.size.width / 2)
                                         }
-
                                     }
                                     .frame(width: proxy.size.width)
 
@@ -479,9 +462,7 @@ struct MainBudgetWidgetEntryView: View {
                                                     .foregroundColor(Color.SubtitleText)
                                             }
                                         }
-
                                     }
-
                                 }
                                 .frame(width: proxy.size.width)
 
@@ -504,10 +485,8 @@ struct MainBudgetWidgetEntryView: View {
                                 .foregroundColor(Color.SubtitleText)
                             }
                             .frame(width: proxy.size.width, height: proxy.size.height, alignment: .bottom)
-
                         }
                         .frame(maxHeight: .infinity, alignment: .bottom)
-
                     }
                     .padding(15)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -518,7 +497,6 @@ struct MainBudgetWidgetEntryView: View {
         default:
             EmptyView()
         }
-
     }
 }
 

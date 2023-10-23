@@ -34,7 +34,6 @@ struct CustomTabBar: View {
     }
 
     var body: some View {
-
         HStack(spacing: 4) {
             TabButton(image: "Log", zoomed: isZoomed, currentTab: $currentTab)
 
@@ -75,7 +74,6 @@ struct CustomTabBar: View {
             TabButton(image: "Budget", zoomed: isZoomed, currentTab: $currentTab)
 
             TabButton(image: "Settings", zoomed: isZoomed, currentTab: $currentTab)
-
         }
         .padding(.horizontal, 15)
         .padding(.bottom, bottomEdge - 10)
@@ -119,14 +117,11 @@ struct CustomTabBar: View {
             }
 
             addTransaction = true
-
         }
-
     }
 }
 
 struct MyButtonStyle: ButtonStyle {
-
     func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label
             .font(.system(size: 20, weight: .bold))
@@ -142,21 +137,18 @@ struct BouncyButton: ButtonStyle {
 
     public func makeBody(configuration: Self.Configuration) -> some View {
         return configuration.label
-            .scaleEffect(configuration.isPressed ? self.scale : 1)
+            .scaleEffect(configuration.isPressed ? scale : 1)
 //            .scaleEffect(configuration.isPressed ? 1.3 : 1)
-            .animation(.easeOut(duration: self.duration), value: configuration.isPressed)
-
+            .animation(.easeOut(duration: duration), value: configuration.isPressed)
     }
 }
 
 struct TabButton: View {
-
     var image: String
     var zoomed: Bool
     @Binding var currentTab: String
 
     var body: some View {
-
         Button {
             DispatchQueue.main.async {
                 currentTab = image
@@ -174,9 +166,8 @@ struct TabButton: View {
         .accessibilityLabel("\(image) tab")
         .accessibilityAddTraits(
             currentTab == image
-            ? [.isButton, .isSelected]
-            : .isButton
+                ? [.isButton, .isSelected]
+                : .isButton
         )
-
     }
 }

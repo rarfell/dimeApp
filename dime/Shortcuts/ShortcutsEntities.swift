@@ -1,38 +1,38 @@
 //
-//  ShortcutsCategoryEntity.swift
+//  ShortcutsEntities.swift
 //  dime
 //
 //  Created by Rafael Soh on 1/8/23.
 //
 
-import Foundation
 import AppIntents
 import CoreData
+import Foundation
 
 // @available(iOS 16, *)
 // struct IncomeCategoryEntity: AppEntity, Identifiable {
 //    static var typeDisplayRepresentation: TypeDisplayRepresentation = TypeDisplayRepresentation(name: "Income Category")
 //    static var defaultQuery: IncomeCategoryQuery = IncomeCategoryQuery()
-//    
-//    
+//
+//
 //    var id: UUID
-//    
+//
 //    @Property(title: "Name")
 //    var name: String
-//    
+//
 //    @Property(title: "Emoji")
 //    var emoji: String
-//    
+//
 //    var displayRepresentation: DisplayRepresentation {
 //        DisplayRepresentation(title: "\(emoji)  \(name)")
 //    }
-//    
+//
 //    init(id: UUID, name: String, emoji: String) {
 //        self.id = id
 //        self.name = name
 //        self.emoji = emoji
 //    }
-//    
+//
 // }
 //
 // @available(iOS 16, *)
@@ -51,7 +51,7 @@ import CoreData
 //            }
 //        }
 //    }
-//    
+//
 //    func suggestedEntities() async throws -> [IncomeCategoryEntity] {
 //        let dataController = DataController()
 //        let categories = dataController.getAllCategories(income: true)
@@ -69,26 +69,26 @@ import CoreData
 // struct ExpenseCategoryEntity: AppEntity, Identifiable {
 //    static var typeDisplayRepresentation: TypeDisplayRepresentation = TypeDisplayRepresentation(name: "Expense Category")
 //    static var defaultQuery: ExpenseCategoryQuery = ExpenseCategoryQuery()
-//    
-//    
+//
+//
 //    var id: UUID
-//    
+//
 //    @Property(title: "Name")
 //    var name: String
-//    
+//
 //    @Property(title: "Emoji")
 //    var emoji: String
-//    
+//
 //    var displayRepresentation: DisplayRepresentation {
 //        DisplayRepresentation(title: "\(emoji)  \(name)")
 //    }
-//    
+//
 //    init(id: UUID, name: String, emoji: String) {
 //        self.id = id
 //        self.name = name
 //        self.emoji = emoji
 //    }
-//    
+//
 // }
 //
 // @available(iOS 16, *)
@@ -107,7 +107,7 @@ import CoreData
 //            }
 //        }
 //    }
-//    
+//
 //    func suggestedEntities() async throws -> [ExpenseCategoryEntity] {
 //        let dataController = DataController()
 //        let categories = dataController.getAllCategories(income: true)
@@ -123,9 +123,9 @@ import CoreData
 
 @available(iOS 16, *)
 struct IncomeCategoryEntity: AppEntity, Identifiable {
-    static var typeDisplayRepresentation: TypeDisplayRepresentation = TypeDisplayRepresentation(name: "Category")
+    static var typeDisplayRepresentation: TypeDisplayRepresentation = .init(name: "Category")
     typealias DefaultQueryType = IncomeCategoryQuery
-    static var defaultQuery: IncomeCategoryQuery = IncomeCategoryQuery()
+    static var defaultQuery: IncomeCategoryQuery = .init()
 
     var id: UUID
 
@@ -154,7 +154,7 @@ struct IncomeCategoryEntity: AppEntity, Identifiable {
 struct IncomeCategoryQuery: EntityStringQuery {
     func entities(matching query: String) async throws -> [IncomeCategoryEntity] {
         let categories = DataController.shared.getAllCategories(income: true).filter {
-            ($0.wrappedName.localizedCaseInsensitiveContains(query) || $0.wrappedEmoji.localizedCaseInsensitiveContains(query))
+            $0.wrappedName.localizedCaseInsensitiveContains(query) || $0.wrappedEmoji.localizedCaseInsensitiveContains(query)
         }
 
         return categories.compactMap { category in
@@ -167,7 +167,6 @@ struct IncomeCategoryQuery: EntityStringQuery {
     }
 
     func entities(for identifiers: [IncomeCategoryEntity.ID]) async throws -> [IncomeCategoryEntity] {
-
         return identifiers.compactMap { identifier in
             if let match = try? DataController.shared.findCategory(withId: identifier) {
                 if let id = match.id {
@@ -194,9 +193,9 @@ struct IncomeCategoryQuery: EntityStringQuery {
 
 @available(iOS 16, *)
 struct ExpenseCategoryEntity: AppEntity, Identifiable {
-    static var typeDisplayRepresentation: TypeDisplayRepresentation = TypeDisplayRepresentation(name: "Category")
+    static var typeDisplayRepresentation: TypeDisplayRepresentation = .init(name: "Category")
     typealias DefaultQueryType = ExpenseCategoryQuery
-    static var defaultQuery: ExpenseCategoryQuery = ExpenseCategoryQuery()
+    static var defaultQuery: ExpenseCategoryQuery = .init()
 
     var id: UUID
 
@@ -225,7 +224,7 @@ struct ExpenseCategoryEntity: AppEntity, Identifiable {
 struct ExpenseCategoryQuery: EntityStringQuery {
     func entities(matching query: String) async throws -> [ExpenseCategoryEntity] {
         let categories = DataController.shared.getAllCategories(income: false).filter {
-            ($0.wrappedName.localizedCaseInsensitiveContains(query) || $0.wrappedEmoji.localizedCaseInsensitiveContains(query))
+            $0.wrappedName.localizedCaseInsensitiveContains(query) || $0.wrappedEmoji.localizedCaseInsensitiveContains(query)
         }
 
         return categories.compactMap { category in
@@ -264,9 +263,9 @@ struct ExpenseCategoryQuery: EntityStringQuery {
 
 @available(iOS 16, *)
 struct BudgetEntity: AppEntity, Identifiable {
-    static var typeDisplayRepresentation: TypeDisplayRepresentation = TypeDisplayRepresentation(name: "Budget")
+    static var typeDisplayRepresentation: TypeDisplayRepresentation = .init(name: "Budget")
     typealias DefaultQueryType = BudgetQuery
-    static var defaultQuery: BudgetQuery = BudgetQuery()
+    static var defaultQuery: BudgetQuery = .init()
 
     var id: UUID
 
@@ -291,7 +290,7 @@ struct BudgetEntity: AppEntity, Identifiable {
 struct BudgetQuery: EntityStringQuery {
     func entities(matching query: String) async throws -> [BudgetEntity] {
         let budgets = DataController.shared.getAllBudgets().filter {
-            ($0.wrappedName.localizedCaseInsensitiveContains(query) || $0.wrappedEmoji.localizedCaseInsensitiveContains(query))
+            $0.wrappedName.localizedCaseInsensitiveContains(query) || $0.wrappedEmoji.localizedCaseInsensitiveContains(query)
         }
 
         return budgets.compactMap { budget in
@@ -333,44 +332,44 @@ struct BudgetQuery: EntityStringQuery {
 //    static var typeDisplayRepresentation: TypeDisplayRepresentation = TypeDisplayRepresentation(name: "Category")
 //    typealias DefaultQueryType = CategoryQuery
 //    static var defaultQuery: CategoryQuery = CategoryQuery()
-//    
+//
 //    var id: UUID
-//    
+//
 //    @Property(title: "Name")
 //    var name: String
-//    
+//
 //    @Property(title: "Emoji")
 //    var emoji: String
-//    
+//
 //    @Property(title: "Income")
 //    var income: Bool
-//    
+//
 //    var displayRepresentation: DisplayRepresentation {
 //        DisplayRepresentation(title: "\(emoji) \(name)")
 //    }
-//    
+//
 //    init(id: UUID, name: String, emoji: String, income: Bool) {
 //        self.id = id
 //        self.name = name
 //        self.emoji = emoji
 //        self.income = income
 //    }
-//    
+//
 // }
 //
 // @available(iOS 16, *)
 // extension CategoryEntity {
-//    
+//
 //    // Hashable conformance
 //    func hash(into hasher: inout Hasher) {
 //        hasher.combine(id)
 //    }
-//    
+//
 //    // Equtable conformance
 //    static func ==(lhs: CategoryEntity, rhs: CategoryEntity) -> Bool {
 //        return lhs.id == rhs.id
 //    }
-//    
+//
 // }
 //
 // @available(iOS 16, *)
@@ -378,19 +377,19 @@ struct BudgetQuery: EntityStringQuery {
 //    init() {
 //        self.expense = false
 //    }
-//    
+//
 //    init(expense: Bool) {
 //        self.expense = expense
 //    }
-//    
+//
 //    var expense: Bool
-//        
+//
 //    func entities(matching query: String) async throws -> [CategoryEntity] {
 //        let dataController = DataController()
 //        let categories = dataController.getAllCategories().filter {
 //            ($0.wrappedName.localizedCaseInsensitiveContains(query) || $0.wrappedEmoji.localizedCaseInsensitiveContains(query))
 //        }
-//        
+//
 //        return categories.compactMap { category in
 //            if let id = category.id {
 //                return CategoryEntity(id: id, name: category.wrappedName, emoji: category.wrappedEmoji, income: category.income)
@@ -399,7 +398,7 @@ struct BudgetQuery: EntityStringQuery {
 //            }
 //        }
 //    }
-//    
+//
 //    func entities(for identifiers: [CategoryEntity.ID]) async throws -> [CategoryEntity] {
 //        let dataController = DataController()
 //        return identifiers.compactMap { identifier in
@@ -414,7 +413,7 @@ struct BudgetQuery: EntityStringQuery {
 //            }
 //        }
 //    }
-//    
+//
 //    func suggestedEntities() async throws -> [CategoryEntity] {
 //        let dataController = DataController()
 //        let categories = dataController.getAllCategories()
@@ -428,10 +427,10 @@ struct BudgetQuery: EntityStringQuery {
 //            } else {
 //                return nil
 //            }
-//            
+//
 //        }
 //    }
-//    
+//
 //    static var properties = EntityQueryProperties<CategoryEntity, NSPredicate> {
 //        Property(\CategoryEntity.$name) {
 //            EqualToComparator { NSPredicate(format: "name = %@", $0) }
@@ -443,12 +442,12 @@ struct BudgetQuery: EntityStringQuery {
 //            ContainsComparator { NSPredicate(format: "emoji CONTAINS %@", $0) }
 //        }
 //    }
-//    
+//
 //    static var sortingOptions = SortingOptions {
 //        SortableBy(\CategoryEntity.$name)
 //        SortableBy(\CategoryEntity.$emoji)
 //    }
-//    
+//
 //    func entities(
 //        matching comparators: [NSPredicate],
 //        mode: ComparatorMode,
@@ -460,7 +459,7 @@ struct BudgetQuery: EntityStringQuery {
 //        let predicate = NSCompoundPredicate(type: mode == .and ? .and : .or, subpredicates: comparators)
 //        request.fetchLimit = limit ?? 5
 //        request.predicate = predicate
-//      
+//
 //        let matchingCategories = try context.fetch(request)
 //        return matchingCategories.compactMap { category in
 //            if let id = category.id {
@@ -470,5 +469,5 @@ struct BudgetQuery: EntityStringQuery {
 //            }
 //        }
 //    }
-//    
+//
 // }

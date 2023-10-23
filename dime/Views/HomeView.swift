@@ -5,9 +5,9 @@
 //  Created by Rafael Soh on 20/5/22.
 //
 
+import ConfettiSwiftUI
 import Foundation
 import SwiftUI
-import ConfettiSwiftUI
 
 class OverallToastPresenter: ObservableObject {
     @Published var showToast: Bool = false
@@ -24,7 +24,6 @@ class OverallTransactionManager: ObservableObject {
     @Published var showToast: Bool = false
     @Published var showPopup: Bool = false
     @Published var future: Bool = false
-
 }
 
 struct HomeView: View {
@@ -63,9 +62,7 @@ struct HomeView: View {
 
     var body: some View {
         ZStack(alignment: .bottom) {
-
             TabView(selection: $currentTab) {
-
                 LogView(topEdge: topEdge, bottomEdge: bottomEdge, launchSearch: launchSearch)
                     .ignoresSafeArea(.all)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -82,7 +79,6 @@ struct HomeView: View {
                 SettingsView()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .tag("Settings")
-
             }
             .allowsHitTesting(showPopup ? false : true)
             .environmentObject(toastPresenter)
@@ -167,9 +163,7 @@ struct HomeView: View {
         }
         .confettiCannon(counter: $counter, num: 50, openingAngle: Angle(degrees: 0), closingAngle: Angle(degrees: 360), radius: 200)
         .onAppear {
-
             if appLockVM.isAppLockEnabled && fromURL1 {
-
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     launchAdd.toggle()
                 }
@@ -178,7 +172,6 @@ struct HomeView: View {
             }
 
             if appLockVM.isAppLockEnabled && fromURL2 {
-
                 currentTab = "Log"
 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -205,7 +198,6 @@ struct HomeView: View {
                 currentTab = "Budget"
             }
         }
-
     }
 }
 
@@ -247,7 +239,6 @@ struct AppLockView: View {
                     .foregroundColor(Color.SubtitleText)
                     .multilineTextAlignment(.center)
             }
-
         }
         .padding(.horizontal, 30)
         .frame(maxWidth: .infinity, maxHeight: .infinity)

@@ -41,15 +41,13 @@ struct LineGraph: View {
         } else {
             return color
         }
-
     }
 
     // Animating Graph
     @State var graphProgress: CGFloat = 0
 
     func getGradient(totalPoints: Double, range: Double) -> Gradient {
-
-        let centreLocation = 1 - (range - 1)/(totalPoints - 1)
+        let centreLocation = 1 - (range - 1) / (totalPoints - 1)
         let leftLocation = centreLocation - 0.01
 
         return Gradient(stops: [Gradient.Stop(color: Color.Outline, location: leftLocation),
@@ -57,8 +55,7 @@ struct LineGraph: View {
     }
 
     var body: some View {
-
-        GeometryReader {proxy in
+        GeometryReader { proxy in
 
             let height = proxy.size.height
             let width = (proxy.size.width) / CGFloat(data.count - 1)
@@ -71,7 +68,7 @@ struct LineGraph: View {
 
                 let progress = (item.element.amount - minPoint) / (maxPoint - minPoint)
 
-                let pathHeight = progress * (height)
+                let pathHeight = progress * height
 
                 // width..
                 let pathWidth = width * CGFloat(item.offset)
@@ -81,14 +78,12 @@ struct LineGraph: View {
             }
 
             ZStack {
-
                 //
                 AnimatedGraphPath(progress: graphProgress, points: points)
-                .fill(
-
-                    // Gradient...
-                    LinearGradient(gradient: getGradient(totalPoints: Double(data.count), range: Double(range)), startPoint: .leading, endPoint: .trailing)
-                )
+                    .fill(
+                        // Gradient...
+                        LinearGradient(gradient: getGradient(totalPoints: Double(data.count), range: Double(range)), startPoint: .leading, endPoint: .trailing)
+                    )
 
 //                 Path Bacground Coloring...
 //                FillBG()
@@ -109,13 +104,10 @@ struct LineGraph: View {
 //                    )
 //                    .opacity(graphProgress)
 //
-
             }
             .overlay(
-
                 // Drag Indiccator...
                 VStack(spacing: 0) {
-
                     VStack(spacing: 1) {
                         if type < 4 {
                             Text(currentPlot?.dateString ?? "")
@@ -174,18 +166,18 @@ struct LineGraph: View {
                 }
                 // Fixed Frame..
                 // For Gesture Calculation...
-                    .frame(width: 80)
+                .frame(width: 80)
                 // 170 / 2 = 85 - 15 => circle ring size...
-                    .offset(y: 6)
-                    .offset(offset)
-                    .opacity(showPlot ? 1 : 0),
+                .offset(y: 6)
+                .offset(offset)
+                .opacity(showPlot ? 1 : 0),
 
                 alignment: .bottomLeading
             )
             .contentShape(Rectangle())
-            .gesture(DragGesture().onChanged({ value in
+            .gesture(DragGesture().onChanged { value in
 
-                withAnimation {showPlot = true}
+                withAnimation { showPlot = true }
 
                 let translation = value.location.x
 
@@ -198,11 +190,11 @@ struct LineGraph: View {
                 // removing half width...
                 offset = CGSize(width: points[index].x - 40, height: points[index].y - height)
 
-            }).onEnded({ _ in
+            }.onEnded { _ in
 
-                withAnimation {showPlot = false}
+                withAnimation { showPlot = false }
 
-            }).updating($isDrag, body: { _, out, _ in
+            }.updating($isDrag, body: { _, out, _ in
                 out = true
             }))
         }
@@ -210,7 +202,6 @@ struct LineGraph: View {
         .onChange(of: isDrag) { _ in
             if !isDrag {
                 showPlot = false
-
             }
         }
         .onAppear {
@@ -221,7 +212,9 @@ struct LineGraph: View {
             }
         }
         .onChange(of: data) { _ in
+
             // MARK: ReAnimating When ever Plot Data Updates
+
             graphProgress = 0
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                 withAnimation(.easeInOut(duration: 1.2)) {
@@ -235,31 +228,33 @@ struct LineGraph: View {
 //    func FillBG()->some View{
 //        let color = green ? Color.IncomeGreen : Color.AlertRed
 //        Color.red
-////        LinearGradient(colors: [
-////
-////            color
-////                .opacity(0.3),
-////            color
-////                .opacity(0.2),
-////            color
-////                .opacity(0.1)]
-////            + Array(repeating: color
-////                .opacity(0.1), count: 4)
-////            + Array(repeating:                     Color.clear, count: 2)
-////            , startPoint: .top, endPoint: .bottom)
+    ////        LinearGradient(colors: [
+    ////
+    ////            color
+    ////                .opacity(0.3),
+    ////            color
+    ////                .opacity(0.2),
+    ////            color
+    ////                .opacity(0.1)]
+    ////            + Array(repeating: color
+    ////                .opacity(0.1), count: 4)
+    ////            + Array(repeating:                     Color.clear, count: 2)
+    ////            , startPoint: .top, endPoint: .bottom)
 //    }
 }
 
 // MARK: Animated Path
+
 struct AnimatedGraphPath: Shape {
     var progress: CGFloat
     var points: [CGPoint]
     var animatableData: CGFloat {
-        get {return progress}
-        set {progress = newValue}
+        get { return progress }
+        set { progress = newValue }
     }
-    func path(in rect: CGRect) -> Path {
-        Path {path in
+
+    func path(in _: CGRect) -> Path {
+        Path { path in
 
             // drawing the points..
             path.move(to: CGPoint(x: 0, y: 0))
@@ -268,16 +263,14 @@ struct AnimatedGraphPath: Shape {
         }
         .trimmedPath(from: 0, to: progress)
         .strokedPath(StrokeStyle(lineWidth: 3, lineCap: .round, lineJoin: .round))
-
     }
 }
 
 struct DottedLine: Shape {
-
     func path(in rect: CGRect) -> Path {
         var path = Path()
-        path.move(to: CGPoint(x: (rect.width/2), y: 0))
-        path.addLine(to: CGPoint(x: (rect.width/2), y: rect.height))
+        path.move(to: CGPoint(x: rect.width / 2, y: 0))
+        path.addLine(to: CGPoint(x: rect.width / 2, y: rect.height))
         return path
     }
 }

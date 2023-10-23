@@ -5,10 +5,10 @@
 //  Created by Rafael Soh on 10/5/22.
 //
 
-import SwiftUI
-import Popovers
 import Combine
 import CoreHaptics
+import Popovers
+import SwiftUI
 import UIKit
 
 enum CategoryViewMode {
@@ -103,7 +103,6 @@ struct CategoryView: View {
                         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                        .font(.system(size: 18, weight: .semibold, design: .rounded))
                         .lineLimit(1)
-
                 }
                 .foregroundColor(Color.PrimaryText)
                 .padding(6)
@@ -123,7 +122,6 @@ struct CategoryView: View {
                 }
             }
             .padding(25)
-
         }
         .sheet(isPresented: $newCategory) {
             if #available(iOS 16.0, *) {
@@ -193,7 +191,6 @@ struct CategoryListView: View {
 
     var body: some View {
         VStack(spacing: 5) {
-
             if showToast {
                 HStack(spacing: 6.5) {
                     Image(systemName: toastImage)
@@ -287,14 +284,12 @@ struct CategoryListView: View {
                                             .frame(width: 33, height: 33)
                                     }
                                 }
-
                             }
                             .onTapGesture {
                                 if allCategories.count > 0 {
                                     dismiss()
                                 }
                             }
-
                     }
                     .frame(height: 35)
                     .frame(maxWidth: .infinity)
@@ -393,7 +388,6 @@ struct CategoryListView: View {
                                     }
                             }
                         }
-
                     }
                     .frame(height: 35)
                     .frame(maxWidth: .infinity)
@@ -404,12 +398,10 @@ struct CategoryListView: View {
 //                            .font(.system(size: 20, weight: mode == .settings ? .semibold : .medium, design: .rounded))
                     }
                     .padding(20)
-
                 }
             }
 
             VStack {
-
                 if #available(iOS 16.0, *) {
                     List {
                         Section(header: Text(sectionHeader).foregroundColor(Color.SubtitleText)) {
@@ -459,7 +451,6 @@ struct CategoryListView: View {
                                                 .fill(Color(hex: category.wrappedColour))
                                                 .frame(width: 20, height: 20)
                                         }
-
                                     }
                                     .padding(.vertical, 5)
                                     .listRowBackground(Color.SettingsBackground)
@@ -484,7 +475,6 @@ struct CategoryListView: View {
                                         }
                                         .tint(Color("Yellow"))
                                     }
-
                                 }
                                 .onMove(perform: moveItem)
                             }
@@ -495,7 +485,6 @@ struct CategoryListView: View {
                         if showSuggestions {
                             SuggestedCategoriesView(income: income)
                         }
-
                     }
                     .scrollContentBackground(.hidden)
                     .scrollIndicators(.hidden)
@@ -543,7 +532,6 @@ struct CategoryListView: View {
                                                 .fill(Color(hex: category.wrappedColour))
                                                 .frame(width: 20, height: 20)
                                         }
-
                                     }
                                     .padding(.vertical, 5)
                                     .listRowBackground(Color.SettingsBackground)
@@ -568,7 +556,6 @@ struct CategoryListView: View {
                                         }
                                         .tint(Color("Yellow"))
                                     }
-
                                 }
                                 .onMove(perform: moveItem)
                             }
@@ -579,11 +566,9 @@ struct CategoryListView: View {
                         if showSuggestions {
                             SuggestedCategoriesView(income: income)
                         }
-
                     }
                     .environment(\.editMode, .constant(self.isEditing ? EditMode.active : EditMode.inactive))
                 }
-
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
@@ -649,7 +634,7 @@ struct CategoryListView: View {
                             .foregroundColor(Color.PrimaryText.opacity(0.9))
                             .frame(height: 45)
                             .frame(maxWidth: .infinity)
-    //                        .background(Color("13").opacity(0.23), in: RoundedRectangle(cornerRadius: 9, style: .continuous))
+                            //                        .background(Color("13").opacity(0.23), in: RoundedRectangle(cornerRadius: 9, style: .continuous))
                             .background(Color.SecondaryBackground, in: RoundedRectangle(cornerRadius: 9, style: .continuous))
                     }
                 }
@@ -674,13 +659,11 @@ struct CategoryListView: View {
                                 withAnimation {
                                     offset = 0
                                 }
-
                             }
                         }
                 )
                 .padding(.horizontal, 17)
                 .padding(.bottom, bottomEdge == 0 ? 13 : bottomEdge)
-
             }
             .edgesIgnoringSafeArea(.all)
             .background(BackgroundBlurView())
@@ -743,14 +726,12 @@ struct CategoryListView: View {
         } catch {
             print(error.localizedDescription)
         }
-
     }
 
     init(income: Binding<Bool>, mode: CategoryViewMode, showToast: Binding<Bool>, toastTitle: Binding<String>, toastImage: Binding<String>, positive: Binding<Bool>) {
         _categories = FetchRequest<Category>(sortDescriptors: [
-            SortDescriptor(\.order)
-        ], predicate: NSPredicate(format: "income = %d", income.wrappedValue)
-        )
+            SortDescriptor(\.order),
+        ], predicate: NSPredicate(format: "income = %d", income.wrappedValue))
 
         _income = income
         _showToast = showToast
@@ -803,7 +784,7 @@ struct NewCategoryAlert: View {
     }
 
     var addButtonDisabled: Bool {
-        return newName.trimmingCharacters(in: .whitespacesAndNewlines) ==  "" || newEmoji == ""
+        return newName.trimmingCharacters(in: .whitespacesAndNewlines) == "" || newEmoji == ""
     }
 
     @State var showNativePicker: Bool = false
@@ -814,7 +795,6 @@ struct NewCategoryAlert: View {
     var body: some View {
         VStack {
             VStack {
-
                 VStack {
                     if showToast {
                         HStack(spacing: 5) {
@@ -916,14 +896,12 @@ struct NewCategoryAlert: View {
                             .padding(7)
                             .background(Color.SecondaryBackground, in: Circle())
                             .contentShape(Circle())
-
                     }
                 }
 
                 Spacer()
 
                 ZStack {
-
                     EmojiTextField(text: $newEmoji)
                         .focused($focusedField, equals: .emoji)
                         .onReceive(Just(newEmoji), perform: { _ in
@@ -969,7 +947,6 @@ struct NewCategoryAlert: View {
                                             .stroke(Color.SubtitleText, lineWidth: 2.2)
                                     }
                                 }
-
                         }
                         .popover(present: $showingColourPicker, attributes: {
                             $0.position = .absolute(
@@ -988,10 +965,10 @@ struct NewCategoryAlert: View {
                             Color.PrimaryBackground.opacity(0.3)
                         }
                     }
-//                    
+//
 //                    HStack(spacing: 8) {
-//                        
-//                        
+//
+//
 //                        if isFetching {
 //                            ProgressView()
 //                                .padding(8)
@@ -1013,13 +990,13 @@ struct NewCategoryAlert: View {
                         .padding(.vertical, 5)
                         .foregroundColor(Color.PrimaryText)
 
-                    .frame(height: 50)
-                    .background {
-                        RoundedRectangle(cornerRadius: 13, style: .continuous)
-                            .strokeBorder((focusedField == .name && !showingColourPicker) ? Color.SubtitleText : Color.clear, lineWidth: 2.2)
-                            .background(RoundedRectangle(cornerRadius: 13, style: .continuous).fill(Color.SecondaryBackground))
-                    }
-    //
+                        .frame(height: 50)
+                        .background {
+                            RoundedRectangle(cornerRadius: 13, style: .continuous)
+                                .strokeBorder((focusedField == .name && !showingColourPicker) ? Color.SubtitleText : Color.clear, lineWidth: 2.2)
+                                .background(RoundedRectangle(cornerRadius: 13, style: .continuous).fill(Color.SecondaryBackground))
+                        }
+                    //
                     Button {
                         verification()
                     } label: {
@@ -1030,15 +1007,11 @@ struct NewCategoryAlert: View {
 //                            .font(.system(size: 20, weight: .semibold))
                             .frame(width: 50, height: 50)
                             .background(Color.DarkBackground, in: RoundedRectangle(cornerRadius: 13, style: .continuous))
-
                     }
-
                 }
-
             }
             .padding(13)
             .frame(maxHeight: bottomSpacers ? 350 : .infinity)
-
         }
         .frame(maxHeight: .infinity, alignment: .top)
         .background(Color.PrimaryBackground)
@@ -1078,7 +1051,6 @@ struct NewCategoryAlert: View {
                 }
             }
         }
-
     }
 
     func verification() {
@@ -1189,27 +1161,27 @@ struct NewCategoryAlert: View {
 //        guard let url = URL(string: "https://api.openai.com/v1/completions") else {
 //            return
 //        }
-//        
+//
 //        var request = URLRequest(url: url)
 //        request.httpMethod = "POST"
-//        
+//
 //        let parameters: [String:Any] = ["model":"text-davinci-003", "prompt":"What is the likely transaction category name for a \(income ? "income" : "expense") category with the emoji \(emoji)?", "temperature":0.9]
-//        
+//
 //        // Convert parameters into JSON data
 //        let postData = try? JSONSerialization.data(withJSONObject: parameters)
-//        
+//
 //        request.httpBody = postData
 //        request.addValue("Bearer \(Constants.openAPIKey)", forHTTPHeaderField: "Authorization")
 //        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-//        
+//
 //        isFetching = true
-//        
+//
 //        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
 //            DispatchQueue.main.async {
-//                
+//
 //                if let data = data {
 //                    let decoder = JSONDecoder()
-//                    
+//
 //                    do {
 //                        // Decode data using your model structure
 //                        let result = try decoder.decode(OpenAICompletionsResponse.self, from: data)
@@ -1225,7 +1197,7 @@ struct NewCategoryAlert: View {
 //                }
 //            }
 //        }
-//        
+//
 //        task.resume()
 //    }
 
@@ -1234,7 +1206,6 @@ struct NewCategoryAlert: View {
         self.budgetMode = budgetMode
         self.bottomSpacers = bottomSpacers
     }
-
 }
 
 struct EditCategoryAlert: View {
@@ -1288,7 +1259,6 @@ struct EditCategoryAlert: View {
     var body: some View {
         VStack {
             VStack {
-
                 HStack {
                     Button {
                         dismiss()
@@ -1301,7 +1271,6 @@ struct EditCategoryAlert: View {
                             .padding(7)
                             .background(Color.SecondaryBackground, in: Circle())
                             .contentShape(Circle())
-
                     }
 
                     Spacer()
@@ -1345,9 +1314,7 @@ struct EditCategoryAlert: View {
                             .padding(7)
                             .background(Color.AlertRed.opacity(0.23), in: Circle())
                             .contentShape(Circle())
-
                     }
-
                 }
                 .frame(height: 30)
 
@@ -1399,7 +1366,6 @@ struct EditCategoryAlert: View {
                                             .stroke(Color.SubtitleText, lineWidth: 2.2)
                                     }
                                 }
-
                         }
                         .popover(present: $showingColourPicker, attributes: {
                             $0.position = .absolute(
@@ -1441,9 +1407,7 @@ struct EditCategoryAlert: View {
 //                            .font(.system(size: 20, weight: .semibold))
                             .frame(width: 50, height: 50)
                             .background(Color.DarkBackground, in: RoundedRectangle(cornerRadius: 13, style: .continuous))
-
                     }
-
                 }
             }
             .padding(13)
@@ -1482,7 +1446,6 @@ struct EditCategoryAlert: View {
             newEmoji = toEdit.wrappedEmoji
             selectedColour = toEdit.wrappedColour
         }
-
     }
 
     func verification() {
@@ -1527,12 +1490,10 @@ struct EditCategoryAlert: View {
 
             showToast = true
         } else {
-
             let generator = UINotificationFeedbackGenerator()
             generator.notificationOccurred(.success)
 
             if toEdit.income {
-
                 toEdit.name = newName.trimmingCharacters(in: .whitespaces).capitalized
                 toEdit.emoji = newEmoji
 
@@ -1543,7 +1504,6 @@ struct EditCategoryAlert: View {
                 toEdit.colour = selectedColour
 
                 dataController.save()
-
             }
 
             rootToastTitle = "Edited \(newName)"
@@ -1653,7 +1613,6 @@ struct DeleteCategoryAlert: View {
                             withAnimation {
                                 offset = 0
                             }
-
                         }
                     }
             )
@@ -1665,7 +1624,6 @@ struct DeleteCategoryAlert: View {
 //                }))
             .padding(.horizontal, 17)
             .padding(.bottom, bottomEdge == 0 ? 13 : bottomEdge)
-
         }
         .edgesIgnoringSafeArea(.all)
         .background(BackgroundBlurView())
@@ -1717,7 +1675,6 @@ struct SuggestedCategoriesView: View {
         }
 
         return holding
-
     }
 
     @State private var availableColours: [String] = Color.colorArray
@@ -1748,7 +1705,6 @@ struct SuggestedCategoriesView: View {
                             .padding(4)
                             .background(Color.SecondaryBackground, in: Circle())
                             .contentShape(Circle())
-
                     }
                     .padding(.vertical, 5)
                     .foregroundColor(Color.PrimaryText)
@@ -1801,9 +1757,7 @@ struct SuggestedCategoriesView: View {
                             suggestedCategory.income = true
                             dataController.save()
                         }
-
                     }
-
                 }
             }
             .onAppear {
@@ -1820,34 +1774,30 @@ struct SuggestedCategoriesView: View {
                         selectedColour = availableColours[0]
                     }
                 }
-           }
+            }
         }
-
     }
 
     init(income: Bool) {
         _categories = FetchRequest<Category>(sortDescriptors: [
-            SortDescriptor(\.order)
-        ], predicate: NSPredicate(format: "income = %d", income)
-        )
+            SortDescriptor(\.order),
+        ], predicate: NSPredicate(format: "income = %d", income))
 
         self.income = income
     }
 }
 
 class UIEmojiTextField: UITextField {
-
     override var textInputMode: UITextInputMode? {
-            .activeInputModes.first(where: { $0.primaryLanguage == "emoji" })
-        }
+        .activeInputModes.first(where: { $0.primaryLanguage == "emoji" })
+    }
 
-    override func caretRect(for position: UITextPosition) -> CGRect {
+    override func caretRect(for _: UITextPosition) -> CGRect {
         return CGRect.zero
     }
 }
 
 struct EmojiTextField: UIViewRepresentable {
-
     @Binding var text: String
     var placeholder: String = ""
 
@@ -1864,7 +1814,7 @@ struct EmojiTextField: UIViewRepresentable {
         return emojiTextField
     }
 
-    func updateUIView(_ uiView: UIEmojiTextField, context: Context) {
+    func updateUIView(_ uiView: UIEmojiTextField, context _: Context) {
         uiView.text = text
     }
 
@@ -1884,12 +1834,10 @@ struct EmojiTextField: UIViewRepresentable {
                 self?.parent.text = textField.text ?? ""
             }
         }
-
     }
 }
 
 struct NormalTextField: UIViewRepresentable {
-
     @Binding var text: String
     var placeholder: String = ""
     var action: () -> Void
@@ -1908,7 +1856,7 @@ struct NormalTextField: UIViewRepresentable {
         return textField
     }
 
-    func updateUIView(_ uiView: UITextField, context: Context) {
+    func updateUIView(_ uiView: UITextField, context _: Context) {
         uiView.text = text
     }
 
@@ -1929,17 +1877,15 @@ struct NormalTextField: UIViewRepresentable {
             }
         }
 
-        func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        func textFieldShouldReturn(_: UITextField) -> Bool {
             parent.action()
 
             return true
         }
-
     }
 }
 
 struct ColourPickerView: View {
-
     var selectedColours: [String]
 
     @Binding var showMenu: Bool
@@ -1957,7 +1903,7 @@ struct ColourPickerView: View {
         GridItem(.fixed(40), spacing: 6),
         GridItem(.fixed(40), spacing: 6),
         GridItem(.fixed(40), spacing: 6),
-        GridItem(.fixed(40))
+        GridItem(.fixed(40)),
     ]
 
     @AppStorage("colourScheme", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var colourScheme: Int = 0
@@ -1965,11 +1911,10 @@ struct ColourPickerView: View {
     @Environment(\.colorScheme) var systemColorScheme
 
     var darkMode: Bool {
-        ((colourScheme == 0 && systemColorScheme == .dark) || colourScheme == 2)
+        (colourScheme == 0 && systemColorScheme == .dark) || colourScheme == 2
     }
 
     var body: some View {
-
         LazyVGrid(columns: columns, spacing: 6) {
             ForEach(Color.colorArray, id: \.self) { suggestedColor in
                 if suggestedColor == "#" {
@@ -1979,11 +1924,11 @@ struct ColourPickerView: View {
 
                         RoundedRectangle(cornerRadius: 6)
                             .fill(darkMode ? Color("AlwaysDarkBackground") : Color("AlwaysLightBackground"))
-                                .padding(4)
+                            .padding(4)
 
                         RoundedRectangle(cornerRadius: 3)
-                                .fill(customSelectedColor)
-                                .padding(8)
+                            .fill(customSelectedColor)
+                            .padding(8)
 
                         if customMode {
                             Image(systemName: "checkmark")
@@ -2020,17 +1965,14 @@ struct ColourPickerView: View {
                                     .font(.system(size: 15, weight: .bold))
                                     .foregroundColor(Color.black)
                             }
-
                         }
                 }
-
             }
         }
         .padding(6)
         .frame(width: 282)
         .background(RoundedRectangle(cornerRadius: 9).fill(darkMode ? Color("AlwaysDarkBackground") : Color("AlwaysLightBackground")).shadow(color: darkMode ? Color.clear : Color.gray.opacity(0.25), radius: 6))
         .overlay(RoundedRectangle(cornerRadius: 9).stroke(darkMode ? Color.gray.opacity(0.1) : Color.clear, lineWidth: 1.3))
-
     }
 
     init(selectedColor: Binding<String>, showMenu: Binding<Bool>, showNativePicker: Binding<Bool>, toEdit: Category? = nil) {

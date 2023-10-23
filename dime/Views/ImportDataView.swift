@@ -5,11 +5,11 @@
 //  Created by Rafael Soh on 21/8/23.
 //
 
+import ConfettiSwiftUI
 import Foundation
 import SwiftUI
-import UniformTypeIdentifiers
 import UIKit
-import ConfettiSwiftUI
+import UniformTypeIdentifiers
 
 struct ColumnLabel {
     let image: String
@@ -26,7 +26,7 @@ struct MatchedCategory: Hashable {
     var category: Category?
 
     mutating func toggleIncome() {
-        self.income = !income
+        income = !income
     }
 }
 
@@ -78,7 +78,7 @@ struct ImportDataView: View {
     @State var sampleDateString = ""
     @State var dateFormatString = ""
     @State var validDateFormatString = false
-    @State var uniqueCategories: [MatchedCategory] = [MatchedCategory]()
+    @State var uniqueCategories: [MatchedCategory] = .init()
 
     @State var processingState = ProcessingState.loading
     @State var errorMessage = "Invalid dates in date column."
@@ -108,21 +108,21 @@ struct ImportDataView: View {
     }
 
     let instructions: [InstructionHeadings] = [
-            InstructionHeadings(title: "Import transactions", subtitle: "Begin by adding a CSV file with 4 columns: amount, note, date, and category."),
-            InstructionHeadings(title: "Assign category column", subtitle: "Select a column from your import that corresponds to the categories of your transactions."),
-            InstructionHeadings(title: "Assign note column", subtitle: "Select a column from your import that corresponds to the notes/subtitles of your transactions."),
-            InstructionHeadings(title: "Assign date column", subtitle: "Select a column from your import that corresponds to the dates of your transactions."),
-            InstructionHeadings(title: "Assign amount column", subtitle: "Select a column from your import that corresponds to the values of your transactions."),
-            InstructionHeadings(title: "Indicate date format", subtitle: "Referencing this article, state the format of the dates in the assigned column."),
-            InstructionHeadings(title: "Link categories", subtitle: "Match values found in the 'Category' column to the corresponding categories in Dime."),
-            InstructionHeadings(title: "Processing import", subtitle: "Please wait while we process your new transactions.")
-        ]
+        InstructionHeadings(title: "Import transactions", subtitle: "Begin by adding a CSV file with 4 columns: amount, note, date, and category."),
+        InstructionHeadings(title: "Assign category column", subtitle: "Select a column from your import that corresponds to the categories of your transactions."),
+        InstructionHeadings(title: "Assign note column", subtitle: "Select a column from your import that corresponds to the notes/subtitles of your transactions."),
+        InstructionHeadings(title: "Assign date column", subtitle: "Select a column from your import that corresponds to the dates of your transactions."),
+        InstructionHeadings(title: "Assign amount column", subtitle: "Select a column from your import that corresponds to the values of your transactions."),
+        InstructionHeadings(title: "Indicate date format", subtitle: "Referencing this article, state the format of the dates in the assigned column."),
+        InstructionHeadings(title: "Link categories", subtitle: "Match values found in the 'Category' column to the corresponding categories in Dime."),
+        InstructionHeadings(title: "Processing import", subtitle: "Please wait while we process your new transactions."),
+    ]
 
     let labels: [ColumnLabel] = [
         ColumnLabel(image: "square.grid.2x2.fill", label: "Category"),
         ColumnLabel(image: "doc.plaintext.fill", label: "Note"),
         ColumnLabel(image: "calendar", label: "Date"),
-        ColumnLabel(image: "dollarsign.circle.fill", label: "Amount")
+        ColumnLabel(image: "dollarsign.circle.fill", label: "Amount"),
     ]
 
     let pointers = ["Ensure that the values in the 'Amount' column do not contain any currency symbols.", "All dates should be of a consistent, recognizable format. If no timestamps are provided, the time of transaction will default to 12:00 am.", "Remove all commas in the 'Note' and 'Category' columns as they would disrupt the parsing of your file."]
@@ -215,7 +215,6 @@ struct ImportDataView: View {
                                 dismiss()
                             }
                         } label: {
-
                             Image(systemName: progress > 1 ? "chevron.left" : "xmark")
                                 .font(.system(.callout, design: .rounded).weight(.semibold))
                                 .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
@@ -224,7 +223,7 @@ struct ImportDataView: View {
                                 .background(Color.SecondaryBackground, in: Circle())
 
 //                            ZStack {
-//                                
+//
 //                                Circle()
 //                                    .fill(Color.SecondaryBackground)
 //                                    .frame(width: 28, height: 28)
@@ -232,12 +231,11 @@ struct ImportDataView: View {
 //                                        Image(systemName: progress > 1 ? "chevron.left" : "xmark")
 //                                            .font(.system(size: 16, weight: .semibold))
 //                                            .foregroundColor(Color.SubtitleText)
-//                                        
+//
 //                                    }
-//                                
-//                                
+//
+//
 //                            }
-
                         }
                         .contentTransition(.symbolEffect(.replace.downUp.wholeSymbol))
                     } else {
@@ -257,7 +255,7 @@ struct ImportDataView: View {
                                 .padding(8)
                                 .background(Color.SecondaryBackground, in: Circle())
 //                            ZStack {
-//                                
+//
 //                                Circle()
 //                                    .fill(Color.SecondaryBackground)
 //                                    .frame(width: 28, height: 28)
@@ -265,12 +263,11 @@ struct ImportDataView: View {
 //                                        Image(systemName: progress > 1 ? "chevron.left" : "xmark")
 //                                            .font(.system(size: 16, weight: .semibold))
 //                                            .foregroundColor(Color.SubtitleText)
-//                                        
+//
 //                                    }
-//                                
-//                                
+//
+//
 //                            }
-
                         }
                     }
 
@@ -278,7 +275,6 @@ struct ImportDataView: View {
 
                     CustomCapsuleProgress(percent: Double(progress) / 7, width: 4, topStroke: Color.DarkBackground, bottomStroke: Color.SecondaryBackground)
                         .frame(width: 60)
-
                 }
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -310,7 +306,6 @@ struct ImportDataView: View {
                 VStack(alignment: .leading, spacing: 5) {
                     if progress == 6 {
                         HStack {
-
                             Text("Indicate date format")
                                 .foregroundColor(.PrimaryText)
                                 .font(.system(.title2, design: .rounded).weight(.semibold))
@@ -329,8 +324,7 @@ struct ImportDataView: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                     } else {
                         HStack {
-
-                            Text(instructions[progress-1].title)
+                            Text(instructions[progress - 1].title)
                                 .foregroundColor(Color.PrimaryText)
                                 .font(.system(.title2, design: .rounded).weight(.semibold))
                                 .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
@@ -348,23 +342,20 @@ struct ImportDataView: View {
                                         .padding(4)
                                         .background(Color.SecondaryBackground, in: Circle())
                                         .contentShape(Circle())
-
                                 }
-
                             }
 
                             Spacer()
                         }
                         .frame(maxWidth: .infinity)
 
-                        Text(instructions[progress-1].subtitle)
+                        Text(instructions[progress - 1].subtitle)
                             .foregroundColor(.SubtitleText)
                             .font(.system(.body, design: .rounded).weight(.medium))
                             .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                            .font(.system(size: 17, weight: .medium, design: .rounded))
                             .frame(maxWidth: .infinity, alignment: .leading)
                     }
-
                 }
                 .frame(height: UIScreen.main.bounds.size.height / (dynamicTypeSize > .xLarge ? 5.3 : 5.8), alignment: .top)
                 .padding(.bottom, 10)
@@ -381,7 +372,6 @@ struct ImportDataView: View {
                             .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                            .font(.system(size: 17, weight: .semibold, design: .rounded))
                             .frame(maxWidth: .infinity, alignment: .leading)
-
                     }
                     .padding(12)
                     .foregroundColor(Color.IncomeGreen)
@@ -406,7 +396,7 @@ struct ImportDataView: View {
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 0) {
                                 VStack(spacing: 0) {
-                                    ForEach(0..<(numberOfRows + 1)) { number in
+                                    ForEach(0 ..< (numberOfRows + 1)) { number in
                                         if number == 0 {
                                             Rectangle()
                                                 .fill(Color.PrimaryBackground)
@@ -421,7 +411,6 @@ struct ImportDataView: View {
                                                 .frame(width: indexColumnWidth, height: 30, alignment: .leading)
                                                 .overlay(Rectangle().stroke(Color.Outline, lineWidth: 1))
                                         }
-
                                     }
                                 }
                                 .background(Color.SecondaryBackground.opacity(0.6))
@@ -430,7 +419,6 @@ struct ImportDataView: View {
                                     ForEach(displayedColumns.indices, id: \.self) { columnIndex in
 
                                         VStack(spacing: 0) {
-
                                             if selectedColumns.contains(columnIndex) {
                                                 if let index = selectedColumns.firstIndex(of: columnIndex) {
                                                     HStack(spacing: 4.5) {
@@ -444,7 +432,6 @@ struct ImportDataView: View {
                                                             .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                                                            .font(.system(size: 14, weight: .semibold, design: .rounded))
                                                             .frame(maxWidth: .infinity, alignment: .leading)
-
                                                     }
                                                     .padding(.horizontal, 10)
                                                     .frame(width: columnWidth, height: 30, alignment: .leading)
@@ -467,7 +454,7 @@ struct ImportDataView: View {
                                                         .padding(.horizontal, 8)
                                                         .frame(width: columnWidth, height: 30, alignment: .leading)
                                                         .overlay(Rectangle().stroke(Color.Outline, lineWidth: 1))
-                //
+                                                    //
                                                 }
                                             }
                                             .onTapGesture {
@@ -479,9 +466,7 @@ struct ImportDataView: View {
                                                     }
                                                 }
                                             }
-
                                         }
-
                                     }
                                 }
                                 .overlay(alignment: .leading) {
@@ -498,7 +483,6 @@ struct ImportDataView: View {
                                                     .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                                                    .font(.system(size: 14, weight: .semibold, design: .rounded))
                                                     .frame(maxWidth: .infinity, alignment: .leading)
-
                                             }
                                             .padding(.horizontal, 10)
                                             .frame(width: columnWidth + 2, height: 30, alignment: .leading)
@@ -551,16 +535,15 @@ struct ImportDataView: View {
 //                                .font(.system(size: 20, weight: .semibold, design: .rounded))
                                 .frame(maxWidth: .infinity)
 
-                                if validDateFormatString {
-                                    Image(systemName: "checkmark.circle.fill")
-                                        .font(.system(.callout, design: .rounded).weight(.semibold))
-                                        .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+                            if validDateFormatString {
+                                Image(systemName: "checkmark.circle.fill")
+                                    .font(.system(.callout, design: .rounded).weight(.semibold))
+                                    .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                                        .font(.system(size: 16, weight: .semibold))
-                                        .foregroundColor(Color.IncomeGreen)
-                                } else if !validDateFormatString && dateFormatString != "" {
-                                    ProgressView()
-                                }
-
+                                    .foregroundColor(Color.IncomeGreen)
+                            } else if !validDateFormatString && dateFormatString != "" {
+                                ProgressView()
+                            }
                         }
                         .padding(.horizontal, 10)
                         .frame(width: 300, height: 40)
@@ -579,7 +562,6 @@ struct ImportDataView: View {
                                 validDateFormatString = false
                             }
                         }
-
                     }
                 } else if progress == 7 {
                     VStack(spacing: 10) {
@@ -659,14 +641,12 @@ struct ImportDataView: View {
                                                 uniqueCategories[categoryIndex].income.toggle()
                                             }
                                             .padding(12)
-
                                         }
 
                                     Spacer()
                                 }
                                 .padding(10)
                                 .tag(categoryIndex)
-
                             }
                         }
                         .tabViewStyle(.page(indexDisplayMode: .always))
@@ -713,12 +693,9 @@ struct ImportDataView: View {
                                     .font(.system(.body, design: .rounded).weight(.semibold))
                                     .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                                    .font(.system(size: 18, weight: .semibold, design: .rounded))
-
                             }
                             .foregroundColor(Color.SubtitleText)
-
                         }
-
                     }
 
                 } else {
@@ -804,7 +781,6 @@ struct ImportDataView: View {
                                 } else {
                                     progress += 1
                                 }
-
                             }
                         }
                     } label: {
@@ -820,7 +796,6 @@ struct ImportDataView: View {
                     .buttonStyle(BouncyButton(duration: 0.2, scale: 0.8))
                 }
             }
-
         }
         .padding(20)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
@@ -831,10 +806,10 @@ struct ImportDataView: View {
             allowedContentTypes: [.commaSeparatedText]
         ) { result in
             switch result {
-            case .success(let file):
+            case let .success(file):
                 do {
                     if file.startAccessingSecurityScopedResource() {
-                        guard let message = String(data: try Data(contentsOf: file), encoding: .utf8) else {
+                        guard let message = try String(data: Data(contentsOf: file), encoding: .utf8) else {
                             showToast = true
                             toastMessage = "Invalid File"
                             return
@@ -848,10 +823,8 @@ struct ImportDataView: View {
                             file.stopAccessingSecurityScopedResource()
                         }
                     }
-                } catch {
-
-                }
-            case .failure(let error):
+                } catch {}
+            case let .failure(error):
                 print(error.localizedDescription)
             }
         }
@@ -891,10 +864,10 @@ struct ImportDataView: View {
             if let _ = Double(string) {
                 // Valid double
             } else {
-                return false  // Invalid double found
+                return false // Invalid double found
             }
         }
-        return true  // All strings are valid doubles
+        return true // All strings are valid doubles
     }
 
     func processCSV() {
@@ -922,7 +895,7 @@ struct ImportDataView: View {
 
         // Transpose rows to columns
         let maxColumnCount = values.map { $0.count }.max() ?? 0
-//        
+//
         guard maxColumnCount > 3 else {
             showToast = true
             toastMessage = "Invalid File"
@@ -943,7 +916,7 @@ struct ImportDataView: View {
 
         numberOfRows = displayedColumns[0].count
 
-        remainingColumns = Array(0..<maxColumnCount)
+        remainingColumns = Array(0 ..< maxColumnCount)
 
         withAnimation {
             progress += 1
@@ -982,7 +955,6 @@ struct ImportDataView: View {
                 errorMessage = "Invalid dates in date column."
                 return
             }
-
         }
 
         dataController.save()
@@ -993,7 +965,6 @@ struct ImportDataView: View {
                 confettiNumber += 1
             }
         }
-
     }
 
     func deduceDateFormat(from dateString: String) -> String? {
@@ -1045,23 +1016,20 @@ struct ImportDataView: View {
 //                .font(.system(size: 17, weight: .medium, design: .rounded))
                 .foregroundColor(Color.PrimaryText)
                 .frame(maxWidth: .infinity, alignment: .leading)
-
         }
     }
-
 }
 
 struct ActivityViewController: UIViewControllerRepresentable {
     var activityItems: [Any]
     var applicationActivities: [UIActivity]?
 
-    func makeUIViewController(context: UIViewControllerRepresentableContext<ActivityViewController>) -> UIActivityViewController {
+    func makeUIViewController(context _: UIViewControllerRepresentableContext<ActivityViewController>) -> UIActivityViewController {
         let controller = UIActivityViewController(activityItems: activityItems, applicationActivities: applicationActivities)
         return controller
     }
 
-    func updateUIViewController(_ uiViewController: UIActivityViewController, context: UIViewControllerRepresentableContext<ActivityViewController>) {
-    }
+    func updateUIViewController(_: UIActivityViewController, context _: UIViewControllerRepresentableContext<ActivityViewController>) {}
 }
 
 struct MatchCategoryStepperView: View {
@@ -1094,12 +1062,9 @@ struct MatchCategoryStepperView: View {
     }
 
     var body: some View {
-
         VStack {
             if categories.isEmpty {
-
                 VStack(spacing: 12) {
-
                     Image(systemName: "tray.full.fill")
                         .font(.system(.title, design: .rounded))
                         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
@@ -1120,11 +1085,9 @@ struct MatchCategoryStepperView: View {
             } else {
                 ScrollView(showsIndicators: false) {
                     VStack(spacing: 8) {
-
                         ForEach(getRows(), id: \.self) { rows in
 
                             HStack(spacing: 8) {
-
                                 ForEach(rows) { row in
 
                                     // Row View....
@@ -1166,7 +1129,6 @@ struct MatchCategoryStepperView: View {
             totalWidth += (size.width + 10 + 10 + 8)
 
             if totalWidth > screenWidth {
-
                 totalWidth = (!currentRow.isEmpty || rows.isEmpty ? (size.width + 10 + 10 + 8) : 0)
 
                 rows.append(currentRow)
@@ -1201,7 +1163,6 @@ struct MatchCategoryStepperView: View {
                     if pageIndex < maxIndex - 1 {
                         pageIndex += 1
                     }
-
                 }
             }
 
@@ -1224,8 +1185,7 @@ struct MatchCategoryStepperView: View {
                 if category != categoryInput {
                     RoundedRectangle(cornerRadius: 10, style: .continuous)
                         .strokeBorder(Color.Outline,
-                                      style: StrokeStyle(lineWidth: 1.5)
-                        )
+                                      style: StrokeStyle(lineWidth: 1.5))
                 }
             }
 //            .opacity(category == nil ? 1 : (category == categoryInput ? 1 : 0.4))
@@ -1242,7 +1202,6 @@ struct MatchCategoryStepperView: View {
 }
 
 struct RoundedCorner: Shape {
-
     var radius: CGFloat = .infinity
     var corners: UIRectCorner = .allCorners
 

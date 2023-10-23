@@ -45,7 +45,7 @@ struct ContentView: View {
             let topEdge = proxy.safeAreaInsets.top
             let bottomEdge = proxy.safeAreaInsets.bottom
 
-            HomeView(topEdge: topEdge, bottomEdge: (bottomEdge == 0 ? 15 : bottomEdge))
+            HomeView(topEdge: topEdge, bottomEdge: bottomEdge == 0 ? 15 : bottomEdge)
                 .ignoresSafeArea(.all, edges: .bottom)
                 .preferredColorScheme(colourScheme == 1 ? .light : colourScheme == 2 ? .dark : nil)
                 .fullScreenCover(isPresented: $showIntro) {
@@ -58,7 +58,6 @@ struct ContentView: View {
                     savedTopEdge = topEdge
                     savedBottomEdge = bottomEdge
                 }
-
         }
         .ignoresSafeArea(.keyboard)
         .onAppear {
@@ -70,7 +69,7 @@ struct ContentView: View {
             }
 
             let defaults =
-            UserDefaults(suiteName: "group.com.rafaelsoh.dime") ?? UserDefaults.standard
+                UserDefaults(suiteName: "group.com.rafaelsoh.dime") ?? UserDefaults.standard
 
             if defaults.object(forKey: "firstDayOfMonth") == nil {
                 defaults.set(1, forKey: "firstDayOfMonth")
@@ -129,7 +128,6 @@ struct ContentView: View {
                         if Double(category.wrappedColour) != nil {
                             category.colour = Color.colourMigrationDictionary[category.wrappedColour] ?? "#FFFFFF"
                         }
-
                     }
                 }
 
@@ -159,7 +157,6 @@ struct ContentView: View {
                     }
                 }
             }
-
         }
         .onChange(of: scenePhase) { newPhase in
             if newPhase == .background || newPhase == .inactive {
@@ -183,9 +180,7 @@ struct ContentView: View {
                         }
                     }
                 }
-
             }
         }
-
     }
 }

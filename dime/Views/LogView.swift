@@ -5,12 +5,12 @@
 //  Created by Rafael Soh on 19/5/22.
 //
 
+import CloudKitSyncMonitor
+import CoreData
 import Foundation
-import SwiftUI
 import Introspect
 import Popovers
-import CoreData
-import CloudKitSyncMonitor
+import SwiftUI
 
 struct LogView: View {
     @ObservedObject var syncMonitor = SyncMonitor.shared
@@ -30,6 +30,7 @@ struct LogView: View {
     var currencySymbol: String {
         return Locale.current.localizedCurrencySymbol(forCurrencyCode: currency)!
     }
+
     @State var addTransaction = false
 
     // searching
@@ -84,7 +85,6 @@ struct LogView: View {
                     .font(.system(size: 18, weight: .medium, design: .rounded))
                     .multilineTextAlignment(.center)
                     .foregroundColor(Color.SubtitleText.opacity(0.7))
-
             }
             .padding(.horizontal, 30)
             .frame(height: 250, alignment: .top)
@@ -111,7 +111,6 @@ struct LogView: View {
                                         .scaleEffect(progress == 1 ? 1.5 : 1.0)
                                         .opacity(progress)
                                 }
-
                         }
                         .accessibilityLabel("Search")
 
@@ -163,13 +162,12 @@ struct LogView: View {
 //                                            .opacity(released  == .filter ? 0.5 : 1.0)
 //                                    }
                                 }
-
                         }
                         .accessibilityLabel("Filter")
                         .popover(present: $showFilter, attributes: {
                             $0.position = .absolute(
-                              originAnchor: .bottomRight,
-                              popoverAnchor: .topRight
+                                originAnchor: .bottomRight,
+                                popoverAnchor: .topRight
                             )
                             $0.rubberBandingMode = .none
                             $0.sourceFrameInset = UIEdgeInsets(top: 0, left: 0, bottom: -10, right: 0)
@@ -206,7 +204,6 @@ struct LogView: View {
                 ScrollView(showsIndicators: false) {
                     if filter == .all {
                         LogInsightsView(navBarText: $navBarText, showCents: showCents, currencySymbol: currencySymbol)
-
                     }
 
                     TransactionsList(filter: filter, category: categoryFilter, date: dateFilter, week: weekFilter, month: monthFilter, income: income)
@@ -216,34 +213,34 @@ struct LogView: View {
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
 
-//                
+//
 //                CustomRefreshView {
 //                    VStack {
-//                       
+//
 //                    }
-//                    
+//
 //                } onRefresh: {
 //                    searchMode = true
 //                }
-//         
+//
 
 //                ScrollView(showsIndicators: false) {
 //                    if filter == .all {
 //                        LogInsightsView(navBarText: $navBarText, showCents: showCents, currencySymbol: currencySymbol)
-//                        
+//
 //                    }
-//                    
-//                    
+//
+//
 //                    TransactionsList(filter: filter, category: categoryFilter, date: dateFilter, week: weekFilter, month: monthFilter, income: income)
 //                        .zIndex(0)
 //                        .padding(.horizontal, 20)
 //                        .padding(.bottom, 70 + bottomEdge)
-////                        .offsetExtractor(coordinateSpace: "Scroll") { rect in
-////                            DispatchQueue.main.async {
-////                                print(rect.minY)
-////                                pullStatus = rect.minY > 355 ? (rect.minY > 410 ? .filter : .search) : .none
-////                            }
-////                        }
+                ////                        .offsetExtractor(coordinateSpace: "Scroll") { rect in
+                ////                            DispatchQueue.main.async {
+                ////                                print(rect.minY)
+                ////                                pullStatus = rect.minY > 355 ? (rect.minY > 410 ? .filter : .search) : .none
+                ////                            }
+                ////                        }
 //                }
 //                .frame(maxWidth: .infinity, maxHeight: .infinity)
 //                .onReceive(scrollDelegate.gestureEnded) { _ in
@@ -257,7 +254,7 @@ struct LogView: View {
 //                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
 //                            searchMode = true
 //                        }
-//                        
+//
 //                    }
 //                }
             }
@@ -381,11 +378,11 @@ struct NumberView: AnimatableModifier {
     }
 
     var animatableData: Double {
-            get { number }
-            set { number = newValue }
-        }
+        get { number }
+        set { number = newValue }
+    }
 
-    func body(content: Content) -> some View {
+    func body(content _: Content) -> some View {
         HStack(alignment: .lastTextBaseline, spacing: 4) {
             Text(netTotal ? (positive ? "+\(currencySymbol)" : "-\(currencySymbol)") : currencySymbol)
                 .font(.system(size: downsize1.small, weight: .light, design: .rounded))
@@ -424,7 +421,7 @@ struct LogInsightsView: View {
     @AppStorage("logViewLineGraph", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var lineGraph: Bool = false
 
     var netTotal: (value: Double, positive: Bool) {
-        return dataController.getLogViewTotalNet(type: timeframe)
+        dataController.getLogViewTotalNet(type: timeframe)
     }
 
     var range: Int {
@@ -518,18 +515,18 @@ struct LogInsightsView: View {
                         showMenu1 = true
                     } label: {
                         Text(LocalizedStringKey(subtitleText[timeframe - 1]))
-                        .padding(2)
-                        .padding(.horizontal, 6)
-                        .font(.system(.body, design: .rounded).weight(.medium))
-                        .dynamicTypeSize(...DynamicTypeSize.xxLarge)
+                            .padding(2)
+                            .padding(.horizontal, 6)
+                            .font(.system(.body, design: .rounded).weight(.medium))
+                            .dynamicTypeSize(...DynamicTypeSize.xxLarge)
 //                        .font(.system(size: 17, weight: .medium, design: .rounded))
-                        .foregroundColor(Color.PrimaryText.opacity(9))
-                        .overlay(Capsule().stroke(Color.Outline, lineWidth: 1.3))
+                            .foregroundColor(Color.PrimaryText.opacity(9))
+                            .overlay(Capsule().stroke(Color.Outline, lineWidth: 1.3))
                     }
                     .popover(present: $showMenu1, attributes: {
                         $0.position = .absolute(
-                          originAnchor: .bottom,
-                          popoverAnchor: .top
+                            originAnchor: .bottom,
+                            popoverAnchor: .top
                         )
                         $0.rubberBandingMode = .none
                         $0.sourceFrameInset = UIEdgeInsets(top: 0, left: 0, bottom: -10, right: 0)
@@ -539,16 +536,16 @@ struct LogInsightsView: View {
                         TimePickerView(showMenu: $showMenu1, timeframe: $timeframe)
                     }
                 }
-//                
+//
 //                HStack(alignment: .lastTextBaseline, spacing: 4) {
 //                    Text(currencySymbol)
 //                        .font(.system(size: 25, weight: .light, design: .rounded))
 //                        .foregroundColor(Color.SubtitleText)
-//                    
+//
 //                    Text("\(amount, specifier: "%.2f")")
 //                        .font(.system(size: 44, weight: .regular, design: .rounded))
 //                        .lineLimit(1)
-//                        
+//
 //                }
 
                 EmptyView()
@@ -655,7 +652,7 @@ struct LogInsightsView: View {
 struct SearchView: View {
     @SectionedFetchRequest<Date?, Transaction>(sectionIdentifier: \.day, sortDescriptors: [
         SortDescriptor(\.day, order: .reverse),
-        SortDescriptor(\.date, order: .reverse)
+        SortDescriptor(\.date, order: .reverse),
     ]) private var transactions: SectionedFetchResults<Date?, Transaction>
 
     @Environment(\.dismiss) var dismiss
@@ -701,7 +698,6 @@ struct SearchView: View {
                                 .foregroundColor(Color.SubtitleText)
                                 .background(Color.SecondaryBackground)
                         }
-
                     }
                 }
                 .padding(6)
@@ -722,7 +718,7 @@ struct SearchView: View {
         .padding(15)
         .background(Color.PrimaryBackground)
         .onChange(of: searchQuery) { _ in
-              transactions.nsPredicate = searchPredicate(searchQuery: searchQuery)
+            transactions.nsPredicate = searchPredicate(searchQuery: searchQuery)
         }
     }
 
@@ -733,7 +729,6 @@ struct SearchView: View {
         let containPredicate = NSPredicate(format: "%K CONTAINS[cd] %@", #keyPath(Transaction.note), searchQuery)
         let containPredicate1 = NSPredicate(format: "%K CONTAINS[cd] %@", #keyPath(Transaction.category.name), searchQuery)
         return NSCompoundPredicate(orPredicateWithSubpredicates: [beginPredicate, containPredicate, containPredicate1])
-
     }
 }
 
@@ -778,10 +773,9 @@ struct FilteredSearchView: View {
         let compound = NSCompoundPredicate(orPredicateWithSubpredicates: [beginPredicate, containPredicate, containPredicate1])
 
         _transactions = SectionedFetchRequest<Date?, Transaction>(sectionIdentifier: \.day, sortDescriptors: [
-                SortDescriptor(\.day, order: .reverse),
-                SortDescriptor(\.date, order: .reverse)
-            ], predicate: compound
-        )
+            SortDescriptor(\.day, order: .reverse),
+            SortDescriptor(\.date, order: .reverse),
+        ], predicate: compound)
 
         self.searchQuery = searchQuery
     }
@@ -801,14 +795,13 @@ struct TimePickerView: View {
     @Environment(\.colorScheme) var systemColorScheme
 
     var darkMode: Bool {
-        ((colourScheme == 0 && systemColorScheme == .dark) || colourScheme == 2)
+        (colourScheme == 0 && systemColorScheme == .dark) || colourScheme == 2
     }
 
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
 
     var body: some View {
         VStack(alignment: .leading, spacing: 1) {
-
             ForEach(timeframes.indices, id: \.self) { index in
                 HStack {
                     Text(LocalizedStringKey(timeframes[index]))
@@ -875,7 +868,7 @@ struct FilterPickerView: View {
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
 
     var darkMode: Bool {
-        ((colourScheme == 0 && systemColorScheme == .dark) || colourScheme == 2)
+        (colourScheme == 0 && systemColorScheme == .dark) || colourScheme == 2
     }
 
     var body: some View {
@@ -912,7 +905,7 @@ struct FilterPickerView: View {
                 }
                 .contentShape(Rectangle())
                 .onTapGesture {
-                    if  filterType == filter {
+                    if filterType == filter {
                         showMenu = false
                     } else {
                         withAnimation(.easeIn(duration: 0.15)) {
@@ -926,14 +919,12 @@ struct FilterPickerView: View {
                 }
                 .accessibilityElement(children: .ignore)
             }
-
         }
         .foregroundColor(darkMode ? Color("AlwaysLightBackground") : Color("AlwaysDarkBackground"))
         .padding(4)
         .frame(width: dynamicTypeSize > .xLarge ? 220 : 190)
         .background(RoundedRectangle(cornerRadius: 9).fill(darkMode ? Color("AlwaysDarkBackground") : Color("AlwaysLightBackground")).shadow(color: darkMode ? Color.clear : Color.gray.opacity(0.25), radius: 6))
         .overlay(RoundedRectangle(cornerRadius: 9).stroke(darkMode ? Color.gray.opacity(0.1) : Color.clear, lineWidth: 1.3))
-
     }
 }
 
@@ -953,13 +944,12 @@ struct TransactionsList: View {
     @SectionedFetchRequest<Date?, Transaction>(sectionIdentifier: \.day, sortDescriptors: [
         SortDescriptor(\.day, order: .reverse),
         SortDescriptor(\.date, order: .reverse),
-        SortDescriptor(\.note)
+        SortDescriptor(\.note),
     ], predicate: NSPredicate(format: "%K <= %@", #keyPath(Transaction.date), Date.now as CVarArg)) private var transactions: SectionedFetchResults<Date?, Transaction>
 
     var body: some View {
         VStack {
             if (filter == .all && showUpcoming) || filter == .upcoming {
-
                 FutureListView(dataController: dataController, filterMode: filter == .upcoming, limitedMode: showSoon)
                     .padding(.top, 10)
             }
@@ -982,7 +972,6 @@ struct TransactionsList: View {
             case .upcoming:
                 EmptyView()
             }
-
         }
     }
 }
@@ -1015,7 +1004,6 @@ struct ListView: View {
 
                             Text(filtered.string)
                                 .layoutPriority(1)
-
                         }
                         .font(.system(.callout, design: .rounded).weight(.semibold))
                         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
@@ -1032,13 +1020,10 @@ struct ListView: View {
 
                     ForEach(filtered.transactions, id: \.id) { transaction in
                         SingleTransactionView(transaction: transaction, showCents: showCents, currencySymbol: currencySymbol, currency: currency, swapTimeLabel: swapTimeLabel, future: false)
-
                     }
-
                 }
                 .contentShape(RoundedRectangle(cornerRadius: 10))
                 .contextMenu {
-
                     if #available(iOS 16.0, *) {
                         Button {
                             guard let image = ImageRenderer(content: SingleDayPhotoView(amountText: filtered.string, dateText: dateText, transactions: filtered.transactions, showCents: showCents, currencySymbol: currencySymbol, currency: currency, swapTimeLabel: swapTimeLabel, future: false)).uiImage else {
@@ -1060,7 +1045,7 @@ struct ListView: View {
 
     func filterOutDupes(day: SectionedFetchResults<Date?, Transaction>.Element) -> (transactions: [Transaction], string: String) {
         var seen = [Transaction]()
-        let filtered = day.filter { (entity) -> Bool in
+        let filtered = day.filter { entity -> Bool in
             if seen.contains(where: { $0.id == entity.id }) {
                 return false
             } else {
@@ -1163,7 +1148,7 @@ struct FutureListView: View {
         if total >= 0 {
             return "+" + (numberFormatter.string(from: NSNumber(value: total)) ?? "$0")
         } else {
-            return (numberFormatter.string(from: NSNumber(value: total)) ?? "$0")
+            return numberFormatter.string(from: NSNumber(value: total)) ?? "$0"
         }
     }
 
@@ -1176,7 +1161,6 @@ struct FutureListView: View {
                         Spacer()
 
                         Text(totalString)
-
                     }
                     .font(.system(.callout, design: .rounded).weight(.semibold))
                     .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
@@ -1192,7 +1176,6 @@ struct FutureListView: View {
                 ForEach(transactions) { transaction in
                     SingleTransactionView(transaction: transaction, showCents: showCents, currencySymbol: currencySymbol, currency: currency, swapTimeLabel: swapTimeLabel, future: true)
                 }
-
             }
             .padding(.bottom, 18)
         } else if transactions.isEmpty && filterMode {
@@ -1200,11 +1183,9 @@ struct FutureListView: View {
         } else {
             EmptyView()
         }
-
     }
 
-    init(dataController: DataController, filterMode: Bool, limitedMode: Bool) {
-
+    init(dataController _: DataController, filterMode: Bool, limitedMode: Bool) {
         let recurringPredicate = NSPredicate(format: "%K > %i", #keyPath(Transaction.recurringType), 0)
         let futurePredicate = NSPredicate(format: "%K > %@", #keyPath(Transaction.date), Date.now as CVarArg)
 
@@ -1234,7 +1215,7 @@ struct SingleTransactionView: View {
     // delete mode
 //    @State private var toDelete: Transaction?
 //    @State var deleteMode = false
-//    
+//
 //    // edit mode
 //    @State private var toEdit: Transaction?
 
@@ -1243,6 +1224,7 @@ struct SingleTransactionView: View {
     var deletePopup: Bool {
         return abs(offset) > UIScreen.main.bounds.width * 0.2
     }
+
     var deleteConfirm: Bool {
         return abs(offset) > UIScreen.main.bounds.width * 0.42
     }
@@ -1250,13 +1232,13 @@ struct SingleTransactionView: View {
     @GestureState var isDragging = false
 
     var imageSize: Double {
-        let scale = min(1.5, 1 + (abs(offset + 40)/100))
+        let scale = min(1.5, 1 + (abs(offset + 40) / 100))
 
-        return (scale*10)
+        return scale * 10
     }
 
     var imageScale: Double {
-        return min(1, 1 + (abs(Double(offset) + 40)/100))
+        return min(1, 1 + (abs(Double(offset) + 40) / 100))
     }
 
     var transactionAmountString: String {
@@ -1275,7 +1257,6 @@ struct SingleTransactionView: View {
 
     var body: some View {
         ZStack(alignment: .trailing) {
-
             Image(systemName: "xmark")
 //                .font(.system(size: 13, weight: .bold))
                 .font(.system(.caption, design: .rounded).weight(.bold))
@@ -1292,8 +1273,8 @@ struct SingleTransactionView: View {
                 .offset(x: max(-80, offset))
 
             HStack(spacing: 12) {
-                EmojiLogView(emoji: (transaction.category?.wrappedEmoji ?? "")
-                             , colour: (transaction.category?.wrappedColour ?? "#FFFFFF"), future: future)
+                EmojiLogView(emoji: (transaction.category?.wrappedEmoji ?? ""),
+                             colour: (transaction.category?.wrappedColour ?? "#FFFFFF"), future: future)
 //                .frame(maxWidth: .infinity, maxHeight: .infinity)
 //                .aspectRatio(1.0, contentMode: .fit)
                     .fixedSize(horizontal: true, vertical: true)
@@ -1309,7 +1290,6 @@ struct SingleTransactionView: View {
                     }
 
                 VStack(alignment: .leading, spacing: 2) {
-
                     Text(transaction.wrappedNote)
                         .font(.system(.body, design: .rounded).weight(.medium))
                         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
@@ -1320,8 +1300,7 @@ struct SingleTransactionView: View {
                         .font(.system(.subheadline, design: .rounded).weight(.medium))
                         .dynamicTypeSize(...DynamicTypeSize.xxLarge)
                         .foregroundColor(future ? Color.EvenLighterText : Color.SubtitleText)
-                       .lineLimit(1)
-
+                        .lineLimit(1)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -1342,9 +1321,7 @@ struct SingleTransactionView: View {
                         .minimumScaleFactor(0.7)
                         .lineLimit(1)
                         .layoutPriority(1)
-
                 }
-
             }
             .id(refreshID)
             .padding(.vertical, 8)
@@ -1381,7 +1358,6 @@ struct SingleTransactionView: View {
                         Label("Delete", systemImage: "xmark.bin")
                     }
                 }
-
             }
             .offset(x: offset)
             .accessibilityElement(children: .ignore)
@@ -1400,25 +1376,24 @@ struct SingleTransactionView: View {
         .animation(.easeInOut, value: deletePopup)
         .simultaneousGesture(
             DragGesture()
-                .updating($isDragging, body: { (_, state, _) in
+                .updating($isDragging, body: { _, state, _ in
                     state = true
                 })
-                .onChanged({ value in
+                .onChanged { value in
                     if value.translation.width < 0 {
                         withAnimation {
                             offset = value.translation.width
                         }
-
                     }
-                })
-                .onEnded({ _ in
+                }
+                .onEnded { _ in
                     if deleteConfirm {
                         deleted = true
                         withAnimation(.easeInOut(duration: 0.3)) {
                             offset -= UIScreen.main.bounds.width
                         }
 
-                        if future && transaction.wrappedDate < Date.now && transaction.recurringType > 0 {
+                        if future, transaction.wrappedDate < Date.now, transaction.recurringType > 0 {
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
                                 withAnimation(.easeInOut(duration: 0.5)) {
                                     transaction.recurringType = 0
@@ -1426,7 +1401,7 @@ struct SingleTransactionView: View {
                                 }
                             }
                         } else {
-                            DispatchQueue.main.asyncAfter(deadline: .now() +   0.4) {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
                                 withAnimation {
                                     moc.delete(transaction)
                                     transactionManager.showToast = true
@@ -1440,7 +1415,7 @@ struct SingleTransactionView: View {
 
                     } else if deletePopup {
                         withAnimation(.easeInOut(duration: 0.3)) {
-                           offset = 0
+                            offset = 0
                         }
 
                         transactionManager.future = future
@@ -1451,16 +1426,15 @@ struct SingleTransactionView: View {
 //                        deleteMode = true
                     } else {
                         withAnimation(.easeInOut(duration: 0.3)) {
-                           offset = 0
+                            offset = 0
                         }
                     }
-
-                })
+                }
         )
         .onChange(of: isDragging) { _ in
             if !isDragging && !deleted {
                 withAnimation(.easeInOut(duration: 0.3)) {
-                   offset = 0
+                    offset = 0
                 }
             }
         }
@@ -1519,14 +1493,14 @@ struct EmojiLogView: View {
                     .fill(blend(over: Color(hex: colour), withAlpha: 0.73))
 //                RoundedRectangle(cornerRadius: 9, style: .continuous)
 //                    .fill(Color.white)
-//                
+//
 //                RoundedRectangle(cornerRadius: 9, style: .continuous)
 //                    .fill(Color(hex: colour).opacity(0.73))
             }
 
             Text(emoji)
                 .font(.system(huge ? .title : .title3))
-            // future ? .caption :
+                // future ? .caption :
                 .dynamicTypeSize(...DynamicTypeSize.xxLarge)
                 .padding(8)
 //                .font(.system(size: huge ? 45 : future ? 16: 20))
@@ -1550,7 +1524,7 @@ struct DeleteTransactionAlert: View {
 
     var stopRecurring: Bool {
         if let unwrapped = transactionManager.toDelete {
-            return (transactionManager.future && unwrapped.wrappedDate < Date.now && unwrapped.recurringType > 0)
+            return transactionManager.future && unwrapped.wrappedDate < Date.now && unwrapped.recurringType > 0
         } else {
             return false
         }
@@ -1581,7 +1555,6 @@ struct DeleteTransactionAlert: View {
                     .accessibility(hidden: true)
 
                 Button {
-
                     transactionManager.showPopup = false
 
                     if stopRecurring {
@@ -1590,12 +1563,10 @@ struct DeleteTransactionAlert: View {
                             dataController.save()
                         }
                     } else {
-
                         withAnimation(.easeInOut(duration: 0.5)) {
-    //                            moc.delete(toDelete)
+                            //                            moc.delete(toDelete)
                             moc.delete(unwrappedToDelete)
                             transactionManager.showToast = true
-
                         }
                     }
                 } label: {
@@ -1623,7 +1594,7 @@ struct DeleteTransactionAlert: View {
                 }
             }
             .padding(13)
-    //            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 13, style: .continuous))
+            //            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 13, style: .continuous))
             .background(RoundedRectangle(cornerRadius: 13).fill(Color.PrimaryBackground).shadow(color: systemColorScheme == .dark ? Color.clear : Color.gray.opacity(0.25), radius: 6))
             .overlay(RoundedRectangle(cornerRadius: 13).stroke(systemColorScheme == .dark ? Color.gray.opacity(0.1) : Color.clear, lineWidth: 1.3))
 //            .offset(y: offset)
@@ -1643,27 +1614,26 @@ struct DeleteTransactionAlert: View {
 //                            withAnimation {
 //                                offset = 0
 //                            }
-//                            
+//
 //                        }
 //                    }
 //            )
             .padding(.horizontal, 17)
             .padding(.bottom, bottomEdge == 0 ? 13 : bottomEdge)
         }
-
     }
 }
 
 struct BackgroundBlurView: UIViewRepresentable {
-    func makeUIView(context: Context) -> UIView {
-            let view = UIView()
-            DispatchQueue.main.async {
-                view.superview?.superview?.backgroundColor = .clear
-            }
-            return view
+    func makeUIView(context _: Context) -> UIView {
+        let view = UIView()
+        DispatchQueue.main.async {
+            view.superview?.superview?.backgroundColor = .clear
         }
+        return view
+    }
 
-        func updateUIView(_ uiView: UIView, context: Context) {}
+    func updateUIView(_: UIView, context _: Context) {}
 }
 
 struct FilteredRecurringView: View {
@@ -1687,12 +1657,10 @@ struct FilteredRecurringView: View {
         let andPredicate = NSCompoundPredicate(type: .and, subpredicates: [recurringPredicate, datePredicate])
 
         _transactions = SectionedFetchRequest<Date?, Transaction>(sectionIdentifier: \.day, sortDescriptors: [
-                SortDescriptor(\.day, order: .reverse),
-                SortDescriptor(\.date, order: .reverse),
-                SortDescriptor(\.note, order: .reverse)
-            ], predicate: andPredicate
-        )
-
+            SortDescriptor(\.day, order: .reverse),
+            SortDescriptor(\.date, order: .reverse),
+            SortDescriptor(\.note, order: .reverse),
+        ], predicate: andPredicate)
     }
 }
 
@@ -1719,10 +1687,9 @@ struct FilteredTypeView: View {
         let andPredicate = NSCompoundPredicate(type: .and, subpredicates: [incomePredicate, datePredicate])
 
         _transactions = SectionedFetchRequest<Date?, Transaction>(sectionIdentifier: \.day, sortDescriptors: [
-                SortDescriptor(\.day, order: .reverse),
-                SortDescriptor(\.date, order: .reverse)
-            ], predicate: andPredicate
-        )
+            SortDescriptor(\.day, order: .reverse),
+            SortDescriptor(\.date, order: .reverse),
+        ], predicate: andPredicate)
 
         self.income = income
     }
@@ -1752,15 +1719,14 @@ struct FilteredCategoryView: View {
             let andPredicate = NSCompoundPredicate(type: .and, subpredicates: [categoryPredicate, datePredicate])
 
             _transactions = SectionedFetchRequest<Date?, Transaction>(sectionIdentifier: \.day, sortDescriptors: [
-                    SortDescriptor(\.day, order: .reverse),
-                    SortDescriptor(\.date, order: .reverse)
-                ], predicate: andPredicate
-            )
+                SortDescriptor(\.day, order: .reverse),
+                SortDescriptor(\.date, order: .reverse),
+            ], predicate: andPredicate)
         } else {
             _transactions = SectionedFetchRequest<Date?, Transaction>(sectionIdentifier: \.day, sortDescriptors: [
-                    SortDescriptor(\.day, order: .reverse),
-                    SortDescriptor(\.date, order: .reverse)
-                ])
+                SortDescriptor(\.day, order: .reverse),
+                SortDescriptor(\.date, order: .reverse),
+            ])
         }
 
         self.category = category
@@ -1776,6 +1742,7 @@ struct FilteredDateView: View {
     var currencySymbol: String {
         return Locale.current.localizedCurrencySymbol(forCurrencyCode: currency)!
     }
+
     @AppStorage("swapTimeLabel", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var swapTimeLabel: Bool = false
 
     @AppStorage("showCents", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var showCents: Bool = true
@@ -1799,7 +1766,7 @@ struct FilteredDateView: View {
         let andPredicate = NSCompoundPredicate(type: .and, subpredicates: [futurePredicate, datePredicate])
 
         _transactions = FetchRequest<Transaction>(sortDescriptors: [
-                SortDescriptor(\.date, order: .reverse)
+            SortDescriptor(\.date, order: .reverse),
         ], predicate: andPredicate)
 
         self.date = date
@@ -1835,10 +1802,10 @@ struct NoResultsView: View {
             VStack(spacing: 12) {
                 Spacer()
 
-    //            Text("📭️")
-    //                .font(.system(size: 45))
-    //                .padding(.bottom, 9)
-    //                .accessibility(hidden: true)
+                //            Text("📭️")
+                //                .font(.system(size: 45))
+                //                .padding(.bottom, 9)
+                //                .accessibility(hidden: true)
 
                 Image(systemName: "tray.full.fill")
                     .font(.system(size: 38, weight: .regular, design: .rounded))
@@ -1854,7 +1821,6 @@ struct NoResultsView: View {
             .opacity(0.7)
             .padding(.top, 50)
         }
-
     }
 }
 
@@ -1941,8 +1907,7 @@ struct CategoryStepperView: View {
                                 if categoryFilter != item {
                                     RoundedRectangle(cornerRadius: 10, style: .continuous)
                                         .strokeBorder(Color.Outline,
-                                            style: StrokeStyle(lineWidth: 1.5)
-                                        )
+                                                      style: StrokeStyle(lineWidth: 1.5))
                                 }
                             }
                             .onTapGesture {
@@ -1950,16 +1915,12 @@ struct CategoryStepperView: View {
                                 withAnimation {
                                     value.scrollTo(item.id, anchor: .leading)
                                 }
-
                             }
 //                            .accessibilityElement(children: .ignore)
 //                            .accessibilityLabel("filter \(item.wrappedName) transactions button")
-
                         }
-
                     }
                 }
-
             }
             .frame(maxWidth: .infinity)
         }
@@ -2057,7 +2018,7 @@ struct IncomeFilterToggleView: View {
 
 struct DateStepperView: View {
     @FetchRequest(sortDescriptors: [
-        SortDescriptor(\.day)
+        SortDescriptor(\.day),
     ]) private var transactions: FetchedResults<Transaction>
 
     @Binding var date: Date
@@ -2068,6 +2029,7 @@ struct DateStepperView: View {
             return transactions[0].day ?? Date.now
         }
     }
+
     let currentDate = Calendar.current.date(bySettingHour: 0, minute: 0, second: 0, of: Date.now) ?? Date.now
 
     var dateString: String {
@@ -2129,11 +2091,11 @@ struct DateStepperView: View {
 
 struct WeekStepperView: View {
     @FetchRequest(sortDescriptors: [
-        SortDescriptor(\.day)
+        SortDescriptor(\.day),
     ]) private var transactions: FetchedResults<Transaction>
 
     @FetchRequest(sortDescriptors: [
-        SortDescriptor(\.day, order: .reverse)
+        SortDescriptor(\.day, order: .reverse),
     ], predicate: NSPredicate(format: "%K < %@", #keyPath(Transaction.date), Date.now as CVarArg)) private var transactionsReversed: FetchedResults<Transaction>
 
     @Binding var showingDate: Date
@@ -2149,9 +2111,10 @@ struct WeekStepperView: View {
 
             let dateComponents = calendar.dateComponents([.weekOfYear, .yearForWeekOfYear], from: date)
 
-            return  calendar.date(from: dateComponents) ?? Date.now
+            return calendar.date(from: dateComponents) ?? Date.now
         }
     }
+
     @State var startDate = Date.now
 
     var dateString: String {
@@ -2239,11 +2202,11 @@ struct WeekStepperView: View {
 
 struct MonthStepperView: View {
     @FetchRequest(sortDescriptors: [
-        SortDescriptor(\.day)
+        SortDescriptor(\.day),
     ]) private var transactions: FetchedResults<Transaction>
 
     @FetchRequest(sortDescriptors: [
-        SortDescriptor(\.day, order: .reverse)
+        SortDescriptor(\.day, order: .reverse),
     ], predicate: NSPredicate(format: "%K < %@", #keyPath(Transaction.date), Date.now as CVarArg)) private var transactionsReversed: FetchedResults<Transaction>
 
     @Binding var showingDate: Date
@@ -2323,13 +2286,11 @@ struct MonthStepperView: View {
             startDate = calendar.date(from: dateComponents) ?? Date.now
 
             showingDate = startDate
-
         }
     }
 }
 
 func dateConverter(date: Date) -> String {
-
     let calendar = Calendar.current
 
     let dateComponents = calendar.dateComponents([.year], from: Date.now)
@@ -2359,7 +2320,6 @@ func dateConverter(date: Date) -> String {
 }
 
 func dateConverterAccessibilityLabel(date: Date) -> String {
-
     let calendar = Calendar.current
 
     if calendar.isDateInToday(date) {
@@ -2392,7 +2352,6 @@ func dayTotal(dayTransaction: [Transaction]) -> Double {
         } else {
             total -= transaction.amount
         }
-
     }
 
     return total

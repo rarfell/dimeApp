@@ -25,13 +25,13 @@ class AppLockViewModel: ObservableObject {
     // To enable the AppLock in UserDefaults
     func enableAppLock() {
         UserDefaults.standard.set(true, forKey: "appLockEnabled")
-        self.isAppLockEnabled = true
+        isAppLockEnabled = true
     }
 
     // To disable the AppLock in UserDefaults
     func disableAppLock() {
         UserDefaults.standard.set(false, forKey: "appLockEnabled")
-        self.isAppLockEnabled = false
+        isAppLockEnabled = false
     }
 
     // To Publish the AppLock state
@@ -71,7 +71,7 @@ class AppLockViewModel: ObservableObject {
                 reason = "Provice Touch ID/Face ID to disable App Lock"
             }
 
-            laContext.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason) { (success, error) in
+            laContext.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason) { success, error in
                 if success {
                     if appLockState {
                         DispatchQueue.main.async {
@@ -93,11 +93,9 @@ class AppLockViewModel: ObservableObject {
                 }
             }
         } else {
-
-                if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
-                   UIApplication.shared.open(settingsURL)
-                }
-
+            if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
+                UIApplication.shared.open(settingsURL)
+            }
         }
     }
 
@@ -106,7 +104,7 @@ class AppLockViewModel: ObservableObject {
         let laContext = LAContext()
         if checkIfBioMetricAvailable() {
             let reason = "Enable App Lock"
-            laContext.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason) { (success, error) in
+            laContext.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason) { success, error in
                 if success {
                     DispatchQueue.main.async {
                         self.isAppUnLocked = true
@@ -121,9 +119,8 @@ class AppLockViewModel: ObservableObject {
             }
         } else {
             if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
-               UIApplication.shared.open(settingsURL)
+                UIApplication.shared.open(settingsURL)
             }
         }
     }
-
 }

@@ -5,9 +5,9 @@
 //  Created by Rafael Soh on 9/7/23.
 //
 
+import Combine
 import Foundation
 import SwiftUI
-import Combine
 
 struct OffsetKey: PreferenceKey {
     static var defaultValue: CGRect = .zero
@@ -18,27 +18,27 @@ struct OffsetKey: PreferenceKey {
 
 extension View {
     @ViewBuilder
-    func offsetExtractor(coordinateSpace: String, completion: @escaping (CGRect) -> Void) -> some View {
-        self
-            .overlay(alignment: .top) {
-                GeometryReader {
-                    let rect = $0.frame(in: .global)
-                    Color.clear
-                        .preference(key: OffsetKey.self, value: rect)
-                        .onPreferenceChange(OffsetKey.self, perform: completion)
-                }
+    func offsetExtractor(coordinateSpace _: String, completion: @escaping (CGRect) -> Void) -> some View {
+        overlay(alignment: .top) {
+            GeometryReader {
+                let rect = $0.frame(in: .global)
+                Color.clear
+                    .preference(key: OffsetKey.self, value: rect)
+                    .onPreferenceChange(OffsetKey.self, perform: completion)
             }
+        }
     }
 }
+
 //
 // class ScrollViewModel: NSObject, ObservableObject, UIGestureRecognizerDelegate {
 //    let gestureID: String = UUID().uuidString
 //    let gestureEnded = PassthroughSubject<Void, Never>()
-//    
+//
 //    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
 //        return true
 //    }
-//    
+//
 //    func addGesture() {
 //        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(onGestureChange(gesture: )))
 //        panGesture.delegate = self
@@ -46,32 +46,32 @@ extension View {
 //        rootController().view.addGestureRecognizer(panGesture)
 //        print("ADDEEDDDD")
 //    }
-//    
+//
 //    func removeGesture() {
 //        rootController().view.gestureRecognizers?.removeAll(where: { gesture in
 //            gesture.name == gestureID
 //        })
 //    }
-//    
+//
 //    func rootController() -> UIViewController {
 //        guard let screen = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
 //            return .init()
 //        }
-//        
+//
 //        guard let root = screen.windows.first?.rootViewController else {
 //            return .init()
 //        }
-//        
+//
 //        return root
 //    }
-//    
+//
 //    @objc
 //    func onGestureChange(gesture: UIPanGestureRecognizer) {
 //        if gesture.state == .cancelled || gesture.state == .ended {
 //
 //            gestureEnded.send()
-//            
+//
 //        }
 //    }
-//    
+//
 // }

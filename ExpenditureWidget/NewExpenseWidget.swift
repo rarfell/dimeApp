@@ -5,8 +5,8 @@
 //  Created by Rafael Soh on 9/9/22.
 //
 
-import WidgetKit
 import SwiftUI
+import WidgetKit
 
 struct NewExpenseWidget: Widget {
     let kind: String = "AddExpense"
@@ -14,7 +14,7 @@ struct NewExpenseWidget: Widget {
     private var supportedFamilies: [WidgetFamily] {
         if #available(iOSApplicationExtension 16, *) {
             return [
-                .accessoryCircular
+                .accessoryCircular,
             ]
         } else {
             return [WidgetFamily]()
@@ -33,19 +33,18 @@ struct NewExpenseWidget: Widget {
 }
 
 struct NewExpenseProvider: TimelineProvider {
-
     typealias Entry = NewExpenseWidgetEntry
 
-    func placeholder(in context: Context) -> NewExpenseWidgetEntry {
+    func placeholder(in _: Context) -> NewExpenseWidgetEntry {
         NewExpenseWidgetEntry(date: Date())
     }
 
-    func getSnapshot(in context: Context, completion: @escaping (NewExpenseWidgetEntry) -> Void) {
+    func getSnapshot(in _: Context, completion: @escaping (NewExpenseWidgetEntry) -> Void) {
         let entry = NewExpenseWidgetEntry(date: Date())
         completion(entry)
     }
 
-    func getTimeline(in context: Context, completion: @escaping (Timeline<NewExpenseWidgetEntry>) -> Void) {
+    func getTimeline(in _: Context, completion: @escaping (Timeline<NewExpenseWidgetEntry>) -> Void) {
         let entry = NewExpenseWidgetEntry(date: Date())
 
         let timeline = Timeline(entries: [entry], policy: .atEnd)
@@ -59,7 +58,6 @@ struct NewExpenseWidgetEntry: TimelineEntry {
 }
 
 struct NewExpenseWidgetEntryView: View {
-
     let entry: NewExpenseProvider.Entry
 
     @AppStorage("currency", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var currency: String = Locale.current.currencyCode!
@@ -79,7 +77,6 @@ struct NewExpenseWidgetEntryView: View {
                     .frame(maxWidth: .infinity)
                     .background(Color.white, in: RoundedRectangle(cornerRadius: 4, style: .continuous))
                     .padding(.horizontal, 9)
-
             }
             .widgetURL(URL(string: "dimeapp://newExpense"))
             .containerBackground(for: .widget) {
@@ -97,11 +94,9 @@ struct NewExpenseWidgetEntryView: View {
                     .frame(maxWidth: .infinity)
                     .background(Color.white, in: RoundedRectangle(cornerRadius: 4, style: .continuous))
                     .padding(.horizontal, 9)
-
             }
             .padding(0.5)
             .widgetURL(URL(string: "dimeapp://newExpense"))
         }
-
     }
 }

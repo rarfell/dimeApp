@@ -6,13 +6,13 @@
 //
 
 import Foundation
-import UIKit
 import SwiftUI
+import UIKit
 
 struct SupportEmail {
     let toAddress: String
     let subject: String
-    var body: String {"""
+    var body: String { """
         Application Name: \(Bundle.main.displayName) |
         iOS: \(UIDevice.current.systemVersion) |
         Device Model: \(UIDevice.current.modelName) |
@@ -27,5 +27,4 @@ struct SupportEmail {
         guard let url = URL(string: urlString) else { return }
         openURL(url)
     }
-
 }

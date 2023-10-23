@@ -25,14 +25,11 @@ class TabBarManager: ObservableObject {
         if !inNavigationLink {
             hideTab = true
         }
-
     }
 
     func scrollShowTab() {
         if !inNavigationLink {
             hideTab = false
         }
-
     }
-
 }

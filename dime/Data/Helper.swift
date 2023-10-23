@@ -67,6 +67,7 @@ extension Category {
     var wrappedEmoji: String {
         emoji ?? "😄️"
     }
+
     var wrappedName: String {
         name ?? ""
     }
@@ -91,28 +92,28 @@ extension Category {
     }
 }
 
-extension Budget {
-    public var wrappedColour: String {
+public extension Budget {
+    var wrappedColour: String {
         category?.wrappedColour ?? "#FFFFFF"
     }
 
-    public var wrappedName: String {
+    var wrappedName: String {
         category?.wrappedName ?? ""
     }
 
-    public var wrappedEmoji: String {
+    var wrappedEmoji: String {
         category?.wrappedEmoji ?? ""
     }
 
-    public var fullName: String {
+    var fullName: String {
         return wrappedEmoji + " " + wrappedName
     }
 
-    public var wrappedDate: Date {
+    var wrappedDate: Date {
         return startDate ?? Date.now
     }
 
-    public var endDate: Date {
+    var endDate: Date {
         if type == 1 {
             return Calendar.current.date(byAdding: .day, value: 1, to: startDate ?? Date.now)!
         } else if type == 2 {
@@ -126,12 +127,12 @@ extension Budget {
     }
 }
 
-extension MainBudget {
-    public var wrappedDate: Date {
+public extension MainBudget {
+    var wrappedDate: Date {
         return startDate ?? Date.now
     }
 
-    public var endDate: Date {
+    var endDate: Date {
         if type == 1 {
             return Calendar.current.date(byAdding: .day, value: 1, to: startDate ?? Date.now)!
         } else if type == 2 {

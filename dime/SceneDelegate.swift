@@ -11,8 +11,8 @@ class SceneDelegate: NSObject, UIWindowSceneDelegate {
     @Environment(\.openURL) var openURL
 
     func scene(
-        _ scene: UIScene,
-        willConnectTo session: UISceneSession,
+        _: UIScene,
+        willConnectTo _: UISceneSession,
         options connectionOptions: UIScene.ConnectionOptions
     ) {
         if let shortcutItem = connectionOptions.shortcutItem {
@@ -25,7 +25,7 @@ class SceneDelegate: NSObject, UIWindowSceneDelegate {
     }
 
     func windowScene(
-        _ windowScene: UIWindowScene,
+        _: UIWindowScene,
         performActionFor shortcutItem: UIApplicationShortcutItem,
         completionHandler: @escaping (Bool) -> Void
     ) {

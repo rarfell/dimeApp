@@ -5,15 +5,14 @@
 //  Created by Rafael Soh on 14/8/22.
 //
 
-import WidgetKit
-import SwiftUI
 import Foundation
+import SwiftUI
+import WidgetKit
 
 struct InsightsWidget: Widget {
     let kind: String = "InsightsWidget"
 
     var body: some WidgetConfiguration {
-
         IntentConfiguration(kind: kind, intent: InsightsWidgetConfigurationIntent.self, provider: InsightsProvider()) { entry in
             InsightsWidgetEntryView(entry: entry)
         }
@@ -28,23 +27,20 @@ struct InsightsProvider: IntentTimelineProvider {
 
     public typealias Entry = InsightsWidgetEntry
 
-    func placeholder(in context: Context) -> InsightsWidgetEntry {
-
+    func placeholder(in _: Context) -> InsightsWidgetEntry {
         let results = loadData(type: .week, income: true)
 
         return InsightsWidgetEntry(date: Date(), amount: results.amount, duration: .week, maximum: results.maximum, dates: results.dates, dictionary: results.dateDictionary, numberOfDays: results.numberOfDays, average: results.average, categories: results.categories, income: true)
     }
 
-    func getSnapshot(for configuration: InsightsWidgetConfigurationIntent, in context: Context, completion: @escaping (InsightsWidgetEntry) -> Void) {
-
+    func getSnapshot(for configuration: InsightsWidgetConfigurationIntent, in _: Context, completion: @escaping (InsightsWidgetEntry) -> Void) {
         let loaded = loadData(type: configuration.duration, income: configuration.income == .income)
 
         let entry = InsightsWidgetEntry(date: Date(), amount: loaded.amount, duration: configuration.duration, maximum: loaded.maximum, dates: loaded.dates, dictionary: loaded.dateDictionary, numberOfDays: loaded.numberOfDays, average: loaded.average, categories: loaded.categories, income: configuration.income == .income)
         completion(entry)
     }
 
-    func getTimeline(for configuration: InsightsWidgetConfigurationIntent, in context: Context, completion: @escaping (Timeline<Entry>) -> Void) {
-
+    func getTimeline(for configuration: InsightsWidgetConfigurationIntent, in _: Context, completion: @escaping (Timeline<Entry>) -> Void) {
         let loaded = loadData(type: configuration.duration, income: configuration.income == .income)
 
         let entry = InsightsWidgetEntry(date: Date(), amount: loaded.amount, duration: configuration.duration, maximum: loaded.maximum, dates: loaded.dates, dictionary: loaded.dateDictionary, numberOfDays: loaded.numberOfDays, average: loaded.average, categories: loaded.categories, income: configuration.income == .income)
@@ -55,7 +51,6 @@ struct InsightsProvider: IntentTimelineProvider {
     }
 
     func loadData(type: InsightsTimePeriod, income: Bool) -> (amount: Double, maximum: Double, average: Double, numberOfDays: Int, dates: [Date], dateDictionary: [Date: Double], categories: [HoldingCategory]) {
-
         let dataController = DataController.shared
         let itemRequest = dataController.fetchRequestForWidgetInsights(type: type, income: income)
         let categoryRequest = dataController.fetchRequestForCategories(income: income)
@@ -82,7 +77,7 @@ struct InsightsProvider: IntentTimelineProvider {
             var maximum = 0.0
             var numberOfDays = 0
 
-            for _ in 1...7 {
+            for _ in 1 ... 7 {
                 nextDate = calendar.date(byAdding: .day, value: 1, to: iterativeDate)!
 
                 let holding = transactions.filter {
@@ -130,16 +125,16 @@ struct InsightsProvider: IntentTimelineProvider {
                     continue
                 }
 
-                let newCategory = HoldingCategory(colour: category.wrappedColour, name: category.wrappedName, percent: (total/totalForWeek))
+                let newCategory = HoldingCategory(colour: category.wrappedColour, name: category.wrappedName, percent: total / totalForWeek)
 
                 holdingCat.append(newCategory)
             }
 
             holdingCat.sort(by: { lhs, rhs in
-                return lhs.percent > rhs.percent
+                lhs.percent > rhs.percent
             })
 
-            return (totalForWeek, maximum, totalForWeek/Double((numberOfDaysPast.day! + 1)), numberOfDays, dates, dictionary, holdingCat)
+            return (totalForWeek, maximum, totalForWeek / Double((numberOfDaysPast.day! + 1)), numberOfDays, dates, dictionary, holdingCat)
         case .month:
             var dates = [Date]()
             var nextDate = iterativeDate
@@ -152,7 +147,7 @@ struct InsightsProvider: IntentTimelineProvider {
             var maximum = 0.0
             var numberOfDays = 0
 
-            for _ in 1...range.count {
+            for _ in 1 ... range.count {
                 nextDate = calendar.date(byAdding: .day, value: 1, to: iterativeDate)!
 
                 let holding = transactions.filter {
@@ -179,7 +174,6 @@ struct InsightsProvider: IntentTimelineProvider {
 
                 dates.append(iterativeDate)
                 iterativeDate = nextDate
-
             }
 
             let numDays = Calendar.current.dateComponents([.day], from: itemRequest.date, to: Date.now)
@@ -201,13 +195,13 @@ struct InsightsProvider: IntentTimelineProvider {
                     continue
                 }
 
-                let newCategory = HoldingCategory(colour: category.wrappedColour, name: category.wrappedName, percent: (total/totalForMonth))
+                let newCategory = HoldingCategory(colour: category.wrappedColour, name: category.wrappedName, percent: total / totalForMonth)
 
                 holdingCat.append(newCategory)
             }
 
             holdingCat.sort(by: { lhs, rhs in
-                return lhs.percent > rhs.percent
+                lhs.percent > rhs.percent
             })
 
             return (totalForMonth, maximum, totalForMonth / Double((numDays.day! + 1)), numberOfDays, dates, dictionary, holdingCat)
@@ -223,7 +217,7 @@ struct InsightsProvider: IntentTimelineProvider {
             var maximum = 0.0
             var numberOfDays = 0
 
-            for _ in 1...12 {
+            for _ in 1 ... 12 {
                 nextDate = calendar.date(byAdding: .month, value: 1, to: iterativeDate)!
 
                 let holding = transactions.filter {
@@ -271,19 +265,18 @@ struct InsightsProvider: IntentTimelineProvider {
                     continue
                 }
 
-                let newCategory = HoldingCategory(colour: category.wrappedColour, name: category.wrappedName, percent: (total/totalForYear))
+                let newCategory = HoldingCategory(colour: category.wrappedColour, name: category.wrappedName, percent: total / totalForYear)
 
                 holdingCat.append(newCategory)
             }
 
             holdingCat.sort(by: { lhs, rhs in
-                return lhs.percent > rhs.percent
+                lhs.percent > rhs.percent
             })
 
             return (totalForYear, maximum, totalForYear / Double((numDays.month! + 1)), numberOfDays, dates, dictionary, holdingCat)
         }
     }
-
 }
 
 struct InsightsWidgetEntry: TimelineEntry {
@@ -311,6 +304,7 @@ struct InsightsWidgetEntryView: View {
     var currencySymbol: String {
         return Locale.current.localizedCurrencySymbol(forCurrencyCode: currency)!
     }
+
     @AppStorage("showCents", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var showCents: Bool = true
 
     var dollarOffset: CGFloat {
@@ -365,7 +359,6 @@ struct InsightsWidgetEntryView: View {
     }
 
     var body: some View {
-
         if #available(iOS 17.0, *) {
             GeometryReader { proxy in
                 HStack(spacing: 0) {
@@ -384,7 +377,6 @@ struct InsightsWidgetEntryView: View {
                                 Text(dollarText)
                                     .font(.system(size: 21, weight: .medium, design: .rounded))
                                     .foregroundColor(Color.PrimaryText)
-
                             }
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -404,7 +396,6 @@ struct InsightsWidgetEntryView: View {
                                         Text("0")
                                             .font(.system(size: 8, weight: .regular, design: .rounded))
                                             .foregroundColor(Color.SubtitleText)
-
                                     }
                                     .frame(height: proxy.size.height * 0.85)
 
@@ -424,7 +415,6 @@ struct InsightsWidgetEntryView: View {
                                                     Text(getWeekday(day: day).prefix(1))
                                                         .font(.system(size: 8, weight: .bold, design: .rounded))
                                                         .foregroundColor(Color.SubtitleText)
-
                                                 }
                                                 .opacity(day > Date.now ? 0.3 : 1)
                                                 .frame(maxWidth: .infinity)
@@ -442,7 +432,7 @@ struct InsightsWidgetEntryView: View {
                                                     Capsule()
                                                         .frame(height: getBarHeight(point: entry.dictionary[day]!, size: proxy.size))
                                                         .overlay(alignment: .bottom) {
-                                                            if numberArray.contains(((entry.dates.firstIndex(of: day) ?? -1) + 1)) && firstDayOfMonth == 1 {
+                                                            if numberArray.contains((entry.dates.firstIndex(of: day) ?? -1) + 1) && firstDayOfMonth == 1 {
                                                                 Text("\((entry.dates.firstIndex(of: day) ?? -1) + 1)")
                                                                     .font(.system(size: 8, weight: .bold, design: .rounded))
                                                                     .foregroundColor(Color.SubtitleText)
@@ -450,7 +440,6 @@ struct InsightsWidgetEntryView: View {
                                                                     .offset(y: 15)
                                                             }
                                                         }
-
                                                 }
                                                 .padding(.bottom, firstDayOfMonth == 1 ? 13 : 0)
                                                 .opacity(day > Date.now ? 0.3 : 1)
@@ -477,7 +466,6 @@ struct InsightsWidgetEntryView: View {
                                                                     .offset(y: 15)
                                                             }
                                                         }
-
                                                 }
                                                 .padding(.bottom, 13)
                                                 .opacity(day > Date.now ? 0.3 : 1)
@@ -486,7 +474,6 @@ struct InsightsWidgetEntryView: View {
                                         }
                                         .frame(maxWidth: .infinity)
                                     }
-
                                 }
                                 .frame(width: proxy.size.width)
                                 .frame(maxHeight: .infinity)
@@ -496,19 +483,17 @@ struct InsightsWidgetEntryView: View {
                                         .lineLimit(1)
                                         .font(.system(size: 8, weight: .regular, design: .rounded))
                                         .foregroundColor(Color.PrimaryText)
-                                        .opacity((entry.average/Double(getMax())) < 0.2 ||  (entry.average/Double(getMax())) > 0.8 ? 0 : 1)
+                                        .opacity((entry.average / Double(getMax())) < 0.2 || (entry.average / Double(getMax())) > 0.8 ? 0 : 1)
 
                                     Line()
                                         .stroke(Color.SubtitleText, style: StrokeStyle(lineWidth: 2, lineCap: .round, dash: [5]))
                                         .frame(height: 1)
                                         .frame(maxWidth: .infinity)
-
                                 }
                                 .frame(width: proxy.size.width)
                                 .opacity(entry.numberOfDays <= 1 ? 0 : 1)
                                 .offset(y: getOffset(size: proxy.size) - 5)
                             }
-
                         }
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                     }
@@ -520,7 +505,7 @@ struct InsightsWidgetEntryView: View {
                     VStack(spacing: 8) {
                         if entry.amount != 0 {
                             HorizontalBarGraph(categories: entry.categories, income: entry.income)
-                            .frame(height: 16)
+                                .frame(height: 16)
 
                             VStack(spacing: 5) {
                                 ForEach(Array(entry.categories.prefix(3)), id: \.self) { category in
@@ -543,8 +528,8 @@ struct InsightsWidgetEntryView: View {
                             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
                         } else {
                             Text("NO TRANSACTIONS\n\(subtitleText1)")
-                                .font(.system(size: 10
-                                              , weight: .medium, design: .rounded))
+                                .font(.system(size: 10,
+                                              weight: .medium, design: .rounded))
                                 .multilineTextAlignment(.center)
                                 .foregroundColor(Color.SubtitleText)
                                 .frame(maxHeight: .infinity)
@@ -558,7 +543,6 @@ struct InsightsWidgetEntryView: View {
                                 Text("New Expense")
                                     .font(.system(size: 12, weight: .medium, design: .rounded))
                                     .foregroundColor(Color.PrimaryText)
-
                             }
                             .padding(.vertical, 4)
                             .frame(maxWidth: .infinity)
@@ -569,7 +553,6 @@ struct InsightsWidgetEntryView: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .widgetURL(URL(string: "dimeapp://insights"))
@@ -594,7 +577,6 @@ struct InsightsWidgetEntryView: View {
                                 Text(dollarText)
                                     .font(.system(size: 21, weight: .medium, design: .rounded))
                                     .foregroundColor(Color.PrimaryText)
-
                             }
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -614,7 +596,6 @@ struct InsightsWidgetEntryView: View {
                                         Text("0")
                                             .font(.system(size: 8, weight: .regular, design: .rounded))
                                             .foregroundColor(Color.SubtitleText)
-
                                     }
                                     .frame(height: proxy.size.height * 0.85)
 
@@ -634,7 +615,6 @@ struct InsightsWidgetEntryView: View {
                                                     Text(getWeekday(day: day).prefix(1))
                                                         .font(.system(size: 8, weight: .bold, design: .rounded))
                                                         .foregroundColor(Color.SubtitleText)
-
                                                 }
                                                 .opacity(day > Date.now ? 0.3 : 1)
                                                 .frame(maxWidth: .infinity)
@@ -652,7 +632,7 @@ struct InsightsWidgetEntryView: View {
                                                     Capsule()
                                                         .frame(height: getBarHeight(point: entry.dictionary[day]!, size: proxy.size))
                                                         .overlay(alignment: .bottom) {
-                                                            if numberArray.contains(((entry.dates.firstIndex(of: day) ?? -1) + 1)) && firstDayOfMonth == 1 {
+                                                            if numberArray.contains((entry.dates.firstIndex(of: day) ?? -1) + 1) && firstDayOfMonth == 1 {
                                                                 Text("\((entry.dates.firstIndex(of: day) ?? -1) + 1)")
                                                                     .font(.system(size: 8, weight: .bold, design: .rounded))
                                                                     .foregroundColor(Color.SubtitleText)
@@ -660,7 +640,6 @@ struct InsightsWidgetEntryView: View {
                                                                     .offset(y: 15)
                                                             }
                                                         }
-
                                                 }
                                                 .padding(.bottom, firstDayOfMonth == 1 ? 13 : 0)
                                                 .opacity(day > Date.now ? 0.3 : 1)
@@ -687,7 +666,6 @@ struct InsightsWidgetEntryView: View {
                                                                     .offset(y: 15)
                                                             }
                                                         }
-
                                                 }
                                                 .padding(.bottom, 13)
                                                 .opacity(day > Date.now ? 0.3 : 1)
@@ -696,7 +674,6 @@ struct InsightsWidgetEntryView: View {
                                         }
                                         .frame(maxWidth: .infinity)
                                     }
-
                                 }
                                 .frame(width: proxy.size.width)
                                 .frame(maxHeight: .infinity)
@@ -706,19 +683,17 @@ struct InsightsWidgetEntryView: View {
                                         .lineLimit(1)
                                         .font(.system(size: 8, weight: .regular, design: .rounded))
                                         .foregroundColor(Color.PrimaryText)
-                                        .opacity((entry.average/Double(getMax())) < 0.2 ||  (entry.average/Double(getMax())) > 0.8 ? 0 : 1)
+                                        .opacity((entry.average / Double(getMax())) < 0.2 || (entry.average / Double(getMax())) > 0.8 ? 0 : 1)
 
                                     Line()
                                         .stroke(Color.SubtitleText, style: StrokeStyle(lineWidth: 2, lineCap: .round, dash: [5]))
                                         .frame(height: 1)
                                         .frame(maxWidth: .infinity)
-
                                 }
                                 .frame(width: proxy.size.width)
                                 .opacity(entry.numberOfDays <= 1 ? 0 : 1)
                                 .offset(y: getOffset(size: proxy.size) - 5)
                             }
-
                         }
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                     }
@@ -730,7 +705,7 @@ struct InsightsWidgetEntryView: View {
                     VStack(spacing: 8) {
                         if entry.amount != 0 {
                             HorizontalBarGraph(categories: entry.categories, income: entry.income)
-                            .frame(height: 16)
+                                .frame(height: 16)
 
                             VStack(spacing: 5) {
                                 ForEach(Array(entry.categories.prefix(3)), id: \.self) { category in
@@ -753,8 +728,8 @@ struct InsightsWidgetEntryView: View {
                             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
                         } else {
                             Text("NO TRANSACTIONS\n\(subtitleText1)")
-                                .font(.system(size: 10
-                                              , weight: .medium, design: .rounded))
+                                .font(.system(size: 10,
+                                              weight: .medium, design: .rounded))
                                 .multilineTextAlignment(.center)
                                 .foregroundColor(Color.SubtitleText)
                                 .frame(maxHeight: .infinity)
@@ -768,7 +743,6 @@ struct InsightsWidgetEntryView: View {
                                 Text("New Expense")
                                     .font(.system(size: 12, weight: .medium, design: .rounded))
                                     .foregroundColor(Color.PrimaryText)
-
                             }
                             .padding(.vertical, 4)
                             .frame(maxWidth: .infinity)
@@ -781,11 +755,9 @@ struct InsightsWidgetEntryView: View {
                     .background(Color.SecondaryBackground)
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-
             }
             .widgetURL(URL(string: "dimeapp://insights"))
         }
-
     }
 
     func getOffset(size: CGSize) -> Double {
@@ -794,23 +766,22 @@ struct InsightsWidgetEntryView: View {
         if maxi == 0 {
             return 0
         } else {
-            let height = (size.height*0.85) - ((entry.average / Double(maxi)) * (size.height*0.85))
+            let height = (size.height * 0.85) - ((entry.average / Double(maxi)) * (size.height * 0.85))
             return height
         }
     }
 
     func getAverageText() -> String {
-
         let string = String(entry.average)
 
         let stringArray = string.compactMap { String($0) }
 
-        if entry.average >= 1000000 {
+        if entry.average >= 1_000_000 {
             return stringArray[0] + "M"
-        } else if entry.average >= 100000 {
-            return string.prefix(3)  + "k"
+        } else if entry.average >= 100_000 {
+            return string.prefix(3) + "k"
         } else if entry.average >= 10000 {
-            return string.prefix(2)  + "k"
+            return string.prefix(2) + "k"
         } else if entry.average >= 1000 {
             return stringArray[0] + "." + stringArray[1] + "k"
         } else {
@@ -829,12 +800,12 @@ struct InsightsWidgetEntryView: View {
 
         let stringArray = string.compactMap { String($0) }
 
-        if maxi >= 1000000 {
+        if maxi >= 1_000_000 {
             return stringArray[0] + "M"
-        } else if maxi >= 100000 {
-            return string.prefix(3)  + "k"
+        } else if maxi >= 100_000 {
+            return string.prefix(3) + "k"
         } else if maxi >= 10000 {
-            return string.prefix(2)  + "k"
+            return string.prefix(2) + "k"
         } else if maxi >= 1000 {
             let string = String(maxi)
 
@@ -849,17 +820,16 @@ struct InsightsWidgetEntryView: View {
     func getMax() -> Int {
         let maximum = entry.maximum * 1.1
 
-        return Int(ceil(maximum/10) * 10)
+        return Int(ceil(maximum / 10) * 10)
     }
 
     func getBarHeight(point: CGFloat, size: CGSize) -> CGFloat {
-
         let maxi = getMax()
 
         if maxi == 0 {
             return 0
         } else {
-            let height = (point / CGFloat(maxi)) * (size.height*0.85)
+            let height = (point / CGFloat(maxi)) * (size.height * 0.85)
             return height
         }
     }
@@ -899,11 +869,9 @@ struct HorizontalBarGraph: View {
                             .fill(income ? Color(hex: Color.colorArray[categories.firstIndex(of: category) ?? 0]) : Color(hex: category.colour))
                             .frame(width: (proxy.size.width * (1.0 - (0.015 * Double(categories.count - 1)))) * category.percent)
                     }
-
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-
         }
     }
 }

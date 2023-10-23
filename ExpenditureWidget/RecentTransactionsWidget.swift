@@ -5,8 +5,8 @@
 //  Created by Rafael Soh on 12/8/22.
 //
 
-import WidgetKit
 import SwiftUI
+import WidgetKit
 
 struct RecentExpenditureWidget: Widget {
     let kind: String = "ExpenditureWidget"
@@ -17,13 +17,13 @@ struct RecentExpenditureWidget: Widget {
                 .accessoryRectangular,
                 .accessoryInline,
                 .systemSmall,
-                .systemLarge
+                .systemLarge,
             ]
         } else if #available(iOSApplicationExtension 16, *) {
             return [
                 .accessoryRectangular,
                 .accessoryInline,
-                .systemSmall
+                .systemSmall,
             ]
         } else {
             return [.systemSmall]
@@ -31,7 +31,6 @@ struct RecentExpenditureWidget: Widget {
     }
 
     var body: some WidgetConfiguration {
-
         IntentConfiguration(kind: kind, intent: RecentWidgetConfigurationIntent.self, provider: Provider()) { entry in
             ExpenditureWidgetEntryView(entry: entry)
         }
@@ -46,19 +45,16 @@ struct Provider: IntentTimelineProvider {
 
     public typealias Entry = RecentWidgetEntry
 
-    func placeholder(in context: Context) -> RecentWidgetEntry {
-
+    func placeholder(in _: Context) -> RecentWidgetEntry {
         RecentWidgetEntry(date: Date(), amount: loadAmount(type: .week, insightsType: .net), transactions: loadTransactions(type: .week, count: 9), duration: .week, type: .net)
     }
 
-    func getSnapshot(for configuration: RecentWidgetConfigurationIntent, in context: Context, completion: @escaping (RecentWidgetEntry) -> Void) {
-
+    func getSnapshot(for configuration: RecentWidgetConfigurationIntent, in _: Context, completion: @escaping (RecentWidgetEntry) -> Void) {
         let entry = RecentWidgetEntry(date: Date(), amount: loadAmount(type: configuration.duration, insightsType: configuration.insightsType), transactions: loadTransactions(type: configuration.duration, count: 9), duration: configuration.duration, type: configuration.insightsType)
         completion(entry)
     }
 
-    func getTimeline(for configuration: RecentWidgetConfigurationIntent, in context: Context, completion: @escaping (Timeline<Entry>) -> Void) {
-
+    func getTimeline(for configuration: RecentWidgetConfigurationIntent, in _: Context, completion: @escaping (Timeline<Entry>) -> Void) {
         let entry = RecentWidgetEntry(date: Date(), amount: loadAmount(type: configuration.duration, insightsType: configuration.insightsType), transactions: loadTransactions(type: configuration.duration, count: 9), duration: configuration.duration, type: configuration.insightsType)
 
         let timeline = Timeline(entries: [entry], policy: .atEnd)
@@ -143,6 +139,7 @@ struct ExpenditureWidgetEntryView: View {
     var currencySymbol: String {
         return Locale.current.localizedCurrencySymbol(forCurrencyCode: currency)!
     }
+
     @AppStorage("showCents", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var showCents: Bool = true
 
     var inlineSubtitleText: String {
@@ -205,10 +202,10 @@ struct ExpenditureWidgetEntryView: View {
         case .accessoryRectangular:
             if #available(iOS 17.0, *) {
                 if entry.transactions.count == 0 {
-                        Text("NO RECENT EXPENSES")
-                            .font(.system(size: 12, weight: .semibold, design: .rounded))
-                            .multilineTextAlignment(.center)
-                            .containerBackground(for: .widget) { Color.clear }
+                    Text("NO RECENT EXPENSES")
+                        .font(.system(size: 12, weight: .semibold, design: .rounded))
+                        .multilineTextAlignment(.center)
+                        .containerBackground(for: .widget) { Color.clear }
                 } else {
                     GeometryReader { proxy in
                         VStack(alignment: .leading, spacing: 2) {
@@ -217,17 +214,14 @@ struct ExpenditureWidgetEntryView: View {
                                     Text(transaction.note)
                                         .fontWeight(.semibold)
                                         .lineLimit(1)
-                                        .frame(maxWidth: .infinity, alignment: .leading
-                                        )
+                                        .frame(maxWidth: .infinity, alignment: .leading)
 
                                     Text("\(transaction.income ? "+" : "-")\(currencySymbol)\(transaction.amount, specifier: (showCents && transaction.amount < 100) ? "%.2f" : "%.0f")")
                                         .fontWeight(.regular)
                                         .layoutPriority(1)
                                         .lineLimit(1)
-
                                 }
                                 .font(.system(size: getRectangularWidgetFont(width: proxy.size.width), design: .rounded))
-
                             }
                         }
                         .frame(width: proxy.size.width, height: proxy.size.height)
@@ -237,9 +231,9 @@ struct ExpenditureWidgetEntryView: View {
                 }
             } else {
                 if entry.transactions.count == 0 {
-                        Text("NO RECENT EXPENSES")
-                            .font(.system(size: 12, weight: .semibold, design: .rounded))
-                            .multilineTextAlignment(.center)
+                    Text("NO RECENT EXPENSES")
+                        .font(.system(size: 12, weight: .semibold, design: .rounded))
+                        .multilineTextAlignment(.center)
                 } else {
                     GeometryReader { proxy in
                         VStack(alignment: .leading, spacing: 2) {
@@ -248,23 +242,19 @@ struct ExpenditureWidgetEntryView: View {
                                     Text(transaction.note)
                                         .fontWeight(.semibold)
                                         .lineLimit(1)
-                                        .frame(maxWidth: .infinity, alignment: .leading
-                                        )
+                                        .frame(maxWidth: .infinity, alignment: .leading)
 
                                     Text("\(transaction.income ? "+" : "-")\(currencySymbol)\(transaction.amount, specifier: (showCents && transaction.amount < 100) ? "%.2f" : "%.0f")")
                                         .fontWeight(.regular)
                                         .layoutPriority(1)
                                         .lineLimit(1)
-
                                 }
                                 .font(.system(size: getRectangularWidgetFont(width: proxy.size.width), design: .rounded))
-
                             }
                         }
                         .frame(width: proxy.size.width, height: proxy.size.height)
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-
                 }
             }
         case .systemSmall:
@@ -282,7 +272,6 @@ struct ExpenditureWidgetEntryView: View {
                             }
                             .frame(maxWidth: .infinity)
                             .frame(height: proxy.size.height * 0.27)
-
                         }
                         .frame(maxWidth: .infinity)
 
@@ -300,7 +289,6 @@ struct ExpenditureWidgetEntryView: View {
                                     Text("New Expense")
                                         .font(.system(size: 12, weight: .medium, design: .rounded))
                                         .foregroundColor(Color.PrimaryText)
-
                                 }
                                 .padding(.vertical, 5)
                                 .frame(maxWidth: .infinity)
@@ -311,7 +299,6 @@ struct ExpenditureWidgetEntryView: View {
 
                         } else {
                             VStack(alignment: .leading, spacing: 5) {
-
                                 Text("RECENT EXPENSES")
                                     .font(.system(size: 9, weight: .medium, design: .rounded))
                                     .foregroundColor(Color.SubtitleText)
@@ -341,13 +328,10 @@ struct ExpenditureWidgetEntryView: View {
                                                 .lineLimit(1)
                                                 .layoutPriority(1)
                                         }
-
                                     }
-
                                 }
 
                                 if entry.transactions.count < 2 {
-
                                     HStack(spacing: 5) {
                                         Image(systemName: "plus")
                                             .font(.system(size: 10, weight: .medium, design: .rounded))
@@ -355,21 +339,17 @@ struct ExpenditureWidgetEntryView: View {
                                         Text("New Expense")
                                             .font(.system(size: 12, weight: .medium, design: .rounded))
                                             .foregroundColor(Color.PrimaryText)
-
                                     }
                                     .padding(.vertical, 5)
                                     .frame(maxWidth: .infinity)
                                     .background(RoundedRectangle(cornerRadius: 8).fill(Color.SecondaryBackground))
                                     .frame(maxHeight: .infinity, alignment: .bottom)
-
                                 }
                             }
                             .padding(.top, entry.transactions.count >= 3 ? 5 : 10)
                             .frame(maxHeight: .infinity, alignment: .top)
                         }
-
                     }
-
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .containerBackground(for: .widget) {
@@ -390,7 +370,6 @@ struct ExpenditureWidgetEntryView: View {
                             }
                             .frame(maxWidth: .infinity)
                             .frame(height: proxy.size.height * 0.2)
-
                         }
                         .frame(maxWidth: .infinity)
 
@@ -408,7 +387,6 @@ struct ExpenditureWidgetEntryView: View {
                                     Text("New Expense")
                                         .font(.system(size: 12, weight: .medium, design: .rounded))
                                         .foregroundColor(Color.PrimaryText)
-
                                 }
                                 .padding(.vertical, 5)
                                 .frame(maxWidth: .infinity)
@@ -419,7 +397,6 @@ struct ExpenditureWidgetEntryView: View {
 
                         } else {
                             VStack(alignment: .leading, spacing: 5) {
-
                                 Text("RECENT EXPENSES")
                                     .font(.system(size: 9, weight: .medium, design: .rounded))
                                     .foregroundColor(Color.SubtitleText)
@@ -449,13 +426,10 @@ struct ExpenditureWidgetEntryView: View {
                                                 .lineLimit(1)
                                                 .layoutPriority(1)
                                         }
-
                                     }
-
                                 }
 
                                 if entry.transactions.count < 2 {
-
                                     HStack(spacing: 5) {
                                         Image(systemName: "plus")
                                             .font(.system(size: 10, weight: .medium, design: .rounded))
@@ -463,19 +437,16 @@ struct ExpenditureWidgetEntryView: View {
                                         Text("New Expense")
                                             .font(.system(size: 12, weight: .medium, design: .rounded))
                                             .foregroundColor(Color.PrimaryText)
-
                                     }
                                     .padding(.vertical, 5)
                                     .frame(maxWidth: .infinity)
                                     .background(RoundedRectangle(cornerRadius: 8).fill(Color.SecondaryBackground))
                                     .frame(maxHeight: .infinity, alignment: .bottom)
-
                                 }
                             }
                             .padding(.top, entry.transactions.count == 3 ? 5 : 10)
                             .frame(maxHeight: .infinity, alignment: .top)
                         }
-
                     }
                     .padding(15)
                 }
@@ -495,7 +466,6 @@ struct ExpenditureWidgetEntryView: View {
 
                             RecentTransactionsBiggerDollarView(amount: entry.amount, size: proxy.size.width - 30, showCents: showCents, net: entry.type == .net)
                                 .frame(maxWidth: .infinity)
-
                         }
                         .frame(maxWidth: .infinity)
 
@@ -513,7 +483,6 @@ struct ExpenditureWidgetEntryView: View {
                                         Text("New Expense")
                                             .font(.system(size: 16, weight: .semibold, design: .rounded))
                                             .foregroundColor(Color.PrimaryText)
-
                                     }
                                     .padding(.vertical, 6)
                                     .frame(width: 200)
@@ -524,7 +493,6 @@ struct ExpenditureWidgetEntryView: View {
 
                         } else {
                             VStack(alignment: .leading, spacing: 8) {
-
                                 Text("RECENT EXPENSES")
                                     .font(.system(size: 12, weight: .medium, design: .rounded))
                                     .foregroundColor(Color.SubtitleText)
@@ -554,9 +522,7 @@ struct ExpenditureWidgetEntryView: View {
                                                 .lineLimit(1)
                                                 .layoutPriority(1)
                                         }
-
                                     }
-
                                 }
 
                                 if entry.transactions.count < 5 {
@@ -568,22 +534,18 @@ struct ExpenditureWidgetEntryView: View {
                                             Text("New Expense")
                                                 .font(.system(size: 16, weight: .semibold, design: .rounded))
                                                 .foregroundColor(Color.PrimaryText)
-
                                         }
                                         .padding(.vertical, 6)
                                         .frame(width: 200)
                                         .background(RoundedRectangle(cornerRadius: 9, style: .continuous).fill(Color.SecondaryBackground))
                                     }
                                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
-
                                 }
                             }
                             .padding(.top, 15)
                             .frame(maxHeight: .infinity, alignment: .top)
                         }
-
                     }
-
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .containerBackground(for: .widget) {
@@ -594,7 +556,6 @@ struct ExpenditureWidgetEntryView: View {
         default:
             EmptyView()
         }
-
     }
 
     func getRectangularWidgetFont(width: CGFloat) -> CGFloat {
@@ -626,7 +587,6 @@ struct ExpenditureWidgetEntryView: View {
 
         return 12
     }
-
 }
 
 struct RecentTransactionsDollarView: View {
@@ -681,17 +641,16 @@ struct RecentTransactionsDollarView: View {
             }
 
             if showCents && actualAmount < 100 {
-               Text("\(actualAmount, specifier: "%.2f")")
+                Text("\(actualAmount, specifier: "%.2f")")
                     .font(.system(size: downsize.big, weight: .medium, design: .rounded))
-                   .foregroundColor(Color.PrimaryText)
-                   .lineLimit(1)
-           } else {
-               Text("\(actualAmount, specifier: "%.0f")")
-                   .font(.system(size: downsize.big, weight: .medium, design: .rounded))
-                   .foregroundColor(Color.PrimaryText)
-                   .lineLimit(1)
-           }
-
+                    .foregroundColor(Color.PrimaryText)
+                    .lineLimit(1)
+            } else {
+                Text("\(actualAmount, specifier: "%.0f")")
+                    .font(.system(size: downsize.big, weight: .medium, design: .rounded))
+                    .foregroundColor(Color.PrimaryText)
+                    .lineLimit(1)
+            }
         }
     }
 
@@ -755,17 +714,16 @@ struct RecentTransactionsBiggerDollarView: View {
             }
 
             if showCents && actualAmount < 100 {
-               Text("\(actualAmount, specifier: "%.2f")")
+                Text("\(actualAmount, specifier: "%.2f")")
                     .font(.system(size: downsize.big, weight: .medium, design: .rounded))
-                   .foregroundColor(Color.PrimaryText)
-                   .lineLimit(1)
-           } else {
-               Text("\(actualAmount, specifier: "%.0f")")
-                   .font(.system(size: downsize.big, weight: .medium, design: .rounded))
-                   .foregroundColor(Color.PrimaryText)
-                   .lineLimit(1)
-           }
-
+                    .foregroundColor(Color.PrimaryText)
+                    .lineLimit(1)
+            } else {
+                Text("\(actualAmount, specifier: "%.0f")")
+                    .font(.system(size: downsize.big, weight: .medium, design: .rounded))
+                    .foregroundColor(Color.PrimaryText)
+                    .lineLimit(1)
+            }
         }
     }
 

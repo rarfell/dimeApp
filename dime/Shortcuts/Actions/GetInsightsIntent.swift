@@ -5,13 +5,12 @@
 //  Created by Rafael Soh on 5/8/23.
 //
 
-import Foundation
 import AppIntents
+import Foundation
 import SwiftUI
 
 @available(iOS 16.4, *)
 struct GetInsightsIntent: AppIntent {
-
     static var title: LocalizedStringResource = "Get Insights"
 
     static var description =
@@ -111,7 +110,7 @@ extension ShortcutsInsightsTimeFrame: AppEnum {
         .day: DisplayRepresentation(title: "today"),
         .week: DisplayRepresentation(title: "this week"),
         .month: DisplayRepresentation(title: "this month"),
-        .year: DisplayRepresentation(title: "this year")
+        .year: DisplayRepresentation(title: "this year"),
     ]
 }
 
@@ -128,7 +127,7 @@ extension ShortcutsInsightsType: AppEnum {
     static var caseDisplayRepresentations: [ShortcutsInsightsType: DisplayRepresentation] = [
         .net: DisplayRepresentation(title: "net total"),
         .income: DisplayRepresentation(title: "total income"),
-        .spent: DisplayRepresentation(title: "total expenditure")
+        .spent: DisplayRepresentation(title: "total expenditure"),
     ]
 }
 
