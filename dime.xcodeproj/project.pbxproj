@@ -264,6 +264,7 @@
 		53D5F02228A8E0E4004573C8 /* InsightsWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightsWidget.swift; sourceTree = "<group>"; };
 		53D82F512A9A6759005B6910 /* ChromaticAbberation(Time).metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = "ChromaticAbberation(Time).metal"; sourceTree = "<group>"; };
 		53EB931028A65F670026BE28 /* ExpenditureWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ExpenditureWidgetExtension.entitlements; sourceTree = "<group>"; };
+		AE608D3F2AE6ED2800613F4C /* MainModel 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "MainModel 3.xcdatamodel"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1438,6 +1439,7 @@
 		53BC2A3F2A8B21920019E4A8 /* MainModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				AE608D3F2AE6ED2800613F4C /* MainModel 3.xcdatamodel */,
 				53BC2A402A8B21920019E4A8 /* MainModel 2.xcdatamodel */,
 				53BC2A412A8B21920019E4A8 /* MainModel.xcdatamodel */,
 			);
