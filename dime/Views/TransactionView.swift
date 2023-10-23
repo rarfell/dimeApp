@@ -1498,7 +1498,7 @@ struct CategoryPickerView: View {
 
     init(category: Binding<Category?>?, showPicker: Binding<Bool>, showSheet: Binding<Bool>, income: Bool, darkMode: Bool) {
         _categories = FetchRequest<Category>(sortDescriptors: [
-            SortDescriptor(\.order, order: .reverse),
+            SortDescriptor(\.name),
         ], predicate: NSPredicate(format: "income = %d", income))
         self.darkMode = darkMode
         initialCategory = category?.wrappedValue
