@@ -11,7 +11,6 @@ import Combine
 
 @available(iOS 13, macOS 11, *)
 private struct AnimatedCheckmark: View {
-
     /// Checkmark color
     var color: Color = .black
 
@@ -46,7 +45,6 @@ private struct AnimatedCheckmark: View {
 
 @available(iOS 13, macOS 11, *)
 private struct AnimatedXmark: View {
-
     /// xmark color
     var color: Color = .black
 
@@ -87,7 +85,6 @@ private struct AnimatedXmark: View {
 #if os(macOS)
 @available(macOS 11, *)
 struct ActivityIndicator: NSViewRepresentable {
-
     func makeNSView(context: NSViewRepresentableContext<ActivityIndicator>) -> NSProgressIndicator {
         let nsView = NSProgressIndicator()
 
@@ -104,17 +101,14 @@ struct ActivityIndicator: NSViewRepresentable {
 #else
 @available(iOS 13, *)
 struct ActivityIndicator: UIViewRepresentable {
-
     func makeUIView(context: UIViewRepresentableContext<ActivityIndicator>) -> UIActivityIndicatorView {
-
         let progressView = UIActivityIndicatorView(style: .large)
         progressView.startAnimating()
 
         return progressView
     }
 
-    func updateUIView(_ uiView: UIActivityIndicatorView, context: UIViewRepresentableContext<ActivityIndicator>) {
-    }
+    func updateUIView(_ uiView: UIActivityIndicatorView, context: UIViewRepresentableContext<ActivityIndicator>) {}
 }
 #endif
 
@@ -199,7 +193,6 @@ public struct AlertToast: View {
 
     /// Customize Alert Appearance
     public enum AlertStyle: Equatable {
-
         case style(backgroundColor: Color? = nil,
                    titleColor: Color? = nil,
                    subTitleColor: Color? = nil,
@@ -529,7 +522,6 @@ public struct AlertToastModifier: ViewModifier {
     @ViewBuilder
     public func main() -> some View {
         if isPresenting {
-
             switch alert().displayMode {
             case .alert:
                 alert()
@@ -594,7 +586,6 @@ public struct AlertToastModifier: ViewModifier {
                     })
                     .transition(alert().displayMode == .banner(.slide) ? AnyTransition.slide.combined(with: .opacity) : AnyTransition.move(edge: .bottom))
             }
-
         }
     }
 
@@ -607,12 +598,10 @@ public struct AlertToastModifier: ViewModifier {
                     main()
                         .offset(y: offsetY)
                 }
-                            .animation(Animation.spring(), value: isPresenting)
+                    .animation(Animation.spring(), value: isPresenting)
                 )
                 .valueChanged(value: isPresenting, onChange: { (presented) in
-                    if presented {
-                        onAppearAction()
-                    }
+                    if presented { onAppearAction() }
                 })
         case .hud:
             content
@@ -632,9 +621,9 @@ public struct AlertToastModifier: ViewModifier {
                             main()
                                 .offset(y: offsetY)
                         }
-                                    .frame(maxWidth: screen.width, maxHeight: screen.height)
-                                    .offset(y: offset)
-                                    .animation(Animation.spring(), value: isPresenting))
+                            .frame(maxWidth: screen.width, maxHeight: screen.height)
+                            .offset(y: offset)
+                            .animation(Animation.spring(), value: isPresenting))
                 )
                 .valueChanged(value: isPresenting, onChange: { (presented) in
                     if presented {
@@ -656,7 +645,6 @@ public struct AlertToastModifier: ViewModifier {
                     }
                 })
         }
-
     }
 
     private func onAppearAction() {
@@ -683,7 +671,6 @@ public struct AlertToastModifier: ViewModifier {
 /// Fileprivate View Modifier for dynamic frame when alert type is `.regular` / `.loading`
 @available(iOS 13, macOS 11, *)
 private struct WithFrameModifier: ViewModifier {
-
     var withFrame: Bool
 
     var maxWidth: CGFloat = 175
@@ -703,7 +690,6 @@ private struct WithFrameModifier: ViewModifier {
 /// Fileprivate View Modifier to change the alert background
 @available(iOS 13, macOS 11, *)
 private struct BackgroundModifier: ViewModifier {
-
     var color: Color?
 
     @ViewBuilder
@@ -721,7 +707,6 @@ private struct BackgroundModifier: ViewModifier {
 /// Fileprivate View Modifier to change the text colors
 @available(iOS 13, macOS 11, *)
 private struct TextForegroundModifier: ViewModifier {
-
     var color: Color?
 
     @ViewBuilder
@@ -737,7 +722,6 @@ private struct TextForegroundModifier: ViewModifier {
 
 @available(iOS 13, macOS 11, *)
 fileprivate extension Image {
-
     func hudModifier() -> some View {
         self
             .renderingMode(.template)
@@ -749,7 +733,6 @@ fileprivate extension Image {
 
 // @available(iOS 13, macOS 11, *)
 public extension View {
-
     /// Return some view w/o frame depends on the condition.
     /// This view modifier function is set by default to:
     /// - `maxWidth`: 175

@@ -278,7 +278,6 @@ struct LogView: View {
                 }
             }
             .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
-
                 if syncMonitor.syncStateSummary == .succeeded && !updatedRecurring {
                     dataController.updateRecurringTransactions()
                     updatedRecurring = true
@@ -294,7 +293,6 @@ struct LogView: View {
                 searchMode = true
             }
             .onAppear {
-
                 if !NSUbiquitousKeyValueStore.default.bool(forKey: "icloud_sync") {
                     dataController.updateRecurringTransactions()
                 }
@@ -312,24 +310,17 @@ struct LogView: View {
 //                }
 //            }
             .onOpenURL { url in
-                guard
-                    url.host == "search"
-
-                else {
+                guard url.host == "search" else {
                     return
                 }
-
                 searchMode = true
-
             }
         }
-
     }
 
     @ViewBuilder
     func filterTagView(text: LocalizedStringKey) -> some View {
         HStack(spacing: 10) {
-
             Text(text)
                 .font(.system(.body, design: .rounded).weight(.medium))
                 .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
@@ -395,7 +386,6 @@ struct NumberView: AnimatableModifier {
         }
 
     func body(content: Content) -> some View {
-
         HStack(alignment: .lastTextBaseline, spacing: 4) {
             Text(netTotal ? (positive ? "+\(currencySymbol)" : "-\(currencySymbol)") : currencySymbol)
                 .font(.system(size: downsize1.small, weight: .light, design: .rounded))
@@ -414,7 +404,6 @@ struct NumberView: AnimatableModifier {
             }
         }
         .foregroundColor(Color.PrimaryText)
-
     }
 }
 
@@ -547,9 +536,7 @@ struct LogInsightsView: View {
                         $0.presentation.animation = .easeInOut(duration: 0.2)
                         $0.dismissal.animation = .easeInOut(duration: 0.3)
                     }) {
-
                         TimePickerView(showMenu: $showMenu1, timeframe: $timeframe)
-
                     }
                 }
 //                
@@ -565,7 +552,7 @@ struct LogInsightsView: View {
 //                }
 
                 EmptyView()
-                .modifier(NumberView(number: amount, netTotal: insightsType == 1, positive: netTotal.positive))
+                    .modifier(NumberView(number: amount, netTotal: insightsType == 1, positive: netTotal.positive))
             }
             .padding(7)
             .contentShape(Rectangle())
@@ -654,7 +641,6 @@ struct LogInsightsView: View {
         }
         .padding([.bottom, .horizontal], 20)
         .frame(height: lineGraph ? 240 : 170)
-
     }
 
     func formatNumber(showCents: Bool, number: Double) -> String {
@@ -664,7 +650,6 @@ struct LogInsightsView: View {
             return String(format: "%d", Int(floor(number)))
         }
     }
-
 }
 
 struct SearchView: View {
@@ -750,7 +735,6 @@ struct SearchView: View {
         return NSCompoundPredicate(orPredicateWithSubpredicates: [beginPredicate, containPredicate, containPredicate1])
 
     }
-
 }
 
 struct FilteredSearchView: View {

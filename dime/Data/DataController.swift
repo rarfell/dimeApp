@@ -183,7 +183,6 @@ class DataController: ObservableObject {
             save()
 
         } else if Calendar.current.isDateInToday(transaction.nextTransactionDate) {
-
             let newTransaction = Transaction(context: container.viewContext)
             newTransaction.note = transaction.wrappedNote
             newTransaction.category = transaction.category
