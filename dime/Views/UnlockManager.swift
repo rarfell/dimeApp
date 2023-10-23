@@ -14,11 +14,11 @@ class UnlockManager: NSObject, ObservableObject, SKPaymentTransactionObserver, S
         case loaded
         case failed
     }
-    
+
     var canMakePayments: Bool {
         SKPaymentQueue.canMakePayments()
     }
-    
+
     private enum StoreError: Error {
         case invalidIdentifiers, missingProduct
     }
@@ -26,18 +26,18 @@ class UnlockManager: NSObject, ObservableObject, SKPaymentTransactionObserver, S
     @Published var requestState = RequestState.loading
     @Published var purchaseCount: Int
     @Published var failedTransaction = false
-    
+
     private let dataController: DataController
     private let request: SKProductsRequest
-    
+
     var loadedProducts = [SKProduct]()
-    
+
     func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
         DispatchQueue.main.async { [self] in
             for transaction in transactions {
                 switch transaction.transactionState {
                 case .purchased, .restored:
-                    
+
                     self.purchaseCount += 1
                     self.dataController.tipCounter = purchaseCount
                     queue.finishTransaction(transaction)
@@ -52,12 +52,12 @@ class UnlockManager: NSObject, ObservableObject, SKPaymentTransactionObserver, S
             }
         }
     }
-    
+
     func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
         DispatchQueue.main.async {
             // Store the returned products for later, if we need them.
             self.loadedProducts = response.products
-            
+
             guard !self.loadedProducts.isEmpty else {
                 self.requestState = .failed
                 return
@@ -72,18 +72,18 @@ class UnlockManager: NSObject, ObservableObject, SKPaymentTransactionObserver, S
             self.requestState = .loaded
         }
     }
-    
+
     func buy(product: SKProduct) {
         let payment = SKPayment(product: product)
         SKPaymentQueue.default().add(payment)
     }
-    
+
     func revertBool() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
             self.failedTransaction = false
         }
     }
-    
+
     func restore() {
         SKPaymentQueue.default().restoreCompletedTransactions()
     }
@@ -93,12 +93,12 @@ class UnlockManager: NSObject, ObservableObject, SKPaymentTransactionObserver, S
         self.dataController = dataController
 
         // Prepare to look for our unlock product.
-        let productIDs = Set(["com.rafaelsoh.dime.smalltip","com.rafaelsoh.dime.mediumtip","com.rafaelsoh.dime.largetip"])
+        let productIDs = Set(["com.rafaelsoh.dime.smalltip", "com.rafaelsoh.dime.mediumtip", "com.rafaelsoh.dime.largetip"])
         request = SKProductsRequest(productIdentifiers: productIDs)
 
         // This is required because we inherit from NSObject.
         self.purchaseCount = dataController.tipCounter
-        
+
         super.init()
 
         // Start watching the payment queue.
@@ -110,7 +110,7 @@ class UnlockManager: NSObject, ObservableObject, SKPaymentTransactionObserver, S
         // Start the request
         request.start()
     }
-    
+
     deinit {
         SKPaymentQueue.default().remove(self)
     }

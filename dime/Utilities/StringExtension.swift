@@ -17,14 +17,13 @@ extension String {
     var containsDigits: Bool {
         return self.rangeOfCharacter(from: CharacterSet.decimalDigits) != nil
     }
-    
+
     func onlyEmoji() -> String {
         return self.filter({$0.isEmoji})
     }
-    
-    
+
     func widthOfRoundedString(size: CGFloat, weight: UIFont.Weight) -> CGFloat {
-        
+
         let systemFont = UIFont.systemFont(ofSize: size, weight: weight)
         let roundedFont: UIFont
         if let descriptor = systemFont.fontDescriptor.withDesign(.rounded) {
@@ -37,9 +36,9 @@ extension String {
         let size = self.size(withAttributes: fontAttributes)
         return size.width
     }
-    
+
     func heightOfRoundedString(size: CGFloat, weight: UIFont.Weight) -> CGFloat {
-        
+
         let systemFont = UIFont.systemFont(ofSize: size, weight: weight)
         let roundedFont: UIFont
         if let descriptor = systemFont.fontDescriptor.withDesign(.rounded) {
@@ -52,7 +51,7 @@ extension String {
         let size = self.size(withAttributes: fontAttributes)
         return size.height
     }
-    
+
     func textToImage(size: CGFloat) -> UIImage? {
         let nsString = (self as NSString)
         let font = UIFont.systemFont(ofSize: size) // you can change your font size here

@@ -13,10 +13,9 @@ struct dimeApp: App {
     @StateObject var unlockManager: UnlockManager
     @StateObject var appLockVM = AppLockViewModel()
     @StateObject var tabBarManager = TabBarManager()
-    
+
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    
-    
+
     var body: some Scene {
         WindowGroup {
             ContentView()
@@ -27,14 +26,14 @@ struct dimeApp: App {
                 .environmentObject(tabBarManager)
         }
     }
-    
+
     init() {
         let dataController = DataController.shared
         let unlockManager = UnlockManager(dataController: dataController)
 
         _dataController = StateObject(wrappedValue: dataController)
         _unlockManager = StateObject(wrappedValue: unlockManager)
-        
+
         UITableView.appearance().backgroundColor = .clear
     }
 }

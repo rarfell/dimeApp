@@ -13,28 +13,28 @@ import Popovers
 struct TransactionView: View {
     @FetchRequest(sortDescriptors: [], predicate: NSPredicate(format: "income = %d", false)) private var expenseCategories: FetchedResults<Category>
     @FetchRequest(sortDescriptors: [], predicate: NSPredicate(format: "income = %d", true)) private var incomeCategories: FetchedResults<Category>
-    
+
     @Environment(\.managedObjectContext) var moc
     @EnvironmentObject var dataController: DataController
     @Environment(\.dismiss) var dismiss
-    
+
     @AppStorage("numberEntryType", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var numberEntryType: Int = 1
-    
+
     @Environment(\.colorScheme) var colorScheme
     var boldText: Bool {
         UIAccessibility.isBoldTextEnabled
     }
-    
+
     @AppStorage("topEdge", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var topEdge: Double = 20
-    
+
     @State private var note = ""
-    @State var category: Category? = nil
+    @State var category: Category?
     @State private var date = Date.now
     @State private var repeatType = 0
     @State private var repeatCoefficient = 1
     @State private var showRecurring = false
     @State var income = false
-    
+
     var transactionTypeString: String {
         if income {
             return "Income"
@@ -42,12 +42,12 @@ struct TransactionView: View {
             return "Expense"
         }
     }
-    
-    @State private var numbers: [Int] = [0,0,0]
+
+    @State private var numbers: [Int] = [0, 0, 0]
     @State private var numbers1: [String] = []
     private var amount: String {
         var string = ""
-        
+
         if numberEntryType == 1 {
             for i in numbers.indices {
                 if i == (numbers.count - 2) {
@@ -56,61 +56,60 @@ struct TransactionView: View {
                     string += "\(numbers[i])"
                 }
             }
-            
+
             return string
         } else {
-            
+
             if numbers1.isEmpty {
                 return "0"
             }
             for i in numbers1 {
                 string = string + i
             }
-            
+
             return string
         }
-        
+
     }
-    
+
     var transactionValue: Double {
         return (amount as NSString).doubleValue
     }
-    
+
     @State var showCategoryPicker = false
     @State var showCategorySheet = false
-
 
     @AppStorage("currency", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var currency: String = Locale.current.currencyCode!
     var currencySymbol: String {
         return Locale.current.localizedCurrencySymbol(forCurrencyCode: currency)!
     }
-    
+
     @State var showingDatePicker = false
     @State var showingCategoryView = false
-    
+
     // toasts
     @State var showToast = false
     @State var toastTitle = ""
     @State var toastImage = ""
- 
+
     @ObservedObject var keyboardHeightHelper = KeyboardHeightHelper()
-   
+
     @AppStorage("firstTransactionViewLaunch", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var firstLaunch: Bool = true
 
     // edit mode
     let toEdit: Transaction?
-    
+
     // delete mode
-    
+
     @State var toDelete: Transaction?
     @State var deleteMode = false
-    
+
     @AppStorage("bottomEdge", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var bottomEdge: Double = 15
-    
+
     @State private var offset: CGFloat = 0
-    
-    let repeatOverlays = ["D","W","M"]
-    let numberArray = [[1,2,3],[4,5,6],[7,8,9]]
+
+    let repeatOverlays = ["D", "W", "M"]
+    let numberArray = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
     var numberArrayCount: Int {
         if numberEntryType == 1 {
             return numbers.count
@@ -118,17 +117,17 @@ struct TransactionView: View {
             return numbers1.count
         }
     }
-    
+
     var downsize: (big: CGFloat, small: CGFloat) {
         let amountText: String
         let size = UIScreen.main.bounds.width - 105
-        
+
         if numberEntryType == 2 {
             amountText = amount
         } else {
             amountText = String(format: "%.2f", transactionValue)
         }
-        
+
         if (amountText.widthOfRoundedString(size: 32, weight: .regular) + currencySymbol.widthOfRoundedString(size: 20, weight: .light) + 4) > size {
             return (24, 16)
         } else if (amountText.widthOfRoundedString(size: 44, weight: .regular) + currencySymbol.widthOfRoundedString(size: 25, weight: .light) + 4) > size {
@@ -139,7 +138,7 @@ struct TransactionView: View {
             return (56, 32)
         }
     }
-    
+
     var repeatButtonAccessibility: String {
         if repeatType == 1 {
             return "transaction recurs daily, button to edit recurring duration"
@@ -151,54 +150,52 @@ struct TransactionView: View {
             return "button to make transaction recurring"
         }
     }
-    
+
     var dateString: String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "d MMM yyyy"
         return dateFormatter.string(from: date)
     }
-    
+
     var showTime: Bool {
         let roundedFont = UIFont.rounded(ofSize: fontSize, weight: .semibold)
-        
+
         let attributes = [NSAttributedString.Key.font: roundedFont]
-        
+
         let dateSize: CGSize
-        
+
         if isDateToday(date: date) {
             dateSize = (("Today, " + getDateString(date: date)) as NSString).size(withAttributes: attributes)
         } else {
             dateSize = (getDateString(date: date) as NSString).size(withAttributes: attributes)
         }
-        
+
         let categorySize = (category?.fullName ?? "X Category").size(withAttributes: attributes)
         let timeSize = (getTimeString(date: date) as NSString).size(withAttributes: attributes)
-        
+
         let screenWidth: CGFloat
-        
+
         if boldText {
             screenWidth = (UIScreen.main.bounds.width - 200)
         } else {
             screenWidth = (UIScreen.main.bounds.width - 150)
         }
-        
-        
-        
+
         if (dateSize.width + categorySize.width + timeSize.width) > screenWidth {
             return false
         } else {
             return true
         }
     }
-    
+
     @AppStorage("colourScheme", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var colourScheme: Int = 0
-    
+
     @Environment(\.colorScheme) var systemColorScheme
-    
+
     var darkMode: Bool {
         ((colourScheme == 0 && systemColorScheme == .dark) || colourScheme == 2)
     }
-    
+
     var backgroundColor: Color {
         if darkMode {
             return Color("AlwaysDarkBackground")
@@ -206,31 +203,31 @@ struct TransactionView: View {
             return Color("AlwaysLightBackground")
         }
     }
-    
+
     @State var showPicker = false
     @State var animateIcon = false
-    
+
     @Namespace var animation
-    
+
     @State var swipingOffset: CGFloat = 0
     @GestureState var isDragging = false
-    
+
     // show recommendations
-    
+
     @State var textFieldFocused: Bool = false
-    
+
     @AppStorage("showTransactionRecommendations", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var showRecommendations: Bool = false
-    
+
     var suggestedTransactions: [Transaction] {
         return dataController.getSuggestedNotes(searchQuery: note, category: category, income: income)
     }
-    
+
     var showingNotePicker: Bool {
         return note != "" && toEdit == nil && !suggestedTransactions.isEmpty && textFieldFocused && showRecommendations
     }
-    
+
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
-    
+
     var fontSize: CGFloat {
         switch dynamicTypeSize {
         case .xSmall:
@@ -251,7 +248,7 @@ struct TransactionView: View {
             return 23
         }
     }
-    
+
     var capsuleWidth: CGFloat {
         if dynamicTypeSize > .xLarge {
             return 120
@@ -259,9 +256,9 @@ struct TransactionView: View {
             return 100
         }
     }
-    
+
     var body: some View {
-        
+
         GeometryReader { proxy in
             VStack(spacing: 8) {
                 // income/expense picker
@@ -273,7 +270,7 @@ struct TransactionView: View {
                                 .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                                .font(.system(size: 15, weight: .semibold))
                                 .foregroundColor(Color.AlertRed)
-                            
+
                             Text(toastTitle)
                                 .font(.system(.body, design: .rounded).weight(.semibold))
                                 .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
@@ -286,13 +283,13 @@ struct TransactionView: View {
                         .transition(AnyTransition.opacity.combined(with: .move(edge: .top)))
                         .frame(maxWidth: dynamicTypeSize > .xLarge ? 250 : 200)
                     } else {
-                        
+
                         ZStack(alignment: .leading) {
                             Capsule()
                                 .fill(Color.SecondaryBackground)
                                 .frame(width: capsuleWidth)
                                 .offset(x: swipingOffset)
-                            
+
                             HStack(spacing: 0) {
                                 Text("Expense")
                                     .font(.system(.body, design: .rounded).weight(.semibold))
@@ -311,7 +308,7 @@ struct TransactionView: View {
                                             }
                                         }
                                     }
-                                
+
                                 Text("transaction-view-income-picker")
                                     .font(.system(.body, design: .rounded).weight(.semibold))
                                     .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
@@ -330,8 +327,7 @@ struct TransactionView: View {
                                         }
                                     }
                             }
-                            
-                            
+
                         }
                         .padding(3)
                         .fixedSize(horizontal: true, vertical: true)
@@ -353,16 +349,16 @@ struct TransactionView: View {
                                 .padding(7)
                                 .background(Color.SecondaryBackground, in: Circle())
                                 .contentShape(Circle())
-                            
+
                         }
 
                         Spacer()
-                        
+
                         if toEdit != nil {
                             Button {
                                 toDelete = toEdit
                                 deleteMode = true
-                                
+
                             } label: {
                                 Image(systemName: "trash.fill")
 //                                    .font(.system(size: 16, weight: .semibold))
@@ -372,16 +368,15 @@ struct TransactionView: View {
                                     .padding(7)
                                     .background(Color.AlertRed.opacity(0.23), in: Circle())
                                     .contentShape(Circle())
-                                
+
                             }
                             .accessibilityLabel("delete transaction")
                         }
-                        
-                        
+
                         Button {
                             showRecurring = true
                         } label: {
-                            if repeatType > 0  {
+                            if repeatType > 0 {
                                 Image(systemName: "repeat")
                                     .font(.system(.subheadline, design: .rounded).weight(.semibold))
                                     .dynamicTypeSize(...DynamicTypeSize.xxLarge)
@@ -391,8 +386,8 @@ struct TransactionView: View {
                                             .font(.system(size: 6, weight: .black, design: .rounded))
                                             .foregroundColor(Color.IncomeGreen)
                                             .frame(width: 10, alignment: .leading)
-                                            .offset(x:5.7, y: 1.5)
-                                        
+                                            .offset(x: 5.7, y: 1.5)
+
                                     }
                                     .foregroundColor(Color.IncomeGreen)
                                     .padding(7)
@@ -413,13 +408,13 @@ struct TransactionView: View {
                             $0.position = .absolute(
                               originAnchor: .bottom,
                               popoverAnchor: .top
-                            );
-                            $0.rubberBandingMode = .none;
-                            $0.sourceFrameInset = UIEdgeInsets(top: 0, left: 0, bottom: -10, right: 0);
-                            $0.presentation.animation = .easeInOut(duration: 0.2);
+                            )
+                            $0.rubberBandingMode = .none
+                            $0.sourceFrameInset = UIEdgeInsets(top: 0, left: 0, bottom: -10, right: 0)
+                            $0.presentation.animation = .easeInOut(duration: 0.2)
                             $0.dismissal.animation = .easeInOut(duration: 0.3)
                         }) {
-                            RecurringPickerView(repeatType: $repeatType, repeatCoefficient: $repeatCoefficient,showMenu: $showRecurring, showPicker: $showPicker)
+                            RecurringPickerView(repeatType: $repeatType, repeatCoefficient: $repeatCoefficient, showMenu: $showRecurring, showPicker: $showPicker)
                         } background: {
                             backgroundColor.opacity(0.6)
                         }
@@ -427,18 +422,18 @@ struct TransactionView: View {
                     .frame(maxWidth: .infinity)
                 }
                 .padding(.top, topEdge)
-                
+
                 ZStack {
                     Color.PrimaryBackground
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .simultaneousGesture(
                             DragGesture()
-                                .updating($isDragging, body: { (currentState, state, transaction) in
+                                .updating($isDragging, body: { (_, state, _) in
                                     state = true
                                 })
                                 .onChanged { gesture in
                                     let swipe = gesture.translation.width
-                                    
+
                                     if income {
                                         if swipe < 0 {
                                             swipingOffset = max(-capsuleWidth, -pow(abs(swipe), 0.8)) + capsuleWidth
@@ -473,15 +468,14 @@ struct TransactionView: View {
                                             }
                                         }
                                     }
-                                    
-                                    
+
                                 }
                         )
-                    
+
                     // number display and note view
                     VStack(spacing: 8) {
                         if numberEntryType == 1 {
-                            HStack(alignment: .lastTextBaseline, spacing:4) {
+                            HStack(alignment: .lastTextBaseline, spacing: 4) {
                                 Text(currencySymbol)
                                     .font(.system(size: downsize.small, weight: .light, design: .rounded))
                                     .foregroundColor(Color.SubtitleText)
@@ -492,7 +486,7 @@ struct TransactionView: View {
                             }
                         } else {
                             if numbers1.isEmpty {
-                                HStack(alignment: .lastTextBaseline, spacing:4) {
+                                HStack(alignment: .lastTextBaseline, spacing: 4) {
                                     Text(currencySymbol)
                                         .font(.system(size: 32, weight: .light, design: .rounded))
                                         .foregroundColor(Color.SubtitleText)
@@ -503,7 +497,7 @@ struct TransactionView: View {
                                 }
                                 .frame(maxWidth: .infinity)
                             } else {
-                                HStack(alignment: .lastTextBaseline, spacing:4) {
+                                HStack(alignment: .lastTextBaseline, spacing: 4) {
                                     Text(currencySymbol)
                                         .font(.system(size: downsize.small, weight: .light, design: .rounded))
                                         .foregroundColor(Color.SubtitleText)
@@ -523,23 +517,22 @@ struct TransactionView: View {
                     }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                
+
                 if showingNotePicker {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 8) {
                             ForEach(suggestedTransactions, id: \.self) { transaction in
                                 Button {
-                                  
+
                                     let string = String(format: "%.2f", transaction.wrappedAmount)
-                                    
+
                                     var stringArray = string.compactMap { String($0) }
-                                    
+
                                     note = transaction.wrappedNote
-                                    
+
                                     withAnimation {
-                                        numbers = stringArray.compactMap{ Int($0)}
-                                      
-                                        
+                                        numbers = stringArray.compactMap { Int($0)}
+
                                         if round(transaction.wrappedAmount) == transaction.wrappedAmount {
                                             stringArray.removeLast()
                                             stringArray.removeLast()
@@ -548,12 +541,12 @@ struct TransactionView: View {
                                         } else {
                                             numbers1 = stringArray
                                         }
-                                        
+
                                         if category == nil {
                                             category = transaction.category
                                         }
                                     }
-                                    
+
                                     self.hideKeyboard()
                                 } label: {
                                     HStack(spacing: 3) {
@@ -563,7 +556,7 @@ struct TransactionView: View {
                                             .lineLimit(1)
                                             .padding(.vertical, 3.5)
                                             .padding(.horizontal, 7)
-                                        
+
                                         Text("\(currencySymbol)\(Int(round(transaction.wrappedAmount)))")
                                             .font(.system(size: 17, weight: .semibold, design: .rounded))
                                             .lineLimit(1)
@@ -576,7 +569,7 @@ struct TransactionView: View {
                                     .background(Color.SecondaryBackground, in: RoundedRectangle(cornerRadius: 11.5, style: .continuous))
                                 }
                             }
-                            
+
                         }
                     }
                     .padding(.bottom, 5)
@@ -594,15 +587,14 @@ struct TransactionView: View {
                                         Image(systemName: "slowmo")
                                             .foregroundColor(Color.SubtitleText)
                                     }
-                                    
+
                                 }
                             }
                             .foregroundColor(Color.SubtitleText)
                             .font(.system(.subheadline, design: .rounded).weight(.semibold))
                             .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                                    .font(.system(size: 16, weight: .semibold, design: .rounded))
-                            
-                           
+
                             Group {
                                 if isDateToday(date: date) {
                                     Text("Today, \(getDateString(date: date))")
@@ -615,18 +607,16 @@ struct TransactionView: View {
                             .font(.system(.body, design: .rounded).weight(.semibold))
                             .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                            .font(.system(size: 17.5, weight: .semibold, design: .rounded))
-                               
-                            
-                            
+
                             if showTime {
                                 Spacer()
-                                
+
                                 Text(getTimeString(date: date))
                                     .font(.system(.body, design: .rounded).weight(.semibold))
                                     .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                                    .font(.system(size: 17.5, weight: .semibold, design: .rounded))
                             }
-                            
+
                         }
                         .foregroundColor(Color.PrimaryText)
                         .padding(.vertical, 8.5)
@@ -642,8 +632,7 @@ struct TransactionView: View {
                             UIApplication.shared.endEditing()
                             showingDatePicker = true
                         }
-                        
-                        
+
                         if (expenseCategories.count == 0 && !income) || (incomeCategories.count == 0 && income) {
                             HStack(spacing: 4) {
                                 Image(systemName: "plus")
@@ -656,7 +645,7 @@ struct TransactionView: View {
                                     .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                                    .font(.system(size: 17.5, weight: .semibold, design: .rounded))
                                     .lineLimit(1)
-                                    
+
                             }
                             .foregroundColor(Color.SubtitleText)
                             .padding(.vertical, 8.5)
@@ -670,7 +659,7 @@ struct TransactionView: View {
                                 showCategorySheet = true
                             }
                         } else {
-                            
+
                             Group {
                                 if let unwrappedCategory = category {
                                     HStack(spacing: 5) {
@@ -692,10 +681,10 @@ struct TransactionView: View {
                                         $0.position = .absolute(
                                           originAnchor: .topRight,
                                           popoverAnchor: .bottomRight
-                                        );
-                                        $0.rubberBandingMode = .none;
-                                        $0.sourceFrameInset = UIEdgeInsets(top: -10, left: 0, bottom: 0, right: 0);
-                                        $0.presentation.animation = .easeInOut(duration: 0.2);
+                                        )
+                                        $0.rubberBandingMode = .none
+                                        $0.sourceFrameInset = UIEdgeInsets(top: -10, left: 0, bottom: 0, right: 0)
+                                        $0.presentation.animation = .easeInOut(duration: 0.2)
                                         $0.dismissal.animation = .easeInOut(duration: 0.3)
                                     }) {
                                         CategoryPickerView(category: $category, showPicker: $showCategoryPicker, showSheet: $showCategorySheet, income: income, darkMode: darkMode)
@@ -717,7 +706,7 @@ struct TransactionView: View {
                                                 .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                                                .font(.system(size: 16, weight: .semibold, design: .rounded))
                                         }
-                                         
+
                                         Text("Category")
                                             .font(.system(.body, design: .rounded).weight(.semibold))
                                             .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
@@ -735,10 +724,10 @@ struct TransactionView: View {
                                         $0.position = .absolute(
                                           originAnchor: .topRight,
                                           popoverAnchor: .bottomRight
-                                        );
-                                        $0.rubberBandingMode = .none;
-                                        $0.sourceFrameInset = UIEdgeInsets(top: -10, left: 0, bottom: 0, right: 0);
-                                        $0.presentation.animation = .easeInOut(duration: 0.2);
+                                        )
+                                        $0.rubberBandingMode = .none
+                                        $0.sourceFrameInset = UIEdgeInsets(top: -10, left: 0, bottom: 0, right: 0)
+                                        $0.presentation.animation = .easeInOut(duration: 0.2)
                                         $0.dismissal.animation = .easeInOut(duration: 0.3)
                                     }) {
                                         CategoryPickerView(category: $category, showPicker: $showCategoryPicker, showSheet: $showCategorySheet, income: income, darkMode: darkMode)
@@ -752,28 +741,26 @@ struct TransactionView: View {
                             .onTapGesture {
                                 showCategoryPicker = true
                             }
-                          
-                            
+
                         }
                     }
                     .padding(.bottom, 5)
                 }
-                
+
                 // date and category picker
-                
-                
+
                 // num pad
                 GeometryReader { proxy in
-                    VStack (spacing: proxy.size.height * 0.04) {
+                    VStack(spacing: proxy.size.height * 0.04) {
                         ForEach(numberArray, id: \.self) { array in
-                            HStack (spacing: proxy.size.width * 0.05) {
+                            HStack(spacing: proxy.size.width * 0.05) {
                                 ForEach(array, id: \.self) { singleNumber in
                                     NumberButton(number: singleNumber, size: proxy.size)
                                 }
                             }
                         }
-                        
-                        HStack (spacing: proxy.size.width * 0.05) {
+
+                        HStack(spacing: proxy.size.width * 0.05) {
                             if numberEntryType == 1 {
                                 Button {
                                     if numbers.count == 3 {
@@ -816,7 +803,7 @@ struct TransactionView: View {
                             }
 
                             NumberButton(number: 0, size: proxy.size)
-                            
+
                             Button {
                                 submit()
                             } label: {
@@ -834,8 +821,7 @@ struct TransactionView: View {
                                 .frame(width: proxy.size.width * 0.3, height: proxy.size.height * 0.22)
                                 .foregroundColor(Color.LightIcon)
                                 .background(Color.DarkBackground, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
-                                
-                                    
+
                             }
                             .buttonStyle(NumPadButton())
                         }
@@ -844,7 +830,7 @@ struct TransactionView: View {
                 }
                 .padding(.bottom, 15)
                 .keyboardAwareHeight(showToolbar: showingNotePicker)
-                
+
             }
             .padding(17)
             .frame(width: proxy.size.width, height: proxy.size.height)
@@ -861,30 +847,28 @@ struct TransactionView: View {
                             deleteMode = false
                             toDelete = nil
                         }
-                    
+
                     VStack(alignment: .leading, spacing: 1.5) {
                         Text("Delete Expense?")
                             .font(.system(size: 20, weight: .medium, design: .rounded))
                             .foregroundColor(.PrimaryText)
-                        
+
                         Text("This action cannot be undone.")
                             .font(.system(size: 16, weight: .medium, design: .rounded))
                             .foregroundColor(.SubtitleText)
                             .padding(.bottom, 15)
-                        
+
                         Button {
                             deleteMode = false
-                            
+
                             withAnimation {
                                 if let itemToDelete = toDelete {
                                     moc.delete(itemToDelete)
                                 }
                                 dataController.save()
                             }
-                            
+
                             dismiss()
-                            
-                            
 
                         } label: {
                             Text("Delete")
@@ -895,13 +879,13 @@ struct TransactionView: View {
                                 .background(Color.AlertRed, in: RoundedRectangle(cornerRadius: 9, style: .continuous))
                         }
                         .padding(.bottom, 8)
-                        
+
                         Button {
                             withAnimation(.easeOut(duration: 0.7)) {
                                 deleteMode = false
                                 toDelete = nil
                             }
-                            
+
                         } label: {
                             Text("Cancel")
                                 .font(.system(size: 20, weight: .semibold, design: .rounded))
@@ -913,7 +897,7 @@ struct TransactionView: View {
                     }
                     .padding(13)
                     .background(RoundedRectangle(cornerRadius: 13).fill(Color.PrimaryBackground).shadow(color: systemColorScheme == .dark ? Color.clear : Color.gray.opacity(0.25), radius: 6))
-                    .overlay(RoundedRectangle(cornerRadius: 13).stroke(systemColorScheme == .dark ? Color.gray.opacity(0.1) : Color.clear , lineWidth: 1.3))
+                    .overlay(RoundedRectangle(cornerRadius: 13).stroke(systemColorScheme == .dark ? Color.gray.opacity(0.1) : Color.clear, lineWidth: 1.3))
                     .offset(y: offset)
                     .gesture(
                         DragGesture()
@@ -932,7 +916,7 @@ struct TransactionView: View {
                                     withAnimation {
                                         offset = 0
                                     }
-                                    
+
                                 }
                             }
                     )
@@ -952,7 +936,7 @@ struct TransactionView: View {
                     .onTapGesture {
                         showingDatePicker = false
                     }
-                    
+
                     DatePicker("Date", selection: $date)
                         .datePickerStyle(.graphical)
                         .padding(.horizontal, 15)
@@ -960,11 +944,11 @@ struct TransactionView: View {
                         .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 13))
                         .padding(17)
                         .onChange(of: dateString) { _ in
-                            
+
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                                 showingDatePicker = false
                             }
-                            
+
                             if date > Date.now {
                                 animateIcon = true
                             } else {
@@ -972,8 +956,7 @@ struct TransactionView: View {
                             }
                         }
                         .padding(.bottom, 10)
-                    
-                    
+
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
                 .opacity(showingDatePicker ? 1 : 0)
@@ -1015,31 +998,31 @@ struct TransactionView: View {
         .onChange(of: isDragging) { _ in
             if !isDragging {
                 if income {
-                    withAnimation(.easeInOut(duration: 0.3)){
+                    withAnimation(.easeInOut(duration: 0.3)) {
                        swipingOffset = capsuleWidth
                     }
                 } else {
-                    withAnimation(.easeInOut(duration: 0.3)){
+                    withAnimation(.easeInOut(duration: 0.3)) {
                        swipingOffset = 0
                     }
                 }
-               
+
             }
-            
+
         }
         .onAppear {
             DispatchQueue.main.async {
                 if let transaction = toEdit {
-                    
+
                     repeatType = Int(transaction.recurringType)
                     repeatCoefficient = Int(transaction.recurringCoefficient)
-                    
+
                     let string = String(format: "%.2f", transaction.wrappedAmount)
-                    
+
                     var stringArray = string.compactMap { String($0) }
-                    
-                    numbers = stringArray.compactMap{ Int($0)}
-                    
+
+                    numbers = stringArray.compactMap { Int($0)}
+
                     if round(transaction.wrappedAmount) == transaction.wrappedAmount {
                         stringArray.removeLast()
                         stringArray.removeLast()
@@ -1048,12 +1031,12 @@ struct TransactionView: View {
                     } else {
                         numbers1 = stringArray
                     }
-                    
+
                     if transaction.wrappedDate > Date.now {
                         animateIcon = true
                     }
                 }
-                
+
             }
         }
         .sheet(isPresented: $showCategorySheet) {
@@ -1071,11 +1054,11 @@ struct TransactionView: View {
             if income {
                 swipingOffset = capsuleWidth
             }
-           
+
         }
-        
+
     }
-    
+
     @ViewBuilder
     func DeleteButton() -> some View {
         Button {
@@ -1097,7 +1080,7 @@ struct TransactionView: View {
         }
         .disabled(numbers1.isEmpty)
     }
-    
+
     @ViewBuilder
     func NumberButton(number: Int, size: CGSize) -> some View {
         Button {
@@ -1122,7 +1105,7 @@ struct TransactionView: View {
                         numbers1.append(String(number))
                     }
                 }
-                
+
             }
         } label: {
             Text("\(number)")
@@ -1136,50 +1119,46 @@ struct TransactionView: View {
         .disabled(numberArrayCount == 9)
         .buttonStyle(NumPadButton())
     }
-    
+
     func isDateToday(date: Date) -> Bool {
         let calendar = Calendar.current
-        
+
         return calendar.isDateInToday(date)
     }
-    
+
     func getDateString(date: Date) -> String {
         let formatter = DateFormatter()
-        
+
         if isDateToday(date: date) {
             formatter.dateFormat = "d MMM"
-            
+
             return formatter.string(from: date)
         } else {
             formatter.dateFormat = "E, d MMM"
-            
+
             return formatter.string(from: date)
         }
-        
-        
-        
+
     }
-    
+
     func getTimeString(date: Date) -> String {
         let formatter = DateFormatter()
-        
+
         formatter.dateFormat = "HH:mm"
-        
+
         return formatter.string(from: date)
-        
-        
-        
+
     }
-    
+
     func submit() {
         let generator = UINotificationFeedbackGenerator()
-        
+
         if transactionValue == 0 && category == nil {
             toastImage = "questionmark.app"
             toastTitle = "Incomplete Entry"
             showToast = true
             generator.notificationOccurred(.error)
-            
+
             return
         } else if transactionValue == 0 {
             toastImage = "centsign.circle"
@@ -1194,137 +1173,132 @@ struct TransactionView: View {
             generator.notificationOccurred(.error)
             return
         }
-        
+
         generator.notificationOccurred(.success)
-        
+
         if let editedTransaction = toEdit {
             if note.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
                 editedTransaction.note = category!.wrappedName
             } else {
                 editedTransaction.note = note.trimmingCharacters(in: .whitespaces)
             }
-            
+
             if let unwrappedCategory = category {
                 editedTransaction.category = unwrappedCategory
             }
-          
+
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                 withAnimation(.easeInOut(duration: 0.5)) {
-                   
-                    
+
                     editedTransaction.amount = transactionValue
                     editedTransaction.date = date
                     editedTransaction.income = income
-                    
+
                     let calendar = Calendar(identifier: .gregorian)
-                   
+
                     editedTransaction.day = calendar.date(bySettingHour: 0, minute: 0, second: 0, of: date) ?? Date.now
-                    
-                    
+
                     let dateComponents = calendar.dateComponents([.month, .year], from: date)
-                    
+
                     editedTransaction.month = calendar.date(from: dateComponents) ?? Date.now
-                    
+
                     if repeatType > 0 {
                         editedTransaction.onceRecurring = true
                         editedTransaction.recurringType = Int16(repeatType)
                         editedTransaction.recurringCoefficient = Int16(repeatCoefficient)
-                        
+
                         dataController.updateRecurringTransaction(transaction: editedTransaction)
                     } else {
                         editedTransaction.onceRecurring = false
                         editedTransaction.recurringType = Int16(repeatType)
                         editedTransaction.recurringCoefficient = Int16(repeatCoefficient)
                     }
-                    
-                    
+
                     dataController.save()
                 }
             }
-            
+
             dismiss()
-            
+
             return
-            
-        } 
-        
+
+        }
+
         let transaction = Transaction(context: moc)
-        
+
         if note.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
             transaction.note = category?.wrappedName ?? ""
         } else {
             transaction.note = note.trimmingCharacters(in: .whitespaces)
         }
-        
+
         transaction.income = income
-        
+
         if let unwrappedCategory = category {
             transaction.category = unwrappedCategory
         }
-        
+
         transaction.amount = transactionValue
         transaction.date = date
         transaction.id = UUID()
-        
+
         let calendar = Calendar(identifier: .gregorian)
-        
+
         transaction.day = calendar.date(bySettingHour: 0, minute: 0, second: 0, of: date) ?? Date.now
-        
+
         let dateComponents = calendar.dateComponents([.month, .year], from: date)
-        
+
         transaction.month = calendar.date(from: dateComponents) ?? Date.now
-        
+
         if repeatType > 0 {
             transaction.onceRecurring = true
             transaction.recurringType = Int16(repeatType)
             transaction.recurringCoefficient = Int16(repeatCoefficient)
             dataController.updateRecurringTransaction(transaction: transaction)
         }
-        
+
         dataController.save()
-        
+
         dismiss()
     }
-    
+
     init(toEdit: Transaction? = nil) {
         if let transaction = toEdit {
             _note = State(initialValue: transaction.wrappedNote)
-            
+
             if let unwrappedCategory = transaction.category {
                 _category = State(initialValue: unwrappedCategory)
             }
-          
+
             _income = State(initialValue: transaction.income)
-            
+
             if transaction.income {
                 _swipingOffset = State(initialValue: 100)
             }
-            
+
             _date = State(initialValue: transaction.date ?? Date.now)
-            
-            
-            
+
         }
         self.toEdit = toEdit
     }
-    
+
     init(category: Category? = nil) {
         if let unwrappedCategory = category {
             _income = State(initialValue: false)
             _category = State(initialValue: unwrappedCategory)
         }
-        
+
         self.toEdit = nil
     }
-    
+
 }
 
-struct FilteredSearchNewTransactionView: View{
+struct FilteredSearchNewTransactionView: View {
     @FetchRequest<Transaction> private var transactions: FetchedResults<Transaction>
-    
+
     var searchQuery: String
     var category: Category?
-    
+
     var body: some View {
         ScrollView(.horizontal) {
             if transactions.count > 0 && category != nil {
@@ -1335,21 +1309,20 @@ struct FilteredSearchNewTransactionView: View{
                 }
             }
         }
-        
-        
+
     }
-    
+
     init(searchQuery: String, category: Category?) {
         let beginPredicate = NSPredicate(format: "%K BEGINSWITH[cd] %@", #keyPath(Transaction.note), searchQuery)
         let containPredicate = NSPredicate(format: "%K CONTAINS[cd] %@", #keyPath(Transaction.note), searchQuery)
         let compound = NSCompoundPredicate(orPredicateWithSubpredicates: [beginPredicate, containPredicate])
-        
+
         if let unwrappedCategory = category {
-            
+
             let categoryPredicate = NSPredicate(format: "%K == %@", #keyPath(Transaction.category), unwrappedCategory)
-            
+
             let andPredicate = NSCompoundPredicate(type: .and, subpredicates: [compound, categoryPredicate])
-            
+
             _transactions = FetchRequest<Transaction>(sortDescriptors: [
                     SortDescriptor(\.date, order: .reverse)
             ], predicate: andPredicate)
@@ -1358,11 +1331,11 @@ struct FilteredSearchNewTransactionView: View{
                     SortDescriptor(\.date, order: .reverse)
             ], predicate: compound)
         }
-        
+
         self.searchQuery = searchQuery
         self.category = category
     }
-    
+
     func filterOutDupes(day: FetchedResults<Transaction>) -> [Transaction] {
         var seen = [Transaction]()
         let filtered = day.filter { (entity) -> Bool in
@@ -1373,7 +1346,7 @@ struct FilteredSearchNewTransactionView: View{
                 return true
             }
         }
-        
+
         return filtered
     }
 }
@@ -1390,7 +1363,7 @@ struct NumPadButton: ButtonStyle {
 func getDollarOffset(big: CGFloat, small: CGFloat) -> CGFloat {
     let bigFont = UIFont.rounded(ofSize: big, weight: .regular)
     let smallFont = UIFont.rounded(ofSize: small, weight: .light)
-    
+
     return bigFont.capHeight - smallFont.capHeight - 1
 }
 
@@ -1399,12 +1372,11 @@ struct CategoryPickerView: View {
     @Binding var showPicker: Bool
     @Binding var showingCategoryView: Bool
     @FetchRequest private var categories: FetchedResults<Category>
-    
 
     let initialCategory: Category?
-    
+
     var darkMode: Bool
-    
+
     var backgroundColor: Color {
         if darkMode {
             return Color("AlwaysDarkBackground")
@@ -1412,7 +1384,7 @@ struct CategoryPickerView: View {
             return Color("AlwaysLightBackground")
         }
     }
-    
+
     var secondaryBackgroundColor: Color {
         if darkMode {
             return Color("AlwaysDarkSecondaryBackground")
@@ -1420,9 +1392,9 @@ struct CategoryPickerView: View {
             return Color("AlwaysLightSecondaryBackground")
         }
     }
-    
+
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
-    
+
     var fontSize: CGFloat {
         switch dynamicTypeSize {
         case .xSmall:
@@ -1443,15 +1415,14 @@ struct CategoryPickerView: View {
             return 23
         }
     }
-    
-    
+
     var heightOfScrollView: Double {
         let font = UIFont.rounded(ofSize: fontSize, weight: .semibold)
-        
+
         if categories.count == 1 && initialCategory != nil {
             return font.lineHeight + 14.1
         }
-        
+
         if initialCategory != nil {
             let height = Double(min(6, (categories.count))) * (font.lineHeight + 14.1)
             let gap = Double(min(5, (categories.count-1))) * 8.0
@@ -1462,26 +1433,21 @@ struct CategoryPickerView: View {
             return height + gap
         }
     }
-    
+
     var body: some View {
 
-            
 //        VStack(alignment: .trailing, spacing: 8) {
-            
-            
-            
-            
+
 //            if categories.count > 1 || category == nil {
                 HStack {
-                    
-                    
+
                     Color.clear
                         .frame(maxWidth: .infinity)
                         .contentShape(Rectangle())
                         .onTapGesture {
                             showPicker = false
                         }
-                        
+
                     VStack(alignment: .trailing, spacing: (categories.count == 1 && initialCategory != nil) ? 0 : 8) {
                         HStack(spacing: 4) {
                             Image(systemName: "pencil")
@@ -1490,8 +1456,8 @@ struct CategoryPickerView: View {
                                 .font(.system(.body, design: .rounded).weight(.semibold))
                                 .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
                         }
-                        .padding(.horizontal,11)
-                        .padding(.vertical,7)
+                        .padding(.horizontal, 11)
+                        .padding(.vertical, 7)
                         .foregroundColor(darkMode ? Color("AlwaysLightBackground") : Color("AlwaysDarkBackground"))
                         .background(
                             RoundedRectangle(cornerRadius: 11.5, style: .continuous)
@@ -1503,9 +1469,9 @@ struct CategoryPickerView: View {
                             impactMed.impactOccurred()
                             showPicker = false
                             showingCategoryView = true
-                            
+
                         }
-                        
+
                         ScrollView(showsIndicators: false) {
                             ScrollViewReader { value in
                                 VStack(alignment: .trailing, spacing: 8) {
@@ -1523,12 +1489,12 @@ struct CategoryPickerView: View {
                                                     .lineLimit(1)
                                             }
                                             .id(item.id)
-                                            .padding(.horizontal,10)
-                                            .padding(.vertical,7)
+                                            .padding(.horizontal, 10)
+                                            .padding(.vertical, 7)
                                             .foregroundColor(darkMode ? Color("AlwaysLightBackground") : Color("AlwaysDarkBackground"))
                                             .background(item == category ? secondaryBackgroundColor : backgroundColor, in: RoundedRectangle(cornerRadius: 11.5, style: .continuous))
                                             .contentShape(Rectangle())
-                                            .overlay{
+                                            .overlay {
                                                 RoundedRectangle(cornerRadius: 11.5, style: .continuous)
                                                     .strokeBorder(darkMode ? Color("AlwaysDarkOutline") : Color("AlwaysLightOutline"),
                                                         style: StrokeStyle(lineWidth: 1.5)
@@ -1540,12 +1506,12 @@ struct CategoryPickerView: View {
                                                 } else {
                                                     category = item
                                                 }
-                                                
+
                                                 showPicker = false
 //
                                             }
                                         }
-                                        
+
                                     }
                                 }
                                 .onAppear {
@@ -1555,7 +1521,7 @@ struct CategoryPickerView: View {
                                         } else {
                                             value.scrollTo(last.id)
                                         }
-                                        
+
                                     }
                                 }
                             }
@@ -1565,17 +1531,9 @@ struct CategoryPickerView: View {
                 }
                 .frame(height: heightOfScrollView)
 //            }
-            
-            
-            
-           
-            
-        
-        
-        
-        
+
     }
-    
+
     init(category: Binding<Category?>?, showPicker: Binding<Bool>, showSheet: Binding<Bool>, income: Bool, darkMode: Bool) {
         _categories = FetchRequest<Category>(sortDescriptors: [
             SortDescriptor(\.order, order: .reverse)
@@ -1590,15 +1548,15 @@ struct CategoryPickerView: View {
 }
 
 struct NoteView: View {
-    
+
     @Binding var note: String
     @Binding var focused: Bool
-    
+
     @FocusState private var textFocused: Bool
     let characterLimit = 50
-    
+
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
-    
+
     var fontSize: CGFloat {
         switch dynamicTypeSize {
         case .xSmall:
@@ -1619,7 +1577,7 @@ struct NoteView: View {
             return 23
         }
     }
-    
+
     var noteWidth: CGFloat {
 //        let fontSize: CGFloat = fontSize
         let systemFont = UIFont.systemFont(ofSize: fontSize, weight: .semibold)
@@ -1629,38 +1587,37 @@ struct NoteView: View {
         } else {
             roundedFont = systemFont
         }
-        
+
         let attributes = [NSAttributedString.Key.font: roundedFont]
-        
+
         let size = (note as NSString).size(withAttributes: attributes)
-        
+
         let placeholder = String(localized: "Add Note")
         let placeholderSize = (placeholder as NSString).size(withAttributes: attributes)
-        
+
         if !note.isEmpty {
             return size.width + 2
         } else {
             return placeholderSize.width
         }
-        
+
 //        return max(size.width + 2, (placeholderSize.width + 1))
     }
-    
+
     var body: some View {
-        HStack (spacing:7) {
+        HStack(spacing: 7) {
             Image(systemName: "text.alignleft")
                 .font(.system(.subheadline, design: .rounded).weight(.semibold))
                 .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                .font(.system(size: 14, weight: .semibold))
                 .foregroundColor(Color.SubtitleText)
-            
+
             ZStack(alignment: .leading) {
                 TextField("", text: $note)
                     .onReceive(Just(note)) { _ in limitText(characterLimit)}
                     .focused($textFocused)
                     .foregroundColor(Color.PrimaryText)
-                   
-                
+
                 if note.isEmpty {
                     Text("Add Note")
                         .foregroundColor(Color.SubtitleText)
@@ -1670,7 +1627,7 @@ struct NoteView: View {
             .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //            .font(.system(size: 16, weight: .semibold, design: .rounded))
             .frame(width: min(noteWidth, UIScreen.main.bounds.width/1.5), alignment: .center)
-            
+
         }
         .onTapGesture {
             textFocused = true
@@ -1685,7 +1642,7 @@ struct NoteView: View {
             focused = newValue
         }
     }
-    
+
     func limitText(_ upper: Int) {
         if note.count > upper {
             note = String(note.prefix(upper))
@@ -1698,24 +1655,23 @@ struct RecurringPickerView: View {
     @Binding var repeatType: Int
     @Binding var repeatCoefficient: Int
     @Binding var showMenu: Bool
-   
-    
+
     @Binding var showPicker: Bool
-    
+
     let stringArray = ["none", "daily", "weekly", "monthly"]
     let stringArray2 = ["", "days", "weeks", "months"]
-    
+
     @AppStorage("bottomEdge", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var bottomEdge: Double = 15
-    
+
     @State private var offset: CGFloat = 0
-    
+
     @State var holdingType = 0
     @State var holdingCoefficient = 0
-    
+
     @AppStorage("colourScheme", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var colourScheme: Int = 0
-    
+
     @Environment(\.colorScheme) var systemColorScheme
-    
+
     var darkMode: Bool {
         ((colourScheme == 0 && systemColorScheme == .dark) || colourScheme == 2)
     }
@@ -1738,7 +1694,7 @@ struct RecurringPickerView: View {
 //                            .font(.system(size: 14, weight: .medium))
                     }
                 }
-                .frame(maxWidth:.infinity, alignment: .leading)
+                .frame(maxWidth: .infinity, alignment: .leading)
 //                .font(.system(size: 18, weight: .medium, design: .rounded))
                 .padding(5)
                 .background {
@@ -1764,7 +1720,7 @@ struct RecurringPickerView: View {
                     }
                 }
             }
-            
+
             HStack {
                 if repeatCoefficient == 1 {
                     Text("custom")
@@ -1777,7 +1733,7 @@ struct RecurringPickerView: View {
                         Text(String(repeatCoefficient) + " " + String(localized: "\(repeatCoefficient) months"))
                     }
                 }
-                
+
                 Spacer()
 
                 if repeatCoefficient > 1 {
@@ -1788,7 +1744,7 @@ struct RecurringPickerView: View {
                 }
             }
             .lineLimit(1)
-            .frame(maxWidth:.infinity, alignment: .leading)
+            .frame(maxWidth: .infinity, alignment: .leading)
             .font(.system(.body, design: .rounded).weight(.medium))
             .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //            .font(.system(size: 18, weight: .medium, design: .rounded))
@@ -1805,11 +1761,11 @@ struct RecurringPickerView: View {
                 if repeatCoefficient == 1 {
                     repeatCoefficient = 2
                     repeatType = 2
-                    
+
                     holdingType = repeatType
                     holdingCoefficient = repeatCoefficient
                 }
-                
+
                 withAnimation {
                     showPicker = true
                 }
@@ -1827,9 +1783,8 @@ struct RecurringPickerView: View {
         .padding(4)
         .frame(width: 150)
         .background(RoundedRectangle(cornerRadius: 9).fill(darkMode ? Color("AlwaysDarkBackground") : Color("AlwaysLightBackground")).shadow(color: darkMode ? Color.clear : Color.gray.opacity(0.25), radius: 6))
-        .overlay(RoundedRectangle(cornerRadius: 9).stroke(darkMode ? Color.gray.opacity(0.1) : Color.clear , lineWidth: 1.3))
+        .overlay(RoundedRectangle(cornerRadius: 9).stroke(darkMode ? Color.gray.opacity(0.1) : Color.clear, lineWidth: 1.3))
     }
-
 
 }
 
@@ -1837,17 +1792,17 @@ struct CustomRecurringView: View {
     @Binding var repeatType: Int
     @Binding var repeatCoefficient: Int
     @Binding var showPicker: Bool
-    
+
     @Environment(\.colorScheme) var systemColorScheme
     var stringArray: [String] {
         return ["", "\(holdingCoefficient) days", "\(holdingCoefficient) weeks", "\(holdingCoefficient) months"]
     }
-    
+
     @Environment(\.dismiss) var dismiss
-    
+
     @State var holdingType = 0
     @State var holdingCoefficient = 0
-    
+
     var body: some View {
         VStack(spacing: 35) {
             HStack {
@@ -1862,26 +1817,26 @@ struct CustomRecurringView: View {
                         .padding(7)
                         .background(Color.SecondaryBackground, in: Circle())
                         .contentShape(Circle())
-                    
+
                 }
-                
+
                 Spacer()
-                
+
                 Text("Custom Interval")
                     .font(.system(.body, design: .rounded).weight(.semibold))
                     .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                    .font(.system(size: 18, weight: .semibold, design: .rounded))
-                
+
                 Spacer()
-                
+
                 Button {
                     repeatType = holdingType
                     repeatCoefficient = holdingCoefficient
-                    
+
                     UIImpactFeedbackGenerator(style: .light).impactOccurred()
-                    
+
                     dismiss()
-                    
+
                 } label: {
                     Image(systemName: "checkmark")
                         .font(.system(.subheadline, design: .rounded).weight(.semibold))
@@ -1891,17 +1846,17 @@ struct CustomRecurringView: View {
                         .padding(7)
                         .background(Color.IncomeGreen.opacity(0.23), in: Circle())
                         .contentShape(Circle())
-                    
+
                 }
-                
+
             }
-                
+
             HStack(spacing: 10) {
                 Text("Repeats every")
                     .font(.system(size: 23, weight: .medium, design: .rounded))
                     .foregroundColor(Color.PrimaryText)
                     .padding(.trailing, 3)
-                
+
                 VStack {
                     Button {
                         holdingCoefficient += 1
@@ -1915,8 +1870,7 @@ struct CustomRecurringView: View {
                             .opacity(holdingCoefficient == 30 ? 0.25 : 1)
                     }
                     .disabled(holdingCoefficient == 30)
-                    
-                    
+
                     Text("\(holdingCoefficient)")
                         .font(.system(size: 23, weight: .medium, design: .rounded))
                         .padding(7)
@@ -1925,8 +1879,7 @@ struct CustomRecurringView: View {
                                 .fill(Color.SecondaryBackground)
                                 .frame(width: 40, height: 40)
                         }
-                    
-                    
+
                     Button {
                         holdingCoefficient -= 1
                     } label: {
@@ -1940,7 +1893,7 @@ struct CustomRecurringView: View {
                     }
                     .disabled(holdingCoefficient == 2)
                 }
-                
+
                 VStack {
                     Button {
                         holdingType -= 1
@@ -1954,7 +1907,7 @@ struct CustomRecurringView: View {
                             .opacity(holdingType == 1 ? 0.25 : 1)
                     }
                     .disabled(holdingType == 1)
-                    
+
                     Group {
                         if holdingType == 1 {
                             Text("\(holdingCoefficient) days")
@@ -1971,8 +1924,7 @@ struct CustomRecurringView: View {
                             .fill(Color.SecondaryBackground)
                             .frame(height: 40)
                     }
-                        
-                    
+
                     Button {
                         holdingType += 1
                     } label: {
@@ -1988,7 +1940,7 @@ struct CustomRecurringView: View {
                 }
             }
             .padding(.bottom, 20)
-           
+
         }
         .padding(13)
         .frame(maxHeight: .infinity, alignment: .top)
@@ -1996,14 +1948,14 @@ struct CustomRecurringView: View {
             holdingType = repeatType
             holdingCoefficient = repeatCoefficient
         }
-       
+
     }
 }
 
 struct ButtonView: View {
     let number: Int
     let size: CGSize
-    
+
     var body: some View {
         Text("\(number)")
             .font(.system(size: 34, weight: .regular, design: .rounded))
@@ -2011,6 +1963,6 @@ struct ButtonView: View {
             .background(Color.SecondaryBackground)
             .foregroundColor(Color.PrimaryText)
             .clipShape(RoundedRectangle(cornerRadius: 10))
-            
+
     }
 }

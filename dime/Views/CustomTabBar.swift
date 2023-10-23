@@ -8,58 +8,54 @@
 import Foundation
 import SwiftUI
 
-
 struct CustomTabBar: View {
     @EnvironmentObject var appLockVM: AppLockViewModel
     @Binding var currentTab: String
     var topEdge: CGFloat
     var bottomEdge: CGFloat
     @State var addTransaction: Bool = false
-    
+
     @State var checkingFace: Bool = false
-    
+
     @FetchRequest(sortDescriptors: []) private var transactions: FetchedResults<Transaction>
-    
+
     @State var count = 0
     @Binding var counter: Int
-    
+
     var launchAdd: Bool
-    
+
     @AppStorage("confetti", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var confetti: Bool = false
     @AppStorage("firstTransactionViewLaunch", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var firstLaunch: Bool = true
-    
+
     @State var animate = false
-    
-    
+
     private var isZoomed: Bool {
         UIScreen.main.scale != UIScreen.main.nativeScale
     }
-  
-    
+
     var body: some View {
-        
+
         HStack(spacing: 4) {
             TabButton(image: "Log", zoomed: isZoomed, currentTab: $currentTab)
-                
+
             TabButton(image: "Insights", zoomed: isZoomed, currentTab: $currentTab)
-            
+
             ZStack {
                 RoundedRectangle(cornerRadius: 28, style: .continuous).fill(Color.DarkBackground.opacity(0.6))
                     .frame(width: 95, height: 68)
                     .opacity(self.animate ? 0 : 1)
                     .scaleEffect(self.animate ? 1 : 0.4)
-                
+
                 RoundedRectangle(cornerRadius: 20.5, style: .continuous).fill(Color.DarkBackground.opacity(0.8))
                     .frame(width: 80, height: 53)
                     .opacity(self.animate ? 0 : 1)
                     .scaleEffect(self.animate ? 1 : 0.6)
-                
+
                 Button {
                     let impactMed = UIImpactFeedbackGenerator(style: .light)
                     impactMed.impactOccurred()
-                    
+
                     addTransaction = true
-                    
 
                 } label: {
                     Image(systemName: "plus")
@@ -75,12 +71,11 @@ struct CustomTabBar: View {
                 }
             }
             .accessibilityLabel("Add New Transaction")
-            
+
             TabButton(image: "Budget", zoomed: isZoomed, currentTab: $currentTab)
-                
-            
+
             TabButton(image: "Settings", zoomed: isZoomed, currentTab: $currentTab)
-                
+
         }
         .padding(.horizontal, 15)
         .padding(.bottom, bottomEdge - 10)
@@ -92,11 +87,11 @@ struct CustomTabBar: View {
                     counter += 1
                 }
             }
-            
+
             if firstLaunch {
                 firstLaunch = false
             }
-            
+
         }, content: {
             TransactionView(toEdit: nil)
         })
@@ -118,20 +113,15 @@ struct CustomTabBar: View {
         .onOpenURL { url in
             guard
                 url.host == "newExpense"
-                    
+
             else {
                 return
             }
-            
+
             addTransaction = true
-             
-             
-            
-            
-            
+
         }
-        
-        
+
     }
 }
 
@@ -149,7 +139,7 @@ struct MyButtonStyle: ButtonStyle {
 struct BouncyButton: ButtonStyle {
     var duration: Double
     var scale: Double
-    
+
     public func makeBody(configuration: Self.Configuration) -> some View {
         return configuration.label
             .scaleEffect(configuration.isPressed ? self.scale : 1)
@@ -159,15 +149,14 @@ struct BouncyButton: ButtonStyle {
     }
 }
 
+struct TabButton: View {
 
-struct TabButton: View{
-    
     var image: String
     var zoomed: Bool
     @Binding var currentTab: String
-    
-    var body: some View{
-        
+
+    var body: some View {
+
         Button {
             DispatchQueue.main.async {
                 currentTab = image
@@ -191,4 +180,3 @@ struct TabButton: View{
 
     }
 }
-

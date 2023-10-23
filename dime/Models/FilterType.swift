@@ -16,15 +16,15 @@ enum FilterType: String, CaseIterable {
     case category = "by category"
     case recurring = "recurring"
     case upcoming = "upcoming"
-    
-    static var imageDictionary: [FilterType:String] = [
-        .all:"square.text.square.fill",
-        .type:"centsign.circle.fill",
-        .day:"d.square.fill",
-        .week:"w.square.fill",
-        .month:"m.square.fill",
-        .category:"circle.grid.2x2.fill",
-        .recurring:"repeat.circle.fill",
-        .upcoming:"sun.min.fill"
+
+    static var imageDictionary: [FilterType: String] = [
+        .all: "square.text.square.fill",
+        .type: "centsign.circle.fill",
+        .day: "d.square.fill",
+        .week: "w.square.fill",
+        .month: "m.square.fill",
+        .category: "circle.grid.2x2.fill",
+        .recurring: "repeat.circle.fill",
+        .upcoming: "sun.min.fill"
     ]
 }

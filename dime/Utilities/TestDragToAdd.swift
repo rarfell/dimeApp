@@ -17,13 +17,12 @@ import SwiftUI
  }
  */
 
-
 struct CustomRefreshView<Content: View>: View {
     var content: Content
     var showsIndicator: Bool
-    var onRefresh: () async->()
+    var onRefresh: () async -> Void
 
-    init(showsIndicator: Bool = false, @ViewBuilder content: @escaping ()->Content, onRefresh: @escaping () async->()) {
+    init(showsIndicator: Bool = false, @ViewBuilder content: @escaping () -> Content, onRefresh: @escaping () async -> Void) {
         self.showsIndicator = showsIndicator
         self.content = content()
         self.onRefresh = onRefresh
@@ -50,7 +49,7 @@ struct CustomRefreshView<Content: View>: View {
                 }
                 .frame(height: 0)
                 .offset(y: -75 + (75 * scrollDelegate.progress))
-                
+
                 content
                     .offset(coordinateSpace: "SCROLL") { offset in
                     scrollDelegate.contentOffset = offset
@@ -64,7 +63,7 @@ struct CustomRefreshView<Content: View>: View {
                         scrollDelegate.progress = progress
                         print(progress)
                     }
-                    
+
                     // Additional haptic feedback at "success"
                     if scrollDelegate.isEligible && !scrollDelegate.isRefreshing {
                         scrollDelegate.isRefreshing = true
@@ -72,9 +71,9 @@ struct CustomRefreshView<Content: View>: View {
                     } else {
                     }
                 }
-                
+
             }
-         
+
         }
         .coordinateSpace(name: "SCROLL")
         .onAppear(perform: scrollDelegate.addGesture)
@@ -112,7 +111,6 @@ struct CustomRefreshView_Previews: PreviewProvider {
     }
 }
 
-
 class ScrollViewModel: NSObject, ObservableObject, UIGestureRecognizerDelegate {
 
     // MARK: Properties
@@ -133,7 +131,7 @@ class ScrollViewModel: NSObject, ObservableObject, UIGestureRecognizerDelegate {
     // Adding Pan Gesture To UI Main Application Window
     // With Simultaneous Gesture Desture
     // Thus it Wont disturb SwiftUI Scroll's And Gesture's
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer)->Bool {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
 
@@ -153,7 +151,7 @@ class ScrollViewModel: NSObject, ObservableObject, UIGestureRecognizerDelegate {
     }
 
     // MARK: Finding Root Controller
-    func rootController()->UIViewController {
+    func rootController() -> UIViewController {
         guard let screen = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
             return .init()
         }
@@ -183,7 +181,7 @@ class ScrollViewModel: NSObject, ObservableObject, UIGestureRecognizerDelegate {
 // Extension to observe changes in the offset of a view
 extension View {
     @ViewBuilder
-    func offset(coordinateSpace: String, offset: @escaping (CGFloat)->())->some View {
+    func offset(coordinateSpace: String, offset: @escaping (CGFloat) -> Void) -> some View {
         overlay {
             GeometryReader { proxy in
                 let minY = proxy.frame(in: .named(coordinateSpace)).minY
@@ -201,11 +199,10 @@ extension View {
 struct RefreshOffsetKey: PreferenceKey {
     static var defaultValue: CGFloat = 0
 
-    static func reduce(value: inout CGFloat, nextValue: ()->CGFloat) {
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
         value = nextValue()
     }
 }
-
 
 // Your custom view that is shown when the user pulls down. Gets a progress value from 0 to 1.
 struct CustomProgressView: View {

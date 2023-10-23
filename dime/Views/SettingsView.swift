@@ -15,7 +15,7 @@ import StoreKit
 
 struct SettingsView: View {
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
-        
+
     @AppStorage("colourScheme", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var colourScheme: Int = 0
     var colourSchemeString: String {
         if colourScheme == 1 {
@@ -26,7 +26,7 @@ struct SettingsView: View {
             return String(localized: "System")
         }
     }
-    
+
     @AppStorage("activeIcon", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var activeIcon: String = "AppIcon"
     var appIconString: String {
         if activeIcon == "AppIcon1" {
@@ -48,7 +48,7 @@ struct SettingsView: View {
             return String(localized: "Monday")
         }
     }
-    
+
     @AppStorage("showNotifications", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var showNotifications: Bool = false
     @AppStorage("notificationOption", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var option: Int = 1
     var notificationString: String {
@@ -64,10 +64,10 @@ struct SettingsView: View {
             return String(localized: "Off")
         }
     }
-    
+
     @EnvironmentObject var appLockVM: AppLockViewModel
     @Namespace var animation
-    
+
     var iCloudString: String {
         if NSUbiquitousKeyValueStore.default.bool(forKey: "icloud_sync") {
             return String(localized: "On")
@@ -75,13 +75,13 @@ struct SettingsView: View {
             return String(localized: "Off")
         }
     }
-    
+
     @Environment(\.openURL) var openURL
     let supportEmail = SupportEmail(toAddress: "rafasohhh@gmail.com", subject: "Support Email")
     let featureRequestEmail = SupportEmail(toAddress: "rafasohhh@gmail.com", subject: "Feature Request")
-    
+
     @AppStorage("numberEntryType", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var numberEntryType: Int = 2
-    
+
     var numberEntryString: String {
         if numberEntryType == 1 {
             return String(localized: "Type 1")
@@ -89,19 +89,17 @@ struct SettingsView: View {
             return String(localized: "Type 2")
         }
     }
-    
+
     @AppStorage("showCents", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var showCents: Bool = true
-    
+
     @AppStorage("animated", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var animated: Bool = true
-    
+
     @AppStorage("currency", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var currency: String = Locale.current.currencyCode!
-    
+
     @AppStorage("incomeTracking", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var incomeTracking: Bool = true
-    
-   
-    
+
     @AppStorage("showUpcomingTransactions", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var showUpcoming: Bool = true
-    
+
     var upcomingString: String {
         if showUpcoming {
             return String(localized: "Shown")
@@ -109,21 +107,21 @@ struct SettingsView: View {
             return String(localized: "Hidden")
         }
     }
-    
+
     // popups
-    
+
     @State var showTipJarMenu = false
     @State var showImportGuide = false
     @State var showUpdate: Bool = false
-    
+
     @EnvironmentObject var tabBarManager: TabBarManager
-    
+
     @EnvironmentObject var dataController: DataController
-    
+
     var body: some View {
-        
+
         NavigationView {
-     
+
             VStack {
                 HStack {
                     Text("Settings")
@@ -146,60 +144,60 @@ struct SettingsView: View {
                             .foregroundColor(Color.SubtitleText)
                             .padding(.horizontal, 10)
                             .frame(maxWidth: .infinity, alignment: .leading)
-                        
+
                         VStack(spacing: 13) {
                             NavigationLink(destination: SettingsAppearanceView()) {
                                 SettingsRowView(systemImage: "circle.righthalf.filled", title: "Appearance", colour: 100, optionalText: colourSchemeString)
                             }
-                            
+
                             NavigationLink(destination: SettingsAppIconView()) {
                                 SettingsRowView(systemImage: "app.badge.fill", title: "App Icon", colour: 101, optionalText: appIconString)
                             }
-                            
+
                             NavigationLink(destination: SettingsNotificationsView()) {
                                 SettingsRowView(systemImage: "bell.fill", title: "Notifications", colour: 102, optionalText: notificationString)
                             }
-                            
+
                             NavigationLink(destination: SettingsCurrencyView()) {
                                 SettingsRowView(systemImage: "coloncurrencysign.square.fill", title: "Currency", colour: 103, optionalText: currency)
                             }
-                            
+
                             NavigationLink(destination: SettingsNumberEntryView()
                                 .onAppear {
-                                    withAnimation(.easeOut.speed(1.5)){
+                                    withAnimation(.easeOut.speed(1.5)) {
                                         tabBarManager.navigationHideTab()
                                     }
                                 }
                                 .onDisappear {
-                                    withAnimation(.easeOut.speed(1.5)){
+                                    withAnimation(.easeOut.speed(1.5)) {
                                         tabBarManager.navigationShowTab()
                                     }
                                 }
                             ) {
                                 SettingsRowView(systemImage: "keyboard.fill", title: "Number Entry", colour: 104, optionalText: numberEntryString)
                             }
-                            
+
                             ToggleRow(icon: "faceid", color: "105", text: "Authentication", bool: appLockVM.isAppLockEnabled, onTap: {
                                 appLockVM.appLockStateChange(appLockState: !appLockVM.isAppLockEnabled)
                             })
-                            
+
                             ToggleRow(icon: "banknote.fill", color: "106", text: "Income Tracking", bool: incomeTracking, onTap: {
                                 incomeTracking.toggle()
-                                
+
                                 if !incomeTracking {
                                     UserDefaults(suiteName: "group.com.rafaelsoh.dime")!.set(false, forKey: "insightsViewIncomeFiltering")
                                     UserDefaults(suiteName: "group.com.rafaelsoh.dime")!.set(3, forKey: "logInsightsType")
                                 }
                             })
-                            
+
                             ToggleRow(icon: "centsign.circle.fill", color: "107", text: "Display Cents", bool: showCents, onTap: {
                                 showCents.toggle()
                             })
-                            
+
                             NavigationLink(destination: SettingsUpcomingView()) {
                                 SettingsRowView(systemImage: "sun.min.fill", title: "Upcoming Logs", colour: 108, optionalText: upcomingString)
                             }
-                            
+
                             NavigationLink(destination: SettingsWeekStartView()) {
                                 SettingsRowView(systemImage: "calendar", title: "Time Frames", colour: 109)
                             }
@@ -218,7 +216,7 @@ struct SettingsView: View {
                     .onChange(of: showCents) { _ in
                         WidgetCenter.shared.reloadAllTimelines()
                     }
-                    
+
                     VStack(spacing: 5) {
                         Text("DATA")
                             .font(.system(.footnote, design: .rounded).weight(.semibold))
@@ -227,57 +225,56 @@ struct SettingsView: View {
                             .foregroundColor(Color.SubtitleText)
                             .padding(.horizontal, 10)
                             .frame(maxWidth: .infinity, alignment: .leading)
-                        
+
                         VStack(spacing: 13) {
                             NavigationLink(destination: SettingsCategoryView()
                                 .onAppear {
-                                    withAnimation(.easeOut.speed(1.5)){
+                                    withAnimation(.easeOut.speed(1.5)) {
                                         tabBarManager.navigationHideTab()
                                     }
                                 }
                                 .onDisappear {
-                                    withAnimation(.easeOut.speed(1.5)){
+                                    withAnimation(.easeOut.speed(1.5)) {
                                         tabBarManager.navigationShowTab()
                                     }
                                 }
-                            
+
                             ) {
                                 SettingsRowView(systemImage: "rectangle.grid.2x2.fill", title: "Categories", colour: 110)
                             }
-                            
+
                             NavigationLink(destination: SettingsCloudView()) {
                                 SettingsRowView(systemImage: "icloud.fill", title: "iCloud Sync", colour: 111, optionalText: iCloudString)
                             }
-                            
+
 //                            
 //                            NavigationLink(destination: SettingsQuickAddWidgetView()) {
 //                                SettingsRowView(systemImage: "bolt.square.fill", title: "Quick-Add Widget", colour: 115)
 //                            }
-                            
+
                             Button {
                                 showImportGuide = true
                             } label: {
                                 SettingsRowView(systemImage: "square.and.arrow.down.fill", title: "Import Data", colour: 112)
                             }
-                            
-                            
+
                             Button {
                                 exportData()
                             } label: {
                                 SettingsRowView(systemImage: "square.and.arrow.up.fill", title: "Export Data", colour: 113)
                             }
-                            
+
                             NavigationLink(destination: SettingsEraseView()) {
                                 SettingsRowView(systemImage: "xmark.bin.fill", title: "Erase Data", colour: 114)
                             }
-                            
+
                         }
                         .padding(10)
                         .background(Color.SettingsBackground, in: RoundedRectangle(cornerRadius: 9))
                     }
                     .padding(.horizontal, 20)
                     .padding(.bottom, 25)
-                    
+
                     VStack(spacing: 5) {
                         Text("OTHERS")
                             .font(.system(.footnote, design: .rounded).weight(.semibold))
@@ -286,35 +283,35 @@ struct SettingsView: View {
                             .foregroundColor(Color.SubtitleText)
                             .padding(.horizontal, 10)
                             .frame(maxWidth: .infinity, alignment: .leading)
-                        
+
                         VStack(spacing: 13) {
-                            
+
                             ToggleRow(icon: "hare.fill", color: "121", text: "Animated Charts", bool: animated, onTap: {
                                 animated.toggle()
                             })
-                            
+
                             NavigationLink(destination: SettingsGoofyView()) {
                                 SettingsRowView(systemImage: "flame.fill", title: "Feature Lab", colour: 122)
                             }
-                            
+
                             Button {
                                showTipJarMenu = true
                             } label: {
                                 SettingsRowView(systemImage: "heart.fill", title: "Tip Jar", colour: 123)
                             }
-                            
+
                             Button {
                                 supportEmail.send(openURL: openURL)
                             } label: {
                                 SettingsRowView(systemImage: "ladybug.fill", title: "Report Bug", colour: 124)
                             }
-                            
+
                             Button {
                                 featureRequestEmail.send(openURL: openURL)
                             } label: {
                                 SettingsRowView(systemImage: "hand.wave.fill", title: "Feature Request", colour: 125)
                             }
-                            
+
                             Button {
                                 let url = "https://apps.apple.com/app/id1635280255?action=write-review"
                                 guard let writeReviewURL = URL(string: url)
@@ -323,15 +320,13 @@ struct SettingsView: View {
                             } label: {
                                 SettingsRowView(systemImage: "star.fill", title: "Rate on App Store", colour: 126)
                             }
-                            
-                            
+
                             Button {
                                 shareSheet(url: "https://apps.apple.com/app/id1635280255")
                             } label: {
                                 SettingsRowView(systemImage: "shareplay", title: "Share with Friends", colour: 127)
                             }
-                            
-                            
+
                             Button {
                                if let url = URL(string: "https://www.x.com/budgetwithdime") {
                                    UIApplication.shared.open(url)
@@ -340,9 +335,7 @@ struct SettingsView: View {
                                 SettingsRowView(systemImage: "bird.fill", title: "Follow Dime on X", colour: 128)
                                 .frame(maxWidth: .infinity)
                             }
-                            
-                            
-                            
+
                             Button {
                                if let url = URL(string: "https://www.x.com/rarfell") {
                                    UIApplication.shared.open(url)
@@ -350,14 +343,14 @@ struct SettingsView: View {
                             } label: {
                                 SettingsRowView(systemImage: "camera.fill", title: "Follow Rafael on X", colour: 129)
                             }
-                            
+
                         }
                         .padding(10)
                         .background(Color.SettingsBackground, in: RoundedRectangle(cornerRadius: 9))
                     }
                     .padding(.horizontal, 20)
                     .padding(.bottom, 15)
-                    
+
                     VStack(spacing: 5) {
                         HStack(spacing: 3) {
                             Text("Version \(UIApplication.appVersion ?? "") (\(UIApplication.buildNumber ?? ""))")
@@ -365,12 +358,12 @@ struct SettingsView: View {
                                 .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                                .font(.system(size: 14, weight: .medium, design: .rounded))
                                 .foregroundColor(Color.SubtitleText)
-                            
+
                             Text("·")
                                 .font(.system(.footnote, design: .rounded).weight(.medium))
                                 .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
                                 .foregroundColor(Color.SubtitleText)
-                            
+
                             Text("What's New")
                                 .font(.system(.footnote, design: .rounded).weight(.medium))
                                 .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
@@ -379,8 +372,7 @@ struct SettingsView: View {
                                     showUpdate = true
                                 }
                         }
-                        
-                        
+
                         Text("Made with ❤️ by \(makeAttributedString()) from 🇸🇬")
                             .font(.system(.footnote, design: .rounded).weight(.medium))
                             .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
@@ -391,9 +383,6 @@ struct SettingsView: View {
                     .padding(.bottom, 95)
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                
-                
-                
 
             }
             .navigationBarTitle("")
@@ -410,7 +399,7 @@ struct SettingsView: View {
             }
         }
     }
-    
+
     @ViewBuilder
     func ToggleRow(icon: String, color: String, text: String, bool: Bool, onTap: @escaping () -> Void) -> some View {
         HStack(spacing: 12) {
@@ -425,14 +414,14 @@ struct SettingsView: View {
 //                .padding(5)
 //                .foregroundColor(.white)
                 .background(Color(color), in: RoundedRectangle(cornerRadius: 6))
-            
+
             Text(text)
                 .font(.system(.body, design: .rounded).weight(.medium))
                 .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                .font(.system(size: 17, weight: .medium, design: .rounded))
                 .lineLimit(1)
                 .foregroundColor(Color.PrimaryText)
-            
+
             Spacer()
 
             ZStack(alignment: bool ? .trailing : .leading) {
@@ -451,20 +440,19 @@ struct SettingsView: View {
                     onTap()
                 }
             }
-            
+
         }
         .frame(maxWidth: .infinity)
     }
-    
+
     func makeAttributedString() -> AttributedString {
         var string = AttributedString("Rafael")
         string.foregroundColor = Color.PrimaryText
         string.link = URL(string: "https://www.x.com/rarfell")
-        
-        
+
         return string
     }
-    
+
     func shareSheet(url: String) {
         let url = URL(string: url)
         let activityView = UIActivityViewController(activityItems: [url!], applicationActivities: nil)
@@ -477,13 +465,12 @@ struct SettingsView: View {
         }
 
     }
-    
+
     func exportData() {
-        
-        
+
         let fetchRequest = dataController.fetchRequestForExport()
         let transactions = dataController.results(for: fetchRequest)
-        
+
         let fileName = "export.csv"
         let path = NSURL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(fileName)
         var csvText = "Date,Note,Amount,Category,Type\n"
@@ -491,15 +478,15 @@ struct SettingsView: View {
         for transaction in transactions {
             var string = transaction.wrappedNote
             let type: String
-            
+
             if transaction.income {
                 type = "Income"
             } else {
                 type = "Expense"
             }
-            
-            string.removeAll(where: { $0 == ","} )
-            
+
+            string.removeAll(where: { $0 == ","})
+
             csvText += "\(transaction.wrappedDate),\(string),\(String(format: "%.2f", transaction.wrappedAmount)),\(transaction.category?.wrappedName ?? ""),\(type)\n"
         }
 
@@ -527,14 +514,14 @@ struct TipJarAlert: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.colorScheme) var systemColorScheme
     @EnvironmentObject var unlockManager: UnlockManager
-    
+
     @State private var offset: CGFloat = 0
-    
+
     @AppStorage("bottomEdge", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var bottomEdge: Double = 15
 
     @State var opacity = 0.0
     @State var counter = 0
-    
+
 //    var sortedProducts: [SKProduct] {
 //        let holding = unlockManager.loadedProducts.sorted {
 //            $0.price.doubleValue > $1.price.doubleValue
@@ -542,7 +529,7 @@ struct TipJarAlert: View {
 //
 //        return holding
 //    }
-    
+
     var body: some View {
         ZStack(alignment: .bottom) {
             Color.PrimaryBackground.opacity(opacity)
@@ -564,10 +551,9 @@ struct TipJarAlert: View {
                         }
                     }
                 }
-            
-            
+
             VStack {
-        
+
                 switch unlockManager.requestState {
                 case .loading:
                     ProgressView {
@@ -610,24 +596,21 @@ struct TipJarAlert: View {
                                     .padding(7)
                                     .background(Color.SecondaryBackground, in: Circle())
                                     .contentShape(Circle())
-                                
+
                             }
                             .offset(x: 5, y: -5)
                         }
-                        
-                        
+
                         Text("Hey! Dime was built by a solo student developer, and is intended to be completely free-of-charge, with no paywalls or ads. If you enjoy using Dime and want to support development, please consider a small tip.")
                             .font(.system(size: 16, weight: .medium, design: .rounded))
                             .foregroundColor(.SubtitleText)
                             .padding(.bottom, 20)
-                        
-                        
-                        
+
                         ProductView(products: unlockManager.loadedProducts.sorted {
                             $0.price.doubleValue < $1.price.doubleValue
                         })
                             .padding(.bottom, 20)
-                        
+
                         if unlockManager.failedTransaction {
                             Text("Tip failed to go through, please try again!")
                                 .font(.system(size: 14, weight: .medium, design: .rounded))
@@ -647,12 +630,12 @@ struct TipJarAlert: View {
                         }
                     }
                 }
-               
+
             }
             .padding(18)
             .animation(.easeInOut, value: unlockManager.failedTransaction)
             .background(RoundedRectangle(cornerRadius: 13).fill(Color.PrimaryBackground).shadow(color: systemColorScheme == .dark ? Color.clear : Color.gray.opacity(0.25), radius: 6))
-            .overlay(RoundedRectangle(cornerRadius: 13).stroke(systemColorScheme == .dark ? Color.gray.opacity(0.1) : Color.clear , lineWidth: 1.3))
+            .overlay(RoundedRectangle(cornerRadius: 13).stroke(systemColorScheme == .dark ? Color.gray.opacity(0.1) : Color.clear, lineWidth: 1.3))
             .offset(y: offset)
             .confettiCannon(counter: $counter, num: 50, openingAngle: Angle(degrees: 0), closingAngle: Angle(degrees: 360), radius: 200)
             .gesture(
@@ -673,12 +656,12 @@ struct TipJarAlert: View {
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
                                 dismiss()
                             }
-                            
+
                         } else {
                             withAnimation {
                                 offset = 0
                             }
-                            
+
                         }
                     }
             )
@@ -687,29 +670,26 @@ struct TipJarAlert: View {
             .onChange(of: unlockManager.purchaseCount) { _ in
                 counter += 1
             }
-            
-                
-            
 
         }
         .edgesIgnoringSafeArea(.all)
         .background(BackgroundBlurView())
     }
-    
+
 }
 
 struct ProductView: View {
     @EnvironmentObject var unlockManager: UnlockManager
     let products: [SKProduct]
-    
+
     var body: some View {
         VStack {
             ForEach(products, id: \.self) { product in
                 HStack {
                     Text(getText(product.productIdentifier))
-                    
+
                     Spacer()
-                    
+
                     Button {
                         unlock(product)
                     } label: {
@@ -723,11 +703,11 @@ struct ProductView: View {
         .foregroundColor(.PrimaryText)
         .font(.system(size: 18, weight: .semibold, design: .rounded))
     }
-    
+
     func unlock(_ product: SKProduct) {
         unlockManager.buy(product: product)
     }
-    
+
     func getText(_ string: String) -> String {
         if string == "com.rafaelsoh.dime.smalltip" {
             return String(localized: "☕ Coffee-Sized Tip")
@@ -747,9 +727,9 @@ struct SettingsRowView: View {
     var title: String
     var colour: Int
     var optionalText: String?
-    
+
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
-    
+
     var body: some View {
         HStack(spacing: 12) {
             Image(systemName: systemImage)
@@ -760,16 +740,16 @@ struct SettingsRowView: View {
                 .foregroundColor(.white)
                 .frame(width: dynamicTypeSize > .xLarge ? 40 : 30, height: dynamicTypeSize > .xLarge ? 40 : 30, alignment: .center)
                 .background(Color("\(colour)"), in: RoundedRectangle(cornerRadius: 6, style: .continuous))
-            
+
             Text(LocalizedStringKey(title))
                 .font(.system(.body, design: .rounded).weight(.medium))
                 .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                .font(.system(size: 17, weight: .medium, design: .rounded))
                 .lineLimit(1)
                 .foregroundColor(Color.PrimaryText)
-            
+
             Spacer()
-            
+
             if optionalText != nil {
                 Text(optionalText!)
                     .font(.system(.body, design: .rounded))
@@ -779,7 +759,7 @@ struct SettingsRowView: View {
                     .layoutPriority(1)
                     .padding(.trailing, -8)
             }
-            
+
             Image(systemName: "chevron.forward")
                 .font(.system(.subheadline, design: .rounded))
                 .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
@@ -794,11 +774,11 @@ struct SettingsAppearanceView: View {
 
     @AppStorage("colourScheme", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var colourScheme: Int = 0
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    
+
     let options = ["System", "Light", "Dark"]
-    
+
     @Namespace var animation
-    
+
     var body: some View {
         VStack(spacing: 10) {
             Text("Appearance")
@@ -813,11 +793,10 @@ struct SettingsAppearanceView: View {
                     } label: {
                         SettingsBackButton()
                     }
-                    
+
                 }
                 .padding(.bottom, 20)
-            
-        
+
             VStack(spacing: 0) {
                 ForEach(options.indices, id: \.self) { option in
                     HStack {
@@ -826,9 +805,9 @@ struct SettingsAppearanceView: View {
                             .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                            .font(.system(size: 17, weight: .regular, design: .rounded))
                             .foregroundColor(Color.PrimaryText)
-                        
+
                         Spacer()
-                        
+
                         if colourScheme == option {
                             Image(systemName: "checkmark")
                                 .font(.system(.subheadline, design: .rounded))
@@ -837,7 +816,7 @@ struct SettingsAppearanceView: View {
                                 .foregroundColor(.DarkIcon.opacity(0.6))
                                 .matchedGeometryEffect(id: "tick", in: animation)
                         }
-                        
+
                     }
                     .frame(maxWidth: .infinity)
                     .contentShape(Rectangle())
@@ -845,7 +824,7 @@ struct SettingsAppearanceView: View {
                         withAnimation(.easeIn(duration: 0.15)) {
                             colourScheme = option
                         }
-                        
+
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
                             self.presentationMode.wrappedValue.dismiss()
                         }
@@ -857,13 +836,11 @@ struct SettingsAppearanceView: View {
                         }
                     }
                 }
-                
+
             }
             .padding(.horizontal, 15)
             .background(Color.SettingsBackground, in: RoundedRectangle(cornerRadius: 9))
-            
-            
-            
+
             Text("Close and reload app for change to take effect.")
                 .font(.system(.caption, design: .rounded).weight(.medium))
                 .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
@@ -871,7 +848,7 @@ struct SettingsAppearanceView: View {
                 .foregroundColor(Color.SubtitleText)
                 .padding(.horizontal, 15)
                 .frame(maxWidth: .infinity, alignment: .leading)
-            
+
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarTitle("")
@@ -880,7 +857,7 @@ struct SettingsAppearanceView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .background(Color.PrimaryBackground)
     }
-    
+
 }
 
 struct AppIconBundle: Hashable {
@@ -890,23 +867,22 @@ struct AppIconBundle: Hashable {
     let displaySubtitle: String
 }
 
-
 struct SettingsAppIconView: View {
 
     @AppStorage("activeIcon", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var activeIcon: String = "AppIcon"
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    
-    let options:[AppIconBundle] = [
+
+    let options: [AppIconBundle] = [
         AppIconBundle(actualFileName: "AppIcon1", exampleFileName: "AppIcon1_EG", displayName: "V2.0", displaySubtitle: "Designed by the brilliant @rudra_dsigns, check out his work on Twitter."),
         AppIconBundle(actualFileName: "AppIcon2", exampleFileName: "AppIcon2_EG", displayName: "Unicorn", displaySubtitle: "Dime definitely isn't becoming one but it never hurts to keep dreaming."),
         AppIconBundle(actualFileName: "AppIcon3", exampleFileName: "AppIcon3_EG", displayName: "V1.5", displaySubtitle: "An early prototype also designed by @rudra_dsigns that I kinda fancy."),
         AppIconBundle(actualFileName: "AppIcon4", exampleFileName: "AppIcon4_EG", displayName: "O.G.", displaySubtitle: "Haphazardly put together in under 30 minutes, the original Dime icon.")
     ]
-    
+
     @State private var position: Int?
-    
+
     @Namespace var animation
-    
+
     var body: some View {
         VStack(spacing: 10) {
             Text("App Icon")
@@ -921,10 +897,10 @@ struct SettingsAppIconView: View {
                     } label: {
                         SettingsBackButton()
                     }
-                    
+
                 }
                 .padding(.bottom, 20)
-            
+
             VStack(spacing: 0) {
                 ForEach(options.indices, id: \.self) { index in
                     HStack(spacing: 13) {
@@ -934,25 +910,23 @@ struct SettingsAppIconView: View {
                             .frame(width: 70, height: 70)
                             .clipShape(RoundedRectangle(cornerRadius: 18))
                             .shadow(color: .black.opacity(0.15), radius: 5, x: 5, y: 5)
-                        
+
                         VStack(alignment: .leading, spacing: 3) {
                             Text(options[index].displayName)
                                 .font(.system(.body, design: .rounded))
                                 .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                                .font(.system(size: 17, weight: .semibold, design: .rounded))
                                 .foregroundColor(Color.PrimaryText)
-                            
+
                             Text(options[index].displaySubtitle)
                                 .font(.system(.caption, design: .rounded))
                                 .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                                .font(.system(size: 12, weight: .regular, design: .rounded))
                                 .foregroundColor(Color.SubtitleText)
                         }
-                        
-                        
-                        
+
                         Spacer()
-                        
+
                         if activeIcon == options[index].actualFileName {
                             Image(systemName: "checkmark")
                                 .font(.system(.subheadline, design: .rounded))
@@ -967,7 +941,7 @@ struct SettingsAppIconView: View {
 //                                .font(.system(size: 15))
                                 .foregroundColor(.SettingsBackground)
                         }
-                        
+
                     }
                     .frame(maxWidth: .infinity)
                     .contentShape(Rectangle())
@@ -984,15 +958,14 @@ struct SettingsAppIconView: View {
                         }
                     }
                 }
-                
+
             }
             .padding(.horizontal, 15)
             .background(Color.SettingsBackground, in: RoundedRectangle(cornerRadius: 9))
             .onChange(of: activeIcon) { newValue in
                 UIApplication.shared.setAlternateIconName(newValue)
             }
-            
-            
+
 //            HStack {
 //                ForEach(options, id: \.self) { option in
 //                    Image(option.exampleFileName)
@@ -1016,7 +989,7 @@ struct SettingsAppIconView: View {
 //                }
 //            }
 //            .frame(maxWidth: .infinity)
-            
+
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarTitle("")
@@ -1032,11 +1005,11 @@ struct SettingsCurrencyView: View {
     @AppStorage("currency", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var currencyCode: String = Locale.current.currencyCode!
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
-    
+
     let currencies = Currency.allCurrencies
-    
+
     @Namespace var animation
-    
+
     var body: some View {
         VStack(spacing: 10) {
             Text("Currencies")
@@ -1051,10 +1024,10 @@ struct SettingsCurrencyView: View {
                     } label: {
                         SettingsBackButton()
                     }
-                    
+
                 }
                 .padding(.bottom, 10)
-            
+
             ScrollView(showsIndicators: false) {
                 ScrollViewReader { value in
                     VStack(spacing: 0) {
@@ -1074,9 +1047,9 @@ struct SettingsCurrencyView: View {
 //                                    .font(.system(size: 17, weight: .regular, design: .rounded))
                                     .foregroundColor(Color.PrimaryText)
                                     .lineLimit(1)
-                                
+
                                 Spacer()
-                                
+
                                 if currency.code == currencyCode {
                                     Image(systemName: "checkmark")
                                         .font(.system(.subheadline, design: .rounded))
@@ -1085,7 +1058,7 @@ struct SettingsCurrencyView: View {
                                         .foregroundColor(.DarkIcon.opacity(0.6))
                                         .matchedGeometryEffect(id: "tick", in: animation)
                                 }
-                                
+
                             }
                             .frame(maxWidth: .infinity)
                             .contentShape(Rectangle())
@@ -1093,9 +1066,9 @@ struct SettingsCurrencyView: View {
                                 withAnimation(.easeIn(duration: 0.15)) {
                                     currencyCode = currency.code
                                 }
-                                
+
                                 NSUbiquitousKeyValueStore.default.set(currency.code, forKey: "currency")
-                                
+
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
                                     self.presentationMode.wrappedValue.dismiss()
                                 }
@@ -1117,7 +1090,7 @@ struct SettingsCurrencyView: View {
                         value.scrollTo(currencyCode, anchor: .center)
                     }
                 }
-                
+
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
@@ -1128,18 +1101,18 @@ struct SettingsCurrencyView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .background(Color.PrimaryBackground)
     }
-    
+
 }
 
 struct SettingsWeekStartView: View {
     @AppStorage("firstWeekday", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var firstWeekday: Int = 1
     @AppStorage("firstDayOfMonth", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var firstDayOfMonth: Int = 1
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    
+
     let options = ["Sunday", "Monday"]
-    
+
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
-        
+
     var fontSize: CGFloat {
         switch dynamicTypeSize {
         case .xSmall:
@@ -1160,13 +1133,13 @@ struct SettingsWeekStartView: View {
             return 23
         }
     }
-    
+
     var scrollViewHeight: CGFloat {
         return (("Start".heightOfRoundedString(size: fontSize, weight: .regular) + 18) * 6) - 1
     }
-    
+
     @Namespace var animation
-    
+
     var body: some View {
         VStack(spacing: 10) {
             Text("Time Frames")
@@ -1181,10 +1154,10 @@ struct SettingsWeekStartView: View {
                     } label: {
                         SettingsBackButton()
                     }
-                    
+
                 }
                 .padding(.bottom, 20)
-            
+
             Text("Start of Week")
                 .font(.system(.body, design: .rounded).weight(.medium))
                 .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
@@ -1192,7 +1165,7 @@ struct SettingsWeekStartView: View {
                 .foregroundColor(Color.SubtitleText)
                 .padding(.horizontal, 15)
                 .frame(maxWidth: .infinity, alignment: .leading)
-            
+
             VStack(spacing: 0) {
                 ForEach(options.indices, id: \.self) { option in
                     HStack {
@@ -1201,9 +1174,9 @@ struct SettingsWeekStartView: View {
                             .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
                             .font(.system(size: 17, weight: .regular, design: .rounded))
                             .foregroundColor(Color.PrimaryText)
-                        
+
                         Spacer()
-                        
+
                         if firstWeekday == (option + 1) {
                             Image(systemName: "checkmark")
                                 .font(.system(.subheadline, design: .rounded).weight(.medium))
@@ -1212,7 +1185,7 @@ struct SettingsWeekStartView: View {
                                 .foregroundColor(.DarkIcon.opacity(0.6))
                                 .matchedGeometryEffect(id: "tick", in: animation)
                         }
-                        
+
                     }
                     .frame(maxWidth: .infinity)
                     .contentShape(Rectangle())
@@ -1222,7 +1195,6 @@ struct SettingsWeekStartView: View {
                                 firstWeekday = (option + 1)
                             }
                         }
-                        
 
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
                             self.presentationMode.wrappedValue.dismiss()
@@ -1239,7 +1211,7 @@ struct SettingsWeekStartView: View {
             .padding(.horizontal, 15)
             .background(Color.SettingsBackground, in: RoundedRectangle(cornerRadius: 9))
             .padding(.bottom, 30)
-            
+
 //            Text("Close and reload app for change to take effect.")
 //                .font(.system(size: 12, weight: .medium, design: .rounded))
 //                .foregroundColor(Color.SubtitleText)
@@ -1254,22 +1226,20 @@ struct SettingsWeekStartView: View {
                 .foregroundColor(Color.SubtitleText)
                 .padding(.horizontal, 15)
                 .frame(maxWidth: .infinity, alignment: .leading)
-            
+
             ScrollView(showsIndicators: false) {
                 ScrollViewReader { value in
                     VStack(alignment: .leading, spacing: 0) {
                         ForEach(1..<29) { day in
-                            
+
                             HStack {
                                 Text("\(getOrdinal(day)) of month")
                                     .font(.system(.body, design: .rounded))
                                     .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
                                     .foregroundColor(Color.PrimaryText)
-                                
-                                    
-                                
+
                                 Spacer()
-                                
+
                                 if firstDayOfMonth == day {
                                     Image(systemName: "checkmark")
                                         .font(.system(.subheadline, design: .rounded).weight(.medium))
@@ -1287,7 +1257,6 @@ struct SettingsWeekStartView: View {
                                         firstDayOfMonth = day
                                     }
                                 }
-                                
 
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
                                     self.presentationMode.wrappedValue.dismiss()
@@ -1311,7 +1280,7 @@ struct SettingsWeekStartView: View {
             .padding(.horizontal, 15)
             .frame(height: scrollViewHeight)
             .background(Color.SettingsBackground, in: RoundedRectangle(cornerRadius: 9))
-            
+
             Text("Close and reload app for change to take effect.")
                 .font(.system(.caption, design: .rounded).weight(.medium))
                 .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
@@ -1327,9 +1296,9 @@ struct SettingsWeekStartView: View {
         .padding(20)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .background(Color.PrimaryBackground)
-        
+
     }
-    
+
     func getOrdinal(_ number: Int) -> String {
 //        if number == 1 {
 //            return String(localized: "Start")
@@ -1337,7 +1306,7 @@ struct SettingsWeekStartView: View {
 //        
         let formatter = NumberFormatter()
         formatter.numberStyle = .ordinal
-        
+
         return formatter.string(from: number as NSNumber)!.replacingOccurrences(of: ".", with: "")
     }
 }
@@ -1350,12 +1319,12 @@ struct SettingsNumberEntryView: View {
     var currencySymbol: String {
         return Locale.current.localizedCurrencySymbol(forCurrencyCode: currency)!
     }
-    
-    @State private var numbers: [Int] = [0,0,0]
+
+    @State private var numbers: [Int] = [0, 0, 0]
     @State private var numbers1: [String] = []
     private var amount: String {
         var string = ""
-        
+
         if numberEntryType == 1 {
             for i in numbers.indices {
                 if i == (numbers.count - 2) {
@@ -1364,22 +1333,22 @@ struct SettingsNumberEntryView: View {
                     string += "\(numbers[i])"
                 }
             }
-            
+
             return string
         } else {
-            
+
             if numbers1.isEmpty {
                 return "0"
             }
             for i in numbers1 {
                 string = string + i
             }
-            
+
             return string
         }
     }
-    
-    let numberArray = [[1,2,3],[4,5,6],[7,8,9]]
+
+    let numberArray = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
     var numberArrayCount: Int {
         if numberEntryType == 1 {
             return numbers.count
@@ -1387,25 +1356,25 @@ struct SettingsNumberEntryView: View {
             return numbers1.count
         }
     }
-    
+
     var transactionValue: Double {
         return (amount as NSString).doubleValue
     }
-    
+
     var disabled: Bool {
         transactionValue == 0.0
     }
-    
+
     var downsize: (big: CGFloat, small: CGFloat) {
         let amountText: String
         let size = UIScreen.main.bounds.width - 105
-        
+
         if numberEntryType == 2 {
             amountText = amount
         } else {
             amountText = String(format: "%.2f", transactionValue)
         }
-        
+
         if (amountText.widthOfRoundedString(size: 32, weight: .regular) + currencySymbol.widthOfRoundedString(size: 20, weight: .light) + 4) > size {
             return (24, 16)
         } else if (amountText.widthOfRoundedString(size: 44, weight: .regular) + currencySymbol.widthOfRoundedString(size: 25, weight: .light) + 4) > size {
@@ -1416,11 +1385,11 @@ struct SettingsNumberEntryView: View {
             return (56, 32)
         }
     }
-    
+
     let options = ["Type 1", "Type 2"]
-    
+
     @Namespace var animation
-    
+
     var body: some View {
         VStack(spacing: 10) {
             Text("Number Entry Method")
@@ -1435,10 +1404,10 @@ struct SettingsNumberEntryView: View {
                     } label: {
                         SettingsBackButton()
                     }
-                    
+
                 }
 //                .padding(.bottom, 20)
-            
+
             HStack(spacing: 0) {
                 ForEach(options.indices, id: \.self) { option in
                     Text(LocalizedStringKey(options[option]))
@@ -1469,8 +1438,7 @@ struct SettingsNumberEntryView: View {
             .background(Capsule().fill(Color.PrimaryBackground).shadow(color: colorScheme == .light ? Color.Outline : Color.clear, radius: 6))
             .overlay(Capsule().stroke(colorScheme == .light ? Color.clear : Color.Outline.opacity(0.4), lineWidth: 1.3))
             .padding(25)
-            
-           
+
             VStack(spacing: 10) {
                 if numberEntryType == 1 {
                     Text("\"Pre-dotted\"")
@@ -1479,7 +1447,7 @@ struct SettingsNumberEntryView: View {
 //                        .font(.system(size: 25, weight: .semibold, design: .rounded))
 //                        .multilineTextAlignment(.center)
                         .foregroundColor(Color.PrimaryText)
-                    
+
                     Text("If you're too lazy to add a decimal point, I gotchu covered.")
                         .font(.system(.subheadline, design: .rounded).weight(.medium))
                         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
@@ -1493,7 +1461,7 @@ struct SettingsNumberEntryView: View {
 //                        .font(.system(size: 25, weight: .semibold, design: .rounded))
 //                        .multilineTextAlignment(.center)
                         .foregroundColor(Color.PrimaryText)
-                    
+
                     Text("If your transactions usually amount to whole numbers - this one is for you.")
                         .font(.system(.subheadline, design: .rounded).weight(.medium))
                         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
@@ -1501,15 +1469,14 @@ struct SettingsNumberEntryView: View {
                         .multilineTextAlignment(.center)
                         .foregroundColor(Color.SubtitleText)
                 }
-                
+
             }
             .padding(.horizontal, 25)
-          
-            
+
             Spacer()
-            
+
             if numberEntryType == 1 {
-                HStack(alignment: .lastTextBaseline, spacing:4) {
+                HStack(alignment: .lastTextBaseline, spacing: 4) {
                     Text(currencySymbol)
                         .font(.system(size: downsize.small, weight: .light, design: .rounded))
                         .foregroundColor(Color.SubtitleText)
@@ -1520,8 +1487,8 @@ struct SettingsNumberEntryView: View {
                 }
             } else {
                 if numbers1.isEmpty {
-                    
-                        HStack(alignment: .lastTextBaseline, spacing:4) {
+
+                        HStack(alignment: .lastTextBaseline, spacing: 4) {
                             Text(currencySymbol)
                                 .font(.system(size: 32, weight: .light, design: .rounded))
                                 .foregroundColor(Color.SubtitleText)
@@ -1531,9 +1498,9 @@ struct SettingsNumberEntryView: View {
                                 .foregroundColor(Color.PrimaryText)
                         }
                         .frame(maxWidth: .infinity)
-                       
+
                 } else {
-                        HStack(alignment: .lastTextBaseline, spacing:4) {
+                        HStack(alignment: .lastTextBaseline, spacing: 4) {
                             Text(currencySymbol)
                                 .font(.system(size: downsize.small, weight: .light, design: .rounded))
                                 .foregroundColor(Color.SubtitleText)
@@ -1552,7 +1519,7 @@ struct SettingsNumberEntryView: View {
                                         numbers1.removeLast()
                                     }
                                 }
-                                
+
                             } label: {
                                 Image(systemName: "delete.left.fill")
                                     .font(.system(size: 16, weight: .semibold))
@@ -1563,23 +1530,23 @@ struct SettingsNumberEntryView: View {
                             }
                             .disabled(numbers1.isEmpty)
                         }
-                        
+
                 }
             }
-            
+
             Spacer()
-            
+
             GeometryReader { proxy in
-                VStack (spacing: proxy.size.height * 0.04) {
+                VStack(spacing: proxy.size.height * 0.04) {
                     ForEach(numberArray, id: \.self) { array in
-                        HStack (spacing: proxy.size.width * 0.05) {
+                        HStack(spacing: proxy.size.width * 0.05) {
                             ForEach(array, id: \.self) { singleNumber in
                                 NumberButton(number: singleNumber, size: proxy.size)
                             }
                         }
                     }
-                    
-                    HStack (spacing: proxy.size.width * 0.05) {
+
+                    HStack(spacing: proxy.size.width * 0.05) {
                         if numberEntryType == 1 {
                             Button {
                                 if numbers.count == 3 {
@@ -1620,9 +1587,9 @@ struct SettingsNumberEntryView: View {
                             .disabled(numbers1.contains("."))
                             .buttonStyle(NumPadButton())
                         }
-                        
+
                         NumberButton(number: 0, size: proxy.size)
-                        
+
                         Button {
                             submit()
                         } label: {
@@ -1655,15 +1622,15 @@ struct SettingsNumberEntryView: View {
         .padding(20)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .background(Color.PrimaryBackground)
-        
+
     }
-    
+
     func submit() {
         UIImpactFeedbackGenerator(style: .light).impactOccurred()
-        numbers = [0,0,0]
+        numbers = [0, 0, 0]
         numbers1 = []
     }
-    
+
     @ViewBuilder
     func NumberButton(number: Int, size: CGSize) -> some View {
         Button {
@@ -1705,18 +1672,16 @@ struct SettingsNumberEntryView: View {
 
 struct SettingsNotificationsView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    
+
     @AppStorage("showNotifications", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var showNotifications: Bool = false
     @AppStorage("notificationsEnabled", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var notificationsEnabled: Bool = true
     @State var option = 1
     @State var customTime = Date.now
-    
+
     var center = UNUserNotificationCenter.current()
-    
+
     @Namespace var animation
-    
-    
-    
+
     var body: some View {
         VStack {
             Text("Notifications")
@@ -1731,11 +1696,10 @@ struct SettingsNotificationsView: View {
                     } label: {
                         SettingsBackButton()
                     }
-                    
+
                 }
                 .padding(.bottom, 20)
-            
-            
+
             VStack(spacing: 0) {
                 HStack {
                     Text("Enable Notifications")
@@ -1743,14 +1707,14 @@ struct SettingsNotificationsView: View {
                         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                        .font(.system(size: 17, weight: .regular, design: .rounded))
                         .foregroundColor(Color.PrimaryText)
-                    
+
                     Spacer()
-                    
+
                     ZStack(alignment: showNotifications ? .trailing : .leading) {
                         Capsule()
                             .frame(width: 42, height: 28)
                             .foregroundColor(showNotifications ? .green : .gray.opacity(0.8))
-                        
+
                         Circle()
                             .foregroundColor(Color.white)
                             .padding(2)
@@ -1779,35 +1743,35 @@ struct SettingsNotificationsView: View {
                                     }
                                 } else if settings.authorizationStatus == .denied {
                                     notificationsEnabled = false
-                                    
+
                                     DispatchQueue.main.async {
-                                        if let settingsURL = URL(string: UIApplication.openSettingsURLString){
+                                        if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
                                            UIApplication.shared.open(settingsURL)
                                         }
                                     }
-                                    
+
                                 } else {
                                     withAnimation(.easeInOut(duration: 0.2)) {
                                         showNotifications.toggle()
                                         if showNotifications {
                                             newNotification()
                                         }
-                                        
+
                                     }
                                 }
                             }
                         }
                     }
-                    
+
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 9)
-                    
+
             }
             .padding(.horizontal, 15)
             .background(Color.SettingsBackground, in: RoundedRectangle(cornerRadius: 9))
             .padding(.bottom, 20)
-            
+
             if showNotifications {
                 VStack(spacing: 0) {
                     HStack {
@@ -1816,9 +1780,9 @@ struct SettingsNotificationsView: View {
                             .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                            .font(.system(size: 17, weight: .regular, design: .rounded))
                             .foregroundColor(Color.PrimaryText)
-                        
+
                         Spacer()
-                        
+
                         if option == 1 {
                             Image(systemName: "checkmark")
                                 .font(.system(.subheadline, design: .rounded))
@@ -1827,7 +1791,7 @@ struct SettingsNotificationsView: View {
                                 .foregroundColor(.DarkIcon.opacity(0.6))
                                 .matchedGeometryEffect(id: "tick", in: animation)
                         }
-                        
+
                     }
                     .frame(maxWidth: .infinity)
                     .contentShape(Rectangle())
@@ -1840,16 +1804,16 @@ struct SettingsNotificationsView: View {
                     .overlay(alignment: .bottom) {
                             Divider()
                     }
-                    
+
                     HStack {
                         Text("Every evening (8:00 PM)")
                             .font(.system(.body, design: .rounded))
                             .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                            .font(.system(size: 17, weight: .regular, design: .rounded))
                             .foregroundColor(Color.PrimaryText)
-                        
+
                         Spacer()
-                        
+
                         if option == 2 {
                             Image(systemName: "checkmark")
                                 .font(.system(.subheadline, design: .rounded))
@@ -1858,7 +1822,7 @@ struct SettingsNotificationsView: View {
                                 .foregroundColor(.DarkIcon.opacity(0.6))
                                 .matchedGeometryEffect(id: "tick", in: animation)
                         }
-                        
+
                     }
                     .frame(maxWidth: .infinity)
                     .contentShape(Rectangle())
@@ -1871,20 +1835,20 @@ struct SettingsNotificationsView: View {
                     .overlay(alignment: .bottom) {
                             Divider()
                     }
-                    
+
                     HStack {
                         Text("Custom Time")
                             .font(.system(.body, design: .rounded))
                             .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                            .font(.system(size: 17, weight: .regular, design: .rounded))
                             .foregroundColor(Color.PrimaryText)
-                        
+
                         Spacer()
-                        
+
                         if option == 3 {
                             DatePicker("Custom notification time", selection: $customTime, displayedComponents: .hourAndMinute)
                                 .labelsHidden()
-                            
+
                             Image(systemName: "checkmark")
                                 .font(.system(.subheadline, design: .rounded))
                                 .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
@@ -1892,7 +1856,7 @@ struct SettingsNotificationsView: View {
                                 .foregroundColor(.DarkIcon.opacity(0.6))
                                 .matchedGeometryEffect(id: "tick", in: animation)
                         }
-                        
+
                     }
                     .frame(maxWidth: .infinity)
                     .contentShape(Rectangle())
@@ -1902,53 +1866,46 @@ struct SettingsNotificationsView: View {
                         }
                     }
                     .padding(.vertical, 9)
-                    
+
                 }
                 .padding(.horizontal, 15)
                 .background(Color.SettingsBackground, in: RoundedRectangle(cornerRadius: 9))
                 .onChange(of: option) { newValue in
                     UserDefaults(suiteName: "group.com.rafaelsoh.dime")!.set(option, forKey: "notificationOption")
-                    
+
                     if newValue == 3 {
                         let components = Calendar.current.dateComponents([.hour, .minute], from: customTime)
-                        
+
                         UserDefaults(suiteName: "group.com.rafaelsoh.dime")!.set(components.hour!, forKey: "customHour")
                         UserDefaults(suiteName: "group.com.rafaelsoh.dime")!.set(components.minute!, forKey: "customMinute")
                     }
-                    
-                    
-                    
+
                     newNotification()
                 }
                 .onChange(of: customTime) { _ in
                     let components = Calendar.current.dateComponents([.hour, .minute], from: customTime)
-                    
+
                     UserDefaults(suiteName: "group.com.rafaelsoh.dime")!.set(components.hour!, forKey: "customHour")
                     UserDefaults(suiteName: "group.com.rafaelsoh.dime")!.set(components.minute!, forKey: "customMinute")
-                    
 
-                    
                     newNotification()
-                    
+
                 }
                 .onAppear {
                     if UserDefaults(suiteName: "group.com.rafaelsoh.dime")!.object(forKey: "notificationOption") != nil {
                         option = UserDefaults(suiteName: "group.com.rafaelsoh.dime")!.integer(forKey: "notificationOption")
                     }
-                    
+
                     if UserDefaults(suiteName: "group.com.rafaelsoh.dime")!.object(forKey: "customHour") != nil && UserDefaults(suiteName: "group.com.rafaelsoh.dime")!.object(forKey: "customMinute") != nil {
                         var components = DateComponents()
                         components.hour = UserDefaults(suiteName: "group.com.rafaelsoh.dime")!.integer(forKey: "customHour")
                         components.minute = UserDefaults(suiteName: "group.com.rafaelsoh.dime")!.integer(forKey: "customMinute")
                         customTime = Calendar.current.date(from: components)!
                     }
-                    
-                    
-                    
+
                 }
             }
-            
-            
+
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarTitle("")
@@ -1957,28 +1914,26 @@ struct SettingsNotificationsView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .background(Color.PrimaryBackground)
     }
-    
+
 }
 
 struct SettingsGoofyView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    
+
     @AppStorage("confetti", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var confetti: Bool = false
-    
+
 //    @AppStorage("chromatic", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var chromatic: Bool = false
-    
+
     @AppStorage("logViewLineGraph", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var lineGraph: Bool = false
-    
+
     @AppStorage("budgetViewStyle", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var budgetRows: Bool = false
-    
+
     @AppStorage("swapTimeLabel", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var swapTimeLabel: Bool = false
-    
+
     @AppStorage("showTransactionRecommendations", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var showRecommendations: Bool = false
-    
+
     @Namespace var animation
-    
-    
-    
+
     var body: some View {
         VStack(spacing: 10) {
             Text("Feature Lab")
@@ -1993,20 +1948,20 @@ struct SettingsGoofyView: View {
                     } label: {
                         SettingsBackButton()
                     }
-                    
+
                 }
                 .padding(.bottom, 20)
-            
+
             ScrollView {
                 VStack(spacing: 0) {
                     ToggleRow(text: "Celebrate Expenses", bool: $confetti, id: 1)
-                    
+
                     ToggleRow(text: "Show Line Graph", bool: $lineGraph, id: 2)
-                    
+
                     ToggleRow(text: "Budget Rows", bool: $budgetRows, id: 3)
                 }
                 .background(Color.SettingsBackground, in: RoundedRectangle(cornerRadius: 9))
-                
+
                 Text("Experimental features - proceed with caution.")
                     .font(.system(.caption, design: .rounded).weight(.medium))
                     .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
@@ -2015,11 +1970,10 @@ struct SettingsGoofyView: View {
                     .padding(.horizontal, 15)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.bottom, 30)
-                
-                
+
                 ToggleRow(text: "Replace Time Label", bool: $swapTimeLabel, id: 4)
                 .background(Color.SettingsBackground, in: RoundedRectangle(cornerRadius: 9))
-                
+
                 Text("Swaps the time label of each transaction with its category name. However, if you do not manually input a note for each transaction - in which case the note is the category name by default - duplicate text will appear.")
                     .font(.system(.caption, design: .rounded).weight(.medium))
                     .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
@@ -2028,10 +1982,10 @@ struct SettingsGoofyView: View {
                     .padding(.horizontal, 15)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.bottom, 30)
-                
+
                 ToggleRow(text: "Show Note Suggestions", bool: $showRecommendations, id: 5)
                 .background(Color.SettingsBackground, in: RoundedRectangle(cornerRadius: 9))
-                
+
                 Text("Displays transaction suggestions whilst you type in the 'Note' field of the new transaction page.")
                     .font(.system(.caption, design: .rounded).weight(.medium))
                     .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
@@ -2041,10 +1995,7 @@ struct SettingsGoofyView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.bottom, 30)
             }
-            
-            
-            
-            
+
 //            ToggleRow(text: "Miles-Morales Effect", bool: $chromatic, id: 5)
 //            .background(Color.SettingsBackground, in: RoundedRectangle(cornerRadius: 9))
 //            
@@ -2062,7 +2013,7 @@ struct SettingsGoofyView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .background(Color.PrimaryBackground)
     }
-    
+
     @ViewBuilder
     func ToggleRow(text: String, bool: Binding<Bool>, id: Int) -> some View {
         HStack {
@@ -2071,14 +2022,14 @@ struct SettingsGoofyView: View {
                 .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                .font(.system(size: 17, weight: .regular, design: .rounded))
                 .foregroundColor(Color.PrimaryText)
-            
+
             Spacer()
-            
+
             ZStack(alignment: bool.wrappedValue ? .trailing : .leading) {
                 Capsule()
                     .frame(width: 42, height: 28)
                     .foregroundColor(bool.wrappedValue ? .green : .gray.opacity(0.8))
-                
+
                 Circle()
                     .foregroundColor(Color.white)
                     .padding(2)
@@ -2090,18 +2041,18 @@ struct SettingsGoofyView: View {
                     bool.wrappedValue.toggle()
                 }
             }
-            
+
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 9)
         .padding(.horizontal, 15)
     }
-    
+
 }
 
-func newNotification() -> Void {
+func newNotification() {
     UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
-    
+
     let content = UNMutableNotificationContent()
     content.title = String(localized: "Keep the streak going!")
     content.subtitle = String(localized: "Remember to input your expenses today.")
@@ -2110,11 +2061,11 @@ func newNotification() -> Void {
     // show this notification five seconds from now
     var components = DateComponents()
     var option = 1
-    
+
     if UserDefaults(suiteName: "group.com.rafaelsoh.dime")!.object(forKey: "notificationOption") != nil {
         option = UserDefaults(suiteName: "group.com.rafaelsoh.dime")!.integer(forKey: "notificationOption")
     }
-    
+
     if option == 1 {
         components.hour = 8
         components.minute = 0
@@ -2130,10 +2081,7 @@ func newNotification() -> Void {
             components.minute = 0
         }
     }
-    
-    
-    
-    
+
     let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: true)
 
     // choose a random identifier
@@ -2145,7 +2093,7 @@ func newNotification() -> Void {
 
 struct SettingsCategoryView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    
+
     var body: some View {
 //        VStack(spacing: 5) {
 //            Text("Categories")
@@ -2173,7 +2121,7 @@ struct SettingsCategoryView: View {
 //
 //            ReusableCategoryView()
 //        }
-        
+
         CategoryView(mode: .settings, income: false)
         .navigationBarBackButtonHidden(true)
         .navigationBarTitle("")
@@ -2187,12 +2135,12 @@ struct SettingsCategoryView: View {
 struct SettingsUpcomingView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @State private var showFuture: Bool = true
-    
+
     @State private var showSoon: Bool = false
     @EnvironmentObject var dataController: DataController
-    
+
     @Namespace var animation
-    
+
     var body: some View {
         VStack(spacing: 10) {
             Text("Upcoming Logs")
@@ -2206,10 +2154,10 @@ struct SettingsUpcomingView: View {
                     } label: {
                         SettingsBackButton()
                     }
-                    
+
                 }
                 .padding(.bottom, 20)
-            
+
             VStack(spacing: 0) {
                 HStack {
                     Text("Display on Log Page")
@@ -2217,15 +2165,14 @@ struct SettingsUpcomingView: View {
                         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                        .font(.system(size: 17, weight: .regular, design: .rounded))
                         .foregroundColor(Color.PrimaryText)
-                    
-                    
+
                     Spacer()
-                    
+
                     ZStack(alignment: showFuture ? .trailing : .leading) {
                         Capsule()
                             .frame(width: 42, height: 28)
                             .foregroundColor(showFuture ? .green : .gray.opacity(0.8))
-                        
+
                         Circle()
                             .foregroundColor(Color.white)
                             .padding(2)
@@ -2237,33 +2184,31 @@ struct SettingsUpcomingView: View {
                     }
                     .onChange(of: showFuture) { newValue in
                         UserDefaults(suiteName: "group.com.rafaelsoh.dime")!.set(newValue, forKey: "showUpcomingTransactions")
-                        
+
                         if !newValue {
                             showSoon = false
                             UserDefaults(suiteName: "group.com.rafaelsoh.dime")!.set(false, forKey: "showUpcomingTransactionsWhenUpcoming")
                         }
                     }
-                    
+
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 9)
-                    
-                
+
                 HStack {
                     Text("Limit to 14-Day Outlook")
                         .font(.system(.body, design: .rounded))
                         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                        .font(.system(size: 17, weight: .regular, design: .rounded))
                         .foregroundColor(Color.PrimaryText)
-                    
-                    
+
                     Spacer()
-                    
+
                     ZStack(alignment: showSoon ? .trailing : .leading) {
                         Capsule()
                             .frame(width: 42, height: 28)
                             .foregroundColor(showSoon ? .green : .gray.opacity(0.8))
-                        
+
                         Circle()
                             .foregroundColor(Color.white)
                             .padding(2)
@@ -2276,15 +2221,14 @@ struct SettingsUpcomingView: View {
                     .onChange(of: showSoon) { newValue in
                         UserDefaults(suiteName: "group.com.rafaelsoh.dime")!.set(newValue, forKey: "showUpcomingTransactionsWhenUpcoming")
                     }
-                    
+
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 9)
             }
             .padding(.horizontal, 15)
             .background(Color.SettingsBackground, in: RoundedRectangle(cornerRadius: 9))
-                
-            
+
             Text("Don't worry, even if you do hide them there, you will aways be able to find all upcoming transactions right here.")
                 .font(.system(.caption, design: .rounded).weight(.medium))
                 .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
@@ -2294,14 +2238,12 @@ struct SettingsUpcomingView: View {
                 .padding(.horizontal, 15)
                 .padding(.bottom, 30)
                 .frame(maxWidth: .infinity, alignment: .leading)
-            
-          
-            
+
             ScrollView(showsIndicators: false) {
                 FutureListView(dataController: dataController, filterMode: false, limitedMode: false)
                     .padding(.bottom, 70)
             }
-            
+
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarTitle("")
@@ -2314,14 +2256,14 @@ struct SettingsUpcomingView: View {
             showSoon = UserDefaults(suiteName: "group.com.rafaelsoh.dime")!.bool(forKey: "showUpcomingTransactionsWhenUpcoming")
         }
     }
-    
+
 }
 
 struct SettingsEraseView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    
+
     @State var showAlert = false
-    
+
     var body: some View {
         VStack(spacing: 10) {
             Text("Erase Data")
@@ -2336,11 +2278,10 @@ struct SettingsEraseView: View {
                     } label: {
                         SettingsBackButton()
                     }
-                    
+
                 }
                 .padding(.bottom, 20)
-            
-            
+
             Button {
                 showAlert = true
             } label: {
@@ -2353,10 +2294,9 @@ struct SettingsEraseView: View {
                     .padding(.vertical, 12)
                     .padding(.horizontal, 15)
                     .background(Color.SettingsBackground, in: RoundedRectangle(cornerRadius: 9))
- 
+
             }
-                
-            
+
             Text("This action would delete all existing transactions, categories, and budgets, and cannot be undone.")
                 .font(.system(.caption, design: .rounded).weight(.medium))
                 .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
@@ -2365,7 +2305,7 @@ struct SettingsEraseView: View {
                 .foregroundColor(Color.SubtitleText)
                 .padding(.horizontal, 15)
                 .frame(maxWidth: .infinity, alignment: .leading)
-            
+
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarTitle("")
@@ -2376,34 +2316,34 @@ struct SettingsEraseView: View {
         .fullScreenCover(isPresented: $showAlert) {
             DeleteAllAlert()
         }
-        
+
     }
-    
+
 }
 
 struct DeleteAllAlert: View {
     @EnvironmentObject var dataController: DataController
     @Environment(\.dismiss) var dismiss
     @Environment(\.colorScheme) var systemColorScheme
-    
+
     @AppStorage("bottomEdge", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var bottomEdge: Double = 15
-    
+
     @State private var offset: CGFloat = 0
-    
+
     @GestureState var isDetectingLongPress = false
     @State var completedLongPress = false
 
     var longPress: some Gesture {
         LongPressGesture(minimumDuration: 2)
             .updating($isDetectingLongPress) { currentState, gestureState,
-                    transaction in
+                    _ in
                 gestureState = currentState
             }
             .onEnded { finished in
                 self.completedLongPress = finished
             }
     }
-    
+
     var body: some View {
         ZStack(alignment: .bottom) {
             Color.clear
@@ -2412,50 +2352,48 @@ struct DeleteAllAlert: View {
                 .onTapGesture {
                     dismiss()
                 }
-            
-            
+
             VStack(alignment: .leading, spacing: 1.5) {
                 HStack(spacing: 7) {
                     Image(systemName: "exclamationmark.triangle.fill")
                         .font(.system(.callout, design: .rounded).weight(.medium))
                         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                        .font(.system(size: 14, weight: .medium, design: .rounded))
-                        
+
                     Text("Danger Zone")
                         .font(.system(.title2, design: .rounded).weight(.medium))
                         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                        .font(.system(size: 20, weight: .medium, design: .rounded))
-                        
+
                 }
                 .foregroundColor(.PrimaryText)
-                
+
                 Text("This action genuinely cannot be undone. Long press to confirm.")
                     .font(.system(.title3, design: .rounded).weight(.medium))
                     .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                    .font(.system(size: 16, weight: .medium, design: .rounded))
                     .foregroundColor(.SubtitleText)
                     .padding(.bottom, 15)
-                
-                
+
                 GeometryReader { proxy in
                     ZStack(alignment: .leading) {
                         Rectangle()
                             .fill(Color.AlertRed.opacity(0.23))
                             .frame(width: proxy.size.width)
-                        
+
                         Rectangle()
                             .fill(Color.AlertRed)
                             .frame(width: proxy.size.width, height: 100)
                             .offset(x: completedLongPress ? 0 : (isDetectingLongPress ? 0 : -(proxy.size.width)))
                             .animation(.easeInOut(duration: 2), value: isDetectingLongPress)
-                        
+
                         Text("Delete Literally Everything")
                             .font(.system(.title3, design: .rounded).weight(.semibold))
                             .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                            .font(.system(size: 20, weight: .semibold, design: .rounded))
                             .foregroundColor(.white)
                             .frame(width: proxy.size.width, alignment: .center)
-                        
+
                     }
                     .frame(height: proxy.size.height)
                     .clipShape(RoundedRectangle(cornerRadius: 9, style: .continuous))
@@ -2465,7 +2403,7 @@ struct DeleteAllAlert: View {
                 .padding(.bottom, 8)
                 .gesture(
                     LongPressGesture(minimumDuration: 2)
-                        .updating($isDetectingLongPress, body: { (currentState, state, transaction) in
+                        .updating($isDetectingLongPress, body: { (currentState, state, _) in
                             state = currentState
                         })
                         .onEnded({ _ in
@@ -2476,23 +2414,21 @@ struct DeleteAllAlert: View {
                     if completedLongPress {
                         let impactMed = UIImpactFeedbackGenerator(style: .heavy)
                         impactMed.impactOccurred()
-                        
-                        
+
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                             dataController.deleteAll()
-                            
+
                             dismiss()
                         }
-                        
+
                     }
                 }
-                
-                
+
                 Button {
                     withAnimation(.easeOut(duration: 0.7)) {
                         dismiss()
                     }
-                    
+
                 } label: {
                     Text("Back Out")
                         .font(.system(.title3, design: .rounded).weight(.semibold))
@@ -2508,7 +2444,7 @@ struct DeleteAllAlert: View {
             .padding(13)
 //            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 13, style: .continuous))
             .background(RoundedRectangle(cornerRadius: 13).fill(Color.PrimaryBackground).shadow(color: systemColorScheme == .dark ? Color.clear : Color.gray.opacity(0.25), radius: 6))
-            .overlay(RoundedRectangle(cornerRadius: 13).stroke(systemColorScheme == .dark ? Color.gray.opacity(0.1) : Color.clear , lineWidth: 1.3))
+            .overlay(RoundedRectangle(cornerRadius: 13).stroke(systemColorScheme == .dark ? Color.gray.opacity(0.1) : Color.clear, lineWidth: 1.3))
             .offset(y: offset)
             .gesture(
                 DragGesture()
@@ -2526,7 +2462,7 @@ struct DeleteAllAlert: View {
                             withAnimation {
                                 offset = 0
                             }
-                            
+
                         }
                     }
             )
@@ -2538,10 +2474,6 @@ struct DeleteAllAlert: View {
 //                }))
             .padding(.horizontal, 17)
             .padding(.bottom, bottomEdge == 0 ? 13 : bottomEdge)
-            
-            
-                
-            
 
         }
         .edgesIgnoringSafeArea(.all)
@@ -2553,7 +2485,7 @@ struct SettingsCloudView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @State private var iCloudStorage: Bool = false
     @Namespace var animation
-    
+
     var body: some View {
         VStack(spacing: 10) {
             Text("iCloud Sync")
@@ -2568,10 +2500,10 @@ struct SettingsCloudView: View {
                     } label: {
                         SettingsBackButton()
                     }
-                    
+
                 }
                 .padding(.bottom, 20)
-            
+
             VStack(spacing: 0) {
                 HStack {
                     Text("Enable Sync")
@@ -2579,15 +2511,14 @@ struct SettingsCloudView: View {
                         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                        .font(.system(size: 17, weight: .regular, design: .rounded))
                         .foregroundColor(Color.PrimaryText)
-                    
-                    
+
                     Spacer()
-                    
+
                     ZStack(alignment: iCloudStorage ? .trailing : .leading) {
                         Capsule()
                             .frame(width: 42, height: 28)
                             .foregroundColor(iCloudStorage ? .green : .gray.opacity(0.8))
-                        
+
                         Circle()
                             .foregroundColor(Color.white)
                             .padding(2)
@@ -2600,16 +2531,15 @@ struct SettingsCloudView: View {
                     .onChange(of: iCloudStorage) { newValue in
                         NSUbiquitousKeyValueStore.default.set(newValue, forKey: "icloud_sync")
                     }
-                    
+
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 9)
-                    
+
             }
             .padding(.horizontal, 15)
             .background(Color.SettingsBackground, in: RoundedRectangle(cornerRadius: 9))
-                
-            
+
             Text("Close and reload app for change to take effect.")
                 .font(.system(.caption, design: .rounded).weight(.medium))
                 .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
@@ -2618,7 +2548,7 @@ struct SettingsCloudView: View {
                 .foregroundColor(Color.SubtitleText)
                 .padding(.horizontal, 15)
                 .frame(maxWidth: .infinity, alignment: .leading)
-            
+
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarTitle("")
@@ -2630,9 +2560,8 @@ struct SettingsCloudView: View {
             iCloudStorage = NSUbiquitousKeyValueStore.default.bool(forKey: "icloud_sync")
         }
     }
-    
-}
 
+}
 
 struct SettingsBackButton: View {
     var body: some View {

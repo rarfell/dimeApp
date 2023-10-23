@@ -24,11 +24,10 @@ extension View {
             simultaneousGesture(DragGesture(minimumDistance: 0),
                                 including: .all)
         }
-        
-    }
-    
-}
 
+    }
+
+}
 
 extension HorizontalAlignment {
     struct MoneySubtitle: AlignmentID {
@@ -39,7 +38,6 @@ extension HorizontalAlignment {
 
     static let moneySubtitle = HorizontalAlignment(MoneySubtitle.self)
 }
-
 
 extension UINavigationController: UIGestureRecognizerDelegate {
     override open func viewDidLoad() {
@@ -67,7 +65,7 @@ class Utilities {
         } else {
             userInterfaceStyle = .unspecified
         }
-    
+
         (UIApplication.shared.connectedScenes.first as?
           UIWindowScene)?.windows.first!.overrideUserInterfaceStyle = userInterfaceStyle
     }

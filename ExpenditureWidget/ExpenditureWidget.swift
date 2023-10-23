@@ -8,7 +8,6 @@
 import WidgetKit
 import SwiftUI
 
-
 @main
 struct DimeWidgets: WidgetBundle {
     var body: some Widget {
@@ -21,5 +20,3 @@ struct DimeWidgets: WidgetBundle {
 //        TemplateTransactionWidget()
     }
 }
-
-

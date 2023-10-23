@@ -11,34 +11,33 @@ import AppIntents
 
 @available(iOS 16.4, *)
 struct NewTransactionIntent: AppIntent {
-   
+
     static var title: LocalizedStringResource = "New Transaction"
-    
+
     static var description =
         IntentDescription("Log new transactions in a blink")
-    
-    @Parameter(title:"Type", description: "Type of the transaction", requestValueDialog: IntentDialog("Would you like to log an income or expense?"))
+
+    @Parameter(title: "Type", description: "Type of the transaction", requestValueDialog: IntentDialog("Would you like to log an income or expense?"))
     var income: TransactionType
-    
-    @Parameter(title: "Amount", description: "Value of the transaction", controlStyle: .field, inclusiveRange: (lowerBound: 0.01, upperBound: 100000000) ,requestValueDialog: IntentDialog("How much was transacted?"))
+
+    @Parameter(title: "Amount", description: "Value of the transaction", controlStyle: .field, inclusiveRange: (lowerBound: 0.01, upperBound: 100000000), requestValueDialog: IntentDialog("How much was transacted?"))
     var amount: Double
-    
-    
+
     @Parameter(title: "Category", description: "Category associated with the transaction", requestValueDialog: IntentDialog("What category does it come under?"))
     var incomeCategory: IncomeCategoryEntity?
-    
+
     @Parameter(title: "Category", description: "Category associated with the transaction", requestValueDialog: IntentDialog("What category does it come under?"))
     var expenseCategory: ExpenseCategoryEntity?
-    
-    @Parameter(title:"Note")
+
+    @Parameter(title: "Note")
     var note: String?
-    
-    @Parameter(title:"Recurring Transaction", default: false)
+
+    @Parameter(title: "Recurring Transaction", default: false)
     var recurringTransaction: Bool
-    
-    @Parameter(title:"Recurring Frequency", default: .weekly)
+
+    @Parameter(title: "Recurring Frequency", default: .weekly)
     var recurringType: RepeatType
-    
+
 //    struct CategoryOptionsProvider: DynamicOptionsProvider {
 //       
 //        func results() async throws -> ItemCollection<CategoryEntity> {
@@ -67,11 +66,9 @@ struct NewTransactionIntent: AppIntent {
 //            }
 //        }
 //    }
-    
-    
+
     @MainActor
     func perform() async throws -> some IntentResult & ProvidesDialog & ShowsSnippetView {
-        
         if expenseCategory == nil && incomeCategory == nil {
             if income == .expense {
                 throw $expenseCategory.needsValueError()
@@ -82,11 +79,10 @@ struct NewTransactionIntent: AppIntent {
             if amount == 0 {
                 throw $amount.needsValueError()
             }
-            
+
             let dataController = DataController.shared
-            
             let repeatType: Int
-            
+
             if !recurringTransaction {
                 repeatType = 0
             } else {
@@ -99,14 +95,13 @@ struct NewTransactionIntent: AppIntent {
                     repeatType = 3
                 }
             }
-            
+
             if income == .expense {
                 if let unwrappedExpenseCategory = expenseCategory {
                     let category = try dataController.findCategory(withId: unwrappedExpenseCategory.id)
-                    
-                    
+
                     let transaction = dataController.newTransaction(note: note ?? "", category: category, income: false, amount: amount, date: Date.now, repeatType: repeatType, repeatCoefficient: 1, delay: false)
-                    
+
                     return .result(dialog: "Expense successfully logged.") {
                         ShortcutTransactionView(transaction: transaction)
                     }
@@ -116,9 +111,9 @@ struct NewTransactionIntent: AppIntent {
             } else {
                 if let unwrappedIncomeCategory = incomeCategory {
                     let category = try dataController.findCategory(withId: unwrappedIncomeCategory.id)
-                    
+
                     let transaction = dataController.newTransaction(note: note ?? "", category: category, income: true, amount: amount, date: Date.now, repeatType: repeatType, repeatCoefficient: 1, delay: false)
-                    
+
                     return .result(dialog: "Income successfully logged.") {
                         ShortcutTransactionView(transaction: transaction)
                     }
@@ -128,7 +123,7 @@ struct NewTransactionIntent: AppIntent {
             }
         }
     }
-    
+
     static var parameterSummary: some ParameterSummary {
         Switch(\NewTransactionIntent.$income) {
             Case(TransactionType.expense) {
@@ -165,17 +160,13 @@ struct NewTransactionIntent: AppIntent {
                 }
             }
         }
-
     }
-    
-
 }
 
 // income or expense
 
 enum TransactionType: String {
-    case income
-    case expense
+    case income, expense
 }
 
 @available(iOS 16, *)
@@ -184,18 +175,16 @@ extension TransactionType: AppEnum {
         return TypeDisplayRepresentation(name: "Type")
     }
 
-    static var caseDisplayRepresentations: [TransactionType : DisplayRepresentation] = [
+    static var caseDisplayRepresentations: [TransactionType: DisplayRepresentation] = [
         .income: DisplayRepresentation(title: "income",
                                        image: .init(systemName: "plus.square.fill")),
         .expense: DisplayRepresentation(title: "expense",
-                                        image: .init(systemName: "minus.square.fill")),
+                                        image: .init(systemName: "minus.square.fill"))
     ]
 }
 
 enum RepeatType: String {
-    case daily
-    case weekly
-    case monthly
+    case daily, weekly, monthly
 }
 
 @available(iOS 16, *)
@@ -204,7 +193,7 @@ extension RepeatType: AppEnum {
         return TypeDisplayRepresentation(name: "Frequency")
     }
 
-    static var caseDisplayRepresentations: [RepeatType : DisplayRepresentation] = [
+    static var caseDisplayRepresentations: [RepeatType: DisplayRepresentation] = [
         .daily: DisplayRepresentation(title: "Daily"),
         .weekly: DisplayRepresentation(title: "Weekly"),
         .monthly: DisplayRepresentation(title: "Monthly")
@@ -213,25 +202,25 @@ extension RepeatType: AppEnum {
 
 struct ShortcutTransactionView: View {
     let transaction: Transaction
-    
+
     @AppStorage("showCents", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var showCents: Bool = true
-    
+
     @AppStorage("currency", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var currency: String = Locale.current.currencyCode!
-    
+
     var transactionAmountString: String {
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .currency
         numberFormatter.currencyCode = currency
-        
+
         if showCents {
             numberFormatter.maximumFractionDigits = 2
         } else {
             numberFormatter.maximumFractionDigits = 0
         }
-        
+
         return numberFormatter.string(from: NSNumber(value: transaction.amount)) ?? "$0"
     }
-    
+
     var body: some View {
         HStack(spacing: 12) {
             EmojiLogView(emoji: (transaction.category?.wrappedEmoji ?? "")
@@ -249,20 +238,17 @@ struct ShortcutTransactionView: View {
                 }
 
             VStack(alignment: .leading) {
-                
                 Text(transaction.wrappedNote)
                     .font(.system(size: 16, weight: .medium, design: .rounded))
                     .foregroundColor(Color.PrimaryText)
                     .lineLimit(1)
-                
+
                 Text(transaction.wrappedDate, format: .dateTime.hour().minute())
                    .font(.system(size: 12, weight: .medium, design: .rounded))
                    .foregroundColor(Color.SubtitleText)
                    .lineLimit(1)
             }
-
             Spacer()
-            
             if transaction.income {
                 Text("+\(transactionAmountString)")
                     .font(.system(size: 19, weight: .medium, design: .rounded))
@@ -278,9 +264,6 @@ struct ShortcutTransactionView: View {
                     .lineLimit(1)
                     .layoutPriority(1)
             }
-            
-
-                
         }
         .padding(.vertical, 20)
         .padding(.horizontal, 20)

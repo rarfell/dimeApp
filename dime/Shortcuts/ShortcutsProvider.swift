@@ -8,7 +8,6 @@
 import Foundation
 import AppIntents
 
-
 @available(iOS 16.4, *)
 struct DimeShortcuts: AppShortcutsProvider {
     static var appShortcuts: [AppShortcut] {
@@ -16,12 +15,12 @@ struct DimeShortcuts: AppShortcutsProvider {
             intent: NewTransactionIntent(),
             phrases: ["Log a new transaction in \(.applicationName)"],
             systemImageName: "books.vertical.fill"
-        );
+        )
         AppShortcut(
             intent: GetInsightsIntent(),
             phrases: ["Get insights in \(.applicationName)"],
             systemImageName: "plusminus.circle.fill"
-        );
+        )
         AppShortcut(
             intent: BudgetIntent(),
             phrases: ["Extract leftover amount for your budgets in \(.applicationName)"],
