@@ -82,7 +82,7 @@ extension ShortcutsBudgetsType: AppEnum {
 
     static var caseDisplayRepresentations: [ShortcutsBudgetsType: DisplayRepresentation] = [
         .overall: DisplayRepresentation(title: "overall budget"),
-        .category: DisplayRepresentation(title: "categorical budget"),
+        .category: DisplayRepresentation(title: "categorical budget")
     ]
 }
 

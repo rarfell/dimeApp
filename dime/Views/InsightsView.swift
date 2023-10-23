@@ -367,13 +367,13 @@ struct FilteredCategoryInsightsView: View {
 
             _transactions = SectionedFetchRequest<Date?, Transaction>(sectionIdentifier: \.day, sortDescriptors: [
                 SortDescriptor(\.day, order: .reverse),
-                SortDescriptor(\.date, order: .reverse),
+                SortDescriptor(\.date, order: .reverse)
             ], predicate: andPredicate)
 
         } else {
             _transactions = SectionedFetchRequest<Date?, Transaction>(sectionIdentifier: \.day, sortDescriptors: [
                 SortDescriptor(\.day, order: .reverse),
-                SortDescriptor(\.date, order: .reverse),
+                SortDescriptor(\.date, order: .reverse)
             ])
         }
     }
@@ -421,7 +421,7 @@ struct FilteredDateInsightsView: View {
         let andPredicate = NSCompoundPredicate(type: .and, subpredicates: [startPredicate, incomePredicate, endPredicate])
 
         _transactions = FetchRequest<Transaction>(sortDescriptors: [
-            SortDescriptor(\.date, order: .reverse),
+            SortDescriptor(\.date, order: .reverse)
         ], predicate: andPredicate)
     }
 }
@@ -485,7 +485,7 @@ struct FilteredInsightsView: View {
 
         _transactions = SectionedFetchRequest<Date?, Transaction>(sectionIdentifier: \.day, sortDescriptors: [
             SortDescriptor(\.day, order: .reverse),
-            SortDescriptor(\.date, order: .reverse),
+            SortDescriptor(\.date, order: .reverse)
         ], predicate: andPredicate)
     }
 }
@@ -878,7 +878,7 @@ struct WeekGraphView: View {
     @State private var refreshID = UUID()
 
     @FetchRequest(sortDescriptors: [
-        SortDescriptor(\.day),
+        SortDescriptor(\.day)
     ]) private var transactions: FetchedResults<Transaction>
 
     @AppStorage("currency", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var currency: String = Locale.current.currencyCode!
@@ -1311,7 +1311,7 @@ struct MonthGraphView: View {
     @State private var refreshID = UUID()
 
     @FetchRequest(sortDescriptors: [
-        SortDescriptor(\.day),
+        SortDescriptor(\.day)
     ]) private var transactions: FetchedResults<Transaction>
 
     @AppStorage("firstDayOfMonth", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var firstDayOfMonth: Int = 1
@@ -1741,7 +1741,7 @@ struct YearGraphView: View {
     @State private var refreshID = UUID()
 
     @FetchRequest(sortDescriptors: [
-        SortDescriptor(\.day),
+        SortDescriptor(\.day)
     ]) private var transactions: FetchedResults<Transaction>
 
     @AppStorage("currency", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var currency: String = Locale.current.currencyCode!

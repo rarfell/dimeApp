@@ -25,6 +25,6 @@ enum FilterType: String, CaseIterable {
         .month: "m.square.fill",
         .category: "circle.grid.2x2.fill",
         .recurring: "repeat.circle.fill",
-        .upcoming: "sun.min.fill",
+        .upcoming: "sun.min.fill"
     ]
 }

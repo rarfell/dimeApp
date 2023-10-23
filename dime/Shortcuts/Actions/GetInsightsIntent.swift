@@ -110,7 +110,7 @@ extension ShortcutsInsightsTimeFrame: AppEnum {
         .day: DisplayRepresentation(title: "today"),
         .week: DisplayRepresentation(title: "this week"),
         .month: DisplayRepresentation(title: "this month"),
-        .year: DisplayRepresentation(title: "this year"),
+        .year: DisplayRepresentation(title: "this year")
     ]
 }
 
@@ -127,7 +127,7 @@ extension ShortcutsInsightsType: AppEnum {
     static var caseDisplayRepresentations: [ShortcutsInsightsType: DisplayRepresentation] = [
         .net: DisplayRepresentation(title: "net total"),
         .income: DisplayRepresentation(title: "total income"),
-        .spent: DisplayRepresentation(title: "total expenditure"),
+        .spent: DisplayRepresentation(title: "total expenditure")
     ]
 }
 

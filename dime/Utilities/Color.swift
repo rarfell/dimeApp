@@ -34,7 +34,7 @@ extension Color {
         "21": "#F1AF8A",
         "22": "#2D4B7B",
         "23": "#5FAF9F",
-        "24": "#D46D7F",
+        "24": "#D46D7F"
     ]
 
     static let colorArray: [String] = [
@@ -61,7 +61,7 @@ extension Color {
         "#F1AF8A",
         "#2D4B7B",
         "#5FAF9F",
-        "#D46D7F",
+        "#D46D7F"
     ]
 
     static let neuBackground = Color(hex: "f0f0f3")

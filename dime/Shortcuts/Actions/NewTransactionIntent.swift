@@ -178,7 +178,7 @@ extension TransactionType: AppEnum {
         .income: DisplayRepresentation(title: "income",
                                        image: .init(systemName: "plus.square.fill")),
         .expense: DisplayRepresentation(title: "expense",
-                                        image: .init(systemName: "minus.square.fill")),
+                                        image: .init(systemName: "minus.square.fill"))
     ]
 }
 
@@ -195,7 +195,7 @@ extension RepeatType: AppEnum {
     static var caseDisplayRepresentations: [RepeatType: DisplayRepresentation] = [
         .daily: DisplayRepresentation(title: "Daily"),
         .weekly: DisplayRepresentation(title: "Weekly"),
-        .monthly: DisplayRepresentation(title: "Monthly"),
+        .monthly: DisplayRepresentation(title: "Monthly")
     ]
 }
 

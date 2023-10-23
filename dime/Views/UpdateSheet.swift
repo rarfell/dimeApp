@@ -26,7 +26,7 @@ struct UpdateAlert: View {
         WelcomeSheetFeatureRow(icon: "circle.grid.2x2.fill", header: "Re-designed Screens", subtitle: "Budget and category creation screens have been completely reworked."),
         WelcomeSheetFeatureRow(icon: "swatchpalette.fill", header: "Custom Category Colors", subtitle: "Using the stock iOS color picker, give your categories a long-awaited aesthetic refresh."),
         WelcomeSheetFeatureRow(icon: "exclamationmark.octagon.fill", header: "New Toasts", subtitle: "Similarly, alert toasts across the app have been re-designed."),
-        WelcomeSheetFeatureRow(icon: "calendar", header: "Custom Time Frames", subtitle: "Change the start of a month's cycle to align with payday."),
+        WelcomeSheetFeatureRow(icon: "calendar", header: "Custom Time Frames", subtitle: "Change the start of a month's cycle to align with payday.")
     ]
 
     var body: some View {
@@ -55,14 +55,17 @@ struct UpdateAlert: View {
                 VStack(alignment: .leading, spacing: 2) {
                     HStack {
                         Image(systemName: "star.fill")
-                            .font(.system(size: 16))
+                            .font(.system(.callout, design: .rounded))
+//                            .font(.system(size: 16))
                         Text("What's New?")
-                            .font(.system(size: 22, weight: .medium, design: .rounded))
+                            .font(.system(.title2, design: .rounded).weight(.medium))
+//                            .font(.system(size: 22, weight: .medium, design: .rounded))
                     }
                     .foregroundColor(.PrimaryText)
 
                     Text("Version \(UIApplication.appVersion ?? "") (\(UIApplication.buildNumber ?? "")) · 18 Sep 2023")
-                        .font(.system(size: 15, weight: .medium, design: .rounded))
+                        .font(.system(.subheadline, design: .rounded).weight(.medium))
+//                        .font(.system(size: 15, weight: .medium, design: .rounded))
                         .foregroundColor(.SubtitleText)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -77,7 +80,8 @@ struct UpdateAlert: View {
                         }
                     } label: {
                         Image(systemName: "xmark")
-                            .font(.system(size: 14, weight: .semibold))
+                            .font(.system(.subheadline, design: .rounded).weight(.semibold))
+//                            .font(.system(size: 14, weight: .semibold))
                             .foregroundColor(Color.SubtitleText)
                             .padding(7)
                             .background(Color.SecondaryBackground, in: Circle())
@@ -92,18 +96,21 @@ struct UpdateAlert: View {
                         ForEach(welcomeFeatures, id: \.self) { row in
                             HStack(alignment: .top, spacing: 15) {
                                 Image(systemName: row.icon)
-                                    .font(.system(size: 24, weight: .regular))
+                                    .font(.system(.title2, design: .rounded))
+//                                    .font(.system(size: 24, weight: .regular))
                                     .foregroundColor(Color.SubtitleText)
                                     .frame(width: 35, alignment: .leading)
                                     .offset(y: 2)
 
                                 VStack(alignment: .leading, spacing: 3.5) {
                                     Text(LocalizedStringKey(row.header))
-                                        .font(.system(size: 18, weight: .medium, design: .rounded))
+                                        .font(.system(.body, design: .rounded).weight(.medium))
+//                                        .font(.system(size: 18, weight: .medium, design: .rounded))
                                         .foregroundColor(Color.PrimaryText)
 
                                     Text(LocalizedStringKey(row.subtitle))
-                                        .font(.system(size: 16, weight: .regular, design: .rounded))
+                                        .font(.system(.subheadline, design: .rounded).weight(.medium))
+//                                        .font(.system(size: 16, weight: .regular, design: .rounded))
 //                                            .lineSpacing(0.6)
                                         .fixedSize(horizontal: false, vertical: true)
                                         .foregroundColor(Color.SubtitleText)
@@ -115,10 +122,11 @@ struct UpdateAlert: View {
                 }
                 .frame(height: 300)
 
-                Text("Have a great day ahead!")
-                    .font(.system(size: 14, weight: .medium, design: .rounded))
+                Text("Special thanks to \(makeAttributedString()) for contributing")
+                    .font(.system(.footnote, design: .rounded).weight(.medium))
+                    .foregroundColor(Color.SubtitleText)
                     .frame(maxWidth: .infinity)
-                    .foregroundColor(.SubtitleText)
+                    .multilineTextAlignment(.center)
             }
             .padding(18)
             .background(RoundedRectangle(cornerRadius: 13).fill(Color.PrimaryBackground).shadow(color: systemColorScheme == .dark ? Color.clear : Color.gray.opacity(0.25), radius: 6))
@@ -126,8 +134,17 @@ struct UpdateAlert: View {
             .offset(y: offset)
             .padding(.horizontal, 17)
             .padding(.bottom, bottomEdge == 0 ? 13 : bottomEdge)
+            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
         }
         .edgesIgnoringSafeArea(.all)
         .background(BackgroundBlurView())
+    }
+
+    func makeAttributedString() -> AttributedString {
+        var string = AttributedString("Yumi")
+        string.foregroundColor = Color.PrimaryText
+        string.link = URL(string: "https://yumiizumi.com/")
+
+        return string
     }
 }

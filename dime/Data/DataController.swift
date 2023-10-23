@@ -338,7 +338,7 @@ class DataController: ObservableObject {
 
             itemRequest.predicate = andPredicate
             itemRequest.sortDescriptors = [
-                NSSortDescriptor(keyPath: \Transaction.date, ascending: false),
+                NSSortDescriptor(keyPath: \Transaction.date, ascending: false)
             ]
 
             return itemRequest
@@ -355,7 +355,7 @@ class DataController: ObservableObject {
 
             itemRequest.predicate = andPredicate
             itemRequest.sortDescriptors = [
-                NSSortDescriptor(keyPath: \Transaction.date, ascending: false),
+                NSSortDescriptor(keyPath: \Transaction.date, ascending: false)
             ]
 
             return itemRequest
@@ -372,7 +372,7 @@ class DataController: ObservableObject {
 
             itemRequest.predicate = andPredicate
             itemRequest.sortDescriptors = [
-                NSSortDescriptor(keyPath: \Transaction.date, ascending: false),
+                NSSortDescriptor(keyPath: \Transaction.date, ascending: false)
             ]
 
             return itemRequest
@@ -389,7 +389,7 @@ class DataController: ObservableObject {
 
             itemRequest.predicate = andPredicate
             itemRequest.sortDescriptors = [
-                NSSortDescriptor(keyPath: \Transaction.date, ascending: false),
+                NSSortDescriptor(keyPath: \Transaction.date, ascending: false)
             ]
 
             return itemRequest
@@ -1503,7 +1503,7 @@ class DataController: ObservableObject {
 
         itemRequest.predicate = andPredicate
         itemRequest.sortDescriptors = [
-            NSSortDescriptor(keyPath: \Transaction.date, ascending: false),
+            NSSortDescriptor(keyPath: \Transaction.date, ascending: false)
         ]
 
         return (itemRequest, startDate)
@@ -1530,7 +1530,7 @@ class DataController: ObservableObject {
 
             itemRequest.predicate = andPredicate
             itemRequest.sortDescriptors = [
-                NSSortDescriptor(keyPath: \Transaction.date, ascending: false),
+                NSSortDescriptor(keyPath: \Transaction.date, ascending: false)
             ]
             itemRequest.fetchLimit = count
 
@@ -1547,7 +1547,7 @@ class DataController: ObservableObject {
 
             itemRequest.predicate = andPredicate
             itemRequest.sortDescriptors = [
-                NSSortDescriptor(keyPath: \Transaction.date, ascending: false),
+                NSSortDescriptor(keyPath: \Transaction.date, ascending: false)
             ]
             itemRequest.fetchLimit = count
 
@@ -1564,7 +1564,7 @@ class DataController: ObservableObject {
 
             itemRequest.predicate = andPredicate
             itemRequest.sortDescriptors = [
-                NSSortDescriptor(keyPath: \Transaction.date, ascending: false),
+                NSSortDescriptor(keyPath: \Transaction.date, ascending: false)
             ]
             itemRequest.fetchLimit = count
 
@@ -1581,7 +1581,7 @@ class DataController: ObservableObject {
 
             itemRequest.predicate = andPredicate
             itemRequest.sortDescriptors = [
-                NSSortDescriptor(keyPath: \Transaction.date, ascending: false),
+                NSSortDescriptor(keyPath: \Transaction.date, ascending: false)
             ]
             itemRequest.fetchLimit = count
 

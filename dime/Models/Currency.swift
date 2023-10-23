@@ -20,7 +20,7 @@ extension Locale {
         let components: [String: String] = [
             NSLocale.Key.languageCode.rawValue: languageCode,
             NSLocale.Key.countryCode.rawValue: regionCode,
-            NSLocale.Key.currencyCode.rawValue: currencyCode,
+            NSLocale.Key.currencyCode.rawValue: currencyCode
         ]
 
         let identifier = Locale.identifier(fromComponents: components)

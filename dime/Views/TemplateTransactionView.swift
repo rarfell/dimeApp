@@ -837,7 +837,7 @@ struct CategoryRowPickerView: View {
                             .fill(
                                 LinearGradient(gradient: Gradient(stops: [
                                     .init(color: Color.PrimaryBackground.opacity(0.01), location: 0),
-                                    .init(color: Color.PrimaryBackground, location: 1),
+                                    .init(color: Color.PrimaryBackground, location: 1)
                                 ]), startPoint: .leading, endPoint: .trailing)
                             ).frame(width: 0.1 * gp.size.width)
                             .frame(maxWidth: .infinity, alignment: .trailing)
@@ -960,7 +960,7 @@ struct SettingsQuickAddWidgetDraggingView: View {
     @State var refreshID = UUID()
 
     @FetchRequest(sortDescriptors: [
-        SortDescriptor(\.order),
+        SortDescriptor(\.order)
     ]) private var transactions: FetchedResults<TemplateTransaction>
 
     let columns = Array(repeating: GridItem(.fixed(100), spacing: 15), count: 2)
@@ -1143,7 +1143,7 @@ class GridViewModel: ObservableObject {
         Grid(index: 0),
         Grid(index: 1),
         Grid(index: 2),
-        Grid(index: 3),
+        Grid(index: 3)
     ]
 
     func reset() {
@@ -1152,7 +1152,7 @@ class GridViewModel: ObservableObject {
                 Grid(index: 0),
                 Grid(index: 1),
                 Grid(index: 2),
-                Grid(index: 3),
+                Grid(index: 3)
             ]
         }
     }

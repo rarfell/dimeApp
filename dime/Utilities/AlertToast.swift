@@ -264,8 +264,7 @@ public struct AlertToast: View {
                 title: String? = nil,
                 subTitle: String? = nil,
                 style: AlertStyle? = nil,
-                onTap: (() -> Void)? = nil)
-    {
+                onTap: (() -> Void)? = nil) {
         self.displayMode = displayMode
         self.type = type
         self.title = title
@@ -277,8 +276,7 @@ public struct AlertToast: View {
     /// Short init with most used parameters
     public init(displayMode: DisplayMode,
                 type: AlertType,
-                title: String? = nil)
-    {
+                title: String? = nil) {
         self.displayMode = displayMode
         self.type = type
         self.title = title

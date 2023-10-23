@@ -652,7 +652,7 @@ struct LogInsightsView: View {
 struct SearchView: View {
     @SectionedFetchRequest<Date?, Transaction>(sectionIdentifier: \.day, sortDescriptors: [
         SortDescriptor(\.day, order: .reverse),
-        SortDescriptor(\.date, order: .reverse),
+        SortDescriptor(\.date, order: .reverse)
     ]) private var transactions: SectionedFetchResults<Date?, Transaction>
 
     @Environment(\.dismiss) var dismiss
@@ -774,7 +774,7 @@ struct FilteredSearchView: View {
 
         _transactions = SectionedFetchRequest<Date?, Transaction>(sectionIdentifier: \.day, sortDescriptors: [
             SortDescriptor(\.day, order: .reverse),
-            SortDescriptor(\.date, order: .reverse),
+            SortDescriptor(\.date, order: .reverse)
         ], predicate: compound)
 
         self.searchQuery = searchQuery
@@ -944,7 +944,7 @@ struct TransactionsList: View {
     @SectionedFetchRequest<Date?, Transaction>(sectionIdentifier: \.day, sortDescriptors: [
         SortDescriptor(\.day, order: .reverse),
         SortDescriptor(\.date, order: .reverse),
-        SortDescriptor(\.note),
+        SortDescriptor(\.note)
     ], predicate: NSPredicate(format: "%K <= %@", #keyPath(Transaction.date), Date.now as CVarArg)) private var transactions: SectionedFetchResults<Date?, Transaction>
 
     var body: some View {
@@ -1658,7 +1658,7 @@ struct FilteredRecurringView: View {
         _transactions = SectionedFetchRequest<Date?, Transaction>(sectionIdentifier: \.day, sortDescriptors: [
             SortDescriptor(\.day, order: .reverse),
             SortDescriptor(\.date, order: .reverse),
-            SortDescriptor(\.note, order: .reverse),
+            SortDescriptor(\.note, order: .reverse)
         ], predicate: andPredicate)
     }
 }
@@ -1687,7 +1687,7 @@ struct FilteredTypeView: View {
 
         _transactions = SectionedFetchRequest<Date?, Transaction>(sectionIdentifier: \.day, sortDescriptors: [
             SortDescriptor(\.day, order: .reverse),
-            SortDescriptor(\.date, order: .reverse),
+            SortDescriptor(\.date, order: .reverse)
         ], predicate: andPredicate)
 
         self.income = income
@@ -1719,12 +1719,12 @@ struct FilteredCategoryView: View {
 
             _transactions = SectionedFetchRequest<Date?, Transaction>(sectionIdentifier: \.day, sortDescriptors: [
                 SortDescriptor(\.day, order: .reverse),
-                SortDescriptor(\.date, order: .reverse),
+                SortDescriptor(\.date, order: .reverse)
             ], predicate: andPredicate)
         } else {
             _transactions = SectionedFetchRequest<Date?, Transaction>(sectionIdentifier: \.day, sortDescriptors: [
                 SortDescriptor(\.day, order: .reverse),
-                SortDescriptor(\.date, order: .reverse),
+                SortDescriptor(\.date, order: .reverse)
             ])
         }
 
@@ -1765,7 +1765,7 @@ struct FilteredDateView: View {
         let andPredicate = NSCompoundPredicate(type: .and, subpredicates: [futurePredicate, datePredicate])
 
         _transactions = FetchRequest<Transaction>(sortDescriptors: [
-            SortDescriptor(\.date, order: .reverse),
+            SortDescriptor(\.date, order: .reverse)
         ], predicate: andPredicate)
 
         self.date = date
@@ -2017,7 +2017,7 @@ struct IncomeFilterToggleView: View {
 
 struct DateStepperView: View {
     @FetchRequest(sortDescriptors: [
-        SortDescriptor(\.day),
+        SortDescriptor(\.day)
     ]) private var transactions: FetchedResults<Transaction>
 
     @Binding var date: Date
@@ -2090,11 +2090,11 @@ struct DateStepperView: View {
 
 struct WeekStepperView: View {
     @FetchRequest(sortDescriptors: [
-        SortDescriptor(\.day),
+        SortDescriptor(\.day)
     ]) private var transactions: FetchedResults<Transaction>
 
     @FetchRequest(sortDescriptors: [
-        SortDescriptor(\.day, order: .reverse),
+        SortDescriptor(\.day, order: .reverse)
     ], predicate: NSPredicate(format: "%K < %@", #keyPath(Transaction.date), Date.now as CVarArg)) private var transactionsReversed: FetchedResults<Transaction>
 
     @Binding var showingDate: Date
@@ -2201,11 +2201,11 @@ struct WeekStepperView: View {
 
 struct MonthStepperView: View {
     @FetchRequest(sortDescriptors: [
-        SortDescriptor(\.day),
+        SortDescriptor(\.day)
     ]) private var transactions: FetchedResults<Transaction>
 
     @FetchRequest(sortDescriptors: [
-        SortDescriptor(\.day, order: .reverse),
+        SortDescriptor(\.day, order: .reverse)
     ], predicate: NSPredicate(format: "%K < %@", #keyPath(Transaction.date), Date.now as CVarArg)) private var transactionsReversed: FetchedResults<Transaction>
 
     @Binding var showingDate: Date

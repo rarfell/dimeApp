@@ -115,14 +115,14 @@ struct ImportDataView: View {
         InstructionHeadings(title: "Assign amount column", subtitle: "Select a column from your import that corresponds to the values of your transactions."),
         InstructionHeadings(title: "Indicate date format", subtitle: "Referencing this article, state the format of the dates in the assigned column."),
         InstructionHeadings(title: "Link categories", subtitle: "Match values found in the 'Category' column to the corresponding categories in Dime."),
-        InstructionHeadings(title: "Processing import", subtitle: "Please wait while we process your new transactions."),
+        InstructionHeadings(title: "Processing import", subtitle: "Please wait while we process your new transactions.")
     ]
 
     let labels: [ColumnLabel] = [
         ColumnLabel(image: "square.grid.2x2.fill", label: "Category"),
         ColumnLabel(image: "doc.plaintext.fill", label: "Note"),
         ColumnLabel(image: "calendar", label: "Date"),
-        ColumnLabel(image: "dollarsign.circle.fill", label: "Amount"),
+        ColumnLabel(image: "dollarsign.circle.fill", label: "Amount")
     ]
 
     let pointers = ["Ensure that the values in the 'Amount' column do not contain any currency symbols.", "All dates should be of a consistent, recognizable format. If no timestamps are provided, the time of transaction will default to 12:00 am.", "Remove all commas in the 'Note' and 'Category' columns as they would disrupt the parsing of your file."]

@@ -49,8 +49,7 @@ extension Bundle {
     func decode<T: Decodable>(_: T.Type,
                               from file: String,
                               dateDecodingStategy: JSONDecoder.DateDecodingStrategy = .deferredToDate,
-                              keyDecodingStrategy: JSONDecoder.KeyDecodingStrategy = .useDefaultKeys) -> T
-    {
+                              keyDecodingStrategy: JSONDecoder.KeyDecodingStrategy = .useDefaultKeys) -> T {
         guard let url = url(forResource: file, withExtension: nil) else {
             fatalError("Error: Failed to locate \(file) in bundle.")
         }

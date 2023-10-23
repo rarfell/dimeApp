@@ -16,7 +16,7 @@ struct MainBudgetWidget: Widget {
             return [
                 .accessoryCircular,
                 .accessoryRectangular,
-                .systemSmall,
+                .systemSmall
             ]
         } else {
             return [.systemSmall]

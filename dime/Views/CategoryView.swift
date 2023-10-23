@@ -730,7 +730,7 @@ struct CategoryListView: View {
 
     init(income: Binding<Bool>, mode: CategoryViewMode, showToast: Binding<Bool>, toastTitle: Binding<String>, toastImage: Binding<String>, positive: Binding<Bool>) {
         _categories = FetchRequest<Category>(sortDescriptors: [
-            SortDescriptor(\.order),
+            SortDescriptor(\.order)
         ], predicate: NSPredicate(format: "income = %d", income.wrappedValue))
 
         _income = income
@@ -1780,7 +1780,7 @@ struct SuggestedCategoriesView: View {
 
     init(income: Bool) {
         _categories = FetchRequest<Category>(sortDescriptors: [
-            SortDescriptor(\.order),
+            SortDescriptor(\.order)
         ], predicate: NSPredicate(format: "income = %d", income))
 
         self.income = income
@@ -1903,7 +1903,7 @@ struct ColourPickerView: View {
         GridItem(.fixed(40), spacing: 6),
         GridItem(.fixed(40), spacing: 6),
         GridItem(.fixed(40), spacing: 6),
-        GridItem(.fixed(40)),
+        GridItem(.fixed(40))
     ]
 
     @AppStorage("colourScheme", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var colourScheme: Int = 0

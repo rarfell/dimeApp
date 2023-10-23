@@ -1289,11 +1289,11 @@ struct FilteredSearchNewTransactionView: View {
             let andPredicate = NSCompoundPredicate(type: .and, subpredicates: [compound, categoryPredicate])
 
             _transactions = FetchRequest<Transaction>(sortDescriptors: [
-                SortDescriptor(\.date, order: .reverse),
+                SortDescriptor(\.date, order: .reverse)
             ], predicate: andPredicate)
         } else {
             _transactions = FetchRequest<Transaction>(sortDescriptors: [
-                SortDescriptor(\.date, order: .reverse),
+                SortDescriptor(\.date, order: .reverse)
             ], predicate: compound)
         }
 
@@ -1494,7 +1494,7 @@ struct CategoryPickerView: View {
 
     init(category: Binding<Category?>?, showPicker: Binding<Bool>, showSheet: Binding<Bool>, income: Bool, darkMode: Bool) {
         _categories = FetchRequest<Category>(sortDescriptors: [
-            SortDescriptor(\.order, order: .reverse),
+            SortDescriptor(\.order, order: .reverse)
         ], predicate: NSPredicate(format: "income = %d", income))
         self.darkMode = darkMode
         initialCategory = category?.wrappedValue

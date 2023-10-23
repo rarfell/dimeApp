@@ -17,13 +17,13 @@ struct RecentExpenditureWidget: Widget {
                 .accessoryRectangular,
                 .accessoryInline,
                 .systemSmall,
-                .systemLarge,
+                .systemLarge
             ]
         } else if #available(iOSApplicationExtension 16, *) {
             return [
                 .accessoryRectangular,
                 .accessoryInline,
-                .systemSmall,
+                .systemSmall
             ]
         } else {
             return [.systemSmall]

@@ -14,7 +14,7 @@ struct NewExpenseWidget: Widget {
     private var supportedFamilies: [WidgetFamily] {
         if #available(iOSApplicationExtension 16, *) {
             return [
-                .accessoryCircular,
+                .accessoryCircular
             ]
         } else {
             return [WidgetFamily]()

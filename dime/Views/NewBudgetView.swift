@@ -191,7 +191,7 @@ struct BrandNewBudgetView: View {
             InstructionHeadings(title: "Select a category", subtitle: "Begin by linking this budget to an existing category."),
             InstructionHeadings(title: "Choose a time frame", subtitle: "The budget will periodically refresh according to your preference."),
             InstructionHeadings(title: "Pick a start date", subtitle: "Which day of the \(timeFrameString) do you want your budget to start from?"),
-            InstructionHeadings(title: "Set budget amount", subtitle: "Try your best to stay under this limit! Also, feel free to change this in the future."),
+            InstructionHeadings(title: "Set budget amount", subtitle: "Try your best to stay under this limit! Also, feel free to change this in the future.")
         ]
     }
 
@@ -1126,7 +1126,7 @@ struct BrandNewBudgetView: View {
 //        self.toEdit = toEdit
 
         _categories = FetchRequest<Category>(sortDescriptors: [
-            SortDescriptor(\.order),
+            SortDescriptor(\.order)
         ], predicate: andPredicate)
     }
 }

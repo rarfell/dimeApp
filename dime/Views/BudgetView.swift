@@ -50,7 +50,7 @@ struct ActualBudgetView: View {
     @State private var showInfo = false
 
     @FetchRequest(sortDescriptors: [
-        SortDescriptor(\.dateCreated),
+        SortDescriptor(\.dateCreated)
     ]) private var budgets: FetchedResults<Budget>
     @FetchRequest(sortDescriptors: []) private var mainBudget: FetchedResults<MainBudget>
     @Environment(\.managedObjectContext) var moc
@@ -66,7 +66,7 @@ struct ActualBudgetView: View {
 
     let layout = [
         GridItem(.flexible(), spacing: 15),
-        GridItem(.flexible(), spacing: 15),
+        GridItem(.flexible(), spacing: 15)
     ]
 
     @AppStorage("budgetViewStyle", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var budgetRows: Bool = false
@@ -1873,13 +1873,13 @@ struct FilteredCategoryDayBudgetView: View {
             let andPredicate = NSCompoundPredicate(type: .and, subpredicates: [datePredicate, categoryPredicate, incomePredicate, dateCapPredicate])
 
             _transactions = FetchRequest<Transaction>(sortDescriptors: [
-                SortDescriptor(\.date, order: .reverse),
+                SortDescriptor(\.date, order: .reverse)
             ], predicate: andPredicate)
         } else {
             let andPredicate = NSCompoundPredicate(type: .and, subpredicates: [datePredicate, incomePredicate, dateCapPredicate])
 
             _transactions = FetchRequest<Transaction>(sortDescriptors: [
-                SortDescriptor(\.date, order: .reverse),
+                SortDescriptor(\.date, order: .reverse)
             ], predicate: andPredicate)
         }
 
@@ -1971,14 +1971,14 @@ struct FilteredBudgetView: View {
 
             _transactions = SectionedFetchRequest<Date?, Transaction>(sectionIdentifier: \.day, sortDescriptors: [
                 SortDescriptor(\.day, order: .reverse),
-                SortDescriptor(\.date, order: .reverse),
+                SortDescriptor(\.date, order: .reverse)
             ], predicate: andPredicate)
         } else {
             let andPredicate = NSCompoundPredicate(type: .and, subpredicates: [startPredicate, endPredicate, incomePredicate])
 
             _transactions = SectionedFetchRequest<Date?, Transaction>(sectionIdentifier: \.day, sortDescriptors: [
                 SortDescriptor(\.day, order: .reverse),
-                SortDescriptor(\.date, order: .reverse),
+                SortDescriptor(\.date, order: .reverse)
             ], predicate: andPredicate)
         }
 
@@ -2509,11 +2509,11 @@ struct BudgetStepperView: View {
     init(category: Category?, date: Binding<Date>, startDate: Date, budgetType: Int) {
         if let unwrappedCategory = category {
             _transactions = FetchRequest<Transaction>(sortDescriptors: [
-                SortDescriptor(\.day),
+                SortDescriptor(\.day)
             ], predicate: NSPredicate(format: "%K == %@", #keyPath(Transaction.category), unwrappedCategory))
         } else {
             _transactions = FetchRequest<Transaction>(sortDescriptors: [
-                SortDescriptor(\.day),
+                SortDescriptor(\.day)
             ])
         }
 

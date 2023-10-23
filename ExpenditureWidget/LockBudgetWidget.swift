@@ -16,7 +16,7 @@ struct LockBudgetWidget: Widget {
             return [
                 .accessoryCircular,
                 .accessoryRectangular,
-                .accessoryInline,
+                .accessoryInline
             ]
         } else {
             return [WidgetFamily]()
