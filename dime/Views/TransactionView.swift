@@ -11,8 +11,12 @@ import Popovers
 import SwiftUI
 
 struct TransactionView: View {
-    @FetchRequest(sortDescriptors: [], predicate: NSPredicate(format: "income = %d", false)) private var expenseCategories: FetchedResults<Category>
-    @FetchRequest(sortDescriptors: [], predicate: NSPredicate(format: "income = %d", true)) private var incomeCategories: FetchedResults<Category>
+    @FetchRequest(sortDescriptors: [
+        NSSortDescriptor(keyPath: \Category.name, ascending: true)
+    ], predicate: NSPredicate(format: "income = %d", false)) private var expenseCategories: FetchedResults<Category>
+    @FetchRequest(sortDescriptors: [
+        NSSortDescriptor(keyPath: \Category.name, ascending: true)
+    ], predicate: NSPredicate(format: "income = %d", true)) private var incomeCategories: FetchedResults<Category>
 
     @Environment(\.managedObjectContext) var moc
     @EnvironmentObject var dataController: DataController
