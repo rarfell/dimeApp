@@ -900,6 +900,7 @@ struct SingleGraphView: View {
 
 struct WeekGraphView: View {
     @EnvironmentObject var dataController: DataController
+
     private var didSave = NotificationCenter.default.publisher(for: .NSManagedObjectContextDidSave)
     @State private var refreshID = UUID()
 
@@ -985,17 +986,7 @@ struct WeekGraphView: View {
     @AppStorage("insightsViewIncomeFiltering", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var income: Bool = true
     @AppStorage("incomeTracking", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var incomeTracking: Bool = true
 
-    var graphHeight: CGFloat {
-        if incomeTracking {
-            if incomeFiltering {
-                return UIScreen.main.bounds.height / 2.8
-            } else {
-                return UIScreen.main.bounds.height / 7
-            }
-        } else {
-            return UIScreen.main.bounds.height / 3.5
-        }
-    }
+//    @Environment(\.dynamicTypeMultiplier) var multiplier
 
     @State var incomeFiltering: Bool = true
 
@@ -1014,34 +1005,11 @@ struct WeekGraphView: View {
                     if !changeDate {
                         HStack {
                             if showingWeek != startOfLastWeek {
-                                VStack(spacing: 8) {
-                                    Image(systemName: "arrow.backward.circle.fill")
-                                        .font(.system(size: 18, weight: .medium))
-                                        //                                .scaleEffect(changeTime ? 1.3 : 1)
-                                        .foregroundColor(changeTime ? Color.PrimaryText : Color.SecondaryBackground)
-
-                                    Text(swipeStrings.backward.uppercased())
-                                        .font(.system(size: 14, weight: .semibold, design: .rounded))
-                                        .multilineTextAlignment(.center)
-                                        .foregroundColor(changeTime ? Color.PrimaryText : Color.SecondaryBackground)
-                                }
-                                .drawingGroup()
+                                SwipeArrowView(left: true, swipeString: swipeStrings.backward.uppercased(), changeTime: changeTime)
                                 .offset(x: -100)
                                 .offset(x: min(100, offset))
                             } else {
-                                VStack(spacing: 8) {
-                                    Image(systemName: "eyeglasses")
-                                        .font(.system(size: 22, weight: .medium))
-                                        .foregroundColor(Color.SubtitleText)
-
-                                    Text("That's all, buddy.")
-                                        .font(.system(size: 14, weight: .semibold, design: .rounded))
-                                        .frame(width: 90)
-                                        .multilineTextAlignment(.center)
-                                        .foregroundColor(Color.SubtitleText)
-                                }
-                                .opacity(0.8)
-                                .drawingGroup()
+                                SwipeEndView(left: true)
                                 .offset(x: -120)
                                 .offset(x: min(120, offset))
                             }
@@ -1053,33 +1021,11 @@ struct WeekGraphView: View {
                             Spacer()
 
                             if showingWeek != startOfCurrentWeek {
-                                VStack(spacing: 8) {
-                                    Image(systemName: "arrow.forward.circle.fill")
-                                        .font(.system(size: 18, weight: .medium))
-                                        .foregroundColor(changeTime ? Color.PrimaryText : Color.SecondaryBackground)
-
-                                    Text(swipeStrings.forward.uppercased())
-                                        .font(.system(size: 14, weight: .semibold, design: .rounded))
-                                        .multilineTextAlignment(.center)
-                                        .foregroundColor(changeTime ? Color.PrimaryText : Color.SecondaryBackground)
-                                }
-                                .drawingGroup()
+                                SwipeArrowView(left: false, swipeString: swipeStrings.forward.uppercased(), changeTime: changeTime)
                                 .offset(x: 100)
                                 .offset(x: max(-100, offset))
                             } else {
-                                VStack(spacing: 8) {
-                                    Image(systemName: "sun.haze.fill")
-                                        .font(.system(size: 22, weight: .medium))
-                                        .foregroundColor(Color.SubtitleText)
-
-                                    Text("Into the unknown.")
-                                        .font(.system(size: 14, weight: .semibold, design: .rounded))
-                                        .frame(width: 90)
-                                        .multilineTextAlignment(.center)
-                                        .foregroundColor(Color.SubtitleText)
-                                }
-                                .opacity(0.8)
-                                .drawingGroup()
+                                SwipeEndView(left: false)
                                 .offset(x: 120)
                                 .offset(x: max(-120, offset))
                             }
@@ -1105,8 +1051,6 @@ struct WeekGraphView: View {
                                     offset = value.translation.width * 0.5
                                 }
                             }
-//
-//
                         }.onEnded { _ in
                             if changeTime {
                                 if offset < 0, showingWeek != startOfCurrentWeek {
@@ -1165,7 +1109,7 @@ struct WeekGraphView: View {
                     selectedDate = nil
                     categoryFilterMode = false
                 }
-                .frame(height: graphHeight, alignment: .top)
+//                .frame(height: getGraphHeight(incomeTracking: incomeTracking, incomeFiltering: incomeFiltering, multiplier: multiplier), alignment: .top)
                 .padding(.bottom, incomeFiltering ? 5 : 20)
 
                 if selectedDate == nil && incomeFiltering {
@@ -1227,80 +1171,77 @@ struct SingleWeekBarGraphView: View {
     }
 
     var body: some View {
-        GeometryReader { proxy in
-            ZStack(alignment: .top) {
-                HStack(alignment: .top, spacing: 8) {
-                    // axes
-                    VStack(alignment: .leading) {
-                        Text(getMaxText(maxi: getMax))
-                            .font(.system(size: 12, weight: .regular, design: .rounded))
-                            .foregroundColor(Color.SubtitleText)
+        ZStack(alignment: .top) {
+            HStack(alignment: .top, spacing: 8) {
+                // axes
+                VStack(alignment: .leading) {
+                    Text(getMaxText(maxi: getMax))
+                        .font(.system(size: 12, weight: .regular, design: .rounded))
+                        .foregroundColor(Color.SubtitleText)
 
-                        Spacer()
+                    Spacer()
 
-                        Text("0")
-                            .font(.system(size: 12, weight: .regular, design: .rounded))
-                            .foregroundColor(Color.SubtitleText)
-                    }
-                    .frame(height: proxy.size.height * 0.85)
-                    .padding(.trailing, 3)
+                    Text("0")
+                        .font(.system(size: 12, weight: .regular, design: .rounded))
+                        .foregroundColor(Color.SubtitleText)
+                }
+                .frame(height: barHeight)
+                .padding(.trailing, 3)
 
-                    // bars
-                    HStack(spacing: 7) {
-                        ForEach(daysOfWeek, id: \.self) { day in
-                            VStack(spacing: 5) {
-                                ZStack(alignment: .bottom) {
-                                    RoundedRectangle(cornerRadius: 6, style: .continuous)
-                                        .fill(Color.SecondaryBackground)
-                                        .frame(height: proxy.size.height * 0.85)
+                // bars
+                HStack(spacing: 7) {
+                    ForEach(daysOfWeek, id: \.self) { day in
+                        VStack(spacing: 5) {
+                            ZStack(alignment: .bottom) {
+                                RoundedRectangle(cornerRadius: 6, style: .continuous)
+                                    .fill(Color.SecondaryBackground)
+                                    .frame(height: barHeight)
 
-                                    AnimatedBarGraph(index: daysOfWeek.firstIndex(of: day) ?? 0)
-                                        .frame(height: getBarHeight(point: dayDictionary[day] ?? 0, size: proxy.size, maxi: getMax))
-                                        .opacity(selectedDate == nil ? 1 : (selectedDate == day ? 1 : 0.4))
-                                }
-
-                                Text(getWeekday(day: day).prefix(1))
-                                    .font(.system(size: 12, weight: .bold, design: .rounded))
-                                    .foregroundColor(Color.SubtitleText)
+                                AnimatedBarGraph(index: daysOfWeek.firstIndex(of: day) ?? 0)
+                                    .frame(height: getBarHeight(point: dayDictionary[day] ?? 0, maxi: getMax))
+                                    .opacity(selectedDate == nil ? 1 : (selectedDate == day ? 1 : 0.4))
                             }
-                            .opacity(day > Date.now ? 0.3 : 1)
-                            .frame(maxWidth: .infinity)
-                            .allowsHitTesting(!(day > Date.now))
-                            .onTapGesture {
-                                withAnimation(.easeIn(duration: 0.2)) {
-                                    if selectedDate == day {
-                                        selectedDate = nil
-                                        categoryFilterMode = false
-                                    } else {
-                                        selectedDate = day
-                                        categoryFilterMode = false
-                                    }
+
+                            Text(getWeekday(day: day).prefix(1))
+                                .font(.system(size: 12, weight: .bold, design: .rounded))
+                                .foregroundColor(Color.SubtitleText)
+                        }
+                        .opacity(day > Date.now ? 0.3 : 1)
+                        .frame(maxWidth: .infinity)
+                        .allowsHitTesting(!(day > Date.now))
+                        .onTapGesture {
+                            withAnimation(.easeIn(duration: 0.2)) {
+                                if selectedDate == day {
+                                    selectedDate = nil
+                                    categoryFilterMode = false
+                                } else {
+                                    selectedDate = day
+                                    categoryFilterMode = false
                                 }
                             }
                         }
                     }
-                    .frame(maxWidth: .infinity)
                 }
-                .frame(width: proxy.size.width)
-                .frame(maxHeight: .infinity)
-
-                // average line
-                HStack(spacing: 8) {
-                    Text(getAverageText(average: weekAverage))
-                        .lineLimit(1)
-                        .font(.system(size: 12, weight: .bold, design: .rounded))
-                        .foregroundColor(Color.SubtitleText)
-                        .offset(y: -1)
-                        .opacity((weekAverage / Double(getMax)) < 0.2 || (weekAverage / Double(getMax)) > 0.8 ? 0 : 1)
-
-                    Line()
-                        .stroke(Color.SubtitleText, style: StrokeStyle(lineWidth: 2, lineCap: .round, dash: [5]))
-                        .frame(height: 1)
-                        .frame(maxWidth: .infinity)
-                }
-                .opacity(actualDays <= 1 ? 0 : 1)
-                .offset(y: getOffset(size: proxy.size, maxi: getMax, average: weekAverage) - 5)
+                .frame(maxWidth: .infinity)
             }
+            .frame(maxWidth: .infinity)
+
+            // average line
+            HStack(spacing: 8) {
+                Text(getAverageText(average: weekAverage))
+                    .lineLimit(1)
+                    .font(.system(size: 12, weight: .bold, design: .rounded))
+                    .foregroundColor(Color.SubtitleText)
+                    .offset(y: -1)
+                    .opacity((weekAverage / Double(getMax)) < 0.2 || (weekAverage / Double(getMax)) > 0.8 ? 0 : 1)
+
+                Line()
+                    .stroke(Color.SubtitleText, style: StrokeStyle(lineWidth: 2, lineCap: .round, dash: [5]))
+                    .frame(height: 1)
+                    .frame(maxWidth: .infinity)
+            }
+            .opacity(actualDays <= 1 ? 0 : 1)
+            .offset(y: getOffset(maxi: getMax, average: weekAverage) - 5)
         }
         .onChange(of: selectedDate) { _ in
             selectedDateAmount = dayDictionary[selectedDate ?? Date.now] ?? 0.0
@@ -1415,17 +1356,7 @@ struct MonthGraphView: View {
     @AppStorage("insightsViewIncomeFiltering", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var income: Bool = true
     @AppStorage("incomeTracking", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var incomeTracking: Bool = true
 
-    var graphHeight: CGFloat {
-        if incomeTracking {
-            if incomeFiltering {
-                return UIScreen.main.bounds.height / 2.8
-            } else {
-                return UIScreen.main.bounds.height / 7
-            }
-        } else {
-            return UIScreen.main.bounds.height / 3.5
-        }
-    }
+//    @Environment(\.dynamicTypeMultiplier) var multiplier
 
     @State var incomeFiltering: Bool = true
 
@@ -1444,34 +1375,11 @@ struct MonthGraphView: View {
                     if !changeDate {
                         HStack {
                             if showingMonth != startOfLastMonth {
-                                VStack(spacing: 8) {
-                                    Image(systemName: "arrow.backward.circle.fill")
-                                        .font(.system(size: changeTime ? 25 : 18, weight: .medium))
-                                        //                                .scaleEffect(changeTime ? 1.3 : 1)
-                                        .foregroundColor(changeTime ? Color.PrimaryText : Color.SecondaryBackground)
-
-                                    Text(swipeStrings.backward.uppercased())
-                                        .font(.system(size: 14, weight: .semibold, design: .rounded))
-                                        .multilineTextAlignment(.center)
-                                        .foregroundColor(changeTime ? Color.PrimaryText : Color.SecondaryBackground)
-                                }
-                                .drawingGroup()
+                                SwipeArrowView(left: true, swipeString: swipeStrings.backward.uppercased(), changeTime: changeTime)
                                 .offset(x: -100)
                                 .offset(x: min(100, offset))
                             } else {
-                                VStack(spacing: 8) {
-                                    Image(systemName: "eyeglasses")
-                                        .font(.system(size: 22, weight: .medium))
-                                        .foregroundColor(Color.SubtitleText)
-
-                                    Text("That's all, buddy.")
-                                        .font(.system(size: 14, weight: .semibold, design: .rounded))
-                                        .frame(width: 90)
-                                        .multilineTextAlignment(.center)
-                                        .foregroundColor(Color.SubtitleText)
-                                }
-                                .opacity(0.8)
-                                .drawingGroup()
+                                SwipeEndView(left: true)
                                 .offset(x: -120)
                                 .offset(x: min(120, offset))
                             }
@@ -1483,33 +1391,11 @@ struct MonthGraphView: View {
                             Spacer()
 
                             if showingMonth != startOfCurrentMonth {
-                                VStack(spacing: 8) {
-                                    Image(systemName: "arrow.forward.circle.fill")
-                                        .font(.system(size: changeTime ? 25 : 18, weight: .medium))
-                                        .foregroundColor(changeTime ? Color.PrimaryText : Color.SecondaryBackground)
-
-                                    Text(swipeStrings.forward.uppercased())
-                                        .font(.system(size: 14, weight: .semibold, design: .rounded))
-                                        .multilineTextAlignment(.center)
-                                        .foregroundColor(changeTime ? Color.PrimaryText : Color.SecondaryBackground)
-                                }
-                                .drawingGroup()
+                                SwipeArrowView(left: false, swipeString: swipeStrings.forward.uppercased(), changeTime: changeTime)
                                 .offset(x: 100)
                                 .offset(x: max(-100, offset))
                             } else {
-                                VStack(spacing: 8) {
-                                    Image(systemName: "sun.haze.fill")
-                                        .font(.system(size: 22, weight: .medium))
-                                        .foregroundColor(Color.SubtitleText)
-
-                                    Text("Into the unknown.")
-                                        .font(.system(size: 14, weight: .semibold, design: .rounded))
-                                        .frame(width: 90)
-                                        .multilineTextAlignment(.center)
-                                        .foregroundColor(Color.SubtitleText)
-                                }
-                                .opacity(0.8)
-                                .drawingGroup()
+                                SwipeEndView(left: false)
                                 .offset(x: 120)
                                 .offset(x: max(-120, offset))
                             }
@@ -1593,7 +1479,6 @@ struct MonthGraphView: View {
                     selectedDate = nil
                     categoryFilterMode = false
                 }
-                .frame(height: graphHeight, alignment: .top)
                 .padding(.bottom, incomeFiltering ? 5 : 20)
 
                 if selectedDate == nil && incomeFiltering {
@@ -1659,86 +1544,89 @@ struct SingleMonthBarGraphView: View {
     let numberArray = [1, 8, 15, 22, 29]
 
     var body: some View {
-        GeometryReader { proxy in
-            ZStack(alignment: .top) {
-                HStack(alignment: .top, spacing: 3) {
-                    // axes
-                    VStack(alignment: .leading) {
-                        Text(getMaxText(maxi: getMax))
-                            .font(.system(size: 12, weight: .regular, design: .rounded))
-                            .foregroundColor(Color.SubtitleText)
+        ZStack(alignment: .top) {
+            HStack(alignment: .top, spacing: 3) {
+                // axes
+                VStack(alignment: .leading) {
+                    Text(getMaxText(maxi: getMax))
+                        .font(.system(size: 12, weight: .regular, design: .rounded))
+                        .foregroundColor(Color.SubtitleText)
 
-                        Spacer()
+                    Spacer()
 
-                        Text("0")
-                            .font(.system(size: 12, weight: .regular, design: .rounded))
-                            .foregroundColor(Color.SubtitleText)
-                    }
-                    .frame(height: proxy.size.height * 0.86)
-                    .padding(.trailing, 3)
+                    Text("0")
+                        .font(.system(size: 12, weight: .regular, design: .rounded))
+                        .foregroundColor(Color.SubtitleText)
 
-                    // bars
-                    HStack(alignment: .top, spacing: 2) {
-                        ForEach(daysOfMonth, id: \.self) { day in
-                            ZStack(alignment: .bottom) {
-                                RoundedRectangle(cornerRadius: 6, style: .continuous)
-                                    .fill(Color.SecondaryBackground)
-                                    .frame(height: proxy.size.height * 0.85)
-                                    .zIndex(0)
+                }
+                .frame(height: barHeight)
+                .padding(.trailing, 3)
 
-                                AnimatedBarGraph(index: daysOfMonth.firstIndex(of: day) ?? 0)
-                                    .frame(height: getBarHeight(point: dayDictionary[day] ?? 0, size: proxy.size, maxi: getMax))
-                                    .opacity(selectedDate == nil ? 1 : (selectedDate == day ? 1 : 0.4))
-                                    .zIndex(0)
-                                    .overlay(alignment: .bottom) {
-                                        if numberArray.contains((daysOfMonth.firstIndex(of: day) ?? -1) + 1) && firstDayOfMonth == 1 {
-                                            Text("\((daysOfMonth.firstIndex(of: day) ?? -1) + 1)")
-                                                .font(.system(size: 12, weight: .bold, design: .rounded))
-                                                .foregroundColor(Color.SubtitleText)
-                                                .frame(width: 20, alignment: .center)
-                                                .offset(y: 20)
-                                        }
+                // bars
+                HStack(alignment: .top, spacing: 2) {
+                    ForEach(daysOfMonth, id: \.self) { day in
+                        ZStack(alignment: .bottom) {
+                            RoundedRectangle(cornerRadius: 6, style: .continuous)
+                                .fill(Color.SecondaryBackground)
+                                .frame(height: barHeight)
+                                .zIndex(0)
+
+                            AnimatedBarGraph(index: daysOfMonth.firstIndex(of: day) ?? 0)
+                                .frame(height: getBarHeight(point: dayDictionary[day] ?? 0, maxi: getMax))
+                                .opacity(selectedDate == nil ? 1 : (selectedDate == day ? 1 : 0.4))
+                                .zIndex(0)
+                                .overlay(alignment: .bottom) {
+                                    if numberArray.contains(((daysOfMonth.firstIndex(of: day) ?? -1) + 1)) && firstDayOfMonth == 1 {
+                                        Text("\((daysOfMonth.firstIndex(of: day) ?? -1) + 1)")
+                                            .font(.system(size: 12, weight: .bold, design: .rounded))
+                                            .foregroundColor(Color.SubtitleText)
+                                            .frame(width: 20, alignment: .center)
+                                            .offset(y: 20)
                                     }
-                            }
-                            .padding(.bottom, firstDayOfMonth == 1 ? 22 : 0)
-                            .opacity(day > Date.now ? 0.3 : 1)
-                            .frame(maxWidth: .infinity)
-                            .allowsHitTesting(!(day > Date.now))
-                            .onTapGesture {
-                                withAnimation(.easeIn(duration: 0.2)) {
-                                    if selectedDate == day {
-                                        selectedDate = nil
-                                        categoryFilterMode = false
-                                    } else {
-                                        selectedDate = day
-                                        categoryFilterMode = false
-                                    }
+                                }
+                        }
+                        .padding(.bottom, firstDayOfMonth == 1 ? 22 : 0)
+                        .opacity(day > Date.now ? 0.3 : 1)
+                        .frame(maxWidth: .infinity)
+                        .allowsHitTesting(!(day > Date.now))
+                        .onTapGesture {
+                            withAnimation(.easeIn(duration: 0.2)) {
+                                if selectedDate == day {
+                                    selectedDate = nil
+                                    categoryFilterMode = false
+                                } else {
+                                    selectedDate = day
+                                    categoryFilterMode = false
                                 }
                             }
                         }
                     }
-                    .frame(maxWidth: .infinity)
                 }
-                .frame(width: proxy.size.width, height: proxy.size.height)
-//                .frame(maxHeight: .infinity)
+                .frame(maxWidth: .infinity)
 
-                // average line
-                HStack(spacing: 8) {
-                    Text(getAverageText(average: monthAverage))
-                        .lineLimit(1)
-                        .font(.system(size: 12, weight: .bold, design: .rounded))
-                        .foregroundColor(Color.SubtitleText)
-                        .offset(y: -1)
-                        .opacity((monthAverage / Double(getMax)) < 0.2 || (monthAverage / Double(getMax)) > 0.8 ? 0 : 1)
-
-                    Line()
-                        .stroke(Color.SubtitleText, style: StrokeStyle(lineWidth: 2, lineCap: .round, dash: [5]))
-                        .frame(height: 1)
-                        .frame(maxWidth: .infinity)
-                }
-                .opacity(actualDays <= 1 ? 0 : 1)
-                .offset(y: getOffset(size: proxy.size, maxi: getMax, average: monthAverage) - 5)
             }
+            .frame(maxWidth: .infinity)
+
+            //                .frame(maxHeight: .infinity)
+
+            // average line
+            HStack(spacing: 8) {
+                Text(getAverageText(average: monthAverage))
+                    .lineLimit(1)
+                    .font(.system(size: 12, weight: .bold, design: .rounded))
+                    .foregroundColor(Color.SubtitleText)
+                    .offset(y: -1)
+                    .opacity((monthAverage/Double(getMax)) < 0.2 || (monthAverage/Double(getMax)) > 0.8 ? 0 : 1)
+
+                Line()
+                    .stroke(Color.SubtitleText, style: StrokeStyle(lineWidth: 2, lineCap: .round, dash: [5]))
+                    .frame(height: 1)
+                    .frame(maxWidth: .infinity)
+
+            }
+            .opacity(actualDays <= 1 ? 0 : 1)
+            .offset(y: getOffset(maxi: getMax, average: monthAverage) - 5)
+
         }
         .onChange(of: selectedDate) { _ in
             selectedDateAmount = dayDictionary[selectedDate ?? Date.now] ?? 0.0
@@ -1840,18 +1728,8 @@ struct YearGraphView: View {
 
     @AppStorage("insightsViewIncomeFiltering", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var income: Bool = true
     @AppStorage("incomeTracking", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var incomeTracking: Bool = true
-
-    var graphHeight: CGFloat {
-        if incomeTracking {
-            if incomeFiltering {
-                return UIScreen.main.bounds.height / 2.8
-            } else {
-                return UIScreen.main.bounds.height / 7
-            }
-        } else {
-            return UIScreen.main.bounds.height / 3.5
-        }
-    }
+//
+//    @Environment(\.dynamicTypeMultiplier) var multiplier
 
     @State var incomeFiltering: Bool = true
 
@@ -1870,34 +1748,11 @@ struct YearGraphView: View {
                     if !changeDate {
                         HStack {
                             if showingYear != startOfLastYear {
-                                VStack(spacing: 8) {
-                                    Image(systemName: "arrow.backward.circle.fill")
-                                        .font(.system(size: changeTime ? 25 : 18, weight: .medium))
-                                        //                                .scaleEffect(changeTime ? 1.3 : 1)
-                                        .foregroundColor(changeTime ? Color.PrimaryText : Color.SecondaryBackground)
-
-                                    Text(swipeStrings.backward.uppercased())
-                                        .font(.system(size: 14, weight: .semibold, design: .rounded))
-                                        .multilineTextAlignment(.center)
-                                        .foregroundColor(changeTime ? Color.PrimaryText : Color.SecondaryBackground)
-                                }
-                                .drawingGroup()
+                                SwipeArrowView(left: true, swipeString: swipeStrings.backward.uppercased(), changeTime: changeTime)
                                 .offset(x: -100)
                                 .offset(x: min(100, offset))
                             } else {
-                                VStack(spacing: 8) {
-                                    Image(systemName: "eyeglasses")
-                                        .font(.system(size: 22, weight: .medium))
-                                        .foregroundColor(Color.SubtitleText)
-
-                                    Text("That's all, buddy.")
-                                        .font(.system(size: 14, weight: .semibold, design: .rounded))
-                                        .frame(width: 90)
-                                        .multilineTextAlignment(.center)
-                                        .foregroundColor(Color.SubtitleText)
-                                }
-                                .opacity(0.8)
-                                .drawingGroup()
+                                SwipeEndView(left: true)
                                 .offset(x: -120)
                                 .offset(x: min(120, offset))
                             }
@@ -1909,33 +1764,11 @@ struct YearGraphView: View {
                             Spacer()
 
                             if showingYear != startOfCurrentYear {
-                                VStack(spacing: 8) {
-                                    Image(systemName: "arrow.forward.circle.fill")
-                                        .font(.system(size: changeTime ? 25 : 18, weight: .medium))
-                                        .foregroundColor(changeTime ? Color.PrimaryText : Color.SecondaryBackground)
-
-                                    Text(swipeStrings.forward.uppercased())
-                                        .font(.system(size: 14, weight: .semibold, design: .rounded))
-                                        .multilineTextAlignment(.center)
-                                        .foregroundColor(changeTime ? Color.PrimaryText : Color.SecondaryBackground)
-                                }
-                                .drawingGroup()
+                                SwipeArrowView(left: false, swipeString: swipeStrings.forward.uppercased(), changeTime: changeTime)
                                 .offset(x: 100)
                                 .offset(x: max(-100, offset))
                             } else {
-                                VStack(spacing: 8) {
-                                    Image(systemName: "sun.haze.fill")
-                                        .font(.system(size: 22, weight: .medium))
-                                        .foregroundColor(Color.SubtitleText)
-
-                                    Text("Into the unknown.")
-                                        .font(.system(size: 14, weight: .semibold, design: .rounded))
-                                        .frame(width: 90)
-                                        .multilineTextAlignment(.center)
-                                        .foregroundColor(Color.SubtitleText)
-                                }
-                                .opacity(0.8)
-                                .drawingGroup()
+                                SwipeEndView(left: false)
                                 .offset(x: 120)
                                 .offset(x: max(-120, offset))
                             }
@@ -2019,7 +1852,7 @@ struct YearGraphView: View {
                     selectedDate = nil
                     categoryFilterMode = false
                 }
-                .frame(height: graphHeight, alignment: .top)
+//                .frame(height: getGraphHeight(incomeTracking: incomeTracking, incomeFiltering: incomeFiltering, multiplier: multiplier), alignment: .top)
                 .padding(.bottom, incomeFiltering ? 5 : 20)
 
                 if selectedDate == nil && incomeFiltering {
@@ -2086,86 +1919,88 @@ struct SingleYearBarGraphView: View {
     let monthNames: [Int: String] = [1: "Jan", 4: "Apr", 7: "Jul", 10: "Oct"]
 
     var body: some View {
-        GeometryReader { proxy in
-            ZStack(alignment: .top) {
-                HStack(alignment: .top, spacing: 3) {
-                    // axes
-                    VStack(alignment: .leading) {
-                        Text(getMaxText(maxi: getMax))
-                            .font(.system(size: 12, weight: .regular, design: .rounded))
-                            .foregroundColor(Color.SubtitleText)
+        ZStack(alignment: .top) {
+            HStack(alignment: .top, spacing: 3) {
+                // axes
+                VStack(alignment: .leading) {
+                    Text(getMaxText(maxi: getMax))
+                        .font(.system(size: 12, weight: .regular, design: .rounded))
+                        .foregroundColor(Color.SubtitleText)
 
-                        Spacer()
+                    Spacer()
 
-                        Text("0")
-                            .font(.system(size: 12, weight: .regular, design: .rounded))
-                            .foregroundColor(Color.SubtitleText)
-                    }
-                    .frame(height: proxy.size.height * 0.85)
-                    .padding(.trailing, 3)
+                    Text("0")
+                        .font(.system(size: 12, weight: .regular, design: .rounded))
+                        .foregroundColor(Color.SubtitleText)
 
-                    // bars
-                    HStack(alignment: .top, spacing: 4) {
-                        ForEach(monthsOfYear, id: \.self) { month in
-                            ZStack(alignment: .bottom) {
-                                RoundedRectangle(cornerRadius: 6, style: .continuous)
-                                    .fill(Color.SecondaryBackground)
-                                    .frame(height: proxy.size.height * 0.85)
-                                    .zIndex(0)
+                }
+                .frame(height: barHeight)
+                .padding(.trailing, 3)
 
-                                AnimatedBarGraph(index: monthsOfYear.firstIndex(of: month) ?? 0)
-                                    .frame(height: getBarHeight(point: monthDictionary[month] ?? 0, size: proxy.size, maxi: getMax))
-                                    .opacity(selectedDate == nil ? 1 : (selectedDate == month ? 1 : 0.4))
-                                    .zIndex(0)
-                                    .overlay(alignment: .bottom) {
-                                        if numberArray.contains((monthsOfYear.firstIndex(of: month) ?? 0) + 1) {
-                                            Text(LocalizedStringKey(monthNames[(monthsOfYear.firstIndex(of: month) ?? 0) + 1] ?? ""))
-                                                .font(.system(size: 12, weight: .bold, design: .rounded))
-                                                .foregroundColor(Color.SubtitleText)
-                                                .frame(width: 30)
-                                                .offset(y: 20)
-                                        }
+                // bars
+                HStack(alignment: .top, spacing: 4) {
+                    ForEach(monthsOfYear, id: \.self) { month in
+                        ZStack(alignment: .bottom) {
+                            RoundedRectangle(cornerRadius: 6, style: .continuous)
+                                .fill(Color.SecondaryBackground)
+                                .frame(height: barHeight)
+                                .zIndex(0)
+
+                            AnimatedBarGraph(index: monthsOfYear.firstIndex(of: month) ?? 0)
+                                .frame(height: getBarHeight(point: monthDictionary[month] ?? 0, maxi: getMax))
+                                .opacity(selectedDate == nil ? 1 : (selectedDate == month ? 1 : 0.4))
+                                .zIndex(0)
+                                .overlay(alignment: .bottom) {
+                                    if numberArray.contains(((monthsOfYear.firstIndex(of: month) ?? 0) + 1)) {
+                                        Text(LocalizedStringKey(monthNames[((monthsOfYear.firstIndex(of: month) ?? 0) + 1)] ?? ""))
+                                            .font(.system(size: 12, weight: .bold, design: .rounded))
+                                            .foregroundColor(Color.SubtitleText)
+                                            .frame(width: 30)
+                                            .offset(y: 20)
                                     }
-                            }
-                            .padding(.bottom, 22)
-                            .opacity(month > Date.now ? 0.3 : 1)
-                            .frame(maxWidth: .infinity)
-                            .allowsHitTesting(!(month > Date.now))
-                            .onTapGesture {
-                                withAnimation(.easeIn(duration: 0.2)) {
-                                    if selectedDate == month {
-                                        selectedDate = nil
-                                        categoryFilterMode = false
-                                    } else {
-                                        selectedDate = month
-                                        categoryFilterMode = false
-                                    }
+                                }
+                        }
+                        .padding(.bottom, 22)
+                        .opacity(month > Date.now ? 0.3 : 1)
+                        .frame(maxWidth: .infinity)
+                        .allowsHitTesting(!(month > Date.now))
+                        .onTapGesture {
+                            withAnimation(.easeIn(duration: 0.2)) {
+                                if selectedDate == month {
+                                    selectedDate = nil
+                                    categoryFilterMode = false
+                                } else {
+                                    selectedDate = month
+                                    categoryFilterMode = false
                                 }
                             }
                         }
                     }
-                    .frame(maxWidth: .infinity)
                 }
-                .frame(width: proxy.size.width)
-                .frame(maxHeight: .infinity)
+                .frame(maxWidth: .infinity)
 
-                // average line
-                HStack(spacing: 8) {
-                    Text(getAverageText(average: yearAverage))
-                        .lineLimit(1)
-                        .font(.system(size: 12, weight: .bold, design: .rounded))
-                        .foregroundColor(Color.SubtitleText)
-                        .offset(y: -1)
-                        .opacity((yearAverage / Double(getMax)) < 0.2 || (yearAverage / Double(getMax)) > 0.8 ? 0 : 1)
-
-                    Line()
-                        .stroke(Color.SubtitleText, style: StrokeStyle(lineWidth: 2, lineCap: .round, dash: [5]))
-                        .frame(height: 1)
-                        .frame(maxWidth: .infinity)
-                }
-                .opacity(actualMonths <= 1 ? 0 : 1)
-                .offset(y: getOffset(size: proxy.size, maxi: getMax, average: yearAverage) - 5)
             }
+            .frame(maxWidth: .infinity)
+
+            // average line
+            HStack(spacing: 8) {
+
+                Text(getAverageText(average: yearAverage))
+                    .lineLimit(1)
+                    .font(.system(size: 12, weight: .bold, design: .rounded))
+                    .foregroundColor(Color.SubtitleText)
+                    .offset(y: -1)
+                    .opacity((yearAverage/Double(getMax)) < 0.2 || (yearAverage/Double(getMax)) > 0.8 ? 0 : 1)
+
+                Line()
+                    .stroke(Color.SubtitleText, style: StrokeStyle(lineWidth: 2, lineCap: .round, dash: [5]))
+                    .frame(height: 1)
+                    .frame(maxWidth: .infinity)
+
+            }
+            .opacity(actualMonths <= 1 ? 0 : 1)
+            .offset(y: getOffset(maxi: getMax, average: yearAverage) - 5)
+
         }
         .onChange(of: selectedDate) { _ in
             selectedDateAmount = monthDictionary[selectedDate ?? Date.now] ?? 0.0
@@ -2439,20 +2274,67 @@ func getAverageText(average: Double) -> String {
     }
 }
 
-func getOffset(size: CGSize, maxi: Int, average: Double) -> Double {
+let barHeight = 150.0
+
+func getOffset(maxi: Int, average: Double) -> Double {
     if maxi == 0 {
         return 0
     } else {
-        let height = (size.height * 0.85) - ((average / Double(maxi)) * (size.height * 0.85))
+        let height = (barHeight) - ((average / Double(maxi)) * (barHeight))
         return height
     }
 }
 
-func getBarHeight(point: CGFloat, size: CGSize, maxi: Int) -> CGFloat {
+func getBarHeight(point: CGFloat, maxi: Int) -> CGFloat {
     if maxi == 0 {
         return 0
     } else {
-        let height = (point / CGFloat(maxi)) * (size.height * 0.85)
+        let height = (point / CGFloat(maxi)) * barHeight
         return height
+    }
+}
+
+struct SwipeArrowView: View {
+    let left: Bool
+    let swipeString: String
+    let changeTime: Bool
+
+    var body: some View {
+        VStack(spacing: 8) {
+            Image(systemName: left ? "arrow.backward.circle.fill" : "arrow.forward.circle.fill")
+                .font(.system(.body, design: .rounded).weight(.medium))
+//                                        .font(.system(size: 18, weight: .medium))
+                //                                .scaleEffect(changeTime ? 1.3 : 1)
+                .foregroundColor(changeTime ? Color.PrimaryText : Color.SecondaryBackground)
+
+            Text(swipeString)
+                .font(.system(.subheadline, design: .rounded).weight(.semibold))
+//                                        .font(.system(size: 14, weight: .semibold, design: .rounded))
+                .multilineTextAlignment(.center)
+                .foregroundColor(changeTime ? Color.PrimaryText : Color.SecondaryBackground)
+        }
+        .drawingGroup()
+    }
+}
+
+struct SwipeEndView: View {
+    let left: Bool
+
+    var body: some View {
+        VStack(spacing: 8) {
+            Image(systemName: left ? "eyeglasses" : "sun.haze.fill")
+                .font(.system(.title2, design: .rounded).weight(.medium))
+//                                        .font(.system(size: 22, weight: .medium))
+                .foregroundColor(Color.SubtitleText)
+
+            Text(left ? "That's all, buddy." : "Into the unknown.")
+                .font(.system(.subheadline, design: .rounded).weight(.semibold))
+//                                        .font(.system(size: 14, weight: .semibold, design: .rounded))
+                .frame(width: 90)
+                .multilineTextAlignment(.center)
+                .foregroundColor(Color.SubtitleText)
+        }
+        .opacity(0.8)
+        .drawingGroup()
     }
 }
