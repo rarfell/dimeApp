@@ -4,7 +4,7 @@
   <img src="./ReadmeAssets/hero.png" height="400" />
 </p>
 
-A 100% free personal finance tracker built with iOS design guidelines in mind.
+A 100% free personal finance tracker built with iOS design guidelines in mind. [Download Dime on the App Store.](https://apps.apple.com/sg/app/dime-budget-expense-tracker/id1635280255)
 
 ## App Preview
 
