@@ -1150,6 +1150,51 @@ struct WeekGraphView: View {
     }
 }
 
+struct AverageLineView: View {
+    var getMax: Int
+    var average: Double
+
+    @AppStorage("animated", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var animated: Bool = true
+    @State var showLine: Bool = false
+    @State var offset: CGFloat = barHeight - 10
+
+    var body: some View {
+        HStack(spacing: 2) {
+            PencilView(text: getAverageText(average: average))
+
+            Line()
+                .stroke(Color.SubtitleText, style: StrokeStyle(lineWidth: 2, lineCap: .round, dash: [5]))
+                .frame(height: 1)
+                .frame(maxWidth: .infinity)
+        }
+        .opacity(showLine ? 1 : 0)
+        .offset(y: offset)
+        .opacity((average / Double(getMax)) < 0.1 || (average / Double(getMax)) > 0.9 ? 0 : 1)
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                if !animated {
+                    showLine = true
+                } else {
+                    withAnimation {
+                        showLine = true
+                    }
+                }
+            }
+        }
+        .onChange(of: showLine) { newValue in
+            if newValue {
+                if !animated {
+                    offset = getOffset(maxi: getMax, average: average)
+                } else {
+                    withAnimation(.interactiveSpring(response: 0.6, dampingFraction: 0.8, blendDuration: 0.8)) {
+                        offset = getOffset(maxi: getMax, average: average)
+                    }
+                }
+            }
+        }
+    }
+}
+
 struct SingleWeekBarGraphView: View {
     @Binding var selectedDate: Date?
     @Binding var categoryFilterMode: Bool
@@ -1227,21 +1272,9 @@ struct SingleWeekBarGraphView: View {
             .frame(maxWidth: .infinity)
 
             // average line
-            HStack(spacing: 8) {
-                Text(getAverageText(average: weekAverage))
-                    .lineLimit(1)
-                    .font(.system(size: 12, weight: .bold, design: .rounded))
-                    .foregroundColor(Color.SubtitleText)
-                    .offset(y: -1)
-                    .opacity((weekAverage / Double(getMax)) < 0.2 || (weekAverage / Double(getMax)) > 0.8 ? 0 : 1)
+            AverageLineView(getMax: getMax, average: weekAverage)
+                .opacity(actualDays <= 1 ? 0 : 1)
 
-                Line()
-                    .stroke(Color.SubtitleText, style: StrokeStyle(lineWidth: 2, lineCap: .round, dash: [5]))
-                    .frame(height: 1)
-                    .frame(maxWidth: .infinity)
-            }
-            .opacity(actualDays <= 1 ? 0 : 1)
-            .offset(y: getOffset(maxi: getMax, average: weekAverage) - 5)
         }
         .onChange(of: selectedDate) { _ in
             selectedDateAmount = dayDictionary[selectedDate ?? Date.now] ?? 0.0
@@ -1610,22 +1643,9 @@ struct SingleMonthBarGraphView: View {
             //                .frame(maxHeight: .infinity)
 
             // average line
-            HStack(spacing: 8) {
-                Text(getAverageText(average: monthAverage))
-                    .lineLimit(1)
-                    .font(.system(size: 12, weight: .bold, design: .rounded))
-                    .foregroundColor(Color.SubtitleText)
-                    .offset(y: -1)
-                    .opacity((monthAverage/Double(getMax)) < 0.2 || (monthAverage/Double(getMax)) > 0.8 ? 0 : 1)
 
-                Line()
-                    .stroke(Color.SubtitleText, style: StrokeStyle(lineWidth: 2, lineCap: .round, dash: [5]))
-                    .frame(height: 1)
-                    .frame(maxWidth: .infinity)
-
-            }
-            .opacity(actualDays <= 1 ? 0 : 1)
-            .offset(y: getOffset(maxi: getMax, average: monthAverage) - 5)
+            AverageLineView(getMax: getMax, average: monthAverage)
+                .opacity(actualDays <= 1 ? 0 : 1)
 
         }
         .onChange(of: selectedDate) { _ in
@@ -1983,23 +2003,9 @@ struct SingleYearBarGraphView: View {
             .frame(maxWidth: .infinity)
 
             // average line
-            HStack(spacing: 8) {
 
-                Text(getAverageText(average: yearAverage))
-                    .lineLimit(1)
-                    .font(.system(size: 12, weight: .bold, design: .rounded))
-                    .foregroundColor(Color.SubtitleText)
-                    .offset(y: -1)
-                    .opacity((yearAverage/Double(getMax)) < 0.2 || (yearAverage/Double(getMax)) > 0.8 ? 0 : 1)
-
-                Line()
-                    .stroke(Color.SubtitleText, style: StrokeStyle(lineWidth: 2, lineCap: .round, dash: [5]))
-                    .frame(height: 1)
-                    .frame(maxWidth: .infinity)
-
-            }
-            .opacity(actualMonths <= 1 ? 0 : 1)
-            .offset(y: getOffset(maxi: getMax, average: yearAverage) - 5)
+            AverageLineView(getMax: getMax, average: yearAverage)
+                .opacity(actualMonths <= 1 ? 0 : 1)
 
         }
         .onChange(of: selectedDate) { _ in
@@ -2281,7 +2287,7 @@ func getOffset(maxi: Int, average: Double) -> Double {
         return 0
     } else {
         let height = (barHeight) - ((average / Double(maxi)) * (barHeight))
-        return height
+        return height - 10
     }
 }
 
