@@ -721,7 +721,10 @@ struct TemplateTransactionView: View {
     }
 
     init(order: Int) {
-        let toEdit = DataController.shared.getTemplateTransaction(order: order)
+
+        let dataController = DataController.shared
+
+        let toEdit = dataController.getTemplateTransaction(order: order)
 
         if let transaction = toEdit {
             _note = State(initialValue: transaction.wrappedNote)
@@ -1130,7 +1133,9 @@ struct Grid: Identifiable {
     init(index: Int) {
         id = UUID()
 
-        transaction = DataController.shared.getTemplateTransaction(order: index)
+        let dataController = DataController.shared
+
+        transaction = dataController.getTemplateTransaction(order: index)
         self.index = index
     }
 }
@@ -1158,6 +1163,7 @@ class GridViewModel: ObservableObject {
     }
 
     func updateIndices() {
+//        let dataController = DataController()
         let dataController = DataController.shared
         for (index, element) in gridItems.enumerated() {
             if let transaction = element.transaction {

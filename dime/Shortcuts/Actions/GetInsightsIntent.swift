@@ -31,6 +31,7 @@ struct GetInsightsIntent: AppIntent {
     @MainActor
     func perform() async throws -> some ReturnsValue<Double> & ShowsSnippetView & ProvidesDialog {
         let dataController = DataController.shared
+//        let dataController = DataController()
 
         let categories: [Category]
         let optionalIncome: Bool?

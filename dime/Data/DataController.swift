@@ -28,7 +28,7 @@ enum CustomError: Swift.Error, CustomLocalizedStringResourceConvertible {
 }
 
 class DataController: ObservableObject {
-    static var shared = DataController()
+    static let shared = DataController()
 
     var container = NSPersistentCloudKitContainer(name: "MainModel")
 

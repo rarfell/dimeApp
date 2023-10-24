@@ -60,6 +60,9 @@
 		533182D328A0D61D00DEBFA3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5327D294287C698900F76ADF /* Assets.xcassets */; };
 		53326B2C2ADC3C8D0027C693 /* TestDragToAdd.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53326B2B2ADC3C8D0027C693 /* TestDragToAdd.swift */; };
 		533A38F42AA49E5900F66957 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 533A38F32AA49E5900F66957 /* Alamofire */; };
+		533D1C2C2AE791F400894764 /* ShortcutsEntities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 530C89D52A793B6C00B5028D /* ShortcutsEntities.swift */; };
+		533D1C2D2AE791F500894764 /* ShortcutsEntities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 530C89D52A793B6C00B5028D /* ShortcutsEntities.swift */; };
+		533D1C2E2AE791F500894764 /* ShortcutsEntities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 530C89D52A793B6C00B5028D /* ShortcutsEntities.swift */; };
 		53423C5C29B88FE7000CB54F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5328588929B4F8D500CB64D0 /* Localizable.strings */; };
 		53423C5D29B9B37F000CB54F /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 53423C6229B9B37F000CB54F /* Localizable.stringsdict */; };
 		53423C5E29B9B37F000CB54F /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 53423C6229B9B37F000CB54F /* Localizable.stringsdict */; };
@@ -729,6 +732,7 @@
 				5313EC6028ACE941000EAB0C /* IntentHandler.swift in Sources */,
 				537152E328AD0EC100E93EC4 /* Helper.swift in Sources */,
 				537152DF28AD0EB300E93EC4 /* DataController.swift in Sources */,
+				533D1C2D2AE791F500894764 /* ShortcutsEntities.swift in Sources */,
 				5311A22C29F04EF300A5BE20 /* WidgetConfiguration.intentdefinition in Sources */,
 				5321E1E0291FE2D000D5A931 /* CategoryCreationErrors.swift in Sources */,
 			);
@@ -742,6 +746,7 @@
 				5313EC6B28ACE941000EAB0C /* IntentViewController.swift in Sources */,
 				537152E428AD0EC100E93EC4 /* Helper.swift in Sources */,
 				537152E028AD0EB600E93EC4 /* DataController.swift in Sources */,
+				533D1C2E2AE791F500894764 /* ShortcutsEntities.swift in Sources */,
 				5311A22D29F04EF300A5BE20 /* WidgetConfiguration.intentdefinition in Sources */,
 				5321E1DF291FE2D000D5A931 /* CategoryCreationErrors.swift in Sources */,
 			);
@@ -821,6 +826,7 @@
 				53D5F02428A8E0E4004573C8 /* InsightsWidget.swift in Sources */,
 				53D0298228C62E1A00443F2B /* StringExtension.swift in Sources */,
 				5324985528A64DA7007B34D1 /* RecentTransactionsWidget.swift in Sources */,
+				533D1C2C2AE791F400894764 /* ShortcutsEntities.swift in Sources */,
 				53B7D0D229701DB800F81002 /* MainBudgetWidget.swift in Sources */,
 				534973D228CB3594000201F9 /* NewExpenseWidget.swift in Sources */,
 				5311A22B29F04EF300A5BE20 /* WidgetConfiguration.intentdefinition in Sources */,

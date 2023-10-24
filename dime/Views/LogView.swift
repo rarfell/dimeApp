@@ -77,12 +77,14 @@ struct LogView: View {
                     .accessibility(hidden: true)
 
                 Text("Your Log is Empty")
-                    .font(.system(size: 23.5, weight: .medium, design: .rounded))
+                    .font(.system(.title2, design: .rounded).weight(.medium))
+//                    .font(.system(size: 23.5, weight: .medium, design: .rounded))
                     .multilineTextAlignment(.center)
                     .foregroundColor(Color.PrimaryText.opacity(0.8))
 
                 Text("Press the plus button\nto add your first entry")
-                    .font(.system(size: 18, weight: .medium, design: .rounded))
+                    .font(.system(.body, design: .rounded).weight(.medium))
+//                    .font(.system(size: 18, weight: .medium, design: .rounded))
                     .multilineTextAlignment(.center)
                     .foregroundColor(Color.SubtitleText.opacity(0.7))
             }

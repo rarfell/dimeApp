@@ -29,6 +29,7 @@ struct dimeApp: App {
 
     init() {
         let dataController = DataController.shared
+//        let dataController = DataController()
         let unlockManager = UnlockManager(dataController: dataController)
 
         _dataController = StateObject(wrappedValue: dataController)

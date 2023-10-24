@@ -145,6 +145,7 @@ struct CategoryListView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.managedObjectContext) var moc
     @Environment(\.colorScheme) var systemColorScheme
+    @EnvironmentObject var dataController: DataController
 
     @AppStorage("bottomEdge", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var bottomEdge: Double = 15
 
@@ -606,7 +607,7 @@ struct CategoryListView: View {
                                 moc.delete(gonnaDelete)
                             }
 
-                            try? moc.save()
+                            dataController.save()
                         }
 
                         toDelete = nil
@@ -722,7 +723,7 @@ struct CategoryListView: View {
         }
 
         do {
-            try moc.save()
+            dataController.save()
         } catch {
             print(error.localizedDescription)
         }
@@ -1986,7 +1987,10 @@ struct ColourPickerView: View {
         }
 
         var selectedColours = [String]()
-        let categories = DataController.shared.getAllCategories(income: false)
+
+        let dataController = DataController.shared
+
+        let categories = dataController.getAllCategories(income: false)
 
         categories.forEach { category in
             selectedColours.append(category.wrappedColour)

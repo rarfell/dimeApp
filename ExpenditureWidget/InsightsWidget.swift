@@ -51,6 +51,7 @@ struct InsightsProvider: IntentTimelineProvider {
     }
 
     func loadData(type: InsightsTimePeriod, income: Bool) -> (amount: Double, maximum: Double, average: Double, numberOfDays: Int, dates: [Date], dateDictionary: [Date: Double], categories: [HoldingCategory]) {
+//        let dataController = DataController()
         let dataController = DataController.shared
         let itemRequest = dataController.fetchRequestForWidgetInsights(type: type, income: income)
         let categoryRequest = dataController.fetchRequestForCategories(income: income)

@@ -62,6 +62,7 @@ struct LockBudgetWidgetProvider: IntentTimelineProvider {
     }
 
     func loadData(budgetId: String) -> (total: Double, timeLeft: String, budget: HoldingBudget) {
+//        let dataController = DataController()
         let dataController = DataController.shared
 
         if let objectIDURL = URL(string: budgetId) {

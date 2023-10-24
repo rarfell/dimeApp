@@ -63,6 +63,7 @@ struct Provider: IntentTimelineProvider {
     }
 
     func loadAmount(type: TimePeriod, insightsType: InsightsType) -> Double {
+//        let dataController = DataController()
         let dataController = DataController.shared
 
         let timeframe: Int
@@ -100,6 +101,7 @@ struct Provider: IntentTimelineProvider {
     }
 
     func loadTransactions(type: TimePeriod, count: Int) -> [HoldingTransaction] {
+//        let dataController = DataController()
         let dataController = DataController.shared
         let itemRequest = dataController.fetchRequestForRecentTransactionsWithCount(type: type, count: count)
         let holding = dataController.results(for: itemRequest)

@@ -24,12 +24,14 @@ struct BudgetView: View {
                     .padding(.bottom, 20)
 
                 Text("Budget Your Finances")
-                    .font(.system(size: 23.5, weight: .medium, design: .rounded))
+                    .font(.system(.title2, design: .rounded).weight(.medium))
+//                    .font(.system(size: 23.5, weight: .medium, design: .rounded))
                     .multilineTextAlignment(.center)
                     .foregroundColor(Color.PrimaryText.opacity(0.8))
 
                 Text("Link budgets to categories and set appropriate expenditure goals")
-                    .font(.system(size: 18, weight: .medium, design: .rounded))
+                    .font(.system(.body, design: .rounded).weight(.medium))
+//                    .font(.system(size: 18, weight: .medium, design: .rounded))
                     .multilineTextAlignment(.center)
                     .foregroundColor(Color.SubtitleText.opacity(0.7))
             }

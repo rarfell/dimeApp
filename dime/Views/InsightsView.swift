@@ -19,6 +19,18 @@ struct InsightsView: View {
     private var didSave = NotificationCenter.default.publisher(for: .NSManagedObjectContextDidSave)
     @State private var refreshID = UUID()
 
+    var chartTypeString: String {
+        if chartType == 1 {
+            return "week"
+        } else if chartType == 2 {
+            return "month"
+        } else if chartType == 3 {
+            return "year"
+        } else {
+            return ""
+        }
+    }
+
 //    @State private var holdingIncome = false
 //    @Namespace var animation
 
@@ -31,12 +43,14 @@ struct InsightsView: View {
                     .padding(.bottom, 20)
 
                 Text("Analyse Your Expenditure")
-                    .font(.system(size: 23.5, weight: .medium, design: .rounded))
+                    .font(.system(.title2, design: .rounded).weight(.medium))
+//                    .font(.system(size: 23.5, weight: .medium, design: .rounded))
                     .foregroundColor(Color.PrimaryText.opacity(0.8))
                     .multilineTextAlignment(.center)
 
                 Text("As transactions start piling up")
-                    .font(.system(size: 18, weight: .medium, design: .rounded))
+                    .font(.system(.body, design: .rounded).weight(.medium))
+//                    .font(.system(size: 18, weight: .medium, design: .rounded))
                     .foregroundColor(Color.SubtitleText.opacity(0.7))
                     .multilineTextAlignment(.center)
             }
@@ -45,13 +59,13 @@ struct InsightsView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .ignoresSafeArea(.all)
             .background(Color.PrimaryBackground)
+            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 
         } else {
             VStack(spacing: 5) {
                 HStack {
                     Text("Insights")
                         .font(.system(.title, design: .rounded).weight(.semibold))
-                        .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                        .font(.system(size: 25, weight: .semibold, design: .rounded))
                         .accessibility(addTraits: .isHeader)
                     Spacer()
@@ -60,20 +74,16 @@ struct InsightsView: View {
                         showTimeMenu = true
                     } label: {
                         HStack(spacing: 4.5) {
-                            if chartType == 1 {
-                                Text("week")
-                            } else if chartType == 2 {
-                                Text("month")
-                            } else if chartType == 3 {
-                                Text("year")
-                            }
+                            Text(chartTypeString)
+                                .font(.system(.body, design: .rounded).weight(.medium))
 
                             Image(systemName: "chevron.up.chevron.down")
-                                .font(.system(size: 12, weight: .medium))
+                                .font(.system(.caption, design: .rounded).weight(.medium))
+//                                .font(.system(size: 12, weight: .medium))
                         }
                         .padding(3)
                         .padding(.horizontal, 6)
-                        .font(.system(size: 17, weight: .medium, design: .rounded))
+//                        .font(.system(size: 17, weight: .medium, design: .rounded))
                         .foregroundColor(Color.PrimaryText.opacity(0.9))
                         .background(Color.Outline, in: RoundedRectangle(cornerRadius: 6))
 //                        .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.Outline, lineWidth: 1.3))
@@ -97,8 +107,10 @@ struct InsightsView: View {
 
                 if chartType == 1 {
                     WeekGraphView()
+                        .id(refreshID)
                 } else if chartType == 2 {
                     MonthGraphView()
+                        .id(refreshID)
                 } else if chartType == 3 {
                     YearGraphView()
                         .id(refreshID)
@@ -106,6 +118,7 @@ struct InsightsView: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.PrimaryBackground)
+            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
             .onReceive(self.didSave) { _ in
                 self.refreshID = UUID()
             }
@@ -211,17 +224,20 @@ struct HorizontalPieChartView: View {
                                 .fill(category.category.income ? Color(hex: Color.colorArray[categories.firstIndex(of: category) ?? 0]) : Color(hex: category.category.wrappedColour))
                                 .frame(width: 9, height: 9)
                             Text(category.category.wrappedName)
-                                .font(.system(size: 15, weight: .semibold, design: .rounded))
+                                .font(.system(.callout, design: .rounded).weight(.semibold))
+//                                .font(.system(size: 15, weight: .semibold, design: .rounded))
                                 .foregroundColor(Color.PrimaryText)
                                 .padding(.trailing, 1)
 
                             if category.percent != 1 {
                                 Text("\(category.percent * 100, specifier: "%.1f")%")
-                                    .font(.system(size: 14, weight: .regular, design: .rounded))
+                                    .font(.system(.subheadline, design: .rounded))
+//                                    .font(.system(size: 14, weight: .regular, design: .rounded))
                                     .foregroundColor(Color.SubtitleText)
                             } else {
                                 Text("\(category.percent * 100, specifier: "%.0f")%")
-                                    .font(.system(size: 14, weight: .regular, design: .rounded))
+                                    .font(.system(.subheadline, design: .rounded))
+//                                    .font(.system(size: 14, weight: .regular, design: .rounded))
                                     .foregroundColor(Color.SubtitleText)
                             }
                         }
@@ -254,6 +270,7 @@ struct HorizontalPieChartView: View {
                 }
             }
         }
+        .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
     }
 
     init(date: Date, categoryFilter: Binding<Category?>?, categoryFilterMode: Binding<Bool>, selectedDate: Binding<Date?>?, chosenAmount: Binding<Double>, chosenName: Binding<String>, type: ChartTimeFrame, income: Bool) {
@@ -632,7 +649,8 @@ struct SingleGraphView: View {
                 VStack(alignment: .leading, spacing: 1.3) {
                     Text(dateString)
                         .lineLimit(1)
-                        .font(.system(size: 14, weight: .semibold, design: .rounded))
+                        .font(.system(.callout, design: .rounded).weight(.semibold))
+//                        .font(.system(size: 14, weight: .semibold, design: .rounded))
                         .foregroundColor(Color.SubtitleText)
                         .layoutPriority(1)
 
@@ -658,7 +676,8 @@ struct SingleGraphView: View {
                     VStack(alignment: .trailing, spacing: 1.3) {
                         Text(selectedCategoryName.uppercased())
                             .lineLimit(1)
-                            .font(.system(size: 14, weight: .semibold, design: .rounded))
+                            .font(.system(.callout, design: .rounded).weight(.semibold))
+//                            .font(.system(size: 14, weight: .semibold, design: .rounded))
                             .foregroundColor(Color.SubtitleText)
 
                         InsightsDollarView(amount: selectedCategoryAmount, currencySymbol: currencySymbol, showCents: showCents)
@@ -668,7 +687,8 @@ struct SingleGraphView: View {
                     VStack(alignment: .trailing, spacing: 1.3) {
                         Text(selectedDateString)
                             .lineLimit(1)
-                            .font(.system(size: 14, weight: .semibold, design: .rounded))
+                            .font(.system(.callout, design: .rounded).weight(.semibold))
+//                            .font(.system(size: 14, weight: .semibold, design: .rounded))
                             .foregroundColor(Color.SubtitleText)
                         InsightsDollarView(amount: selectedDateAmount, currencySymbol: currencySymbol, showCents: showCents)
                             .layoutPriority(1)
@@ -677,7 +697,8 @@ struct SingleGraphView: View {
                     VStack(alignment: .trailing, spacing: 1.3) {
                         Text(type == 3 ? (income ? "INCOME/MTH" : "SPENT/MTH") : (income ? "INCOME/DAY" : "SPENT/DAY"))
                             .lineLimit(1)
-                            .font(.system(size: 14, weight: .semibold, design: .rounded))
+                            .font(.system(.callout, design: .rounded).weight(.semibold))
+//                            .font(.system(size: 14, weight: .semibold, design: .rounded))
                             .foregroundColor(Color.SubtitleText)
                         InsightsDollarView(amount: incomeAverage, currencySymbol: currencySymbol, showCents: showCents)
                             .layoutPriority(1)
@@ -686,7 +707,8 @@ struct SingleGraphView: View {
                     VStack(alignment: .trailing, spacing: 1.3) {
                         Text(type == 3 ? "AVG/MTH" : "AVG/DAY")
                             .lineLimit(1)
-                            .font(.system(size: 14, weight: .semibold, design: .rounded))
+                            .font(.system(.callout, design: .rounded).weight(.semibold))
+//                            .font(.system(size: 14, weight: .semibold, design: .rounded))
                             .foregroundColor(Color.SubtitleText)
                         InsightsDollarView(amount: average, currencySymbol: currencySymbol, showCents: showCents, net: netPositive)
                             .layoutPriority(1)
@@ -713,12 +735,14 @@ struct SingleGraphView: View {
 
                         VStack(alignment: .leading, spacing: 0) {
                             Text("Income")
-                                .font(.system(size: 12, weight: .semibold, design: .rounded))
+                                .font(.system(.caption, design: .rounded).weight(.semibold))
+//                                .font(.system(size: 12, weight: .semibold, design: .rounded))
                                 .lineLimit(1)
                                 .foregroundColor(Color.SubtitleText)
 
                             Text(stringGenerator(amount: totalIncome))
-                                .font(.system(size: 20, weight: .medium, design: .rounded))
+                                .font(.system(.title3, design: .rounded).weight(.medium))
+//                                .font(.system(size: 20, weight: .medium, design: .rounded))
                                 .foregroundColor(Color.PrimaryText)
                                 .lineLimit(1)
                                 .minimumScaleFactor(0.8)
@@ -756,12 +780,14 @@ struct SingleGraphView: View {
 
                         VStack(alignment: .leading, spacing: 0) {
                             Text("Expenses")
-                                .font(.system(size: 12, weight: .semibold, design: .rounded))
+                                .font(.system(.caption, design: .rounded).weight(.semibold))
+//                                .font(.system(size: 12, weight: .semibold, design: .rounded))
                                 .lineLimit(1)
                                 .foregroundColor(Color.SubtitleText)
 
                             Text(stringGenerator(amount: totalSpent))
-                                .font(.system(size: 20, weight: .medium, design: .rounded))
+                                .font(.system(.title3, design: .rounded).weight(.medium))
+//                                .font(.system(size: 20, weight: .medium, design: .rounded))
                                 .foregroundColor(Color.PrimaryText)
                                 .lineLimit(1)
                                 .minimumScaleFactor(0.8)

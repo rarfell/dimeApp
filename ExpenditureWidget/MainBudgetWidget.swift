@@ -60,6 +60,7 @@ struct MainBudgetWidgetProvider: TimelineProvider {
     }
 
     func loadData() -> (found: Bool, totalSpent: Double, budgetAmount: Double, percentage: Double, type: Int, startDate: Date) {
+//        let dataController = DataController()
         let dataController = DataController.shared
 
         return dataController.fetchRequestForMainBudgetWidget()

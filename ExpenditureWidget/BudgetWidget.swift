@@ -50,6 +50,7 @@ struct BudgetWidgetProvider: IntentTimelineProvider {
     }
 
     func loadData(budgetId: String) -> (total: Double, percentage: Double, budget: HoldingBudget) {
+//        let dataController = DataController()
         let dataController = DataController.shared
 
         if let objectIDURL = URL(string: budgetId) {
