@@ -128,6 +128,7 @@
 		53DCFAA12A498FBF0063FCDE /* CloudKitSyncMonitor in Frameworks */ = {isa = PBXBuildFile; productRef = 53DCFAA02A498FBF0063FCDE /* CloudKitSyncMonitor */; };
 		53EB930E28A65A570026BE28 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5327D2B5287C6AFB00F76ADF /* Color.swift */; };
 		53EB930F28A65B250026BE28 /* FontExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B1D1A4289383B100E28062 /* FontExtension.swift */; };
+		AE30A1552AE7D96A00E516B3 /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE30A1542AE7D96A00E516B3 /* BackButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -264,6 +265,7 @@
 		53D5F02228A8E0E4004573C8 /* InsightsWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightsWidget.swift; sourceTree = "<group>"; };
 		53D82F512A9A6759005B6910 /* ChromaticAbberation(Time).metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = "ChromaticAbberation(Time).metal"; sourceTree = "<group>"; };
 		53EB931028A65F670026BE28 /* ExpenditureWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ExpenditureWidgetExtension.entitlements; sourceTree = "<group>"; };
+		AE30A1542AE7D96A00E516B3 /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -387,6 +389,7 @@
 				5327D297287C69A900F76ADF /* Data */,
 				5327D296287C69A400F76ADF /* Utilities */,
 				5327D28C287C697C00F76ADF /* Preview Content */,
+				AE30A1522AE7D95200E516B3 /* Components */,
 			);
 			path = dime;
 			sourceTree = "<group>";
@@ -512,6 +515,22 @@
 				5311A22F29F04EF300A5BE20 /* WidgetConfiguration.intentdefinition */,
 			);
 			path = ExpenditureWidget;
+			sourceTree = "<group>";
+		};
+		AE30A1522AE7D95200E516B3 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				AE30A1532AE7D95F00E516B3 /* Toolbar */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		AE30A1532AE7D95F00E516B3 /* Toolbar */ = {
+			isa = PBXGroup;
+			children = (
+				AE30A1542AE7D96A00E516B3 /* BackButton.swift */,
+			);
+			path = Toolbar;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -795,6 +814,7 @@
 				53A32B3828AB6C6400628905 /* Line.swift in Sources */,
 				5327D2C7287C6B2500F76ADF /* FilterType.swift in Sources */,
 				5321E1DC291FE02C00D5A931 /* CategoryCreationErrors.swift in Sources */,
+				AE30A1552AE7D96A00E516B3 /* BackButton.swift in Sources */,
 				53D40B652AB1B2DB001D3866 /* UpdateSheet.swift in Sources */,
 				5327D2BA287C6AFB00F76ADF /* ViewExtension.swift in Sources */,
 				5327D2DB287C6B5F00F76ADF /* LogView.swift in Sources */,
