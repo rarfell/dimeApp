@@ -1,7 +1,7 @@
 # Dime
 
 <p align="center">
-  <img src="./ReadmeAssets/hero.png" height="400" />
+  <img src="./ReadmeAssets/hero.png" width="451" style="max-width: 100%; height: auto;" />
 </p>
 
 A 100% free personal finance tracker built with iOS design guidelines in mind. [Download Dime on the App Store.](https://apps.apple.com/sg/app/dime-budget-expense-tracker/id1635280255)
