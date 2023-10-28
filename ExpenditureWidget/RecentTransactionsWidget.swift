@@ -471,6 +471,10 @@ struct ExpenditureWidgetEntryView: View {
                         }
                         .frame(maxWidth: .infinity)
 
+                        Spacer()
+                            .frame(minHeight: 5, idealHeight: 15, maxHeight: 20)
+                            .fixedSize()
+
                         if entry.transactions.isEmpty {
                             VStack(spacing: 20) {
                                 Text("NO RECENT EXPENSES")
@@ -494,7 +498,7 @@ struct ExpenditureWidgetEntryView: View {
                             .frame(maxHeight: .infinity)
 
                         } else {
-                            VStack(alignment: .leading, spacing: 8) {
+                            VStack(alignment: .leading, spacing: 6) {
                                 Text("RECENT EXPENSES")
                                     .font(.system(size: 12, weight: .medium, design: .rounded))
                                     .foregroundColor(Color.SubtitleText)
@@ -544,7 +548,6 @@ struct ExpenditureWidgetEntryView: View {
                                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
                                 }
                             }
-                            .padding(.top, 15)
                             .frame(maxHeight: .infinity, alignment: .top)
                         }
                     }
