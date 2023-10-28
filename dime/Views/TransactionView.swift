@@ -1021,9 +1021,9 @@ struct TransactionView: View {
                 .background(Color.SecondaryBackground)
                 .foregroundColor(Color.PrimaryText)
                 .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-//                .opacity(numberArrayCount == 9 ? 0.6 : 1)
+                .opacity(price >= Double(Int.max) / 100 ? 0.6 : 1)
         }
-//        .disabled(numberArrayCount == 9)
+        .disabled(price >= Double(Int.max) / 100)
         .buttonStyle(NumPadButton())
     }
 
