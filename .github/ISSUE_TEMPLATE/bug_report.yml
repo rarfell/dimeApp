@@ -21,7 +21,6 @@ body:
     attributes:
       label: Dime Version
       description: Which version(s) of Dime does this issue occur on?
-      required: true
 
   - type: textarea
     id: current-behavior
