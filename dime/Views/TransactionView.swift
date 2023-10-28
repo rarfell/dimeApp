@@ -994,6 +994,9 @@ struct TransactionView: View {
     @ViewBuilder
     func NumberButton(number: Int, size: CGSize) -> some View {
         Button {
+            if price >= Double(Int.max) / 100 {
+                return
+            }
             if numberEntryType == 1 {
                 price *= 10
                 price += Double(number) / 100
