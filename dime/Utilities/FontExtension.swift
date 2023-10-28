@@ -20,15 +20,20 @@ extension UIFont {
         return font
     }
 
-    class func roundedSpecial(ofStyle style: UIFont.TextStyle, weight: UIFont.Weight) -> UIFont {
-        let systemFont = UIFont.systemFont(ofSize: 17, weight: weight)
+    class func roundedSpecial(ofStyle style: UIFont.TextStyle, weight: UIFont.Weight, size: Double) -> UIFont {
+        let systemFont = UIFont.systemFont(ofSize: size, weight: weight)
         let font: UIFont
 
         if let descriptor = systemFont.fontDescriptor.withDesign(.rounded) {
-            font = UIFont(descriptor: descriptor, size: 17)
+            font = UIFont(descriptor: descriptor, size: size)
         } else {
             font = systemFont
         }
         return UIFontMetrics(forTextStyle: style).scaledFont(for: font)
     }
+
+    static func textStyleSize(_ style: UIFont.TextStyle) -> CGFloat {
+        UIFont.preferredFont(forTextStyle: style).pointSize
+    }
+
 }
