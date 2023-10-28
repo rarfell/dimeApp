@@ -43,35 +43,23 @@ struct TransactionView: View {
         }
     }
 
-    @State private var numbers: [Int] = [0, 0, 0]
-    @State private var numbers1: [String] = []
+    @State private var price: Double = 0
+    @State private var isEditingDecimal = false
+    @State private var decimalValuesAssigned = [false, false]
     private var amount: String {
-        var string = ""
-
         if numberEntryType == 1 {
-            for i in numbers.indices {
-                if i == (numbers.count - 2) {
-                    string += ".\(numbers[i])"
-                } else {
-                    string += "\(numbers[i])"
-                }
+            return String(format: "%.2f", price)
+        } else if isEditingDecimal {
+            if decimalValuesAssigned[1] {
+                return String(format: "%.2f", price)
+            } else {
+                return String(format: "%.1f", price)
             }
-
-            return string
-        } else {
-            if numbers1.isEmpty {
-                return "0"
-            }
-            for i in numbers1 {
-                string = string + i
-            }
-
-            return string
         }
+        return String(format: "%.0f", price)
     }
-
     var transactionValue: Double {
-        return (amount as NSString).doubleValue
+        price
     }
 
     @State var showCategoryPicker = false
@@ -108,13 +96,6 @@ struct TransactionView: View {
 
     let repeatOverlays = ["D", "W", "M"]
     let numberArray = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
-    var numberArrayCount: Int {
-        if numberEntryType == 1 {
-            return numbers.count
-        } else {
-            return numbers1.count
-        }
-    }
 
     var downsize: (big: CGFloat, small: CGFloat) {
         let amountText: String
@@ -476,31 +457,18 @@ struct TransactionView: View {
                                     .foregroundColor(Color.PrimaryText)
                             }
                         } else {
-                            if numbers1.isEmpty {
-                                HStack(alignment: .lastTextBaseline, spacing: 4) {
-                                    Text(currencySymbol)
-                                        .font(.system(size: 32, weight: .light, design: .rounded))
-                                        .foregroundColor(Color.SubtitleText)
-                                        .baselineOffset(getDollarOffset(big: 56, small: 32))
-                                    Text("0")
-                                        .font(.system(size: 56, weight: .regular, design: .rounded))
-                                        .foregroundColor(Color.PrimaryText)
-                                }
-                                .frame(maxWidth: .infinity)
-                            } else {
-                                HStack(alignment: .lastTextBaseline, spacing: 4) {
-                                    Text(currencySymbol)
-                                        .font(.system(size: downsize.small, weight: .light, design: .rounded))
-                                        .foregroundColor(Color.SubtitleText)
-                                        .baselineOffset(getDollarOffset(big: downsize.big, small: downsize.small))
-                                    Text(amount)
-                                        .font(.system(size: downsize.big, weight: .regular, design: .rounded))
-                                        .foregroundColor(Color.PrimaryText)
-                                }
-                                .frame(maxWidth: .infinity)
-                                .overlay(alignment: .trailing) {
-                                    DeleteButton()
-                                }
+                            HStack(alignment: .lastTextBaseline, spacing: 4) {
+                                Text(currencySymbol)
+                                    .font(.system(size: 32, weight: .light, design: .rounded))
+                                    .foregroundColor(Color.SubtitleText)
+                                    .baselineOffset(getDollarOffset(big: 56, small: 32))
+                                Text(amount)
+                                    .font(.system(size: 56, weight: .regular, design: .rounded))
+                                    .foregroundColor(Color.PrimaryText)
+                            }
+                            .frame(maxWidth: .infinity)
+                            .overlay(alignment: .trailing) {
+                                DeleteButton()
                             }
                         }
 
@@ -514,29 +482,15 @@ struct TransactionView: View {
                         HStack(spacing: 8) {
                             ForEach(suggestedTransactions, id: \.self) { transaction in
                                 Button {
-                                    let string = String(format: "%.2f", transaction.wrappedAmount)
-
-                                    var stringArray = string.compactMap { String($0) }
-
                                     note = transaction.wrappedNote
-
                                     withAnimation {
-                                        numbers = stringArray.compactMap { Int($0) }
-
-                                        if round(transaction.wrappedAmount) == transaction.wrappedAmount {
-                                            stringArray.removeLast()
-                                            stringArray.removeLast()
-                                            stringArray.removeLast()
-                                            numbers1 = stringArray
-                                        } else {
-                                            numbers1 = stringArray
+                                        if price == 0 {
+                                            price = transaction.wrappedAmount
                                         }
-
                                         if category == nil {
                                             category = transaction.category
                                         }
                                     }
-
                                     self.hideKeyboard()
                                 } label: {
                                     HStack(spacing: 3) {
@@ -743,16 +697,10 @@ struct TransactionView: View {
                                 }
                             }
                         }
-
                         HStack(spacing: proxy.size.width * 0.05) {
                             if numberEntryType == 1 {
                                 Button {
-                                    if numbers.count == 3 {
-                                        numbers.remove(at: numbers.count - 1)
-                                        numbers.insert(0, at: 0)
-                                    } else {
-                                        numbers.remove(at: numbers.count - 1)
-                                    }
+                                    deleteLastDigit()
                                 } label: {
                                     Image("tag-cross")
                                         .resizable()
@@ -765,14 +713,7 @@ struct TransactionView: View {
                                 .buttonStyle(NumPadButton())
                             } else {
                                 Button {
-                                    if numbers1.isEmpty {
-                                        numbers1.append("0")
-                                        numbers1.append(".")
-                                    } else if numbers1.contains(".") {
-                                        return
-                                    } else {
-                                        numbers1.append(".")
-                                    }
+                                    isEditingDecimal = true
                                 } label: {
                                     Text(".")
                                         .font(.system(size: 34, weight: .regular, design: .rounded))
@@ -780,9 +721,8 @@ struct TransactionView: View {
                                         .background(Color.SecondaryBackground)
                                         .foregroundColor(Color.PrimaryText)
                                         .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-                                        .opacity(numbers1.contains(".") ? 0.6 : 1)
+//                                        .opacity(numbers1.contains(".") ? 0.6 : 1)
                                 }
-                                .disabled(numbers1.contains("."))
                                 .buttonStyle(NumPadButton())
                             }
 
@@ -993,21 +933,7 @@ struct TransactionView: View {
                 if let transaction = toEdit {
                     repeatType = Int(transaction.recurringType)
                     repeatCoefficient = Int(transaction.recurringCoefficient)
-
-                    let string = String(format: "%.2f", transaction.wrappedAmount)
-
-                    var stringArray = string.compactMap { String($0) }
-
-                    numbers = stringArray.compactMap { Int($0) }
-
-                    if round(transaction.wrappedAmount) == transaction.wrappedAmount {
-                        stringArray.removeLast()
-                        stringArray.removeLast()
-                        stringArray.removeLast()
-                        numbers1 = stringArray
-                    } else {
-                        numbers1 = stringArray
-                    }
+                    price = transaction.wrappedAmount
 
                     if transaction.wrappedDate > Date.now {
                         animateIcon = true
@@ -1032,18 +958,28 @@ struct TransactionView: View {
             }
         }
     }
+    
+    func deleteLastDigit() {
+        if numberEntryType == 1 {
+            price = Double(Int(price * 10)) / 100
+        } else if !isEditingDecimal {
+            price = Double(Int(price / 10))
+        } else {
+            if decimalValuesAssigned[1] {
+                price = Double(Int(price * 10)) / 10
+                decimalValuesAssigned[1] = false
+            } else {
+                price = Double(Int(price))
+                isEditingDecimal = false
+                decimalValuesAssigned[0] = false
+            }
+        }
+    }
 
     @ViewBuilder
     func DeleteButton() -> some View {
         Button {
-            if !numbers1.isEmpty {
-                if numbers1.count == 2 && numbers1[0] == "0" && numbers1[1] == "." {
-                    numbers1.removeAll()
-                } else {
-                    numbers1.removeLast()
-                }
-            }
-
+            deleteLastDigit()
         } label: {
             Image(systemName: "delete.left.fill")
                 .font(.system(size: 16, weight: .semibold))
@@ -1052,32 +988,27 @@ struct TransactionView: View {
                 .background(Color.SecondaryBackground, in: Circle())
                 .contentShape(Circle())
         }
-        .disabled(numbers1.isEmpty)
+        .disabled(price == 0)
     }
 
     @ViewBuilder
     func NumberButton(number: Int, size: CGSize) -> some View {
         Button {
             if numberEntryType == 1 {
-                if numbers[0] == 0 {
-                    numbers.append(number)
-                    numbers.remove(at: 0)
-                } else {
-                    numbers.append(number)
-                }
+                price *= 10
+                price += Double(number) / 100
             } else {
-                if number == 0 && numbers1.isEmpty {
-                    return
-                } else {
-                    if numbers1.contains(".") {
-                        if numbers1.count - numbers1.firstIndex(of: ".")! < 3 {
-                            numbers1.append(String(number))
-                        } else {
-                            return
-                        }
-                    } else {
-                        numbers1.append(String(number))
+                if isEditingDecimal {
+                    if !decimalValuesAssigned[0] {
+                        price += Double(number) / 10
+                        decimalValuesAssigned[0] = true
+                    } else if !decimalValuesAssigned[1] {
+                        price += Double(number) / 100
+                        decimalValuesAssigned[1] = true
                     }
+                } else {
+                    price *= 10
+                    price += Double(number)
                 }
             }
         } label: {
@@ -1087,9 +1018,9 @@ struct TransactionView: View {
                 .background(Color.SecondaryBackground)
                 .foregroundColor(Color.PrimaryText)
                 .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-                .opacity(numberArrayCount == 9 ? 0.6 : 1)
+//                .opacity(numberArrayCount == 9 ? 0.6 : 1)
         }
-        .disabled(numberArrayCount == 9)
+//        .disabled(numberArrayCount == 9)
         .buttonStyle(NumPadButton())
     }
 
