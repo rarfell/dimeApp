@@ -139,6 +139,7 @@
 		53DCFAA12A498FBF0063FCDE /* CloudKitSyncMonitor in Frameworks */ = {isa = PBXBuildFile; productRef = 53DCFAA02A498FBF0063FCDE /* CloudKitSyncMonitor */; };
 		53EB930E28A65A570026BE28 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5327D2B5287C6AFB00F76ADF /* Color.swift */; };
 		53EB930F28A65B250026BE28 /* FontExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B1D1A4289383B100E28062 /* FontExtension.swift */; };
+		AE5B3D792AEE99E000AB364E /* NumberPad.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE5B3D782AEE99E000AB364E /* NumberPad.swift */; };
 		AEADEF6F2AE94DA3006EB614 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEADEF6E2AE94DA3006EB614 /* Toast.swift */; };
 		AEADEF712AE94DA8006EB614 /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEADEF702AE94DA8006EB614 /* BackButton.swift */; };
 		AEADEF742AE94DC3006EB614 /* ToolbarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEADEF722AE94DC3006EB614 /* ToolbarButton.swift */; };
@@ -286,6 +287,7 @@
 		53D5F02228A8E0E4004573C8 /* InsightsWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightsWidget.swift; sourceTree = "<group>"; };
 		53D82F512A9A6759005B6910 /* ChromaticAbberation(Time).metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = "ChromaticAbberation(Time).metal"; sourceTree = "<group>"; };
 		53EB931028A65F670026BE28 /* ExpenditureWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ExpenditureWidgetExtension.entitlements; sourceTree = "<group>"; };
+		AE5B3D782AEE99E000AB364E /* NumberPad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberPad.swift; sourceTree = "<group>"; };
 		AEADEF6E2AE94DA3006EB614 /* Toast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		AEADEF702AE94DA8006EB614 /* BackButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
 		AEADEF722AE94DC3006EB614 /* ToolbarButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToolbarButton.swift; sourceTree = "<group>"; };
@@ -580,6 +582,7 @@
 			isa = PBXGroup;
 			children = (
 				AECE7F9D2AED1A6800B57267 /* SuggestedTransactions.swift */,
+				AE5B3D782AEE99E000AB364E /* NumberPad.swift */,
 			);
 			path = Transactions;
 			sourceTree = "<group>";
@@ -843,6 +846,7 @@
 				536FA6C12A7E05C600C52490 /* GetInsightsIntent.swift in Sources */,
 				533D1C3E2AE8023B00894764 /* PencilShape.swift in Sources */,
 				532C58BC2A629C3900DA2C81 /* NewBudgetView.swift in Sources */,
+				AE5B3D792AEE99E000AB364E /* NumberPad.swift in Sources */,
 				53D5F02328A8E0E4004573C8 /* InsightsWidget.swift in Sources */,
 				5327D2BC287C6AFB00F76ADF /* Color.swift in Sources */,
 				5327D2BB287C6AFB00F76ADF /* StringExtension.swift in Sources */,
