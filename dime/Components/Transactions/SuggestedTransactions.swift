@@ -24,7 +24,7 @@ struct SuggestedTransactions: View {
                         let string = String(format: "%.2f", transaction.wrappedAmount)
                         var stringArray = string.compactMap { String($0) }
                         note = transaction.wrappedNote
-                        
+
                         withAnimation {
                             numbers = stringArray.compactMap { Int($0) }
                             if round(transaction.wrappedAmount) == transaction.wrappedAmount {
@@ -39,7 +39,7 @@ struct SuggestedTransactions: View {
                                 category = transaction.category
                             }
                         }
-                        
+
                         self.hideKeyboard()
                     } label: {
                         HStack(spacing: 3) {
@@ -49,7 +49,7 @@ struct SuggestedTransactions: View {
                                 .lineLimit(1)
                                 .padding(.vertical, 3.5)
                                 .padding(.horizontal, 7)
-                            
+
                             Text("\(currencySymbol)\(Int(round(transaction.wrappedAmount)))")
                                 .font(.system(size: 17, weight: .semibold, design: .rounded))
                                 .lineLimit(1)

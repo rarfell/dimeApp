@@ -12,7 +12,7 @@ struct NumberPad: View {
     @Binding var category: Category?
     var showingNotePicker: Bool
     var submit: () -> Void
-    
+
     @AppStorage("numberEntryType", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var numberEntryType: Int = 1
     @State private var isEditingDecimal = false
     @State private var decimalValuesAssigned = [false, false]
@@ -28,9 +28,9 @@ struct NumberPad: View {
         }
         return String(format: "%.0f", price)
     }
-    
-    var numPadNumbers = [[1,2,3], [4,5,6], [7,8,9]]
-    
+
+    var numPadNumbers = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+
     var body: some View {
         GeometryReader { proxy in
             VStack(spacing: proxy.size.height * 0.04) {
@@ -96,7 +96,7 @@ struct NumberPad: View {
         .padding(.bottom, 15)
         .keyboardAwareHeight(showToolbar: showingNotePicker)
     }
-    
+
     public func deleteLastDigit() {
         if numberEntryType == 1 {
             price = Double(Int(price * 10)) / 100
@@ -113,7 +113,7 @@ struct NumberPad: View {
             }
         }
     }
-    
+
     @ViewBuilder
     private func NumberButton(number: Int, size: CGSize) -> some View {
         Button {

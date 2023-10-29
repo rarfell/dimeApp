@@ -3,7 +3,7 @@ import SwiftUI
 struct Toolbar<Content>: View where Content: View {
     var title: String?
     var rightButton: (() -> Content)?
-    
+
     var body: some View {
         HStack(spacing: 8) {
 //            BackButton(presentationMode: <#T##Binding<PresentationMode>#>)
