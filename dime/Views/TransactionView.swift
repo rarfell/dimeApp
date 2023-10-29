@@ -94,16 +94,13 @@ struct TransactionView: View {
     let size = UIScreen.main.bounds.width - 105
 
     if (amountText.widthOfRoundedString(size: 32, weight: .regular)
-      + currencySymbol.widthOfRoundedString(size: 20, weight: .light) + 4) > size
-    {
+      + currencySymbol.widthOfRoundedString(size: 20, weight: .light) + 4) > size {
       return (24, 16)
     } else if (amountText.widthOfRoundedString(size: 44, weight: .regular)
-      + currencySymbol.widthOfRoundedString(size: 25, weight: .light) + 4) > size
-    {
+      + currencySymbol.widthOfRoundedString(size: 25, weight: .light) + 4) > size {
       return (32, 20)
     } else if (amountText.widthOfRoundedString(size: 56, weight: .regular)
-      + currencySymbol.widthOfRoundedString(size: 32, weight: .light) + 4) > size
-    {
+      + currencySymbol.widthOfRoundedString(size: 32, weight: .light) + 4) > size {
       return (44, 25)
     } else {
       return (56, 32)
@@ -596,8 +593,7 @@ struct TransactionView: View {
               showingDatePicker = true
             }
 
-            if (expenseCategories.count == 0 && !income) || (incomeCategories.count == 0 && income)
-            {
+            if (expenseCategories.count == 0 && !income) || (incomeCategories.count == 0 && income) {
               HStack(spacing: 4) {
                 Image(systemName: "plus")
                   .font(.system(.subheadline, design: .rounded).weight(.semibold))
@@ -988,8 +984,7 @@ struct TransactionView: View {
 
   func toggleFieldColors() {
     if categoryButtonTextColor == Color.AlertRed
-      || categoryButtonBackgroundColor == Color.AlertRed.opacity(0.23)
-    {
+      || categoryButtonBackgroundColor == Color.AlertRed.opacity(0.23) {
       withAnimation(.linear) {
         categoryButtonTextColor = Color.SubtitleText
         categoryButtonBackgroundColor = Color.clear
@@ -1187,7 +1182,7 @@ struct FilteredSearchNewTransactionView: View {
     let containPredicate = NSPredicate(
       format: "%K CONTAINS[cd] %@", #keyPath(Transaction.note), searchQuery)
     let compound = NSCompoundPredicate(orPredicateWithSubpredicates: [
-      beginPredicate, containPredicate,
+      beginPredicate, containPredicate
     ])
 
     if let unwrappedCategory = category {
@@ -1689,7 +1684,7 @@ struct CustomRecurringView: View {
   var stringArray: [String] {
     return [
       "", "\(holdingCoefficient) days", "\(holdingCoefficient) weeks",
-      "\(holdingCoefficient) months",
+      "\(holdingCoefficient) months"
     ]
   }
 
