@@ -348,6 +348,7 @@ struct LogView: View {
 
 struct NumberView: AnimatableModifier {
     var number: Double
+    var dynamicTypeSize: DynamicTypeSize
     let netTotal: Bool
     let positive: Bool
 
@@ -358,26 +359,47 @@ struct NumberView: AnimatableModifier {
         return Locale.current.localizedCurrencySymbol(forCurrencyCode: currency)!
     }
 
-    var downsize1: (big: CGFloat, small: CGFloat) {
-        let amountText: String
-        let size = UIScreen.main.bounds.width - 80
-
-        if showCents {
-            amountText = String(format: "%.2f", number)
-        } else {
-            amountText = String(format: "%.0f", number)
-        }
-
-        if (amountText.widthOfRoundedString(size: 32, weight: .regular) + currencySymbol.widthOfRoundedString(size: 20, weight: .light) + 4) > size {
-            return (24, 16)
-        } else if (amountText.widthOfRoundedString(size: 44, weight: .regular) + currencySymbol.widthOfRoundedString(size: 25, weight: .light) + 4) > size {
-            return (32, 20)
-        } else if (amountText.widthOfRoundedString(size: 56, weight: .regular) + currencySymbol.widthOfRoundedString(size: 32, weight: .light) + 4) > size {
-            return (44, 25)
-        } else {
-            return (56, 32)
+    var fontSize: CGFloat {
+        switch dynamicTypeSize {
+        case .xSmall:
+            return 46
+        case .small:
+            return 47
+        case .medium:
+            return 48
+        case .large:
+            return 50
+        case .xLarge:
+            return 56
+        case .xxLarge:
+            return 58
+        case .xxxLarge:
+            return 80
+        default:
+            return 50
         }
     }
+
+//    var downsize1: (big: CGFloat, small: CGFloat) {
+//        let amountText: String
+//        let size = UIScreen.main.bounds.width - 80
+//
+//        if showCents {
+//            amountText = String(format: "%.2f", number)
+//        } else {
+//            amountText = String(format: "%.0f", number)
+//        }
+//
+//        if (amountText.widthOfRoundedString(size: 32, weight: .regular) + currencySymbol.widthOfRoundedString(size: 20, weight: .light) + 4) > size {
+//            return (24, 16)
+//        } else if (amountText.widthOfRoundedString(size: 44, weight: .regular) + currencySymbol.widthOfRoundedString(size: 25, weight: .light) + 4) > size {
+//            return (32, 20)
+//        } else if (amountText.widthOfRoundedString(size: 56, weight: .regular) + currencySymbol.widthOfRoundedString(size: 32, weight: .light) + 4) > size {
+//            return (44, 25)
+//        } else {
+//            return (56, 32)
+//        }
+//    }
 
     var animatableData: Double {
         get { number }
@@ -385,29 +407,82 @@ struct NumberView: AnimatableModifier {
     }
 
     func body(content _: Content) -> some View {
-        HStack(alignment: .lastTextBaseline, spacing: 4) {
-            Text(netTotal ? (positive ? "+\(currencySymbol)" : "-\(currencySymbol)") : currencySymbol)
-                .font(.system(size: downsize1.small, weight: .light, design: .rounded))
+//        HStack(alignment: .lastTextBaseline, spacing: 4) {
+//            Text(netTotal ? (positive ? "+\(currencySymbol)" : "-\(currencySymbol)") : currencySymbol)
+//                .font(.system(size: downsize1.small, weight: .light, design: .rounded))
+//
+//                .foregroundColor(Color.SubtitleText)
+//                .baselineOffset(getDollarOffset(big: downsize1.big, small: downsize1.small))
+//
+//            if showCents {
+//                Text("\(number, specifier: "%.2f")")
+//                    .font(.system(size: downsize1.big, weight: .regular, design: .rounded))
+//                    .lineLimit(1)
+//            } else {
+//                Text("\(number, specifier: "%.0f")")
+//                    .font(.system(size: downsize1.big, weight: .regular, design: .rounded))
+//                    .lineLimit(1)
+//            }
+//        }
+//        .foregroundColor(Color.PrimaryText)
+        HStack(alignment: .lastTextBaseline, spacing: 2) {
+            let numberStrings = splitDoubleToStrings(number)
 
+            Text(netTotal ? (positive ? "+\(currencySymbol)" : "-\(currencySymbol)") : currencySymbol)
+                .font(.system(.largeTitle, design: .rounded))
                 .foregroundColor(Color.SubtitleText)
-                .baselineOffset(getDollarOffset(big: downsize1.big, small: downsize1.small))
+
+            Text(numberStrings.wholePart)
+                .font(.system(size: fontSize, weight: .regular, design: .rounded))
+                .layoutPriority(/*@START_MENU_TOKEN@*/0/*@END_MENU_TOKEN@*/)
 
             if showCents {
-                Text("\(number, specifier: "%.2f")")
-                    .font(.system(size: downsize1.big, weight: .regular, design: .rounded))
-                    .lineLimit(1)
-            } else {
-                Text("\(number, specifier: "%.0f")")
-                    .font(.system(size: downsize1.big, weight: .regular, design: .rounded))
-                    .lineLimit(1)
+                Text(numberStrings.decimalPart)
+                    .font(.system(.largeTitle, design: .rounded))
             }
         }
+        .minimumScaleFactor(0.5)
         .foregroundColor(Color.PrimaryText)
+
     }
+}
+
+func splitDoubleToStrings(_ num: Double) -> (wholePart: String, decimalPart: String) {
+    let formatter = NumberFormatter()
+    formatter.numberStyle = .decimal
+    formatter.minimumFractionDigits = 2
+    formatter.maximumFractionDigits = 2
+    let formattedNum = formatter.string(from: NSNumber(value: num))!
+    let components = formattedNum.split(separator: ".")
+    let wholePart = String(components[0])
+    let decimalPart = "." + (components.count > 1 ? String(components[1]) : "00")
+    return (wholePart, decimalPart)
 }
 
 struct LogInsightsView: View {
     @EnvironmentObject var dataController: DataController
+    @Environment(\.dynamicTypeSize) var dynamicTypeSize
+
+    var fontSize: CGFloat {
+        switch dynamicTypeSize {
+        case .xSmall:
+            return 46
+        case .small:
+            return 47
+        case .medium:
+            return 48
+        case .large:
+            return 50
+        case .xLarge:
+            return 56
+        case .xxLarge:
+            return 58
+        case .xxxLarge:
+            return 62
+        default:
+            return 50
+        }
+    }
 
     @Binding var navBarText: String
 
@@ -550,8 +625,27 @@ struct LogInsightsView: View {
 //
 //                }
 
-                EmptyView()
-                    .modifier(NumberView(number: amount, netTotal: insightsType == 1, positive: netTotal.positive))
+                HStack(alignment: .lastTextBaseline, spacing: 2) {
+                    let numberStrings = splitDoubleToStrings(amount)
+
+                    Text(insightsType == 1 ? (netTotal.positive ? "+\(currencySymbol)" : "-\(currencySymbol)") : currencySymbol)
+                        .font(.system(.largeTitle, design: .rounded))
+                        .foregroundColor(Color.SubtitleText)
+
+                    Text(numberStrings.wholePart)
+                        .font(.system(size: fontSize, weight: .regular, design: .rounded))
+                        .layoutPriority(/*@START_MENU_TOKEN@*/0/*@END_MENU_TOKEN@*/)
+
+                    if showCents {
+                        Text(numberStrings.decimalPart)
+                            .font(.system(.largeTitle, design: .rounded))
+                    }
+                }
+                .minimumScaleFactor(0.5)
+                .foregroundColor(Color.PrimaryText)
+
+//                EmptyView()
+//                    .modifier(NumberView(number: amount, dynamicTypeSize: _dynamicTypeSize.wrappedValue, netTotal: insightsType == 1, positive: netTotal.positive))
             }
             .padding(7)
             .contentShape(Rectangle())
@@ -597,7 +691,6 @@ struct LogInsightsView: View {
 
                     Text("+\(formatNumber(showCents: showCents, number: totalIncome))")
                         .font(.system(.title2, design: .rounded).weight(.medium))
-                        .dynamicTypeSize(...DynamicTypeSize.accessibility5)
                         .minimumScaleFactor(0.5)
 //                        .font(.system(size: 18, weight: .medium, design: .rounded))
                         .foregroundColor(Color.IncomeGreen)
@@ -608,9 +701,8 @@ struct LogInsightsView: View {
                         .frame(width: 1.7, height: 15)
                         .foregroundColor(Color.Outline)
 
-                    Text("+\(formatNumber(showCents: showCents, number: totalSpent))")
+                    Text("-\(formatNumber(showCents: showCents, number: totalSpent))")
                         .font(.system(.title2, design: .rounded).weight(.medium))
-                        .dynamicTypeSize(...DynamicTypeSize.xxLarge)
                         .minimumScaleFactor(0.5)
 //                        .font(.system(size: 18, weight: .medium, design: .rounded))
                         .foregroundColor(Color.AlertRed)
@@ -639,6 +731,7 @@ struct LogInsightsView: View {
             }
         }
         .padding([.bottom, .horizontal], 20)
+        .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
         .frame(height: lineGraph ? 240 : 170)
     }
 

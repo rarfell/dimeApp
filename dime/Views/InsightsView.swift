@@ -1154,9 +1154,13 @@ struct AverageLineView: View {
     var getMax: Int
     var average: Double
 
-    @AppStorage("animated", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var animated: Bool = true
-    @State var showLine: Bool = false
-    @State var offset: CGFloat = barHeight - 10
+//    @AppStorage("animated", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var animated: Bool = true
+//    @State var showLine: Bool = false
+//    @State var offset: CGFloat
+
+//    var calculatedOffset: CGFloat {
+//        return getOffset(maxi: getMax, average: average)
+//    }
 
     var body: some View {
         HStack(spacing: 2) {
@@ -1167,31 +1171,43 @@ struct AverageLineView: View {
                 .frame(height: 1)
                 .frame(maxWidth: .infinity)
         }
-        .opacity(showLine ? 1 : 0)
-        .offset(y: offset)
+//        .opacity(showLine ? 1 : 0)
+        .offset(y: getOffset(maxi: getMax, average: average))
         .opacity((average / Double(getMax)) < 0.1 || (average / Double(getMax)) > 0.9 ? 0 : 1)
-        .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                if !animated {
-                    showLine = true
-                } else {
-                    withAnimation {
-                        showLine = true
-                    }
-                }
-            }
-        }
-        .onChange(of: showLine) { newValue in
-            if newValue {
-                if !animated {
-                    offset = getOffset(maxi: getMax, average: average)
-                } else {
-                    withAnimation(.interactiveSpring(response: 0.6, dampingFraction: 0.8, blendDuration: 0.8)) {
-                        offset = getOffset(maxi: getMax, average: average)
-                    }
-                }
-            }
-        }
+//        .onAppear {
+//            DispatchQueue.main.sync {
+//                withAnimation(.interactiveSpring(response: 0.6, dampingFraction: 0.8, blendDuration: 0.8)) {
+//                    print(calculatedOffset)
+//                    offset = calculatedOffset
+//                }
+//            }
+//        }
+//        .onChange(of: showLine) { newValue in
+//            if newValue {
+//                DispatchQueue.main.asyncAfter(deadline: .now()) {
+//                    if !animated {
+//                        offset = calculatedOffset
+//                    } else {
+//                        
+//                    }
+//                }
+//            }
+//        }
+//        .onChange(of: calculatedOffset) { newValue in
+//            print(calculatedOffset)
+//            if newValue != 0 {
+//                if showLine {
+//                    if !animated {
+//                        offset = calculatedOffset
+//                    } else {
+//                        withAnimation(.interactiveSpring(response: 0.6, dampingFraction: 0.8, blendDuration: 0.8)) {
+//                            offset = calculatedOffset
+//                        }
+//                    }
+//                }
+//            }
+//        }
+
     }
 }
 
@@ -1199,6 +1215,8 @@ struct SingleWeekBarGraphView: View {
     @Binding var selectedDate: Date?
     @Binding var categoryFilterMode: Bool
     @Binding var selectedDateAmount: Double
+
+    @State private var refreshID = UUID()
 
     var daysOfWeek = [Date]()
 
@@ -1274,10 +1292,12 @@ struct SingleWeekBarGraphView: View {
             // average line
             AverageLineView(getMax: getMax, average: weekAverage)
                 .opacity(actualDays <= 1 ? 0 : 1)
+                .id(refreshID)
 
         }
         .onChange(of: selectedDate) { _ in
             selectedDateAmount = dayDictionary[selectedDate ?? Date.now] ?? 0.0
+            refreshID = UUID()
         }
     }
 
@@ -2286,7 +2306,8 @@ func getOffset(maxi: Int, average: Double) -> Double {
     if maxi == 0 {
         return 0
     } else {
-        let height = (barHeight) - ((average / Double(maxi)) * (barHeight))
+        let shiftedAmount = (average / Double(maxi)) * (barHeight)
+        let height = (barHeight) - (shiftedAmount)
         return height - 10
     }
 }

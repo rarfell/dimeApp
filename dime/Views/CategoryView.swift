@@ -1851,7 +1851,7 @@ struct NormalTextField: UIViewRepresentable {
         textField.text = text
         textField.delegate = context.coordinator
 
-        textField.font = UIFont.roundedSpecial(ofStyle: .title2, weight: .medium)
+        textField.font = UIFont.roundedSpecial(ofStyle: .title2, weight: .medium, size: 17)
 //
 //        UIFont.rounded(ofSize: 20, weight: .medium)
         return textField

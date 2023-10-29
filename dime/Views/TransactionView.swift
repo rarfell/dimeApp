@@ -78,6 +78,12 @@ struct TransactionView: View {
     @State var toastTitle = ""
     @State var toastImage = ""
 
+    // shaking category error
+    @State var categoryButtonTextColor = Color.SubtitleText
+    @State var categoryButtonBackgroundColor = Color.clear
+    @State var categoryButtonOutlineColor = Color.Outline
+    @State var shake: Bool = false
+
     @ObservedObject var keyboardHeightHelper = KeyboardHeightHelper()
 
     @AppStorage("firstTransactionViewLaunch", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var firstLaunch: Bool = true
@@ -245,13 +251,11 @@ struct TransactionView: View {
                         HStack(spacing: 6.5) {
                             Image(systemName: toastImage)
                                 .font(.system(.subheadline, design: .rounded).weight(.semibold))
-                                .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                                .font(.system(size: 15, weight: .semibold))
                                 .foregroundColor(Color.AlertRed)
 
                             Text(toastTitle)
                                 .font(.system(.body, design: .rounded).weight(.semibold))
-                                .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
                                 .lineLimit(1)
 //                                .font(.system(size: 16, weight: .semibold, design: .rounded))
                                 .foregroundColor(Color.AlertRed)
@@ -270,7 +274,7 @@ struct TransactionView: View {
                             HStack(spacing: 0) {
                                 Text("Expense")
                                     .font(.system(.body, design: .rounded).weight(.semibold))
-                                    .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+
                                     .lineLimit(1)
 //                                    .font(.system(size: 18, weight: .semibold, design: .rounded))
                                     .foregroundColor(income == false ? Color.PrimaryText : Color.SubtitleText)
@@ -288,7 +292,7 @@ struct TransactionView: View {
 
                                 Text("transaction-view-income-picker")
                                     .font(.system(.body, design: .rounded).weight(.semibold))
-                                    .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+
                                     .lineLimit(1)
 //                                    .font(.system(size: 18, weight: .semibold, design: .rounded))
                                     .foregroundColor(income == true ? Color.PrimaryText : Color.SubtitleText)
@@ -397,6 +401,7 @@ struct TransactionView: View {
                 .padding(.top, topEdge)
 
                 ZStack {
+                    // swipe to change between income and expense
                     Color.PrimaryBackground
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .simultaneousGesture(
@@ -534,7 +539,7 @@ struct TransactionView: View {
                             }
                             .foregroundColor(Color.SubtitleText)
                             .font(.system(.subheadline, design: .rounded).weight(.semibold))
-                            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+
 //                                    .font(.system(size: 16, weight: .semibold, design: .rounded))
 
                             Group {
@@ -547,7 +552,7 @@ struct TransactionView: View {
                                 }
                             }
                             .font(.system(.body, design: .rounded).weight(.semibold))
-                            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+
 //                            .font(.system(size: 17.5, weight: .semibold, design: .rounded))
 
                             if showTime {
@@ -555,7 +560,7 @@ struct TransactionView: View {
 
                                 Text(getTimeString(date: date))
                                     .font(.system(.body, design: .rounded).weight(.semibold))
-                                    .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+
 //                                    .font(.system(size: 17.5, weight: .semibold, design: .rounded))
                             }
                         }
@@ -566,7 +571,7 @@ struct TransactionView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .overlay(
                             RoundedRectangle(cornerRadius: 11.5, style: .continuous)
-                                .stroke(Color.Outline, lineWidth: 1.5)
+                                .strokeBorder(Color.Outline, lineWidth: 1.5)
                         )
                         .contentShape(Rectangle())
                         .onTapGesture {
@@ -578,22 +583,25 @@ struct TransactionView: View {
                             HStack(spacing: 4) {
                                 Image(systemName: "plus")
                                     .font(.system(.subheadline, design: .rounded).weight(.semibold))
-                                    .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
-//
 //                                    .font(.system(size: 16, weight: .semibold, design: .rounded))
                                 Text("Category")
                                     .font(.system(.body, design: .rounded).weight(.semibold))
-                                    .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+
 //                                    .font(.system(size: 17.5, weight: .semibold, design: .rounded))
                                     .lineLimit(1)
                             }
-                            .foregroundColor(Color.SubtitleText)
                             .padding(.vertical, 8.5)
                             .padding(.horizontal, 10)
+                            .foregroundColor(categoryButtonTextColor)
+                            .background(categoryButtonBackgroundColor, in: RoundedRectangle(cornerRadius: 11.5, style: .continuous))
+                            .offset(x: shake ? 30 : 0)
+                            .contentShape(Rectangle())
                             .overlay(
                                 RoundedRectangle(cornerRadius: 11.5, style: .continuous)
-                                    .stroke(Color.Outline, lineWidth: 1.5)
+                                    .strokeBorder(categoryButtonOutlineColor, lineWidth: 1.5)
                             )
+                            .drawingGroup()
+                            .offset(x: shake ? -5 : 0)
                             .contentShape(Rectangle())
                             .onTapGesture {
                                 showCategorySheet = true
@@ -604,11 +612,11 @@ struct TransactionView: View {
                                     HStack(spacing: 5) {
                                         Text(unwrappedCategory.wrappedEmoji)
                                             .font(.system(.footnote, design: .rounded).weight(.semibold))
-                                            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+
 //                                            .font(.system(size: 14))
                                         Text(unwrappedCategory.wrappedName)
                                             .font(.system(.body, design: .rounded).weight(.semibold))
-                                            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+
 //                                            .font(.system(size: 17.5, weight: .semibold, design: .rounded))
                                             .lineLimit(1)
                                     }
@@ -636,29 +644,31 @@ struct TransactionView: View {
                                         if #available(iOS 17.0, *) {
                                             Image(systemName: "circle.grid.2x2")
                                                 .font(.system(.subheadline, design: .rounded).weight(.semibold))
-                                                .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+
 //                                                .font(.system(size: 16, weight: .semibold, design: .rounded))
                                                 .symbolEffect(.bounce.up.byLayer, options: .repeating.speed(0.5), value: showCategoryPicker)
                                         } else {
                                             Image(systemName: "circle.grid.2x2")
                                                 .font(.system(.subheadline, design: .rounded).weight(.semibold))
-                                                .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+
 //                                                .font(.system(size: 16, weight: .semibold, design: .rounded))
                                         }
 
                                         Text("Category")
                                             .font(.system(.body, design: .rounded).weight(.semibold))
-                                            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                                            .font(.system(size: 17.5, weight: .semibold, design: .rounded))
                                             .lineLimit(1)
                                     }
-                                    .foregroundColor(Color.SubtitleText)
                                     .padding(.vertical, 8.5)
                                     .padding(.horizontal, 10)
+                                    .foregroundColor(categoryButtonTextColor)
+                                    .background(categoryButtonBackgroundColor, in: RoundedRectangle(cornerRadius: 11.5, style: .continuous))
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 11.5, style: .continuous)
-                                            .stroke(Color.Outline, lineWidth: 1.5)
+                                            .strokeBorder(categoryButtonOutlineColor, lineWidth: 1.5)
                                     )
+                                    .drawingGroup()
+                                    .offset(x: shake ? -5 : 0)
                                     .popover(present: $showCategoryPicker, attributes: {
                                         $0.position = .absolute(
                                             originAnchor: .topRight,
@@ -747,6 +757,7 @@ struct TransactionView: View {
                                 .background(Color.DarkBackground, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
                             }
                             .buttonStyle(NumPadButton())
+//                            .sensoryFeedback(.error, trigger: showToast)
                         }
                     }
                     .frame(width: proxy.size.width, height: proxy.size.height)
@@ -883,22 +894,8 @@ struct TransactionView: View {
                 .allowsHitTesting(showingDatePicker)
                 .animation(.easeOut(duration: 0.25), value: showingDatePicker)
             }
-//                .toolbar {
-//                    ToolbarItemGroup(placement: .keyboard) {
-//                        ScrollView(.horizontal) {
-//                            HStack {
-//                                ForEach(suggestedNotes, id: \.self) { note in
-//                                    Text(note)
-//                                        .font(.system(size: 20, weight: .semibold, design: .rounded))
-//                                }
-//
-//                            }
-//                        }
-//                    }
-//
-//                }
-//
         }
+        .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
         .animation(.easeOut(duration: 0.2), value: showToast)
         .ignoresSafeArea(.keyboard, edges: .all)
         .frame(maxHeight: .infinity)
@@ -1055,6 +1052,36 @@ struct TransactionView: View {
         return formatter.string(from: date)
     }
 
+    func toggleFieldColors() {
+        if categoryButtonTextColor == Color.AlertRed || categoryButtonBackgroundColor == Color.AlertRed.opacity(0.23) {
+            withAnimation(.linear) {
+                categoryButtonTextColor = Color.SubtitleText
+                categoryButtonBackgroundColor = Color.clear
+                categoryButtonOutlineColor = Color.Outline
+            }
+        } else {
+            withAnimation(.easeOut(duration: 1.0)) {
+                categoryButtonTextColor = Color.AlertRed
+                categoryButtonBackgroundColor = Color.AlertRed.opacity(0.23)
+                categoryButtonOutlineColor = Color.AlertRed
+            }
+            withAnimation(.easeInOut(duration: 0.1).repeatCount(5)) {
+                shake = true
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                withAnimation(.easeInOut(duration: 0.1)) {
+                    shake = false
+                }
+                withAnimation(.easeOut(duration: 0.6)) {
+                    categoryButtonTextColor = Color.SubtitleText
+                    categoryButtonBackgroundColor = Color.clear
+                    categoryButtonOutlineColor = Color.Outline
+                }
+            }
+        }
+
+    }
+
     func submit() {
         let generator = UINotificationFeedbackGenerator()
 
@@ -1062,6 +1089,8 @@ struct TransactionView: View {
             toastImage = "questionmark.app"
             toastTitle = "Incomplete Entry"
             showToast = true
+            toggleFieldColors()
+
             generator.notificationOccurred(.error)
 
             return
@@ -1075,6 +1104,9 @@ struct TransactionView: View {
             toastImage = "tray"
             toastTitle = "Missing Category"
             showToast = true
+
+            toggleFieldColors()
+
             generator.notificationOccurred(.error)
             return
         }

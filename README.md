@@ -37,3 +37,7 @@ A 100% free personal finance tracker built with iOS design guidelines in mind. [
 ## Licence
 
 This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details.
+
+## Contributing
+
+If you have any bug reports or feature requests, please go through [existing issues](https://github.com/rarfell/dimeApp/issues) or [create one](https://github.com/rarfell/dimeApp/issues/new/choose) if it doesn't exist yet.
