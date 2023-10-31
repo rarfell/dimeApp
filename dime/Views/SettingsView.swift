@@ -1298,31 +1298,14 @@ struct SettingsNumberEntryView: View {
         return Locale.current.localizedCurrencySymbol(forCurrencyCode: currency)!
     }
 
-    @State private var price: Double = 0.0
+    @State private var price: Double = 0
     @State private var category: Category? = nil
-    private var numberPad: NumberPad {
-        NumberPad(price: $price, category: $category) {
-            submit()
-        }
-    }
+    @State var isEditingDecimal = false
+    @State var decimalValuesAssigned: AssignedDecimal = .none
+    @State private var priceString: String = "0"
 
     private var disabled: Bool {
         price == 0.0
-    }
-
-    private var downsize: (big: CGFloat, small: CGFloat) {
-        let amountText = numberPad.amount
-        let size = UIScreen.main.bounds.width - 105
-
-        if (amountText.widthOfRoundedString(size: 32, weight: .regular) + currencySymbol.widthOfRoundedString(size: 20, weight: .light) + 4) > size {
-            return (24, 16)
-        } else if (amountText.widthOfRoundedString(size: 44, weight: .regular) + currencySymbol.widthOfRoundedString(size: 25, weight: .light) + 4) > size {
-            return (32, 20)
-        } else if (amountText.widthOfRoundedString(size: 56, weight: .regular) + currencySymbol.widthOfRoundedString(size: 32, weight: .light) + 4) > size {
-            return (44, 25)
-        } else {
-            return (56, 32)
-        }
     }
 
     let options = ["Type 1", "Type 2"]
@@ -1403,11 +1386,22 @@ struct SettingsNumberEntryView: View {
 
             Spacer()
 
-            numberPad.text()
+            NumberPadTextView(
+                price: $price,
+                isEditingDecimal: $isEditingDecimal,
+                decimalValuesAssigned: $decimalValuesAssigned
+            )
 
             Spacer()
 
-            numberPad
+            NumberPad(
+                price: $price,
+                category: $category,
+                isEditingDecimal: $isEditingDecimal,
+                decimalValuesAssigned: $decimalValuesAssigned
+              ) {
+              submit()
+            }
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarTitle("")

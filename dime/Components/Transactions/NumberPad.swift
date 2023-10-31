@@ -14,48 +14,12 @@ enum AssignedDecimal {
 struct NumberPad: View {
     @Binding var price: Double
     @Binding var category: Category?
+    @Binding var isEditingDecimal: Bool
+    @Binding var decimalValuesAssigned: AssignedDecimal
     var showingNotePicker: Bool = false
     var submit: () -> Void
-
-    @AppStorage("currency", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var currency: String = Locale.current.currencyCode!
-    var currencySymbol: String {
-        return Locale.current.localizedCurrencySymbol(forCurrencyCode: currency)!
-    }
+    
     @AppStorage("numberEntryType", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var numberEntryType: Int = 1
-    @State private var isEditingDecimal = false
-    @State private var decimalValuesAssigned: AssignedDecimal = .none
-    
-    private var downsize: (big: CGFloat, small: CGFloat) {
-        let size = UIScreen.main.bounds.width - 105
-        if (amount.widthOfRoundedString(size: 32, weight: .regular)
-          + currencySymbol.widthOfRoundedString(size: 20, weight: .light) + 4) > size {
-          return (24, 16)
-        } else if (amount.widthOfRoundedString(size: 44, weight: .regular)
-          + currencySymbol.widthOfRoundedString(size: 25, weight: .light) + 4) > size {
-          return (32, 20)
-        } else if (amount.widthOfRoundedString(size: 56, weight: .regular)
-          + currencySymbol.widthOfRoundedString(size: 32, weight: .light) + 4) > size {
-          return (44, 25)
-        }
-        return (56, 32)
-      }
-    
-    public var amount: String {
-        if numberEntryType == 1 {
-            return String(format: "%.2f", price)
-        }
-        if isEditingDecimal {
-            switch decimalValuesAssigned {
-                case .none:
-                    return String("\(price).")
-                case .first:
-                    return String(format: "%.1f", price)
-                case .second:
-                    return String(format: "%.2f", price)
-            }
-        }
-        return String(format: "%.0f", price)
-    }
 
     var numPadNumbers = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
 
@@ -144,46 +108,6 @@ struct NumberPad: View {
             }
         }
     }
-    
-    @ViewBuilder
-    public func text() -> some View {
-        HStack(alignment: .lastTextBaseline, spacing: 4) {
-            Text(currencySymbol)
-                .font(.system(size: downsize.small, weight: .light, design: .rounded))
-                .foregroundColor(Color.SubtitleText)
-                .baselineOffset(getDollarOffset(big: downsize.big, small: downsize.small))
-            if numberEntryType == 1 {
-                Text("\(price, specifier: "%.2f")")
-                    .font(.system(size: downsize.big, weight: .regular, design: .rounded))
-                    .foregroundColor(Color.PrimaryText)
-            } else {
-                Text("\(amount)")
-                    .font(.system(size: 56, weight: .regular, design: .rounded))
-                    .foregroundColor(Color.PrimaryText)
-            }
-        }
-        .frame(maxWidth: .infinity)
-        .overlay(alignment: .trailing) {
-            if numberEntryType == 2 {
-                DeleteButton()
-            }
-        }
-    }
-    
-    @ViewBuilder
-    func DeleteButton() -> some View {
-        Button {
-          deleteLastDigit()
-        } label: {
-          Image(systemName: "delete.left.fill")
-            .font(.system(size: 16, weight: .semibold))
-            .foregroundColor(Color.SubtitleText)
-            .padding(7)
-            .background(Color.SecondaryBackground, in: Circle())
-            .contentShape(Circle())
-        }
-        .disabled(price == 0)
-      }
 
 
     @ViewBuilder
@@ -231,5 +155,109 @@ struct NumberPad: View {
         }
         .disabled(price >= Double(Int.max) / 100)
         .buttonStyle(NumPadButton())
+    }
+}
+
+struct NumberPadTextView: View {
+    @Binding var price: Double
+    @Binding var isEditingDecimal: Bool
+    @Binding var decimalValuesAssigned: AssignedDecimal
+
+    @AppStorage("currency", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var currency: String = Locale.current.currencyCode!
+    var currencySymbol: String {
+        return Locale.current.localizedCurrencySymbol(forCurrencyCode: currency)!
+    }
+    
+    @AppStorage("numberEntryType", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var numberEntryType: Int = 1
+    
+    public var amount: String {
+        if numberEntryType == 1 {
+            return String(format: "%.2f", price)
+        }
+        if isEditingDecimal {
+            switch decimalValuesAssigned {
+                case .none:
+                    return String(format: "%.0f", price) + "."
+                case .first:
+                    return String(format: "%.1f", price)
+                case .second:
+                    return String(format: "%.2f", price)
+            }
+        }
+        return String(format: "%.0f", price)
+    }
+    
+    private var downsize: (big: CGFloat, small: CGFloat) {
+        let size = UIScreen.main.bounds.width - 105
+        if (amount.widthOfRoundedString(size: 32, weight: .regular)
+          + currencySymbol.widthOfRoundedString(size: 20, weight: .light) + 4) > size {
+          return (24, 16)
+        } else if (amount.widthOfRoundedString(size: 44, weight: .regular)
+          + currencySymbol.widthOfRoundedString(size: 25, weight: .light) + 4) > size {
+          return (32, 20)
+        } else if (amount.widthOfRoundedString(size: 56, weight: .regular)
+          + currencySymbol.widthOfRoundedString(size: 32, weight: .light) + 4) > size {
+          return (44, 25)
+        }
+        return (56, 32)
+      }
+    
+    var body: some View {
+        HStack(alignment: .lastTextBaseline, spacing: 4) {
+            Text(currencySymbol)
+                .font(.system(size: downsize.small, weight: .light, design: .rounded))
+                .foregroundColor(Color.SubtitleText)
+                .baselineOffset(getDollarOffset(big: downsize.big, small: downsize.small))
+            if numberEntryType == 1 {
+                Text("\(price, specifier: "%.2f")")
+                    .font(.system(size: downsize.big, weight: .regular, design: .rounded))
+                    .foregroundColor(Color.PrimaryText)
+            } else {
+                Text("\(amount)")
+                    .font(.system(size: 56, weight: .regular, design: .rounded))
+                    .foregroundColor(Color.PrimaryText)
+            }
+        }
+        .frame(maxWidth: .infinity)
+        .overlay(alignment: .trailing) {
+            if numberEntryType == 2 {
+                DeleteButton()
+            }
+        }
+    }
+    
+    @ViewBuilder
+   func DeleteButton() -> some View {
+       Button {
+         deleteLastDigit()
+       } label: {
+         Image(systemName: "delete.left.fill")
+           .font(.system(size: 16, weight: .semibold))
+           .foregroundColor(Color.SubtitleText)
+           .padding(7)
+           .background(Color.SecondaryBackground, in: Circle())
+           .contentShape(Circle())
+       }
+       .disabled(price == 0)
+   }
+
+    public func deleteLastDigit() {
+        if numberEntryType == 1 {
+            price = Double(Int(price * 10)) / 100
+        } else if !isEditingDecimal {
+            price = Double(Int(price / 10))
+        } else {
+            switch decimalValuesAssigned {
+                case .none:
+                    return
+                case .first:
+                    price = Double(Int(price))
+                    isEditingDecimal = false
+                    decimalValuesAssigned = .none
+                case .second:
+                    price = Double(Int(price * 10)) / 10
+                    decimalValuesAssigned = .first
+            }
+        }
     }
 }

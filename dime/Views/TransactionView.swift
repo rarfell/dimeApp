@@ -214,11 +214,9 @@ struct TransactionView: View {
   @State private var price: Double = 0
   @AppStorage("numberEntryType", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime"))
   var numberEntryType: Int = 1
-  private var numberPad: NumberPad {
-    NumberPad(price: $price, category: $category, showingNotePicker: showingNotePicker) {
-      submit()
-    }
-  }
+    @State var isEditingDecimal = false
+    @State var decimalValuesAssigned: AssignedDecimal = .none
+    @State private var priceString: String = "0"
 
   var body: some View {
     GeometryReader { proxy in
@@ -440,7 +438,7 @@ struct TransactionView: View {
 
           // number display and note view
           VStack(spacing: 8) {
-              numberPad.text()
+              NumberPadTextView(price: $price, isEditingDecimal: $isEditingDecimal, decimalValuesAssigned: $decimalValuesAssigned)
               NoteView(note: $note, focused: $textFieldFocused)
           }
         }
@@ -690,7 +688,15 @@ struct TransactionView: View {
 
         // date and category picker
 
-        numberPad
+          NumberPad(
+              price: $price,
+              category: $category,
+              isEditingDecimal: $isEditingDecimal,
+              decimalValuesAssigned: $decimalValuesAssigned,
+              showingNotePicker: showingNotePicker
+            ) {
+            submit()
+          }
       }
       .padding(17)
       .frame(width: proxy.size.width, height: proxy.size.height)
