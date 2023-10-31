@@ -47,8 +47,7 @@ struct TransactionView: View {
   @State var showCategoryPicker = false
   @State var showCategorySheet = false
 
-  @AppStorage("currency", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var currency:
-    String = Locale.current.currencyCode!
+  @AppStorage("currency", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var currency: String = Locale.current.currencyCode!
   var currencySymbol: String {
     return Locale.current.localizedCurrencySymbol(forCurrencyCode: currency)!
   }
@@ -88,24 +87,6 @@ struct TransactionView: View {
 
   let repeatOverlays = ["D", "W", "M"]
   let numberArray = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
-
-  var downsize: (big: CGFloat, small: CGFloat) {
-    let amountText = numberPad.amount
-    let size = UIScreen.main.bounds.width - 105
-
-    if (amountText.widthOfRoundedString(size: 32, weight: .regular)
-      + currencySymbol.widthOfRoundedString(size: 20, weight: .light) + 4) > size {
-      return (24, 16)
-    } else if (amountText.widthOfRoundedString(size: 44, weight: .regular)
-      + currencySymbol.widthOfRoundedString(size: 25, weight: .light) + 4) > size {
-      return (32, 20)
-    } else if (amountText.widthOfRoundedString(size: 56, weight: .regular)
-      + currencySymbol.widthOfRoundedString(size: 32, weight: .light) + 4) > size {
-      return (44, 25)
-    } else {
-      return (56, 32)
-    }
-  }
 
   var repeatButtonAccessibility: String {
     if repeatType == 1 {
@@ -459,33 +440,8 @@ struct TransactionView: View {
 
           // number display and note view
           VStack(spacing: 8) {
-            if numberEntryType == 1 {
-              HStack(alignment: .lastTextBaseline, spacing: 4) {
-                Text(currencySymbol)
-                  .font(.system(size: downsize.small, weight: .light, design: .rounded))
-                  .foregroundColor(Color.SubtitleText)
-                  .baselineOffset(getDollarOffset(big: downsize.big, small: downsize.small))
-                Text("\(price, specifier: "%.2f")")
-                  .font(.system(size: downsize.big, weight: .regular, design: .rounded))
-                  .foregroundColor(Color.PrimaryText)
-              }
-            } else {
-              HStack(alignment: .lastTextBaseline, spacing: 4) {
-                Text(currencySymbol)
-                  .font(.system(size: 32, weight: .light, design: .rounded))
-                  .foregroundColor(Color.SubtitleText)
-                  .baselineOffset(getDollarOffset(big: 56, small: 32))
-                Text(numberPad.amount)
-                  .font(.system(size: 56, weight: .regular, design: .rounded))
-                  .foregroundColor(Color.PrimaryText)
-              }
-              .frame(maxWidth: .infinity)
-              .overlay(alignment: .trailing) {
-                DeleteButton()
-              }
-            }
-
-            NoteView(note: $note, focused: $textFieldFocused)
+              numberPad.text()
+              NoteView(note: $note, focused: $textFieldFocused)
           }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -937,21 +893,6 @@ struct TransactionView: View {
         swipingOffset = capsuleWidth
       }
     }
-  }
-
-  @ViewBuilder
-  func DeleteButton() -> some View {
-    Button {
-      numberPad.deleteLastDigit()
-    } label: {
-      Image(systemName: "delete.left.fill")
-        .font(.system(size: 16, weight: .semibold))
-        .foregroundColor(Color.SubtitleText)
-        .padding(7)
-        .background(Color.SecondaryBackground, in: Circle())
-        .contentShape(Circle())
-    }
-    .disabled(price == 0)
   }
 
   func isDateToday(date: Date) -> Bool {

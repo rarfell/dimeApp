@@ -1294,63 +1294,25 @@ struct SettingsNumberEntryView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @Environment(\.colorScheme) var colorScheme
     @AppStorage("currency", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var currency: String = Locale.current.currencyCode!
-    var currencySymbol: String {
+    private var currencySymbol: String {
         return Locale.current.localizedCurrencySymbol(forCurrencyCode: currency)!
     }
 
-    @State private var numbers: [Int] = [0, 0, 0]
-    @State private var numbers1: [String] = []
-    private var amount: String {
-        var string = ""
-
-        if numberEntryType == 1 {
-            for i in numbers.indices {
-                if i == (numbers.count - 2) {
-                    string += ".\(numbers[i])"
-                } else {
-                    string += "\(numbers[i])"
-                }
-            }
-
-            return string
-        } else {
-            if numbers1.isEmpty {
-                return "0"
-            }
-            for i in numbers1 {
-                string = string + i
-            }
-
-            return string
+    @State private var price: Double = 0.0
+    @State private var category: Category? = nil
+    private var numberPad: NumberPad {
+        NumberPad(price: $price, category: $category) {
+            submit()
         }
     }
 
-    let numberArray = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
-    var numberArrayCount: Int {
-        if numberEntryType == 1 {
-            return numbers.count
-        } else {
-            return numbers1.count
-        }
+    private var disabled: Bool {
+        price == 0.0
     }
 
-    var transactionValue: Double {
-        return (amount as NSString).doubleValue
-    }
-
-    var disabled: Bool {
-        transactionValue == 0.0
-    }
-
-    var downsize: (big: CGFloat, small: CGFloat) {
-        let amountText: String
+    private var downsize: (big: CGFloat, small: CGFloat) {
+        let amountText = numberPad.amount
         let size = UIScreen.main.bounds.width - 105
-
-        if numberEntryType == 2 {
-            amountText = amount
-        } else {
-            amountText = String(format: "%.2f", transactionValue)
-        }
 
         if (amountText.widthOfRoundedString(size: 32, weight: .regular) + currencySymbol.widthOfRoundedString(size: 20, weight: .light) + 4) > size {
             return (24, 16)
@@ -1372,7 +1334,6 @@ struct SettingsNumberEntryView: View {
             Text("Number Entry Method")
                 .font(.system(.title3, design: .rounded).weight(.semibold))
                 .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
-//                .font(.system(size: 20, weight: .semibold, design: .rounded))
                 .foregroundColor(Color.PrimaryText)
                 .frame(maxWidth: .infinity)
                 .overlay(alignment: .leading) {
@@ -1382,14 +1343,12 @@ struct SettingsNumberEntryView: View {
                         SettingsBackButton()
                     }
                 }
-//                .padding(.bottom, 20)
 
             HStack(spacing: 0) {
                 ForEach(options.indices, id: \.self) { option in
                     Text(LocalizedStringKey(options[option]))
                         .font(.system(.body, design: .rounded).weight(.semibold))
                         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
-//                        .font(.system(size: 18, weight: .semibold, design: .rounded))
                         .foregroundColor(numberEntryType == (option + 1) ? Color.PrimaryText : Color.SubtitleText)
                         .padding(6)
                         .padding(.horizontal, 8)
@@ -1420,28 +1379,22 @@ struct SettingsNumberEntryView: View {
                     Text("\"Pre-dotted\"")
                         .font(.system(.title2, design: .rounded).weight(.semibold))
                         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
-//                        .font(.system(size: 25, weight: .semibold, design: .rounded))
-//                        .multilineTextAlignment(.center)
                         .foregroundColor(Color.PrimaryText)
 
                     Text("If you're too lazy to add a decimal point, I gotchu covered.")
                         .font(.system(.subheadline, design: .rounded).weight(.medium))
                         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
-//                        .font(.system(size: 15, weight: .medium, design: .rounded))
                         .multilineTextAlignment(.center)
                         .foregroundColor(Color.SubtitleText)
                 } else {
                     Text("\"Cent-less\"")
                         .font(.system(.title2, design: .rounded).weight(.semibold))
                         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
-//                        .font(.system(size: 25, weight: .semibold, design: .rounded))
-//                        .multilineTextAlignment(.center)
                         .foregroundColor(Color.PrimaryText)
 
                     Text("If your transactions usually amount to whole numbers - this one is for you.")
                         .font(.system(.subheadline, design: .rounded).weight(.medium))
                         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
-//                        .font(.system(size: 15, weight: .medium, design: .rounded))
                         .multilineTextAlignment(.center)
                         .foregroundColor(Color.SubtitleText)
                 }
@@ -1450,144 +1403,11 @@ struct SettingsNumberEntryView: View {
 
             Spacer()
 
-            if numberEntryType == 1 {
-                HStack(alignment: .lastTextBaseline, spacing: 4) {
-                    Text(currencySymbol)
-                        .font(.system(size: downsize.small, weight: .light, design: .rounded))
-                        .foregroundColor(Color.SubtitleText)
-                        .baselineOffset(getDollarOffset(big: downsize.big, small: downsize.small))
-                    Text("\(transactionValue, specifier: "%.2f")")
-                        .font(.system(size: downsize.big, weight: .regular, design: .rounded))
-                        .foregroundColor(Color.PrimaryText)
-                }
-            } else {
-                if numbers1.isEmpty {
-                    HStack(alignment: .lastTextBaseline, spacing: 4) {
-                        Text(currencySymbol)
-                            .font(.system(size: 32, weight: .light, design: .rounded))
-                            .foregroundColor(Color.SubtitleText)
-                            .baselineOffset(getDollarOffset(big: 56, small: 32))
-                        Text("0")
-                            .font(.system(size: 56, weight: .regular, design: .rounded))
-                            .foregroundColor(Color.PrimaryText)
-                    }
-                    .frame(maxWidth: .infinity)
-
-                } else {
-                    HStack(alignment: .lastTextBaseline, spacing: 4) {
-                        Text(currencySymbol)
-                            .font(.system(size: downsize.small, weight: .light, design: .rounded))
-                            .foregroundColor(Color.SubtitleText)
-                            .baselineOffset(getDollarOffset(big: downsize.big, small: downsize.small))
-                        Text(amount)
-                            .font(.system(size: downsize.big, weight: .regular, design: .rounded))
-                            .foregroundColor(Color.PrimaryText)
-                    }
-                    .frame(maxWidth: .infinity)
-                    .overlay(alignment: .trailing) {
-                        Button {
-                            if !numbers1.isEmpty {
-                                if numbers1.count == 2 && numbers1[0] == "0" && numbers1[1] == "." {
-                                    numbers1.removeAll()
-                                } else {
-                                    numbers1.removeLast()
-                                }
-                            }
-
-                        } label: {
-                            Image(systemName: "delete.left.fill")
-                                .font(.system(size: 16, weight: .semibold))
-                                .foregroundColor(Color.SubtitleText)
-                                .padding(7)
-                                .background(Color.SecondaryBackground, in: Circle())
-                                .contentShape(Circle())
-                        }
-                        .disabled(numbers1.isEmpty)
-                    }
-                }
-            }
+            numberPad.text()
 
             Spacer()
 
-            GeometryReader { proxy in
-                VStack(spacing: proxy.size.height * 0.04) {
-                    ForEach(numberArray, id: \.self) { array in
-                        HStack(spacing: proxy.size.width * 0.05) {
-                            ForEach(array, id: \.self) { singleNumber in
-                                NumberButton(number: singleNumber, size: proxy.size)
-                            }
-                        }
-                    }
-
-                    HStack(spacing: proxy.size.width * 0.05) {
-                        if numberEntryType == 1 {
-                            Button {
-                                if numbers.count == 3 {
-                                    numbers.remove(at: numbers.count - 1)
-                                    numbers.insert(0, at: 0)
-                                } else {
-                                    numbers.remove(at: numbers.count - 1)
-                                }
-                            } label: {
-                                Image("tag-cross")
-                                    .resizable()
-                                    .frame(width: 32, height: 32)
-                                    .frame(width: proxy.size.width * 0.3, height: proxy.size.height * 0.22)
-                                    .background(Color.DarkBackground)
-                                    .foregroundColor(Color.LightIcon)
-                                    .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-                            }
-                            .buttonStyle(NumPadButton())
-                        } else {
-                            Button {
-                                if numbers1.isEmpty {
-                                    numbers1.append("0")
-                                    numbers1.append(".")
-                                } else if numbers1.contains(".") {
-                                    return
-                                } else {
-                                    numbers1.append(".")
-                                }
-                            } label: {
-                                Text(".")
-                                    .font(.system(size: 34, weight: .regular, design: .rounded))
-                                    .frame(width: proxy.size.width * 0.3, height: proxy.size.height * 0.22)
-                                    .background(Color.SecondaryBackground)
-                                    .foregroundColor(Color.PrimaryText)
-                                    .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-                                    .opacity(numbers1.contains(".") ? 0.6 : 1)
-                            }
-                            .disabled(numbers1.contains("."))
-                            .buttonStyle(NumPadButton())
-                        }
-
-                        NumberButton(number: 0, size: proxy.size)
-
-                        Button {
-                            submit()
-                        } label: {
-                            Group {
-                                if #available(iOS 17.0, *) {
-                                    Image(systemName: "checkmark.square.fill")
-                                        .font(.system(size: 30, weight: .medium, design: .rounded))
-                                        .symbolEffect(.bounce.up.byLayer, value: transactionValue != 0)
-//                                        .symbolEffectsRemoved()
-                                } else {
-                                    Image(systemName: "checkmark.square.fill")
-                                        .font(.system(size: 30, weight: .medium, design: .rounded))
-                                }
-                            }
-                            .frame(width: proxy.size.width * 0.3, height: proxy.size.height * 0.22)
-                            .foregroundColor(Color.LightIcon)
-                            .background(Color.DarkBackground, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
-                        }
-                        .buttonStyle(NumPadButton())
-                    }
-                }
-                .frame(width: proxy.size.width, height: proxy.size.height)
-            }
-            .padding(.horizontal, 5)
-            .frame(height: UIScreen.main.bounds.height / 2.8)
+            numberPad
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarTitle("")
@@ -1599,46 +1419,7 @@ struct SettingsNumberEntryView: View {
 
     func submit() {
         UIImpactFeedbackGenerator(style: .light).impactOccurred()
-        numbers = [0, 0, 0]
-        numbers1 = []
-    }
-
-    @ViewBuilder
-    func NumberButton(number: Int, size: CGSize) -> some View {
-        Button {
-            if numberEntryType == 1 {
-                if numbers[0] == 0 {
-                    numbers.append(number)
-                    numbers.remove(at: 0)
-                } else {
-                    numbers.append(number)
-                }
-            } else {
-                if number == 0 && numbers1.isEmpty {
-                    return
-                } else {
-                    if numbers1.contains(".") {
-                        if numbers1.count - numbers1.firstIndex(of: ".")! < 3 {
-                            numbers1.append(String(number))
-                        } else {
-                            return
-                        }
-                    } else {
-                        numbers1.append(String(number))
-                    }
-                }
-            }
-        } label: {
-            Text("\(number)")
-                .font(.system(size: 34, weight: .regular, design: .rounded))
-                .frame(width: size.width * 0.3, height: size.height * 0.22)
-                .background(Color.SecondaryBackground)
-                .foregroundColor(Color.PrimaryText)
-                .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-                .opacity(numberArrayCount == 9 ? 0.6 : 1)
-        }
-        .disabled(numberArrayCount == 9)
-        .buttonStyle(NumPadButton())
+        price = 0
     }
 }
 
