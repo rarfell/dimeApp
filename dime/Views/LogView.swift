@@ -745,11 +745,6 @@ struct LogInsightsView: View {
 }
 
 struct SearchView: View {
-    @SectionedFetchRequest<Date?, Transaction>(sectionIdentifier: \.day, sortDescriptors: [
-        SortDescriptor(\.day, order: .reverse),
-        SortDescriptor(\.date, order: .reverse)
-    ]) private var transactions: SectionedFetchResults<Date?, Transaction>
-
     @Environment(\.dismiss) var dismiss
 
     @State var searchQuery = ""
@@ -812,18 +807,6 @@ struct SearchView: View {
         }
         .padding(15)
         .background(Color.PrimaryBackground)
-        .onChange(of: searchQuery) { _ in
-            transactions.nsPredicate = searchPredicate(searchQuery: searchQuery)
-        }
-    }
-
-    private func searchPredicate(searchQuery: String) -> NSCompoundPredicate? {
-        if searchQuery == "" { return nil }
-
-        let beginPredicate = NSPredicate(format: "%K BEGINSWITH[cd] %@", #keyPath(Transaction.note), searchQuery)
-        let containPredicate = NSPredicate(format: "%K CONTAINS[cd] %@", #keyPath(Transaction.note), searchQuery)
-        let containPredicate1 = NSPredicate(format: "%K CONTAINS[cd] %@", #keyPath(Transaction.category.name), searchQuery)
-        return NSCompoundPredicate(orPredicateWithSubpredicates: [beginPredicate, containPredicate, containPredicate1])
     }
 }
 
@@ -865,7 +848,16 @@ struct FilteredSearchView: View {
         let beginPredicate = NSPredicate(format: "%K BEGINSWITH[cd] %@", #keyPath(Transaction.note), searchQuery)
         let containPredicate = NSPredicate(format: "%K CONTAINS[cd] %@", #keyPath(Transaction.note), searchQuery)
         let containPredicate1 = NSPredicate(format: "%K CONTAINS[cd] %@", #keyPath(Transaction.category.name), searchQuery)
-        let compound = NSCompoundPredicate(orPredicateWithSubpredicates: [beginPredicate, containPredicate, containPredicate1])
+
+        let compound: NSCompoundPredicate
+
+        // allow searching by amount too
+        if let amount = Double(searchQuery) {
+            let amountPredicate = NSPredicate(format: "amount == %@", NSNumber(value: amount))
+            compound = NSCompoundPredicate(orPredicateWithSubpredicates: [beginPredicate, containPredicate, containPredicate1, amountPredicate])
+        } else {
+            compound = NSCompoundPredicate(orPredicateWithSubpredicates: [beginPredicate, containPredicate, containPredicate1])
+        }
 
         _transactions = SectionedFetchRequest<Date?, Transaction>(sectionIdentifier: \.day, sortDescriptors: [
             SortDescriptor(\.day, order: .reverse),
