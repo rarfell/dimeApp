@@ -18,7 +18,7 @@ struct NumberPad: View {
     @Binding var decimalValuesAssigned: AssignedDecimal
     var showingNotePicker: Bool = false
     var submit: () -> Void
-    
+
     @AppStorage("numberEntryType", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var numberEntryType: Int = 1
 
     var numPadNumbers = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
@@ -109,7 +109,6 @@ struct NumberPad: View {
         }
     }
 
-
     @ViewBuilder
     private func NumberButton(number: Int, size: CGSize) -> some View {
         Button {
@@ -167,9 +166,9 @@ struct NumberPadTextView: View {
     var currencySymbol: String {
         return Locale.current.localizedCurrencySymbol(forCurrencyCode: currency)!
     }
-    
+
     @AppStorage("numberEntryType", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var numberEntryType: Int = 1
-    
+
     public var amount: String {
         if numberEntryType == 1 {
             return String(format: "%.2f", price)
@@ -186,7 +185,7 @@ struct NumberPadTextView: View {
         }
         return String(format: "%.0f", price)
     }
-    
+
     private var downsize: (big: CGFloat, small: CGFloat) {
         let size = UIScreen.main.bounds.width - 105
         if (amount.widthOfRoundedString(size: 32, weight: .regular)
@@ -201,7 +200,7 @@ struct NumberPadTextView: View {
         }
         return (56, 32)
       }
-    
+
     var body: some View {
         HStack(alignment: .lastTextBaseline, spacing: 4) {
             Text(currencySymbol)
@@ -225,7 +224,7 @@ struct NumberPadTextView: View {
             }
         }
     }
-    
+
     @ViewBuilder
    func DeleteButton() -> some View {
        Button {
