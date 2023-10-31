@@ -122,27 +122,6 @@ struct TransactionView: View {
         }
     }
 
-    var downsize: (big: CGFloat, small: CGFloat) {
-        let amountText: String
-        let size = UIScreen.main.bounds.width - 105
-
-        if numberEntryType == 2 {
-            amountText = amount
-        } else {
-            amountText = String(format: "%.2f", transactionValue)
-        }
-
-        if (amountText.widthOfRoundedString(size: 32, weight: .regular) + currencySymbol.widthOfRoundedString(size: 20, weight: .light) + 4) > size {
-            return (24, 16)
-        } else if (amountText.widthOfRoundedString(size: 44, weight: .regular) + currencySymbol.widthOfRoundedString(size: 25, weight: .light) + 4) > size {
-            return (32, 20)
-        } else if (amountText.widthOfRoundedString(size: 56, weight: .regular) + currencySymbol.widthOfRoundedString(size: 32, weight: .light) + 4) > size {
-            return (44, 25)
-        } else {
-            return (56, 32)
-        }
-    }
-
     var repeatButtonAccessibility: String {
         if repeatType == 1 {
             return "transaction recurs daily, button to edit recurring duration"
@@ -250,6 +229,27 @@ struct TransactionView: View {
             return 23
         default:
             return 23
+        }
+    }
+
+    var largerFontSize: CGFloat {
+        switch dynamicTypeSize {
+        case .xSmall:
+            return 46
+        case .small:
+            return 47
+        case .medium:
+            return 48
+        case .large:
+            return 50
+        case .xLarge:
+            return 56
+        case .xxLarge:
+            return 58
+        case .xxxLarge:
+            return 62
+        default:
+            return 50
         }
     }
 
@@ -471,37 +471,48 @@ struct TransactionView: View {
                     // number display and note view
                     VStack(spacing: 8) {
                         if numberEntryType == 1 {
-                            HStack(alignment: .lastTextBaseline, spacing: 4) {
-                                Text(currencySymbol)
-                                    .font(.system(size: downsize.small, weight: .light, design: .rounded))
-                                    .foregroundColor(Color.SubtitleText)
-                                    .baselineOffset(getDollarOffset(big: downsize.big, small: downsize.small))
-                                Text("\(transactionValue, specifier: "%.2f")")
-                                    .font(.system(size: downsize.big, weight: .regular, design: .rounded))
-                                    .foregroundColor(Color.PrimaryText)
+                            HStack(alignment: .lastTextBaseline, spacing: 2) {
+                                Group {
+                                    Text(currencySymbol)
+                                        .font(.system(.largeTitle, design: .rounded))
+                                        .foregroundColor(Color.SubtitleText) +
+                                    Text("\(transactionValue, specifier: "%.2f")")
+                                        .font(.system(size: largerFontSize, weight: .regular, design: .rounded))
+                                        .foregroundColor(Color.PrimaryText)
+
+                                }
                             }
+                            .minimumScaleFactor(0.5)
+                            .lineLimit(1)
                         } else {
                             if numbers1.isEmpty {
-                                HStack(alignment: .lastTextBaseline, spacing: 4) {
-                                    Text(currencySymbol)
-                                        .font(.system(size: 32, weight: .light, design: .rounded))
-                                        .foregroundColor(Color.SubtitleText)
-                                        .baselineOffset(getDollarOffset(big: 56, small: 32))
-                                    Text("0")
-                                        .font(.system(size: 56, weight: .regular, design: .rounded))
-                                        .foregroundColor(Color.PrimaryText)
+                                HStack(alignment: .lastTextBaseline, spacing: 2) {
+                                    Group {
+                                        Text(currencySymbol)
+                                            .font(.system(.largeTitle, design: .rounded))
+                                            .foregroundColor(Color.SubtitleText) +
+                                        Text("0")
+                                            .font(.system(size: largerFontSize, weight: .regular, design: .rounded))
+                                            .foregroundColor(Color.PrimaryText)
+
+                                    }
                                 }
                                 .frame(maxWidth: .infinity)
                             } else {
-                                HStack(alignment: .lastTextBaseline, spacing: 4) {
-                                    Text(currencySymbol)
-                                        .font(.system(size: downsize.small, weight: .light, design: .rounded))
-                                        .foregroundColor(Color.SubtitleText)
-                                        .baselineOffset(getDollarOffset(big: downsize.big, small: downsize.small))
-                                    Text(amount)
-                                        .font(.system(size: downsize.big, weight: .regular, design: .rounded))
-                                        .foregroundColor(Color.PrimaryText)
+                                HStack(alignment: .lastTextBaseline, spacing: 2) {
+                                    Group {
+                                        Text(currencySymbol)
+                                            .font(.system(.largeTitle, design: .rounded))
+                                            .foregroundColor(Color.SubtitleText) +
+                                        Text(amount)
+                                            .font(.system(size: largerFontSize, weight: .regular, design: .rounded))
+                                            .foregroundColor(Color.PrimaryText)
+
+                                    }
                                 }
+                                .minimumScaleFactor(0.5)
+                                .lineLimit(1)
+                                .padding(.horizontal, 40)
                                 .frame(maxWidth: .infinity)
                                 .overlay(alignment: .trailing) {
                                     DeleteButton()
