@@ -374,80 +374,42 @@ struct NumberView: AnimatableModifier {
         case .xxLarge:
             return 58
         case .xxxLarge:
-            return 80
+            return 62
         default:
             return 50
         }
     }
-
-//    var downsize1: (big: CGFloat, small: CGFloat) {
-//        let amountText: String
-//        let size = UIScreen.main.bounds.width - 80
-//
-//        if showCents {
-//            amountText = String(format: "%.2f", number)
-//        } else {
-//            amountText = String(format: "%.0f", number)
-//        }
-//
-//        if (amountText.widthOfRoundedString(size: 32, weight: .regular) + currencySymbol.widthOfRoundedString(size: 20, weight: .light) + 4) > size {
-//            return (24, 16)
-//        } else if (amountText.widthOfRoundedString(size: 44, weight: .regular) + currencySymbol.widthOfRoundedString(size: 25, weight: .light) + 4) > size {
-//            return (32, 20)
-//        } else if (amountText.widthOfRoundedString(size: 56, weight: .regular) + currencySymbol.widthOfRoundedString(size: 32, weight: .light) + 4) > size {
-//            return (44, 25)
-//        } else {
-//            return (56, 32)
-//        }
-//    }
-
     var animatableData: Double {
         get { number }
         set { number = newValue }
     }
 
     func body(content _: Content) -> some View {
-//        HStack(alignment: .lastTextBaseline, spacing: 4) {
-//            Text(netTotal ? (positive ? "+\(currencySymbol)" : "-\(currencySymbol)") : currencySymbol)
-//                .font(.system(size: downsize1.small, weight: .light, design: .rounded))
-//
-//                .foregroundColor(Color.SubtitleText)
-//                .baselineOffset(getDollarOffset(big: downsize1.big, small: downsize1.small))
-//
-//            if showCents {
-//                Text("\(number, specifier: "%.2f")")
-//                    .font(.system(size: downsize1.big, weight: .regular, design: .rounded))
-//                    .lineLimit(1)
-//            } else {
-//                Text("\(number, specifier: "%.0f")")
-//                    .font(.system(size: downsize1.big, weight: .regular, design: .rounded))
-//                    .lineLimit(1)
-//            }
-//        }
-//        .foregroundColor(Color.PrimaryText)
         HStack(alignment: .lastTextBaseline, spacing: 2) {
-            let numberStrings = splitDoubleToStrings(number)
+            let numberStrings = splitDoubleToStrings(number, showCents: showCents)
 
-            Text(netTotal ? (positive ? "+\(currencySymbol)" : "-\(currencySymbol)") : currencySymbol)
-                .font(.system(.largeTitle, design: .rounded))
-                .foregroundColor(Color.SubtitleText)
+            Group {
 
-            Text(numberStrings.wholePart)
-                .font(.system(size: fontSize, weight: .regular, design: .rounded))
-                .layoutPriority(/*@START_MENU_TOKEN@*/0/*@END_MENU_TOKEN@*/)
+                Text(netTotal ? (positive ? "+\(currencySymbol)" : "-\(currencySymbol)") : currencySymbol)
+                    .font(.system(.largeTitle, design: .rounded))
+                    .foregroundColor(Color.SubtitleText) +
 
-            if showCents {
+                Text(numberStrings.wholePart)
+                    .font(.system(size: fontSize, weight: .regular, design: .rounded))
+                    .foregroundColor(Color.PrimaryText) +
+
                 Text(numberStrings.decimalPart)
                     .font(.system(.largeTitle, design: .rounded))
+                    .foregroundColor(Color.PrimaryText)
             }
         }
         .minimumScaleFactor(0.5)
-        .foregroundColor(Color.PrimaryText)
+        .lineLimit(1)
 
     }
 }
 
-func splitDoubleToStrings(_ num: Double) -> (wholePart: String, decimalPart: String) {
+func splitDoubleToStrings(_ num: Double, showCents: Bool) -> (wholePart: String, decimalPart: String) {
     let formatter = NumberFormatter()
     formatter.numberStyle = .decimal
     formatter.minimumFractionDigits = 2
@@ -455,34 +417,19 @@ func splitDoubleToStrings(_ num: Double) -> (wholePart: String, decimalPart: Str
     let formattedNum = formatter.string(from: NSNumber(value: num))!
     let components = formattedNum.split(separator: ".")
     let wholePart = String(components[0])
-    let decimalPart = "." + (components.count > 1 ? String(components[1]) : "00")
-    return (wholePart, decimalPart)
+
+    if showCents {
+        let decimalPart = "." + (components.count > 1 ? String(components[1]) : "00")
+        return (wholePart, decimalPart)
+    } else {
+        return (wholePart, "")
+    }
+
 }
 
 struct LogInsightsView: View {
     @EnvironmentObject var dataController: DataController
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
-
-    var fontSize: CGFloat {
-        switch dynamicTypeSize {
-        case .xSmall:
-            return 46
-        case .small:
-            return 47
-        case .medium:
-            return 48
-        case .large:
-            return 50
-        case .xLarge:
-            return 56
-        case .xxLarge:
-            return 58
-        case .xxxLarge:
-            return 62
-        default:
-            return 50
-        }
-    }
 
     @Binding var navBarText: String
 
@@ -625,27 +572,21 @@ struct LogInsightsView: View {
 //
 //                }
 
-                HStack(alignment: .lastTextBaseline, spacing: 2) {
-                    let numberStrings = splitDoubleToStrings(amount)
+//                HStack(alignment: .lastTextBaseline, spacing: 2) {
+//                   
+//
+//                    
+//                        .foregroundColor(Color.SubtitleText)
+//
+//                    Text(numberStrings.wholePart)
+//                        .font(.system(size: fontSize, weight: .regular, design: .rounded))
+//
+//                    
+//                }
+//                .minimumScaleFactor(0.5)
 
-                    Text(insightsType == 1 ? (netTotal.positive ? "+\(currencySymbol)" : "-\(currencySymbol)") : currencySymbol)
-                        .font(.system(.largeTitle, design: .rounded))
-                        .foregroundColor(Color.SubtitleText)
-
-                    Text(numberStrings.wholePart)
-                        .font(.system(size: fontSize, weight: .regular, design: .rounded))
-                        .layoutPriority(/*@START_MENU_TOKEN@*/0/*@END_MENU_TOKEN@*/)
-
-                    if showCents {
-                        Text(numberStrings.decimalPart)
-                            .font(.system(.largeTitle, design: .rounded))
-                    }
-                }
-                .minimumScaleFactor(0.5)
-                .foregroundColor(Color.PrimaryText)
-
-//                EmptyView()
-//                    .modifier(NumberView(number: amount, dynamicTypeSize: _dynamicTypeSize.wrappedValue, netTotal: insightsType == 1, positive: netTotal.positive))
+                EmptyView()
+                    .modifier(NumberView(number: amount, dynamicTypeSize: _dynamicTypeSize.wrappedValue, netTotal: insightsType == 1, positive: netTotal.positive))
             }
             .padding(7)
             .contentShape(Rectangle())
@@ -745,11 +686,6 @@ struct LogInsightsView: View {
 }
 
 struct SearchView: View {
-    @SectionedFetchRequest<Date?, Transaction>(sectionIdentifier: \.day, sortDescriptors: [
-        SortDescriptor(\.day, order: .reverse),
-        SortDescriptor(\.date, order: .reverse)
-    ]) private var transactions: SectionedFetchResults<Date?, Transaction>
-
     @Environment(\.dismiss) var dismiss
 
     @State var searchQuery = ""
@@ -812,18 +748,6 @@ struct SearchView: View {
         }
         .padding(15)
         .background(Color.PrimaryBackground)
-        .onChange(of: searchQuery) { _ in
-            transactions.nsPredicate = searchPredicate(searchQuery: searchQuery)
-        }
-    }
-
-    private func searchPredicate(searchQuery: String) -> NSCompoundPredicate? {
-        if searchQuery == "" { return nil }
-
-        let beginPredicate = NSPredicate(format: "%K BEGINSWITH[cd] %@", #keyPath(Transaction.note), searchQuery)
-        let containPredicate = NSPredicate(format: "%K CONTAINS[cd] %@", #keyPath(Transaction.note), searchQuery)
-        let containPredicate1 = NSPredicate(format: "%K CONTAINS[cd] %@", #keyPath(Transaction.category.name), searchQuery)
-        return NSCompoundPredicate(orPredicateWithSubpredicates: [beginPredicate, containPredicate, containPredicate1])
     }
 }
 
@@ -865,7 +789,16 @@ struct FilteredSearchView: View {
         let beginPredicate = NSPredicate(format: "%K BEGINSWITH[cd] %@", #keyPath(Transaction.note), searchQuery)
         let containPredicate = NSPredicate(format: "%K CONTAINS[cd] %@", #keyPath(Transaction.note), searchQuery)
         let containPredicate1 = NSPredicate(format: "%K CONTAINS[cd] %@", #keyPath(Transaction.category.name), searchQuery)
-        let compound = NSCompoundPredicate(orPredicateWithSubpredicates: [beginPredicate, containPredicate, containPredicate1])
+
+        let compound: NSCompoundPredicate
+
+        // allow searching by amount too
+        if let amount = Double(searchQuery) {
+            let amountPredicate = NSPredicate(format: "amount == %@", NSNumber(value: amount))
+            compound = NSCompoundPredicate(orPredicateWithSubpredicates: [beginPredicate, containPredicate, containPredicate1, amountPredicate])
+        } else {
+            compound = NSCompoundPredicate(orPredicateWithSubpredicates: [beginPredicate, containPredicate, containPredicate1])
+        }
 
         _transactions = SectionedFetchRequest<Date?, Transaction>(sectionIdentifier: \.day, sortDescriptors: [
             SortDescriptor(\.day, order: .reverse),

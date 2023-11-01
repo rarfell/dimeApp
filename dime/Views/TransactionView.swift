@@ -202,6 +202,27 @@ struct TransactionView: View {
       return 23
     }
   }
+  
+  var largerFontSize: CGFloat {
+        switch dynamicTypeSize {
+        case .xSmall:
+            return 46
+        case .small:
+            return 47
+        case .medium:
+            return 48
+        case .large:
+            return 50
+        case .xLarge:
+            return 56
+        case .xxLarge:
+            return 58
+        case .xxxLarge:
+            return 62
+        default:
+            return 50
+        }
+    }
 
   var capsuleWidth: CGFloat {
     if dynamicTypeSize > .xLarge {
@@ -403,6 +424,7 @@ struct TransactionView: View {
                     if swipe < 0 {
                       swipingOffset = max(-capsuleWidth, -pow(abs(swipe), 0.8)) + capsuleWidth
                     }
+
                   } else {
                     if swipe > 0 {
                       swipingOffset = min(capsuleWidth, pow(swipe, 0.8))

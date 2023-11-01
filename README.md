@@ -41,3 +41,5 @@ This project is licensed under the GNU General Public License v3.0 - see the [LI
 ## Contributing
 
 If you have any bug reports or feature requests, please go through [existing issues](https://github.com/rarfell/dimeApp/issues) or [create one](https://github.com/rarfell/dimeApp/issues/new/choose) if it doesn't exist yet.
+
+If you would like to contribute directly to the codebase, do drop [Rafael](https://x.com/rarfell) or [Yumi](https://x.com/izyumidev) a DM and we'll add you into our Discord group!
