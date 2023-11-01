@@ -876,6 +876,11 @@ struct TransactionView: View {
                     repeatCoefficient = Int(transaction.recurringCoefficient)
                     price = transaction.wrappedAmount
 
+                    if transaction.wrappedAmount.truncatingRemainder(dividingBy: 1) > 0 && numberEntryType == 2 {
+                        isEditingDecimal = true
+                        decimalValuesAssigned = .second
+                    }
+
                     if transaction.wrappedDate > Date.now {
                         animateIcon = true
                     }

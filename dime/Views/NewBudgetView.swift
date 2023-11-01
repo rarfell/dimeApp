@@ -574,80 +574,6 @@ struct BrandNewBudgetView: View {
                     ) {
                       submit()
                     }
-//                    GeometryReader { proxy in
-//                        VStack(spacing: proxy.size.height * 0.04) {
-//                            ForEach(numberArray, id: \.self) { array in
-//                                HStack(spacing: proxy.size.width * 0.05) {
-//                                    ForEach(array, id: \.self) { singleNumber in
-//                                        NumberButton(number: singleNumber, size: proxy.size)
-//                                    }
-//                                }
-//                            }
-//
-//                            HStack(spacing: proxy.size.width * 0.05) {
-//                                if numberEntryType == 1 {
-//                                    Button {
-//                                        if numbers.count == 3 {
-//                                            numbers.remove(at: numbers.count - 1)
-//                                            numbers.insert(0, at: 0)
-//                                        } else {
-//                                            numbers.remove(at: numbers.count - 1)
-//                                        }
-//                                    } label: {
-//                                        Image("tag-cross")
-//                                            .resizable()
-//                                            .frame(width: 32, height: 32)
-//                                            .frame(width: proxy.size.width * 0.3, height: proxy.size.height * 0.22)
-//                                            .background(Color.DarkBackground)
-//                                            .foregroundColor(Color.LightIcon)
-//                                            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-//                                    }
-//                                } else {
-//                                    Button {
-//                                        if numbers1.isEmpty {
-//                                            numbers1.append("0")
-//                                            numbers1.append(".")
-//                                        } else if numbers1.contains(".") {
-//                                            return
-//                                        } else {
-//                                            numbers1.append(".")
-//                                        }
-//                                    } label: {
-//                                        Text(".")
-//                                            .font(.system(size: 34, weight: .regular, design: .rounded))
-//                                            .frame(width: proxy.size.width * 0.3, height: proxy.size.height * 0.22)
-//                                            .background(Color.SecondaryBackground)
-//                                            .foregroundColor(Color.PrimaryText)
-//                                            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-//                                            .opacity(numbers1.contains(".") ? 0.6 : 1)
-//                                    }
-//                                    .disabled(numbers1.contains("."))
-//                                }
-//
-//                                NumberButton(number: 0, size: proxy.size)
-//
-//                                Button {
-//                                    submit()
-//                                } label: {
-//                                    Group {
-//                                        if #available(iOS 17.0, *) {
-//                                            Image(systemName: "checkmark.square.fill")
-//                                                .font(.system(size: 30, weight: .medium, design: .rounded))
-//                                                .symbolEffect(.bounce.up.byLayer, value: budgetAmount != 0)
-//                                        } else {
-//                                            Image(systemName: "checkmark.square.fill")
-//                                                .font(.system(size: 30, weight: .medium, design: .rounded))
-//                                        }
-//                                    }
-//                                    .frame(width: proxy.size.width * 0.3, height: proxy.size.height * 0.22)
-//                                    .foregroundColor(Color.LightIcon)
-//                                    .background(Color.DarkBackground, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
-//                                }
-//                            }
-//                        }
-//                        .frame(width: proxy.size.width, height: proxy.size.height)
-//                    }
-//                    .frame(height: UIScreen.main.bounds.height / 2.75)
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
@@ -724,6 +650,11 @@ struct BrandNewBudgetView: View {
                     }
 
                     price = unwrappedEditedBudget.amount
+
+                    if unwrappedEditedBudget.amount.truncatingRemainder(dividingBy: 1) > 0 && numberEntryType == 2 {
+                        isEditingDecimal = true
+                        decimalValuesAssigned = .second
+                    }
 //                    let string = String(format: "%.2f", unwrappedEditedBudget.amount)
 //
 //                    var stringArray = string.compactMap { String($0) }
@@ -762,6 +693,11 @@ struct BrandNewBudgetView: View {
                     }
 
                     price = unwrappedEditedMainBudget.amount
+
+                    if unwrappedEditedMainBudget.amount.truncatingRemainder(dividingBy: 1) > 0 && numberEntryType == 2 {
+                        isEditingDecimal = true
+                        decimalValuesAssigned = .second
+                    }
 //                    let string = String(format: "%.2f", unwrappedEditedMainBudget.amount)
 //
 //                    var stringArray = string.compactMap { String($0) }
