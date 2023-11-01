@@ -2240,17 +2240,10 @@ struct InsightsDollarView: View {
                     .foregroundColor(Color.SubtitleText)
                     .baselineOffset(dollarOffset)
 
-                if showCents && amount < 100 {
-                    Text("\(amount, specifier: "%.2f")")
-                        .font(.system(size: 30, weight: .medium, design: .rounded))
-                        .foregroundColor(Color.PrimaryText)
-                        .lineLimit(1)
-                } else {
-                    Text("\(amount, specifier: "%.0f")")
-                        .font(.system(size: 30, weight: .medium, design: .rounded))
-                        .foregroundColor(Color.PrimaryText)
-                        .lineLimit(1)
-                }
+                Text("\(amount, specifier: showCents && amount < 100 ? "%.2f" : "%.0f")")
+                    .font(.system(size: 30, weight: .medium, design: .rounded))
+                    .foregroundColor(Color.PrimaryText)
+                    .lineLimit(1)
             }
         } else {
             HStack(alignment: .lastTextBaseline, spacing: 1.3) {
@@ -2259,17 +2252,10 @@ struct InsightsDollarView: View {
                     .foregroundColor(Color.SubtitleText)
                     .baselineOffset(dollarOffset)
 
-                if showCents && amount < 100 {
-                    Text("\(amount, specifier: "%.2f")")
-                        .font(.system(size: 30, weight: .medium, design: .rounded))
-                        .foregroundColor(Color.PrimaryText)
-                        .lineLimit(1)
-                } else {
-                    Text("\(amount, specifier: "%.0f")")
-                        .font(.system(size: 30, weight: .medium, design: .rounded))
-                        .foregroundColor(Color.PrimaryText)
-                        .lineLimit(1)
-                }
+                Text("\(amount, specifier: showCents && amount < 100 ? "%.2f" : "%.0f")")
+                    .font(.system(size: 30, weight: .medium, design: .rounded))
+                    .foregroundColor(Color.PrimaryText)
+                    .lineLimit(1)
             }
         }
     }

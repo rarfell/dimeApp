@@ -80,68 +80,53 @@ struct BrandNewBudgetView: View {
     }
 
     // stage 5
-    var budgetAmount: Double {
-        return (amount as NSString).doubleValue
-    }
-
-    var downsize: (big: CGFloat, small: CGFloat) {
-        let amountText: String
-        let size = UIScreen.main.bounds.width - 105
-
-        if numberEntryType == 2 {
-            amountText = amount
-        } else {
-            amountText = String(format: "%.2f", budgetAmount)
-        }
-
-        if (amountText.widthOfRoundedString(size: 32, weight: .regular) + currencySymbol.widthOfRoundedString(size: 20, weight: .light) + 4) > size {
-            return (24, 16)
-        } else if (amountText.widthOfRoundedString(size: 44, weight: .regular) + currencySymbol.widthOfRoundedString(size: 25, weight: .light) + 4) > size {
-            return (32, 20)
-        } else if (amountText.widthOfRoundedString(size: 56, weight: .regular) + currencySymbol.widthOfRoundedString(size: 32, weight: .light) + 4) > size {
-            return (44, 25)
-        } else {
-            return (56, 32)
-        }
-    }
+//    var budgetAmount: Double {
+//        return (amount as NSString).doubleValue
+//    }
 
     @AppStorage("numberEntryType", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var numberEntryType: Int = 1
 
-    @State private var numbers: [Int] = [0, 0, 0]
-    @State private var numbers1: [String] = []
-    private var amount: String {
-        var string = ""
+    @State private var price: Double = 0
+    @State private var category: Category?
+    @State var isEditingDecimal = false
+    @State var decimalValuesAssigned: AssignedDecimal = .none
+    @State private var priceString: String = "0"
 
-        if numberEntryType == 1 {
-            for i in numbers.indices {
-                if i == (numbers.count - 2) {
-                    string += ".\(numbers[i])"
-                } else {
-                    string += "\(numbers[i])"
-                }
-            }
-
-            return string
-        } else {
-            if numbers1.isEmpty {
-                return "0"
-            }
-            for i in numbers1 {
-                string = string + i
-            }
-
-            return string
-        }
-    }
-
-    let numberArray = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
-    var numberArrayCount: Int {
-        if numberEntryType == 1 {
-            return numbers.count
-        } else {
-            return numbers1.count
-        }
-    }
+//    @State private var numbers: [Int] = [0, 0, 0]
+//    @State private var numbers1: [String] = []
+//    private var amount: String {
+//        var string = ""
+//
+//        if numberEntryType == 1 {
+//            for i in numbers.indices {
+//                if i == (numbers.count - 2) {
+//                    string += ".\(numbers[i])"
+//                } else {
+//                    string += "\(numbers[i])"
+//                }
+//            }
+//
+//            return string
+//        } else {
+//            if numbers1.isEmpty {
+//                return "0"
+//            }
+//            for i in numbers1 {
+//                string = string + i
+//            }
+//
+//            return string
+//        }
+//    }
+//
+//    let numberArray = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+//    var numberArrayCount: Int {
+//        if numberEntryType == 1 {
+//            return numbers.count
+//        } else {
+//            return numbers1.count
+//        }
+//    }
 
     @AppStorage("currency", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var currency: String = Locale.current.currencyCode!
     var currencySymbol: String {
@@ -156,11 +141,11 @@ struct BrandNewBudgetView: View {
         let average: Double
 
         if budgetTimeFrame == .week {
-            average = budgetAmount / 7
+            average = price / 7
         } else if budgetTimeFrame == .month {
-            average = budgetAmount / 30
+            average = price / 30
         } else {
-            average = budgetAmount / 365
+            average = price / 365
         }
 
         numberFormatter.maximumFractionDigits = 0
@@ -564,64 +549,13 @@ struct BrandNewBudgetView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else if progress == 5 {
                 VStack(spacing: 10) {
-                    if numberEntryType == 1 {
-                        HStack(alignment: .lastTextBaseline, spacing: 4) {
-                            Text(currencySymbol)
-                                .font(.system(size: downsize.small, weight: .light, design: .rounded))
-                                .foregroundColor(Color.SubtitleText)
-                                .baselineOffset(getDollarOffset(big: downsize.big, small: downsize.small))
-                            Text("\(budgetAmount, specifier: "%.2f")")
-                                .font(.system(size: downsize.big, weight: .regular, design: .rounded))
-                                .foregroundColor(Color.PrimaryText)
-                        }
-                    } else {
-                        if numbers1.isEmpty {
-                            HStack(alignment: .lastTextBaseline, spacing: 4) {
-                                Text(currencySymbol)
-                                    .font(.system(size: 32, weight: .light, design: .rounded))
-                                    .foregroundColor(Color.SubtitleText)
-                                    .baselineOffset(getDollarOffset(big: 56, small: 32))
-                                Text("0")
-                                    .font(.system(size: 56, weight: .regular, design: .rounded))
-                                    .foregroundColor(Color.PrimaryText)
-                            }
-                            .frame(maxWidth: .infinity)
+                    NumberPadTextView(
+                      price: $price,
+                      isEditingDecimal: $isEditingDecimal,
+                      decimalValuesAssigned: $decimalValuesAssigned
+                    )
 
-                        } else {
-                            HStack(alignment: .lastTextBaseline, spacing: 4) {
-                                Text(currencySymbol)
-                                    .font(.system(size: downsize.small, weight: .light, design: .rounded))
-                                    .foregroundColor(Color.SubtitleText)
-                                    .baselineOffset(getDollarOffset(big: downsize.big, small: downsize.small))
-                                Text(amount)
-                                    .font(.system(size: downsize.big, weight: .regular, design: .rounded))
-                                    .foregroundColor(Color.PrimaryText)
-                            }
-                            .frame(maxWidth: .infinity)
-                            .overlay(alignment: .trailing) {
-                                Button {
-                                    if !numbers1.isEmpty {
-                                        if numbers1.count == 2 && numbers1[0] == "0" && numbers1[1] == "." {
-                                            numbers1.removeAll()
-                                        } else {
-                                            numbers1.removeLast()
-                                        }
-                                    }
-
-                                } label: {
-                                    Image(systemName: "delete.left.fill")
-                                        .font(.system(size: 16, weight: .semibold))
-                                        .foregroundColor(Color.SubtitleText)
-                                        .padding(7)
-                                        .background(Color.SecondaryBackground, in: Circle())
-                                        .contentShape(Circle())
-                                }
-                                .disabled(numbers1.isEmpty)
-                            }
-                        }
-                    }
-
-                    if budgetTimeFrame != .day && budgetAmount > 0 {
+                    if budgetTimeFrame != .day && price > 0 {
                         Text(amountPerDayString)
                             .font(.system(size: 15, weight: .semibold, design: .rounded))
                             .foregroundColor(Color.SubtitleText)
@@ -632,80 +566,88 @@ struct BrandNewBudgetView: View {
 
                     Spacer()
 
-                    GeometryReader { proxy in
-                        VStack(spacing: proxy.size.height * 0.04) {
-                            ForEach(numberArray, id: \.self) { array in
-                                HStack(spacing: proxy.size.width * 0.05) {
-                                    ForEach(array, id: \.self) { singleNumber in
-                                        NumberButton(number: singleNumber, size: proxy.size)
-                                    }
-                                }
-                            }
-
-                            HStack(spacing: proxy.size.width * 0.05) {
-                                if numberEntryType == 1 {
-                                    Button {
-                                        if numbers.count == 3 {
-                                            numbers.remove(at: numbers.count - 1)
-                                            numbers.insert(0, at: 0)
-                                        } else {
-                                            numbers.remove(at: numbers.count - 1)
-                                        }
-                                    } label: {
-                                        Image("tag-cross")
-                                            .resizable()
-                                            .frame(width: 32, height: 32)
-                                            .frame(width: proxy.size.width * 0.3, height: proxy.size.height * 0.22)
-                                            .background(Color.DarkBackground)
-                                            .foregroundColor(Color.LightIcon)
-                                            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-                                    }
-                                } else {
-                                    Button {
-                                        if numbers1.isEmpty {
-                                            numbers1.append("0")
-                                            numbers1.append(".")
-                                        } else if numbers1.contains(".") {
-                                            return
-                                        } else {
-                                            numbers1.append(".")
-                                        }
-                                    } label: {
-                                        Text(".")
-                                            .font(.system(size: 34, weight: .regular, design: .rounded))
-                                            .frame(width: proxy.size.width * 0.3, height: proxy.size.height * 0.22)
-                                            .background(Color.SecondaryBackground)
-                                            .foregroundColor(Color.PrimaryText)
-                                            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-                                            .opacity(numbers1.contains(".") ? 0.6 : 1)
-                                    }
-                                    .disabled(numbers1.contains("."))
-                                }
-
-                                NumberButton(number: 0, size: proxy.size)
-
-                                Button {
-                                    submit()
-                                } label: {
-                                    Group {
-                                        if #available(iOS 17.0, *) {
-                                            Image(systemName: "checkmark.square.fill")
-                                                .font(.system(size: 30, weight: .medium, design: .rounded))
-                                                .symbolEffect(.bounce.up.byLayer, value: budgetAmount != 0)
-                                        } else {
-                                            Image(systemName: "checkmark.square.fill")
-                                                .font(.system(size: 30, weight: .medium, design: .rounded))
-                                        }
-                                    }
-                                    .frame(width: proxy.size.width * 0.3, height: proxy.size.height * 0.22)
-                                    .foregroundColor(Color.LightIcon)
-                                    .background(Color.DarkBackground, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
-                                }
-                            }
-                        }
-                        .frame(width: proxy.size.width, height: proxy.size.height)
+                    NumberPad(
+                      price: $price,
+                      category: $category,
+                      isEditingDecimal: $isEditingDecimal,
+                      decimalValuesAssigned: $decimalValuesAssigned
+                    ) {
+                      submit()
                     }
-                    .frame(height: UIScreen.main.bounds.height / 2.75)
+//                    GeometryReader { proxy in
+//                        VStack(spacing: proxy.size.height * 0.04) {
+//                            ForEach(numberArray, id: \.self) { array in
+//                                HStack(spacing: proxy.size.width * 0.05) {
+//                                    ForEach(array, id: \.self) { singleNumber in
+//                                        NumberButton(number: singleNumber, size: proxy.size)
+//                                    }
+//                                }
+//                            }
+//
+//                            HStack(spacing: proxy.size.width * 0.05) {
+//                                if numberEntryType == 1 {
+//                                    Button {
+//                                        if numbers.count == 3 {
+//                                            numbers.remove(at: numbers.count - 1)
+//                                            numbers.insert(0, at: 0)
+//                                        } else {
+//                                            numbers.remove(at: numbers.count - 1)
+//                                        }
+//                                    } label: {
+//                                        Image("tag-cross")
+//                                            .resizable()
+//                                            .frame(width: 32, height: 32)
+//                                            .frame(width: proxy.size.width * 0.3, height: proxy.size.height * 0.22)
+//                                            .background(Color.DarkBackground)
+//                                            .foregroundColor(Color.LightIcon)
+//                                            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+//                                    }
+//                                } else {
+//                                    Button {
+//                                        if numbers1.isEmpty {
+//                                            numbers1.append("0")
+//                                            numbers1.append(".")
+//                                        } else if numbers1.contains(".") {
+//                                            return
+//                                        } else {
+//                                            numbers1.append(".")
+//                                        }
+//                                    } label: {
+//                                        Text(".")
+//                                            .font(.system(size: 34, weight: .regular, design: .rounded))
+//                                            .frame(width: proxy.size.width * 0.3, height: proxy.size.height * 0.22)
+//                                            .background(Color.SecondaryBackground)
+//                                            .foregroundColor(Color.PrimaryText)
+//                                            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+//                                            .opacity(numbers1.contains(".") ? 0.6 : 1)
+//                                    }
+//                                    .disabled(numbers1.contains("."))
+//                                }
+//
+//                                NumberButton(number: 0, size: proxy.size)
+//
+//                                Button {
+//                                    submit()
+//                                } label: {
+//                                    Group {
+//                                        if #available(iOS 17.0, *) {
+//                                            Image(systemName: "checkmark.square.fill")
+//                                                .font(.system(size: 30, weight: .medium, design: .rounded))
+//                                                .symbolEffect(.bounce.up.byLayer, value: budgetAmount != 0)
+//                                        } else {
+//                                            Image(systemName: "checkmark.square.fill")
+//                                                .font(.system(size: 30, weight: .medium, design: .rounded))
+//                                        }
+//                                    }
+//                                    .frame(width: proxy.size.width * 0.3, height: proxy.size.height * 0.22)
+//                                    .foregroundColor(Color.LightIcon)
+//                                    .background(Color.DarkBackground, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+//                                }
+//                            }
+//                        }
+//                        .frame(width: proxy.size.width, height: proxy.size.height)
+//                    }
+//                    .frame(height: UIScreen.main.bounds.height / 2.75)
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
@@ -781,20 +723,22 @@ struct BrandNewBudgetView: View {
                         budgetTimeFrame = .week
                     }
 
-                    let string = String(format: "%.2f", unwrappedEditedBudget.amount)
-
-                    var stringArray = string.compactMap { String($0) }
-
-                    numbers = stringArray.compactMap { Int($0) }
-
-                    if round(unwrappedEditedBudget.amount) == unwrappedEditedBudget.amount {
-                        stringArray.removeLast()
-                        stringArray.removeLast()
-                        stringArray.removeLast()
-                        numbers1 = stringArray
-                    } else {
-                        numbers1 = stringArray
-                    }
+                    price = unwrappedEditedBudget.amount
+//                    let string = String(format: "%.2f", unwrappedEditedBudget.amount)
+//
+//                    var stringArray = string.compactMap { String($0) }
+//
+//                    
+//                    numbers = stringArray.compactMap { Int($0) }
+//
+//                    if round(unwrappedEditedBudget.amount) == unwrappedEditedBudget.amount {
+//                        stringArray.removeLast()
+//                        stringArray.removeLast()
+//                        stringArray.removeLast()
+//                        numbers1 = stringArray
+//                    } else {
+//                        numbers1 = stringArray
+//                    }
                 } else {
                     chosenDayWeek = firstWeekday
                     chosenDayMonth = firstDayOfMonth
@@ -817,20 +761,21 @@ struct BrandNewBudgetView: View {
                         budgetTimeFrame = .week
                     }
 
-                    let string = String(format: "%.2f", unwrappedEditedMainBudget.amount)
-
-                    var stringArray = string.compactMap { String($0) }
-
-                    numbers = stringArray.compactMap { Int($0) }
-
-                    if round(unwrappedEditedMainBudget.amount) == unwrappedEditedMainBudget.amount {
-                        stringArray.removeLast()
-                        stringArray.removeLast()
-                        stringArray.removeLast()
-                        numbers1 = stringArray
-                    } else {
-                        numbers1 = stringArray
-                    }
+                    price = unwrappedEditedMainBudget.amount
+//                    let string = String(format: "%.2f", unwrappedEditedMainBudget.amount)
+//
+//                    var stringArray = string.compactMap { String($0) }
+//
+//                    numbers = stringArray.compactMap { Int($0) }
+//
+//                    if round(unwrappedEditedMainBudget.amount) == unwrappedEditedMainBudget.amount {
+//                        stringArray.removeLast()
+//                        stringArray.removeLast()
+//                        stringArray.removeLast()
+//                        numbers1 = stringArray
+//                    } else {
+//                        numbers1 = stringArray
+//                    }
                 } else {
                     chosenDayWeek = firstWeekday
                     chosenDayMonth = firstDayOfMonth
@@ -856,7 +801,7 @@ struct BrandNewBudgetView: View {
     }
 
     func submit() {
-        if budgetAmount == 0 {
+        if price == 0 {
             UINotificationFeedbackGenerator().notificationOccurred(.error)
             showToast = true
             toastMessage = "Missing Amount"
@@ -913,7 +858,7 @@ struct BrandNewBudgetView: View {
         if let unwrappedEditedBudget = toEditBudget {
             unwrappedEditedBudget.category = selectedCategory
             unwrappedEditedBudget.startDate = startDate
-            unwrappedEditedBudget.amount = budgetAmount
+            unwrappedEditedBudget.amount = price
             unwrappedEditedBudget.type = Int16(budgetType)
 
             dataController.save()
@@ -925,7 +870,7 @@ struct BrandNewBudgetView: View {
 
         if let unwrappedEditedMainBudget = toEditMainBudget {
             unwrappedEditedMainBudget.startDate = startDate
-            unwrappedEditedMainBudget.amount = budgetAmount
+            unwrappedEditedMainBudget.amount = price
             unwrappedEditedMainBudget.type = Int16(budgetType)
 
             dataController.save()
@@ -943,14 +888,14 @@ struct BrandNewBudgetView: View {
             }
 
             newBudget.startDate = startDate
-            newBudget.amount = budgetAmount
+            newBudget.amount = price
             newBudget.dateCreated = Date.now
             newBudget.type = Int16(budgetType)
             newBudget.id = UUID()
         } else {
             let newBudget = MainBudget(context: moc)
             newBudget.startDate = startDate
-            newBudget.amount = budgetAmount
+            newBudget.amount = price
             newBudget.type = Int16(budgetType)
         }
 
@@ -1028,44 +973,6 @@ struct BrandNewBudgetView: View {
             .opacity(selectedCategory == nil ? 1 : (selectedCategory == category ? 1 : 0.4))
         }
         .buttonStyle(BouncyButton(duration: 0.2, scale: 0.8))
-    }
-
-    @ViewBuilder
-    func NumberButton(number: Int, size: CGSize) -> some View {
-        Button {
-            if numberEntryType == 1 {
-                if numbers[0] == 0 {
-                    numbers.append(number)
-                    numbers.remove(at: 0)
-                } else {
-                    numbers.append(number)
-                }
-            } else {
-                if number == 0 && numbers1.isEmpty {
-                    return
-                } else {
-                    if numbers1.contains(".") {
-                        if numbers1.count - numbers1.firstIndex(of: ".")! < 3 {
-                            numbers1.append(String(number))
-                        } else {
-                            return
-                        }
-                    } else {
-                        numbers1.append(String(number))
-                    }
-                }
-            }
-        } label: {
-            Text("\(number)")
-                .font(.system(size: 34, weight: .regular, design: .rounded))
-                .frame(width: size.width * 0.3, height: size.height * 0.22)
-                .background(Color.SecondaryBackground)
-                .foregroundColor(Color.PrimaryText)
-                .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-                .opacity(numberArrayCount == 9 ? 0.6 : 1)
-        }
-        .disabled(numberArrayCount == 9)
-        .buttonStyle(NumPadButton())
     }
 
     func getOrdinal(_ number: Int) -> String {

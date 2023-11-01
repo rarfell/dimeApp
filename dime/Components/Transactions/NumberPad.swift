@@ -186,37 +186,44 @@ struct NumberPadTextView: View {
         return String(format: "%.0f", price)
     }
 
-    private var downsize: (big: CGFloat, small: CGFloat) {
-        let size = UIScreen.main.bounds.width - 105
-        if (amount.widthOfRoundedString(size: 32, weight: .regular)
-          + currencySymbol.widthOfRoundedString(size: 20, weight: .light) + 4) > size {
-          return (24, 16)
-        } else if (amount.widthOfRoundedString(size: 44, weight: .regular)
-          + currencySymbol.widthOfRoundedString(size: 25, weight: .light) + 4) > size {
-          return (32, 20)
-        } else if (amount.widthOfRoundedString(size: 56, weight: .regular)
-          + currencySymbol.widthOfRoundedString(size: 32, weight: .light) + 4) > size {
-          return (44, 25)
+    @Environment(\.dynamicTypeSize) var dynamicTypeSize
+
+    var largerFontSize: CGFloat {
+        switch dynamicTypeSize {
+        case .xSmall:
+            return 46
+        case .small:
+            return 47
+        case .medium:
+            return 48
+        case .large:
+            return 50
+        case .xLarge:
+            return 56
+        case .xxLarge:
+            return 58
+        case .xxxLarge:
+            return 62
+        default:
+            return 50
         }
-        return (56, 32)
-      }
+    }
 
     var body: some View {
-        HStack(alignment: .lastTextBaseline, spacing: 4) {
-            Text(currencySymbol)
-                .font(.system(size: downsize.small, weight: .light, design: .rounded))
-                .foregroundColor(Color.SubtitleText)
-                .baselineOffset(getDollarOffset(big: downsize.big, small: downsize.small))
-            if numberEntryType == 1 {
-                Text("\(price, specifier: "%.2f")")
-                    .font(.system(size: downsize.big, weight: .regular, design: .rounded))
+        HStack(alignment: .lastTextBaseline, spacing: 2) {
+            Group {
+                Text(currencySymbol)
+                    .font(.system(.largeTitle, design: .rounded))
+                    .foregroundColor(Color.SubtitleText) +
+                Text(amount)
+                    .font(.system(size: largerFontSize, weight: .regular, design: .rounded))
                     .foregroundColor(Color.PrimaryText)
-            } else {
-                Text("\(amount)")
-                    .font(.system(size: 56, weight: .regular, design: .rounded))
-                    .foregroundColor(Color.PrimaryText)
+
             }
         }
+        .minimumScaleFactor(0.5)
+        .lineLimit(1)
+        .padding(.horizontal, numberEntryType == 2 ? 40 : 0)
         .frame(maxWidth: .infinity)
         .overlay(alignment: .trailing) {
             if numberEntryType == 2 {

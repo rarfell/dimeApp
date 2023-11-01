@@ -441,8 +441,7 @@ struct SettingsView: View {
 
   @ViewBuilder
   func ToggleRow(icon: String, color: String, text: String, bool: Bool, onTap: @escaping () -> Void)
-    -> some View
-  {
+    -> some View {
     HStack(spacing: 12) {
       Image(systemName: icon)
         .font(.system(.body, design: .rounded))
@@ -948,7 +947,7 @@ struct SettingsAppIconView: View {
       displaySubtitle: "An early prototype also designed by @rudra_dsigns that I kinda fancy."),
     AppIconBundle(
       actualFileName: "AppIcon4", exampleFileName: "AppIcon4_EG", displayName: "O.G.",
-      displaySubtitle: "Haphazardly put together in under 30 minutes, the original Dime icon."),
+      displaySubtitle: "Haphazardly put together in under 30 minutes, the original Dime icon.")
   ]
 
   @State private var position: Int?
@@ -1385,7 +1384,7 @@ struct SettingsNumberEntryView: View {
   }
 
   @State private var price: Double = 0
-  @State private var category: Category? = nil
+  @State private var category: Category?
   @State var isEditingDecimal = false
   @State var decimalValuesAssigned: AssignedDecimal = .none
   @State private var priceString: String = "0"
@@ -1735,8 +1734,7 @@ struct SettingsNotificationsView: View {
         }
         .onAppear {
           if UserDefaults(suiteName: "group.com.rafaelsoh.dime")!.object(
-            forKey: "notificationOption") != nil
-          {
+            forKey: "notificationOption") != nil {
             option = UserDefaults(suiteName: "group.com.rafaelsoh.dime")!.integer(
               forKey: "notificationOption")
           }
@@ -1744,8 +1742,7 @@ struct SettingsNotificationsView: View {
           if UserDefaults(suiteName: "group.com.rafaelsoh.dime")!.object(forKey: "customHour")
             != nil
             && UserDefaults(suiteName: "group.com.rafaelsoh.dime")!.object(forKey: "customMinute")
-              != nil
-          {
+              != nil {
             var components = DateComponents()
             components.hour = UserDefaults(suiteName: "group.com.rafaelsoh.dime")!.integer(
               forKey: "customHour")
@@ -1918,8 +1915,7 @@ func newNotification() {
   var option = 1
 
   if UserDefaults(suiteName: "group.com.rafaelsoh.dime")!.object(forKey: "notificationOption")
-    != nil
-  {
+    != nil {
     option = UserDefaults(suiteName: "group.com.rafaelsoh.dime")!.integer(
       forKey: "notificationOption")
   }
@@ -1932,8 +1928,7 @@ func newNotification() {
     components.minute = 0
   } else {
     if UserDefaults(suiteName: "group.com.rafaelsoh.dime")!.object(forKey: "customHour") != nil,
-      UserDefaults(suiteName: "group.com.rafaelsoh.dime")!.object(forKey: "customMinute") != nil
-    {
+      UserDefaults(suiteName: "group.com.rafaelsoh.dime")!.object(forKey: "customMinute") != nil {
       components.hour = UserDefaults(suiteName: "group.com.rafaelsoh.dime")!.integer(
         forKey: "customHour")
       components.minute = UserDefaults(suiteName: "group.com.rafaelsoh.dime")!.integer(
