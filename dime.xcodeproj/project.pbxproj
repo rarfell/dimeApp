@@ -139,7 +139,12 @@
 		53DCFAA12A498FBF0063FCDE /* CloudKitSyncMonitor in Frameworks */ = {isa = PBXBuildFile; productRef = 53DCFAA02A498FBF0063FCDE /* CloudKitSyncMonitor */; };
 		53EB930E28A65A570026BE28 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5327D2B5287C6AFB00F76ADF /* Color.swift */; };
 		53EB930F28A65B250026BE28 /* FontExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B1D1A4289383B100E28062 /* FontExtension.swift */; };
-		AE30A1552AE7D96A00E516B3 /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE30A1542AE7D96A00E516B3 /* BackButton.swift */; };
+		AE5B3D792AEE99E000AB364E /* NumberPad.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE5B3D782AEE99E000AB364E /* NumberPad.swift */; };
+		AEADEF6F2AE94DA3006EB614 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEADEF6E2AE94DA3006EB614 /* Toast.swift */; };
+		AEADEF712AE94DA8006EB614 /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEADEF702AE94DA8006EB614 /* BackButton.swift */; };
+		AEADEF742AE94DC3006EB614 /* ToolbarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEADEF722AE94DC3006EB614 /* ToolbarButton.swift */; };
+		AEADEF752AE94DC3006EB614 /* Toolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEADEF732AE94DC3006EB614 /* Toolbar.swift */; };
+		AECE7F9E2AED1A6800B57267 /* SuggestedTransactions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AECE7F9D2AED1A6800B57267 /* SuggestedTransactions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -282,7 +287,12 @@
 		53D5F02228A8E0E4004573C8 /* InsightsWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightsWidget.swift; sourceTree = "<group>"; };
 		53D82F512A9A6759005B6910 /* ChromaticAbberation(Time).metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = "ChromaticAbberation(Time).metal"; sourceTree = "<group>"; };
 		53EB931028A65F670026BE28 /* ExpenditureWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ExpenditureWidgetExtension.entitlements; sourceTree = "<group>"; };
-		AE30A1542AE7D96A00E516B3 /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
+		AE5B3D782AEE99E000AB364E /* NumberPad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberPad.swift; sourceTree = "<group>"; };
+		AEADEF6E2AE94DA3006EB614 /* Toast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
+		AEADEF702AE94DA8006EB614 /* BackButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
+		AEADEF722AE94DC3006EB614 /* ToolbarButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToolbarButton.swift; sourceTree = "<group>"; };
+		AEADEF732AE94DC3006EB614 /* Toolbar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Toolbar.swift; sourceTree = "<group>"; };
+		AECE7F9D2AED1A6800B57267 /* SuggestedTransactions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestedTransactions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -546,11 +556,12 @@
 				53B9079C2AE818A00001F496 /* CustomCapsule.swift */,
 			);
 			path = Shapes;
-      sourceTree = "<group>";
-	  };
+			sourceTree = "<group>";
+		};
 		AE30A1522AE7D95200E516B3 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				AECE7F9A2AED1A4600B57267 /* Transactions */,
 				AE30A1532AE7D95F00E516B3 /* Toolbar */,
 			);
 			path = Components;
@@ -559,9 +570,21 @@
 		AE30A1532AE7D95F00E516B3 /* Toolbar */ = {
 			isa = PBXGroup;
 			children = (
-				AE30A1542AE7D96A00E516B3 /* BackButton.swift */,
+				AEADEF732AE94DC3006EB614 /* Toolbar.swift */,
+				AEADEF722AE94DC3006EB614 /* ToolbarButton.swift */,
+				AEADEF6E2AE94DA3006EB614 /* Toast.swift */,
+				AEADEF702AE94DA8006EB614 /* BackButton.swift */,
 			);
 			path = Toolbar;
+			sourceTree = "<group>";
+		};
+		AECE7F9A2AED1A4600B57267 /* Transactions */ = {
+			isa = PBXGroup;
+			children = (
+				AECE7F9D2AED1A6800B57267 /* SuggestedTransactions.swift */,
+				AE5B3D782AEE99E000AB364E /* NumberPad.swift */,
+			);
+			path = Transactions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -804,6 +827,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				536A2A152A59C47400D81E02 /* Wiggle.swift in Sources */,
+				AEADEF742AE94DC3006EB614 /* ToolbarButton.swift in Sources */,
 				53D82F522A9A6759005B6910 /* ChromaticAbberation(Time).metal in Sources */,
 				5327D2DA287C6B5F00F76ADF /* TestView.swift in Sources */,
 				538A32AA2A505AC6008AEF8C /* BottomSheet.swift in Sources */,
@@ -817,10 +841,12 @@
 				5327D2CB287C6B4700F76ADF /* ContentView.swift in Sources */,
 				53B7D0D129701DB700F81002 /* MainBudgetWidget.swift in Sources */,
 				53A839BA28D33840006F227C /* UnlockManager.swift in Sources */,
+				AEADEF752AE94DC3006EB614 /* Toolbar.swift in Sources */,
 				5327D2C8287C6B2500F76ADF /* ChartTimeFrame.swift in Sources */,
 				536FA6C12A7E05C600C52490 /* GetInsightsIntent.swift in Sources */,
 				533D1C3E2AE8023B00894764 /* PencilShape.swift in Sources */,
 				532C58BC2A629C3900DA2C81 /* NewBudgetView.swift in Sources */,
+				AE5B3D792AEE99E000AB364E /* NumberPad.swift in Sources */,
 				53D5F02328A8E0E4004573C8 /* InsightsWidget.swift in Sources */,
 				5327D2BC287C6AFB00F76ADF /* Color.swift in Sources */,
 				5327D2BB287C6AFB00F76ADF /* StringExtension.swift in Sources */,
@@ -843,16 +869,17 @@
 				53D250702AA6331600016013 /* TemplateTransactionView.swift in Sources */,
 				5327D2AD287C6AD200F76ADF /* DataController.swift in Sources */,
 				53D0298028C5BC0300443F2B /* Currency.swift in Sources */,
+				AEADEF712AE94DA8006EB614 /* BackButton.swift in Sources */,
 				534973D628CB5A75000201F9 /* URLExtension.swift in Sources */,
 				536CC386293106180081E401 /* LineGraph.swift in Sources */,
 				53326B2C2ADC3C8D0027C693 /* TestDragToAdd.swift in Sources */,
 				5311A22A29F04EF300A5BE20 /* WidgetConfiguration.intentdefinition in Sources */,
 				536FA6BF2A7DFDEB00C52490 /* ShortcutsProvider.swift in Sources */,
 				530C89D62A793B6C00B5028D /* ShortcutsEntities.swift in Sources */,
+				AEADEF6F2AE94DA3006EB614 /* Toast.swift in Sources */,
 				53A32B3828AB6C6400628905 /* Line.swift in Sources */,
 				5327D2C7287C6B2500F76ADF /* FilterType.swift in Sources */,
 				5321E1DC291FE02C00D5A931 /* CategoryCreationErrors.swift in Sources */,
-				AE30A1552AE7D96A00E516B3 /* BackButton.swift in Sources */,
 				53D40B652AB1B2DB001D3866 /* UpdateSheet.swift in Sources */,
 				5327D2BA287C6AFB00F76ADF /* ViewExtension.swift in Sources */,
 				5327D2DB287C6B5F00F76ADF /* LogView.swift in Sources */,
@@ -860,6 +887,7 @@
 				5327D287287C697400F76ADF /* dimeApp.swift in Sources */,
 				53A4147728B3B559008C30E7 /* WelcomeSheetView.swift in Sources */,
 				53B9079D2AE818A00001F496 /* CustomCapsule.swift in Sources */,
+				AECE7F9E2AED1A6800B57267 /* SuggestedTransactions.swift in Sources */,
 				53A4147D28B7C70D008C30E7 /* AppVersion.swift in Sources */,
 				53B822AA2A6D50CC000FC7C9 /* NewTransactionIntent.swift in Sources */,
 				5327D2B6287C6AFB00F76ADF /* Authentication.swift in Sources */,
