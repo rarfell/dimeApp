@@ -1597,27 +1597,14 @@ struct DeleteTransactionAlert: View {
                         }
                     }
                 } label: {
-                    Text(stopRecurring ? "Confirm" : "Delete")
-                        .font(.system(.title3, design: .rounded).weight(.semibold))
-                        .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
-//                        .font(.system(size: 20, weight: .semibold, design: .rounded))
-                        .foregroundColor(.white)
-                        .frame(height: 45)
-                        .frame(maxWidth: .infinity)
-                        .background(Color.AlertRed, in: RoundedRectangle(cornerRadius: 9, style: .continuous))
+                    DeleteButton(text: stopRecurring ? "Confirm" : "Delete", red: true)
                 }
                 .padding(.bottom, 8)
 
                 Button {
                     transactionManager.showPopup = false
                 } label: {
-                    Text("Cancel")
-                        .font(.system(.title3, design: .rounded).weight(.semibold))
-                        .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
-                        .foregroundColor(Color.PrimaryText.opacity(0.9))
-                        .frame(height: 45)
-                        .frame(maxWidth: .infinity)
-                        .background(Color.SecondaryBackground, in: RoundedRectangle(cornerRadius: 9, style: .continuous))
+                    DeleteButton(text: "Cancel", red: false)
                 }
             }
             .padding(13)
