@@ -1022,32 +1022,20 @@ struct DetailedBudgetDollarView: View {
         return Locale.current.localizedCurrencySymbol(forCurrencyCode: currency)!
     }
 
-    var dollarOffset: CGFloat {
-        let bigFont = UIFont.rounded(ofSize: 35, weight: .medium)
-        let smallFont = UIFont.rounded(ofSize: 23, weight: .regular)
-
-        return bigFont.capHeight - smallFont.capHeight - 1
-    }
-
     var body: some View {
         HStack(alignment: .lastTextBaseline, spacing: 1.3) {
-            Text(currencySymbol)
-                .font(.system(size: 23, weight: .regular, design: .rounded))
-                .foregroundColor(Color.SubtitleText)
-                .baselineOffset(dollarOffset)
+            Group {
+                Text(currencySymbol)
+                    .font(.system(.title2, design: .rounded).weight(.medium))
+                    .foregroundColor(Color.SubtitleText) +
 
-            if showCents && amount < 100 {
-                Text("\(amount, specifier: "%.2f")")
-                    .font(.system(size: 35, weight: .medium, design: .rounded))
+                Text("\(amount, specifier: showCents && amount < 100 ? "%.2f" : "%.0f")")
+                    .font(.system(.largeTitle, design: .rounded).weight(.medium))
                     .foregroundColor(Color.PrimaryText)
-                    .lineLimit(1)
-            } else {
-                Text("\(amount, specifier: "%.0f")")
-                    .font(.system(size: 35, weight: .medium, design: .rounded))
-                    .foregroundColor(Color.PrimaryText)
-                    .lineLimit(1)
             }
         }
+        .minimumScaleFactor(0.5)
+        .lineLimit(1)
     }
 }
 
@@ -1062,32 +1050,20 @@ struct DetailedBudgetDifferenceDollarView: View {
         return Locale.current.localizedCurrencySymbol(forCurrencyCode: currency)!
     }
 
-    var dollarOffset: CGFloat {
-        let bigFont = UIFont.rounded(ofSize: 35, weight: .medium)
-        let smallFont = UIFont.rounded(ofSize: 23, weight: .regular)
-
-        return bigFont.capHeight - smallFont.capHeight - 1
-    }
-
     var body: some View {
         HStack(alignment: .lastTextBaseline, spacing: 1.3) {
-            Text(currencySymbol)
-                .font(.system(size: 23, weight: .regular, design: .rounded))
-                .foregroundColor(red ? Color("BudgetRed") : Color.SubtitleText)
-                .baselineOffset(dollarOffset)
+            Group {
+                Text(currencySymbol)
+                    .font(.system(.title2, design: .rounded).weight(.medium))
+                    .foregroundColor(red ? Color("BudgetRed") : Color.SubtitleText) +
 
-            if showCents && amount < 100 {
-                Text("\(amount, specifier: "%.2f")")
-                    .font(.system(size: 35, weight: .medium, design: .rounded))
+                Text("\(amount, specifier: showCents && amount < 100 ? "%.2f" : "%.0f")")
+                    .font(.system(.largeTitle, design: .rounded).weight(.medium))
                     .foregroundColor(red ? Color("BudgetRed") : Color.PrimaryText)
-                    .lineLimit(1)
-            } else {
-                Text("\(amount, specifier: "%.0f")")
-                    .font(.system(size: 35, weight: .medium, design: .rounded))
-                    .foregroundColor(red ? Color("BudgetRed") : Color.PrimaryText)
-                    .lineLimit(1)
             }
         }
+        .minimumScaleFactor(0.5)
+        .lineLimit(1)
     }
 }
 
@@ -1590,17 +1566,14 @@ struct TimeBudgetView: View {
                 HStack(spacing: 7.5) {
                     Text(budget.wrappedEmoji)
                         .font(.system(.subheadline, design: .rounded))
-//                        .font(.system(size: 15))
                     Text(budget.wrappedName)
                         .font(.system(.title3, design: .rounded).weight(.medium))
-//                        .font(.system(size: 20, weight: .medium, design: .rounded))
                         .lineLimit(1)
                 }
                 .foregroundColor(Color.PrimaryText)
 
                 Text(subtitleText)
                     .font(.system(.subheadline, design: .rounded).weight(.semibold))
-//                    .font(.system(size: 15, weight: .semibold, design: .rounded))
                     .foregroundColor(Color.SubtitleText)
                     .padding(4)
                     .padding(.horizontal, 7)
@@ -1617,7 +1590,6 @@ struct TimeBudgetView: View {
 
                         Text(differenceSubtitle)
                             .font(.system(.subheadline, design: .rounded).weight(.medium))
-//                            .font(.system(size: 15, weight: .medium, design: .rounded))
                             .foregroundColor(Color.SubtitleText)
                     }
                     .frame(maxWidth: .infinity, alignment: showExtraDetails ? .leading : .center)
@@ -1675,7 +1647,6 @@ struct TimeBudgetView: View {
                 }
                 .frame(maxWidth: .infinity)
                 .font(.system(.caption, design: .rounded))
-//                .font(.system(size: 12, weight: .regular, design: .rounded))
                 .foregroundColor(Color.SubtitleText)
             }
             .padding(.bottom, budgetType >= 2 ? 20 : 0)
@@ -2085,12 +2056,12 @@ struct TimeMainBudgetView: View {
             // budget name and emoji and time left
             VStack(spacing: 10) {
                 Text("Overall Budget")
-                    .font(.system(size: 20, weight: .medium, design: .rounded))
+                    .font(.system(.title3, design: .rounded).weight(.medium))
                     .lineLimit(1)
                     .foregroundColor(Color.PrimaryText)
 
                 Text(subtitleText)
-                    .font(.system(size: 15, weight: .semibold, design: .rounded))
+                    .font(.system(.subheadline, design: .rounded).weight(.semibold))
                     .foregroundColor(Color.SubtitleText)
                     .padding(4)
                     .padding(.horizontal, 7)
@@ -2106,7 +2077,7 @@ struct TimeMainBudgetView: View {
                         DetailedBudgetDifferenceDollarView(amount: difference, red: totalSpent >= budgetAmount)
 
                         Text(differenceSubtitle)
-                            .font(.system(size: 15, weight: .medium, design: .rounded))
+                            .font(.system(.subheadline, design: .rounded).weight(.medium))
                             .foregroundColor(Color.SubtitleText)
                     }
                     .frame(maxWidth: .infinity, alignment: showExtraDetails ? .leading : .center)
@@ -2116,7 +2087,7 @@ struct TimeMainBudgetView: View {
                             DetailedBudgetDollarView(amount: leftPerDay)
 
                             Text("left each day")
-                                .font(.system(size: 15, weight: .medium, design: .rounded))
+                                .font(.system(.subheadline, design: .rounded).weight(.medium))
                                 .foregroundColor(Color.SubtitleText)
                         }
                         .frame(maxWidth: .infinity, alignment: .trailing)
@@ -2129,7 +2100,7 @@ struct TimeMainBudgetView: View {
                     DetailedBudgetDifferenceDollarView(amount: difference, red: totalSpent >= budgetAmount)
 
                     Text(differenceSubtitle)
-                        .font(.system(size: 15, weight: .medium, design: .rounded))
+                        .font(.system(.subheadline, design: .rounded).weight(.medium))
                         .foregroundColor(Color.SubtitleText)
                 }
                 .padding(.horizontal, 25)
@@ -2159,7 +2130,7 @@ struct TimeMainBudgetView: View {
                     Text("\(currencySymbol)\(budgetAmount, specifier: "%.2f")")
                 }
                 .frame(maxWidth: .infinity)
-                .font(.system(size: 12, weight: .regular, design: .rounded))
+                .font(.system(.caption, design: .rounded))
                 .foregroundColor(Color.SubtitleText)
             }
             .padding(.bottom, budgetType >= 2 ? 20 : 0)
@@ -2358,7 +2329,7 @@ struct BudgetStepperView: View {
 
     var body: some View {
         HStack {
-            Button {
+            StepperButtonView(left: true, disabled: date <= firstDate) {
                 if date > firstDate {
                     if type == 1 {
                         date = Calendar.current.date(byAdding: .day, value: -1, to: date)!
@@ -2370,26 +2341,16 @@ struct BudgetStepperView: View {
                         date = Calendar.current.date(byAdding: .year, value: -1, to: date)!
                     }
                 }
-            } label: {
-                Circle()
-                    .fill(Color.SecondaryBackground)
-                    .frame(width: 27, height: 27)
-                    .overlay {
-                        Image(systemName: "chevron.left")
-                            .font(.system(size: 14, weight: .semibold))
-                            .foregroundColor(Color.SubtitleText)
-                    }
-                    .opacity(date <= firstDate ? 0.3 : 1)
             }
 
             Spacer()
 
             Text(dateString)
-                .font(.system(size: 20, weight: .bold, design: .rounded))
+                .font(.system(.title3, design: .rounded).weight(.bold))
 
             Spacer()
 
-            Button {
+            StepperButtonView(left: false, disabled: date == startDate) {
                 if date < startDate {
                     if type == 1 {
                         date = Calendar.current.date(byAdding: .day, value: 1, to: date)!
@@ -2401,16 +2362,6 @@ struct BudgetStepperView: View {
                         date = Calendar.current.date(byAdding: .year, value: -1, to: date)!
                     }
                 }
-            } label: {
-                Circle()
-                    .fill(Color.SecondaryBackground)
-                    .frame(width: 27, height: 27)
-                    .overlay {
-                        Image(systemName: "chevron.right")
-                            .font(.system(size: 14, weight: .semibold))
-                            .foregroundColor(Color.SubtitleText)
-                    }
-                    .opacity(date == startDate ? 0.3 : 1)
             }
         }
         .frame(maxWidth: .infinity)

@@ -2056,18 +2056,10 @@ struct DateStepperView: View {
 
     var body: some View {
         HStack {
-            Button {
+            StepperButtonView(left: true, disabled: date <= endDate) {
                 if date > endDate {
                     date = Calendar.current.date(byAdding: .day, value: -1, to: date) ?? Date.now
                 }
-            } label: {
-                Image(systemName: "chevron.left")
-                    .font(.system(.subheadline, design: .rounded))
-                    .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
-                    .foregroundColor(Color.DarkIcon)
-                    .padding(8)
-                    .background(Color.SecondaryBackground, in: Circle())
-                    .opacity(date <= endDate ? 0.3 : 1)
             }
             .accessibilityLabel("previous day")
 
@@ -2081,18 +2073,10 @@ struct DateStepperView: View {
 
             Spacer()
 
-            Button {
+            StepperButtonView(left: false, disabled: date >= currentDate) {
                 if date < currentDate {
                     date = Calendar.current.date(byAdding: .day, value: 1, to: date) ?? Date.now
                 }
-            } label: {
-                Image(systemName: "chevron.right")
-                    .font(.system(.subheadline, design: .rounded))
-                    .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
-                    .foregroundColor(Color.DarkIcon)
-                    .padding(8)
-                    .background(Color.SecondaryBackground, in: Circle())
-                    .opacity(date >= currentDate ? 0.3 : 1)
             }
             .accessibilityLabel("next day")
         }
@@ -2155,19 +2139,10 @@ struct WeekStepperView: View {
 
     var body: some View {
         HStack {
-            Button {
+            StepperButtonView(left: true, disabled: showingDate == endDate) {
                 if showingDate > endDate {
                     showingDate = Calendar.current.date(byAdding: .day, value: -7, to: showingDate) ?? Date.now
                 }
-
-            } label: {
-                Image(systemName: "chevron.left")
-                    .font(.system(.subheadline, design: .rounded))
-                    .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
-                    .foregroundColor(Color.DarkIcon)
-                    .padding(8)
-                    .background(Color.SecondaryBackground, in: Circle())
-                    .opacity(showingDate == endDate ? 0.3 : 1)
             }
             .accessibilityLabel("previous week")
 
@@ -2175,24 +2150,14 @@ struct WeekStepperView: View {
 
             Text(dateString)
                 .font(.system(.title3, design: .rounded).weight(.bold))
-                .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
-//                .font(.system(size: 20, weight: .bold, design: .rounded))
                 .accessibilityLabel(accessibilityDateString)
 
             Spacer()
 
-            Button {
+            StepperButtonView(left: false, disabled: showingDate == startDate) {
                 if showingDate < startDate {
                     showingDate = Calendar.current.date(byAdding: .day, value: 7, to: showingDate) ?? Date.now
                 }
-            } label: {
-                Image(systemName: "chevron.right")
-                    .font(.system(.subheadline, design: .rounded))
-                    .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
-                    .foregroundColor(Color.DarkIcon)
-                    .padding(8)
-                    .background(Color.SecondaryBackground, in: Circle())
-                    .opacity(showingDate == startDate ? 0.3 : 1)
             }
             .accessibilityLabel("next week")
         }
@@ -2250,18 +2215,10 @@ struct MonthStepperView: View {
 
     var body: some View {
         HStack {
-            Button {
+            StepperButtonView(left: true, disabled: showingDate == endDate) {
                 if showingDate > endDate {
                     showingDate = Calendar.current.date(byAdding: .month, value: -1, to: showingDate) ?? Date.now
                 }
-            } label: {
-                Image(systemName: "chevron.left")
-                    .font(.system(.subheadline, design: .rounded))
-                    .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
-                    .foregroundColor(Color.DarkIcon)
-                    .padding(8)
-                    .background(Color.SecondaryBackground, in: Circle())
-                    .opacity(showingDate == endDate ? 0.3 : 1)
             }
             .accessibilityLabel("previous month")
 
@@ -2269,23 +2226,14 @@ struct MonthStepperView: View {
 
             Text(dateString)
                 .font(.system(.title3, design: .rounded).weight(.bold))
-                .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
                 .accessibilityLabel("showing transactions in \(dateString)")
 
             Spacer()
 
-            Button {
+            StepperButtonView(left: false, disabled: showingDate == startDate) {
                 if showingDate < startDate {
                     showingDate = Calendar.current.date(byAdding: .month, value: 1, to: showingDate) ?? Date.now
                 }
-            } label: {
-                Image(systemName: "chevron.right")
-                    .font(.system(.subheadline, design: .rounded))
-                    .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
-                    .foregroundColor(Color.DarkIcon)
-                    .padding(8)
-                    .background(Color.SecondaryBackground, in: Circle())
-                    .opacity(showingDate == startDate ? 0.3 : 1)
             }
             .accessibilityLabel("next month")
         }
@@ -2370,34 +2318,3 @@ func dayTotal(dayTransaction: [Transaction]) -> Double {
 
     return total
 }
-
-// func emojiToImage(text: String, size: CGFloat) -> UIImage {
-//
-//    let outputImageSize = CGSize.init(width: size, height: size)
-//    let baseSize = text.boundingRect(with: CGSize(width: 2048, height: 2048),
-//                                     options: .usesLineFragmentOrigin,
-//                                     attributes: [.font: UIFont.systemFont(ofSize: size / 2)], context: nil).size
-//    let fontSize = outputImageSize.width / max(baseSize.width, baseSize.height) * (outputImageSize.width / 2)
-//    let font = UIFont.systemFont(ofSize: fontSize)
-//    let textSize = text.boundingRect(with: CGSize(width: outputImageSize.width, height: outputImageSize.height),
-//                                     options: .usesLineFragmentOrigin,
-//                                     attributes: [.font: font], context: nil).size
-//
-//    let style = NSMutableParagraphStyle()
-//    style.alignment = NSTextAlignment.center
-//    style.lineBreakMode = NSLineBreakMode.byClipping
-//
-//    let attr : [NSAttributedString.Key : Any] = [NSAttributedString.Key.font : font,
-//                                                NSAttributedString.Key.paragraphStyle: style,
-//                                                NSAttributedString.Key.backgroundColor: UIColor.clear ]
-//
-//    UIGraphicsBeginImageContextWithOptions(outputImageSize, false, 0)
-//    text.draw(in: CGRect(x: (size - textSize.width) / 2,
-//                         y: (size - textSize.height) / 2,
-//                         width: textSize.width,
-//                         height: textSize.height),
-//                         withAttributes: attr)
-//    let image = UIGraphicsGetImageFromCurrentImageContext()!
-//    UIGraphicsEndImageContext()
-//    return image
-// }

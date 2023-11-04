@@ -137,6 +137,7 @@
 		53D5F02428A8E0E4004573C8 /* InsightsWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D5F02228A8E0E4004573C8 /* InsightsWidget.swift */; };
 		53D6BDC12AF6648300F5728E /* AlertButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D6BDC02AF6648300F5728E /* AlertButtons.swift */; };
 		53D6BDC32AF668E700F5728E /* DetailedBudgetViewTopBarButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D6BDC22AF668E700F5728E /* DetailedBudgetViewTopBarButtons.swift */; };
+		53D6BDC52AF6B32C00F5728E /* StepperButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D6BDC42AF6B32C00F5728E /* StepperButtons.swift */; };
 		53D82F522A9A6759005B6910 /* ChromaticAbberation(Time).metal in Sources */ = {isa = PBXBuildFile; fileRef = 53D82F512A9A6759005B6910 /* ChromaticAbberation(Time).metal */; };
 		53DCFAA12A498FBF0063FCDE /* CloudKitSyncMonitor in Frameworks */ = {isa = PBXBuildFile; productRef = 53DCFAA02A498FBF0063FCDE /* CloudKitSyncMonitor */; };
 		53EB930E28A65A570026BE28 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5327D2B5287C6AFB00F76ADF /* Color.swift */; };
@@ -289,6 +290,7 @@
 		53D5F02228A8E0E4004573C8 /* InsightsWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightsWidget.swift; sourceTree = "<group>"; };
 		53D6BDC02AF6648300F5728E /* AlertButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertButtons.swift; sourceTree = "<group>"; };
 		53D6BDC22AF668E700F5728E /* DetailedBudgetViewTopBarButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailedBudgetViewTopBarButtons.swift; sourceTree = "<group>"; };
+		53D6BDC42AF6B32C00F5728E /* StepperButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepperButtons.swift; sourceTree = "<group>"; };
 		53D82F512A9A6759005B6910 /* ChromaticAbberation(Time).metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = "ChromaticAbberation(Time).metal"; sourceTree = "<group>"; };
 		53EB931028A65F670026BE28 /* ExpenditureWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ExpenditureWidgetExtension.entitlements; sourceTree = "<group>"; };
 		AE5B3D782AEE99E000AB364E /* NumberPad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberPad.swift; sourceTree = "<group>"; };
@@ -567,6 +569,7 @@
 			children = (
 				53D6BDC02AF6648300F5728E /* AlertButtons.swift */,
 				53D6BDC22AF668E700F5728E /* DetailedBudgetViewTopBarButtons.swift */,
+				53D6BDC42AF6B32C00F5728E /* StepperButtons.swift */,
 			);
 			path = Buttons;
 			sourceTree = "<group>";
@@ -885,6 +888,7 @@
 				5327D2AD287C6AD200F76ADF /* DataController.swift in Sources */,
 				53D0298028C5BC0300443F2B /* Currency.swift in Sources */,
 				AEADEF712AE94DA8006EB614 /* BackButton.swift in Sources */,
+				53D6BDC52AF6B32C00F5728E /* StepperButtons.swift in Sources */,
 				534973D628CB5A75000201F9 /* URLExtension.swift in Sources */,
 				536CC386293106180081E401 /* LineGraph.swift in Sources */,
 				53326B2C2ADC3C8D0027C693 /* TestDragToAdd.swift in Sources */,
