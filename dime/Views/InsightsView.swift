@@ -618,6 +618,29 @@ struct SingleGraphView: View {
         }
     }
 
+    @Environment(\.dynamicTypeSize) var dynamicTypeSize
+
+    var fontSize: CGFloat {
+        switch dynamicTypeSize {
+        case .xSmall:
+            return 14
+        case .small:
+            return 15
+        case .medium:
+            return 16
+        case .large:
+            return 17
+        case .xLarge:
+            return 19
+        case .xxLarge:
+            return 21
+        case .xxxLarge:
+            return 23
+        default:
+            return 23
+        }
+    }
+
     var showPercentage: Bool {
         let amountText = stringConverter(amount: totalNet)
         let supplementalText: String
@@ -632,11 +655,9 @@ struct SingleGraphView: View {
             supplementalText = stringConverter(amount: average)
         }
 
-        let currencyWidth = currencySymbol.widthOfRoundedString(size: 20, weight: .regular)
-
-        let totalWidth = amountText.widthOfRoundedString(size: 30, weight: .medium) + 1.3 + currencyWidth
-        let averageWidth = supplementalText.widthOfRoundedString(size: 30, weight: .medium) + 1.3 + currencyWidth
-        let percentageWidth = percentageDifference.widthOfRoundedString(size: 13, weight: .medium) + 10
+        let totalWidth = amountText.widthOfRoundedString(size: UIFont.textStyleSize(.title1), weight: .medium)
+        let averageWidth = supplementalText.widthOfRoundedString(size: UIFont.textStyleSize(.title1), weight: .medium)
+        let percentageWidth = percentageDifference.widthOfRoundedString(size: UIFont.textStyleSize(.footnote), weight: .medium) + 10
 
         let screenWidth = UIScreen.main.bounds.width - 60
 
@@ -660,7 +681,7 @@ struct SingleGraphView: View {
 
                         if showPercentage {
                             Text(percentageDifference)
-                                .font(.system(size: 13, weight: .medium, design: .rounded))
+                                .font(.system(.footnote, design: .rounded).weight(.medium))
                                 .foregroundColor(currentNet < lastNet ? Color.AlertRed : Color.IncomeGreen)
                                 .padding(3)
                                 .padding(.horizontal, 3)
@@ -846,9 +867,9 @@ struct SingleGraphView: View {
 
     func stringConverter(amount: Double) -> String {
         if showCents && amount < 100 {
-            return String(format: "%.2f", amount)
+            return currencySymbol + String(format: "%.2f", amount)
         } else {
-            return String(format: "%.0f", amount)
+            return currencySymbol + String(format: "%.0f", amount)
         }
     }
 
@@ -2225,38 +2246,28 @@ struct InsightsDollarView: View {
     var showCents: Bool
     var net: Bool?
 
-    var dollarOffset: CGFloat {
-        let bigFont = UIFont.rounded(ofSize: 30, weight: .medium)
-        let smallFont = UIFont.rounded(ofSize: 20, weight: .regular)
-
-        return bigFont.capHeight - smallFont.capHeight - 1
+    var symbol: String {
+        if let netPositive = net {
+            if netPositive {
+                return "+\(currencySymbol)"
+            } else {
+                return "+\(currencySymbol)"
+            }
+        } else {
+            return currencySymbol
+        }
     }
 
     var body: some View {
-        if let netPositive = net {
-            HStack(alignment: .lastTextBaseline, spacing: 1.3) {
-                Text(netPositive ? "+\(currencySymbol)" : "-\(currencySymbol)")
-                    .font(.system(size: 20, weight: .regular, design: .rounded))
-                    .foregroundColor(Color.SubtitleText)
-                    .baselineOffset(dollarOffset)
+        HStack(alignment: .lastTextBaseline, spacing: 1.3) {
+            Text(symbol)
+                .font(.system(.title3, design: .rounded).weight(.medium))
+                .foregroundColor(Color.SubtitleText)
 
-                Text("\(amount, specifier: showCents && amount < 100 ? "%.2f" : "%.0f")")
-                    .font(.system(size: 30, weight: .medium, design: .rounded))
-                    .foregroundColor(Color.PrimaryText)
-                    .lineLimit(1)
-            }
-        } else {
-            HStack(alignment: .lastTextBaseline, spacing: 1.3) {
-                Text(currencySymbol)
-                    .font(.system(size: 20, weight: .regular, design: .rounded))
-                    .foregroundColor(Color.SubtitleText)
-                    .baselineOffset(dollarOffset)
-
-                Text("\(amount, specifier: showCents && amount < 100 ? "%.2f" : "%.0f")")
-                    .font(.system(size: 30, weight: .medium, design: .rounded))
-                    .foregroundColor(Color.PrimaryText)
-                    .lineLimit(1)
-            }
+            Text("\(amount, specifier: showCents && amount < 100 ? "%.2f" : "%.0f")")
+                .font(.system(.title, design: .rounded).weight(.medium))
+                .foregroundColor(Color.PrimaryText)
+                .lineLimit(1)
         }
     }
 

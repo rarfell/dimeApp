@@ -111,10 +111,15 @@ struct NumberPad: View {
 
     @ViewBuilder
     private func NumberButton(number: Int, size: CGSize) -> some View {
+        var disabled: Bool {
+            price >= 100000000
+        }
+
         Button {
-            if price >= Double(Int.max) / 100 {
+            if disabled {
                 return
             }
+
             if numberEntryType == 1 {
                 price *= 10
                 price += Double(number) / 100
@@ -130,14 +135,6 @@ struct NumberPad: View {
                         case .second:
                             return
                     }
-//                    
-//                    if !decimalValuesAssigned[0] {
-//                        price += Double(number) / 10
-//                        decimalValuesAssigned[0] = true
-//                    } else if !decimalValuesAssigned[1] {
-//                        price += Double(number) / 100
-//                        decimalValuesAssigned[1] = true
-//                    }
                 } else {
                     price *= 10
                     price += Double(number)
@@ -150,11 +147,24 @@ struct NumberPad: View {
                 .background(Color.SecondaryBackground)
                 .foregroundColor(Color.PrimaryText)
                 .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-                .opacity(price >= Double(Int.max) / 100 ? 0.6 : 1)
+                .opacity(disabled ? 0.6 : 1)
         }
-        .disabled(price >= Double(Int.max) / 100)
+        .disabled(disabled)
         .buttonStyle(NumPadButton())
     }
+}
+
+func splitDouble(_ num: Double) -> [String] {
+    let formatter = NumberFormatter()
+    formatter.minimumFractionDigits = 0
+    formatter.maximumFractionDigits = 2
+    var str = formatter.string(from: NSNumber(value: num))!
+
+    if floor(num) == num {
+        str = String(format: "%.0f", num)
+    }
+
+    return str.map { String($0) }.filter { $0 != "." }
 }
 
 struct NumberPadTextView: View {
@@ -166,6 +176,10 @@ struct NumberPadTextView: View {
     var currencySymbol: String {
         return Locale.current.localizedCurrencySymbol(forCurrencyCode: currency)!
     }
+//
+//    var displayNumbers: [String] {
+//        return splitDouble(price)
+//    }
 
     @AppStorage("numberEntryType", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var numberEntryType: Int = 1
 
@@ -210,12 +224,20 @@ struct NumberPadTextView: View {
     }
 
     var body: some View {
-        HStack(alignment: .lastTextBaseline, spacing: 2) {
+        HStack(alignment: .lastTextBaseline, spacing: 0) {
             Group {
                 Text(currencySymbol)
                     .font(.system(.largeTitle, design: .rounded))
-                    .foregroundColor(Color.SubtitleText) +
-                Text(amount)
+                    .foregroundColor(Color.SubtitleText)
+
+//                ForEach(displayNumbers, id: \.self) { number in
+//                    Text(number)
+//                        .font(.system(size: largerFontSize, weight: .regular, design: .rounded))
+//                        .foregroundColor(Color.PrimaryText)
+//                        .transition(AnyTransition.opacity.combined(with: .scale).combined(with: .move(edge: .trailing)))
+//                }
+
+                + Text(amount)
                     .font(.system(size: largerFontSize, weight: .regular, design: .rounded))
                     .foregroundColor(Color.PrimaryText)
 
@@ -230,6 +252,7 @@ struct NumberPadTextView: View {
                 DeleteButton()
             }
         }
+//        .animation(.snappy.delay(0.1), value: displayNumbers)
     }
 
     @ViewBuilder

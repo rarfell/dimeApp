@@ -147,14 +147,14 @@ struct ImportDataView: View {
 
                         Text("Processing Import")
                             .font(.system(.title2, design: .rounded).weight(.medium))
-                            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+
 //                            .font(.system(size: 22, weight: .medium, design: .rounded))
                             .foregroundColor(Color.SubtitleText)
                     case .success:
 
                         Image(systemName: "checkmark")
                             .font(.system(.title2, design: .rounded).weight(.semibold))
-                            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+
 //                            .font(.system(size: 21, weight: .semibold, design: .rounded))
                             .foregroundColor(Color.IncomeGreen)
                             .frame(width: 35, height: 35)
@@ -162,13 +162,13 @@ struct ImportDataView: View {
 
                         Text("Import Successful")
                             .font(.system(.title2, design: .rounded).weight(.medium))
-                            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+
 //                            .font(.system(size: 22, weight: .medium, design: .rounded))
                             .foregroundColor(Color.IncomeGreen)
                     case .error:
                         Image(systemName: "x")
                             .font(.system(.title2, design: .rounded).weight(.semibold))
-                            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+
 //                            .font(.system(size: 21, weight: .semibold, design: .rounded))
                             .foregroundColor(Color.AlertRed)
                             .frame(width: 35, height: 35)
@@ -176,13 +176,13 @@ struct ImportDataView: View {
 
                         Text("Import Failed")
                             .font(.system(.title2, design: .rounded).weight(.medium))
-                            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+
 //                            .font(.system(size: 22, weight: .medium, design: .rounded))
                             .foregroundColor(Color.PrimaryText)
 
                         Text(errorMessage)
                             .font(.system(.subheadline, design: .rounded).weight(.medium))
-                            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+
 //                            .font(.system(size: 15, weight: .medium, design: .rounded))
                             .foregroundColor(Color.SubtitleText)
                     }
@@ -217,25 +217,10 @@ struct ImportDataView: View {
                         } label: {
                             Image(systemName: progress > 1 ? "chevron.left" : "xmark")
                                 .font(.system(.callout, design: .rounded).weight(.semibold))
-                                .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+
                                 .foregroundColor(Color.SubtitleText)
                                 .padding(8)
                                 .background(Color.SecondaryBackground, in: Circle())
-
-//                            ZStack {
-//
-//                                Circle()
-//                                    .fill(Color.SecondaryBackground)
-//                                    .frame(width: 28, height: 28)
-//                                    .overlay {
-//                                        Image(systemName: progress > 1 ? "chevron.left" : "xmark")
-//                                            .font(.system(size: 16, weight: .semibold))
-//                                            .foregroundColor(Color.SubtitleText)
-//
-//                                    }
-//
-//
-//                            }
                         }
                         .contentTransition(.symbolEffect(.replace.downUp.wholeSymbol))
                     } else {
@@ -250,24 +235,9 @@ struct ImportDataView: View {
                         } label: {
                             Image(systemName: progress > 1 ? "chevron.left" : "xmark")
                                 .font(.system(.callout, design: .rounded).weight(.semibold))
-                                .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
                                 .foregroundColor(Color.SubtitleText)
                                 .padding(8)
                                 .background(Color.SecondaryBackground, in: Circle())
-//                            ZStack {
-//
-//                                Circle()
-//                                    .fill(Color.SecondaryBackground)
-//                                    .frame(width: 28, height: 28)
-//                                    .overlay {
-//                                        Image(systemName: progress > 1 ? "chevron.left" : "xmark")
-//                                            .font(.system(size: 16, weight: .semibold))
-//                                            .foregroundColor(Color.SubtitleText)
-//
-//                                    }
-//
-//
-//                            }
                         }
                     }
 
@@ -284,13 +254,13 @@ struct ImportDataView: View {
                         HStack(spacing: 6.5) {
                             Image(systemName: "exclamationmark.triangle.fill")
                                 .font(.system(.subheadline, design: .rounded).weight(.semibold))
-                                .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+
 //                                .font(.system(size: 15, weight: .semibold))
                                 .foregroundColor(Color.AlertRed)
 
                             Text(toastMessage)
                                 .font(.system(.callout, design: .rounded).weight(.semibold))
-                                .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+
 //                                .font(.system(size: 16, weight: .semibold, design: .rounded))
                                 .foregroundColor(Color.AlertRed)
                         }
@@ -309,7 +279,7 @@ struct ImportDataView: View {
                             Text("Indicate date format")
                                 .foregroundColor(.PrimaryText)
                                 .font(.system(.title2, design: .rounded).weight(.semibold))
-                                .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+
 //                                .font(.system(size: 26, weight: .semibold, design: .rounded))
 
                             Spacer()
@@ -319,7 +289,7 @@ struct ImportDataView: View {
                         Text("Referencing \(makeAttributedString()), state the format of the dates in the assigned column.")
                             .foregroundColor(.SubtitleText)
                             .font(.system(.body, design: .rounded).weight(.medium))
-                            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+
 //                            .font(.system(size: 17, weight: .medium, design: .rounded))
                             .frame(maxWidth: .infinity, alignment: .leading)
                     } else {
@@ -327,7 +297,7 @@ struct ImportDataView: View {
                             Text(instructions[progress - 1].title)
                                 .foregroundColor(Color.PrimaryText)
                                 .font(.system(.title2, design: .rounded).weight(.semibold))
-                                .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+
 //                                .font(.system(size: 26, weight: .semibold, design: .rounded))
 
                             if progress == 7 {
@@ -336,8 +306,6 @@ struct ImportDataView: View {
                                 } label: {
                                     Image(systemName: "plus")
                                         .font(.system(.footnote, design: .rounded).weight(.semibold))
-                                        .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
-//                                        .font(.system(size: 14, weight: .semibold))
                                         .foregroundColor(Color.SubtitleText)
                                         .padding(4)
                                         .background(Color.SecondaryBackground, in: Circle())
@@ -352,8 +320,6 @@ struct ImportDataView: View {
                         Text(instructions[progress - 1].subtitle)
                             .foregroundColor(.SubtitleText)
                             .font(.system(.body, design: .rounded).weight(.medium))
-                            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
-//                            .font(.system(size: 17, weight: .medium, design: .rounded))
                             .frame(maxWidth: .infinity, alignment: .leading)
                     }
                 }
@@ -364,12 +330,12 @@ struct ImportDataView: View {
                     HStack(spacing: 6) {
                         Image(systemName: "info.circle.fill")
                             .font(.system(.subheadline, design: .rounded).weight(.medium))
-                            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+
 //                            .font(.system(size: 15, weight: .semibold, design: .rounded))
 
                         Text("Additional Pointers")
                             .font(.system(.body, design: .rounded).weight(.semibold))
-                            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+
 //                            .font(.system(size: 17, weight: .semibold, design: .rounded))
                             .frame(maxWidth: .infinity, alignment: .leading)
                     }
@@ -389,7 +355,7 @@ struct ImportDataView: View {
                     VStack(spacing: 10) {
                         Text("Sampled Rows from Import CSV")
                             .font(.system(.subheadline, design: .rounded).weight(.semibold))
-                            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+
 //                            .font(.system(size: 15, weight: .semibold, design: .rounded))
                             .foregroundColor(Color.SubtitleText)
 
@@ -405,7 +371,7 @@ struct ImportDataView: View {
                                             Text("\(number)")
                                                 .foregroundStyle(Color.SubtitleText)
                                                 .font(.system(.subheadline, design: .rounded).weight(.bold))
-                                                .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+
 //                                                .font(.system(size: 15, weight: .bold, design: .rounded))
                                                 .padding(.horizontal, 8)
                                                 .frame(width: indexColumnWidth, height: 30, alignment: .leading)
@@ -424,12 +390,12 @@ struct ImportDataView: View {
                                                     HStack(spacing: 4.5) {
                                                         Image(systemName: labels[index].image)
                                                             .font(.system(.caption, design: .rounded).weight(.semibold))
-                                                            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+
 //                                                            .font(.system(size: 12, weight: .semibold, design: .rounded))
 
                                                         Text(labels[index].label)
                                                             .font(.system(.subheadline, design: .rounded).weight(.semibold))
-                                                            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+
 //                                                            .font(.system(size: 14, weight: .semibold, design: .rounded))
                                                             .frame(maxWidth: .infinity, alignment: .leading)
                                                     }
@@ -449,7 +415,7 @@ struct ImportDataView: View {
                                                     Text(value)
                                                         .foregroundStyle(Color.PrimaryText)
                                                         .font(.system(.subheadline, design: .rounded).weight(.medium))
-                                                        .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+
 //                                                        .font(.system(size: 15, weight: .medium, design: .rounded))
                                                         .padding(.horizontal, 8)
                                                         .frame(width: columnWidth, height: 30, alignment: .leading)
@@ -475,12 +441,12 @@ struct ImportDataView: View {
                                             HStack(spacing: 4.5) {
                                                 Image(systemName: labels[progress - 2].image)
                                                     .font(.system(.caption, design: .rounded).weight(.semibold))
-                                                    .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+
 //                                                    .font(.system(size: 12, weight: .semibold, design: .rounded))
 
                                                 Text(labels[progress - 2].label)
                                                     .font(.system(.subheadline, design: .rounded).weight(.semibold))
-                                                    .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+
 //                                                    .font(.system(size: 14, weight: .semibold, design: .rounded))
                                                     .frame(maxWidth: .infinity, alignment: .leading)
                                             }
@@ -505,13 +471,13 @@ struct ImportDataView: View {
                     VStack(spacing: 10) {
                         Text("Sample from 'Date' Column")
                             .font(.system(.subheadline, design: .rounded).weight(.semibold))
-                            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+
 //                            .font(.system(size: 15, weight: .semibold, design: .rounded))
                             .foregroundColor(Color.SubtitleText)
 
                         Text(sampleDateString)
                             .font(.system(.title3, design: .rounded).weight(.semibold))
-                            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+
 //                            .font(.system(size: 20, weight: .semibold, design: .rounded))
                             .foregroundColor(Color.PrimaryText)
                             .frame(width: 300, height: 40)
@@ -524,21 +490,21 @@ struct ImportDataView: View {
                         HStack(spacing: 7) {
                             Image(systemName: "calendar")
                                 .font(.system(.callout, design: .rounded).weight(.semibold))
-                                .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+
 //                                .font(.system(size: 16, weight: .semibold))
                                 .foregroundColor(Color.SubtitleText)
 
                             TextField("Date Format", text: $dateFormatString)
                                 .foregroundColor(Color.PrimaryText)
                                 .font(.system(.title3, design: .rounded).weight(.semibold))
-                                .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+
 //                                .font(.system(size: 20, weight: .semibold, design: .rounded))
                                 .frame(maxWidth: .infinity)
 
                             if validDateFormatString {
                                 Image(systemName: "checkmark.circle.fill")
                                     .font(.system(.callout, design: .rounded).weight(.semibold))
-                                    .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+
 //                                        .font(.system(size: 16, weight: .semibold))
                                     .foregroundColor(Color.IncomeGreen)
                             } else if !validDateFormatString && dateFormatString != "" {
@@ -567,7 +533,7 @@ struct ImportDataView: View {
                     VStack(spacing: 10) {
                         Text("\(numberOfLinkedCategories)/^[\(uniqueCategories.count) category](inflect: true) linked")
                             .font(.system(.subheadline, design: .rounded).weight(.semibold))
-                            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+
 //                            .font(.system(size: 15, weight: .semibold, design: .rounded))
                             .foregroundColor(Color.SubtitleText)
 
@@ -577,7 +543,7 @@ struct ImportDataView: View {
                                     HStack(spacing: 8) {
                                         Text(uniqueCategories[categoryIndex].excelValue)
                                             .font(.system(.title3, design: .rounded).weight(.semibold))
-                                            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+
                                             .lineLimit(1)
 //                                            .font(.system(size: 20, weight: .semibold, design: .rounded))
                                             .foregroundColor(Color.PrimaryText)
@@ -601,10 +567,10 @@ struct ImportDataView: View {
                                                     Text(unwrappedCategory.wrappedEmoji)
 //                                                        .font(.system(size: 15))
                                                         .font(.system(.subheadline, design: .rounded))
-                                                        .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+
                                                     Text(unwrappedCategory.wrappedName)
                                                         .font(.system(.title3, design: .rounded).weight(.semibold))
-                                                        .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+
                                                         .lineLimit(1)
 
 //                                                        .font(.system(size: 19, weight: .semibold, design: .rounded))
@@ -667,12 +633,12 @@ struct ImportDataView: View {
                             HStack(spacing: 6) {
                                 Text("Import")
                                     .font(.system(.title3, design: .rounded).weight(.semibold))
-                                    .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+
 //                                    .font(.system(size: 19, weight: .semibold, design: .rounded))
 
                                 Image(systemName: "square.and.arrow.up.fill")
                                     .font(.system(.subheadline, design: .rounded).weight(.semibold))
-                                    .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+
 //                                    .font(.system(size: 15, weight: .semibold, design: .rounded))
                             }
                             .frame(height: 50)
@@ -691,7 +657,7 @@ struct ImportDataView: View {
                                 Text("Sample Sheet")
                                     .underline()
                                     .font(.system(.body, design: .rounded).weight(.semibold))
-                                    .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+
 //                                    .font(.system(size: 18, weight: .semibold, design: .rounded))
                             }
                             .foregroundColor(Color.SubtitleText)
@@ -786,7 +752,7 @@ struct ImportDataView: View {
                     } label: {
                         Text("Continue")
                             .font(.system(.title3, design: .rounded).weight(.semibold))
-                            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+
 //                            .font(.system(size: 19, weight: .semibold, design: .rounded))
                             .frame(height: 50)
                             .frame(maxWidth: .infinity)
@@ -798,6 +764,7 @@ struct ImportDataView: View {
             }
         }
         .padding(20)
+        .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .ignoresSafeArea(.keyboard)
         .background(Color.PrimaryBackground)
@@ -1004,7 +971,7 @@ struct ImportDataView: View {
 
                 Text("\(number)")
                     .font(.system(.body, design: .rounded).weight(.bold))
-                    .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+
 //                    .font(.system(size: 17, weight: .bold, design: .rounded))
                     .foregroundColor(Color.SubtitleText)
             }
@@ -1012,7 +979,7 @@ struct ImportDataView: View {
 
             Text(text)
                 .font(.system(.body, design: .rounded).weight(.medium))
-                .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+
 //                .font(.system(size: 17, weight: .medium, design: .rounded))
                 .foregroundColor(Color.PrimaryText)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -1037,29 +1004,29 @@ struct MatchCategoryStepperView: View {
     @Binding var pageIndex: Int
     var categories: [Category]
     var maxIndex: Int
-
-    @Environment(\.dynamicTypeSize) var dynamicTypeSize
-
-    var fontSize: CGFloat {
-        switch dynamicTypeSize {
-        case .xSmall:
-            return 14
-        case .small:
-            return 15
-        case .medium:
-            return 16
-        case .large:
-            return 17
-        case .xLarge:
-            return 19
-        case .xxLarge:
-            return 21
-        case .xxxLarge:
-            return 23
-        default:
-            return 23
-        }
-    }
+//
+//    @Environment(\.dynamicTypeSize) var dynamicTypeSize
+//
+//    var fontSize: CGFloat {
+//        switch dynamicTypeSize {
+//        case .xSmall:
+//            return 14
+//        case .small:
+//            return 15
+//        case .medium:
+//            return 16
+//        case .large:
+//            return 17
+//        case .xLarge:
+//            return 19
+//        case .xxLarge:
+//            return 21
+//        case .xxxLarge:
+//            return 23
+//        default:
+//            return 23
+//        }
+//    }
 
     var body: some View {
         VStack {
@@ -1067,14 +1034,14 @@ struct MatchCategoryStepperView: View {
                 VStack(spacing: 12) {
                     Image(systemName: "tray.full.fill")
                         .font(.system(.title, design: .rounded))
-                        .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+
 //                        .font(.system(size: 28, weight: .regular, design: .rounded))
                         .foregroundColor(Color.SubtitleText.opacity(0.7))
                         .padding(.top, 20)
 
                     Text("No remaining\ncategories.")
                         .font(.system(.callout, design: .rounded).weight(.medium))
-                        .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+
 //                        .font(.system(size: 16, weight: .medium, design: .rounded))
                         .multilineTextAlignment(.center)
                         .foregroundColor(Color.SubtitleText.opacity(0.7))
@@ -1120,7 +1087,7 @@ struct MatchCategoryStepperView: View {
 
         categories.forEach { category in
 
-            let roundedFont = UIFont.rounded(ofSize: fontSize, weight: .semibold)
+            let roundedFont = UIFont.rounded(ofSize: UIFont.textStyleSize(.body), weight: .semibold)
 
             let attributes = [NSAttributedString.Key.font: roundedFont]
 
@@ -1170,11 +1137,11 @@ struct MatchCategoryStepperView: View {
             HStack(spacing: 5) {
                 Text(categoryInput.wrappedEmoji)
                     .font(.system(.footnote, design: .rounded))
-                    .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+
 //                    .font(.system(size: 13))
                 Text(categoryInput.wrappedName)
                     .font(.system(.body, design: .rounded).weight(.semibold))
-                    .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+
 //                    .font(.system(size: 17, weight: .semibold, design: .rounded))
             }
             .padding(.horizontal, 10)
