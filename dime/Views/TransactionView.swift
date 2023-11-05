@@ -567,7 +567,6 @@ struct TransactionView: View {
                                 categoryButtonBackgroundColor,
                                 in: RoundedRectangle(cornerRadius: 11.5, style: .continuous)
                             )
-                            .offset(x: shake ? 30 : 0)
                             .contentShape(Rectangle())
                             .overlay(
                                 RoundedRectangle(cornerRadius: 11.5, style: .continuous)

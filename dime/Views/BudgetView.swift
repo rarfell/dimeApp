@@ -1004,13 +1004,6 @@ struct BudgetDollarView: View {
         .minimumScaleFactor(0.5)
         .lineLimit(1)
     }
-
-    func getDollarOffset(big: CGFloat, small: CGFloat) -> CGFloat {
-        let bigFont = UIFont.rounded(ofSize: big, weight: .medium)
-        let smallFont = UIFont.rounded(ofSize: small, weight: .regular)
-
-        return bigFont.capHeight - smallFont.capHeight - 1
-    }
 }
 
 struct DetailedBudgetDollarView: View {
