@@ -109,22 +109,49 @@ struct NumberPad: View {
     func hapticTap() {
         // make sure that the device supports haptics
         guard CHHapticEngine.capabilitiesForHardware().supportsHaptics else { return }
-        var events = [CHHapticEvent]()
 
-        // create one intense, sharp tap
-        let intensity = CHHapticEventParameter(parameterID: .hapticIntensity, value: 1)
-        let sharpness = CHHapticEventParameter(parameterID: .hapticSharpness, value: 1)
-        let event = CHHapticEvent(eventType: .hapticTransient, parameters: [intensity, sharpness], relativeTime: 0)
-        events.append(event)
+        let hapticDict = [
+            CHHapticPattern.Key.pattern: [
+                [CHHapticPattern.Key.event: [
+                    CHHapticPattern.Key.eventType: CHHapticEvent.EventType.hapticTransient,
+                    CHHapticPattern.Key.time: CHHapticTimeImmediate,
+                    CHHapticPattern.Key.eventDuration: 1.0]
+                ]
+            ]
+        ]
 
-        // convert those events into a pattern and play it immediately
         do {
-            let pattern = try CHHapticPattern(events: events, parameters: [])
+            let pattern = try CHHapticPattern(dictionary: hapticDict)
+
             let player = try engine?.makePlayer(with: pattern)
+
+            engine?.notifyWhenPlayersFinished { _ in
+                return .stopEngine
+            }
+
+            try engine?.start()
             try player?.start(atTime: 0)
         } catch {
             print("Failed to play pattern: \(error.localizedDescription).")
         }
+
+//        
+//        var events = [CHHapticEvent]()
+//
+//        // create one intense, sharp tap
+//        let intensity = CHHapticEventParameter(parameterID: .hapticIntensity, value: 1)
+//        let sharpness = CHHapticEventParameter(parameterID: .hapticSharpness, value: 1)
+//        let event = CHHapticEvent(eventType: .hapticTransient, parameters: [intensity, sharpness], relativeTime: 0)
+//        events.append(event)
+//
+//        // convert those events into a pattern and play it immediately
+//        do {
+//            let pattern = try CHHapticPattern(events: events, parameters: [])
+//            let player = try engine?.makePlayer(with: pattern)
+//            try player?.start(atTime: 0)
+//        } catch {
+//            print("Failed to play pattern: \(error.localizedDescription).")
+//        }
     }
 
     public func deleteLastDigit() {

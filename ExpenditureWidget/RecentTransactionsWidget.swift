@@ -268,10 +268,7 @@ struct ExpenditureWidgetEntryView: View {
                                 .font(.system(size: 9, weight: .semibold, design: .rounded))
                                 .foregroundColor(Color.SubtitleText)
 
-                            GeometryReader { proxy in
-                                RecentTransactionsDollarView(amount: entry.amount, size: proxy.size.width, showCents: showCents, net: entry.type == .net)
-                                    .frame(width: proxy.size.width)
-                            }
+                            RecentTransactionsDollarView(amount: entry.amount, showCents: showCents, net: entry.type == .net, bigger: true)
                             .frame(maxWidth: .infinity)
                             .frame(height: proxy.size.height * 0.27)
                         }
@@ -358,6 +355,7 @@ struct ExpenditureWidgetEntryView: View {
                     Color.PrimaryBackground
                 }
                 .widgetURL(entry.transactions.count < 2 ? URL(string: "dimeapp://newExpense") : nil)
+                .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
             } else {
                 GeometryReader { proxy in
                     VStack(spacing: 0) {
@@ -366,10 +364,7 @@ struct ExpenditureWidgetEntryView: View {
                                 .font(.system(size: 9, weight: .semibold, design: .rounded))
                                 .foregroundColor(Color.SubtitleText)
 
-                            GeometryReader { proxy in
-                                RecentTransactionsDollarView(amount: entry.amount, size: proxy.size.width, showCents: showCents, net: entry.type == .net)
-                                    .frame(width: proxy.size.width)
-                            }
+                            RecentTransactionsDollarView(amount: entry.amount, showCents: showCents, net: entry.type == .net)
                             .frame(maxWidth: .infinity)
                             .frame(height: proxy.size.height * 0.2)
                         }
@@ -455,18 +450,19 @@ struct ExpenditureWidgetEntryView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background(Color.PrimaryBackground)
                 .widgetURL(entry.transactions.count < 2 ? URL(string: "dimeapp://newExpense") : nil)
+                .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
             }
 
         case .systemLarge:
             if #available(iOS 17.0, *) {
-                GeometryReader { proxy in
+                GeometryReader { _ in
                     VStack(spacing: 0) {
                         VStack(spacing: 0) {
                             Text((typeText + " " + inlineSubtitleText).uppercased())
                                 .font(.system(size: 12, weight: .semibold, design: .rounded))
                                 .foregroundColor(Color.SubtitleText)
 
-                            RecentTransactionsBiggerDollarView(amount: entry.amount, size: proxy.size.width - 30, showCents: showCents, net: entry.type == .net)
+                            RecentTransactionsDollarView(amount: entry.amount, showCents: showCents, net: entry.type == .net)
                                 .frame(maxWidth: .infinity)
                         }
                         .frame(maxWidth: .infinity)
@@ -596,9 +592,9 @@ struct ExpenditureWidgetEntryView: View {
 
 struct RecentTransactionsDollarView: View {
     var amount: Double
-    var size: CGFloat
     var showCents: Bool
     var net: Bool
+    var bigger: Bool = false
 
     @AppStorage("currency", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var currency: String = Locale.current.currencyCode!
     var currencySymbol: String {
@@ -613,129 +609,20 @@ struct RecentTransactionsDollarView: View {
         }
     }
 
-    var downsize: (big: CGFloat, small: CGFloat) {
-        let amountText: String
-
-        if showCents && amount < 100 {
-            amountText = String(format: "%.2f", actualAmount)
-        } else {
-            amountText = String(format: "%.0f", actualAmount)
-        }
-
-        if (amountText.widthOfRoundedString(size: 18, weight: .medium) + currencySymbol.widthOfRoundedString(size: 10, weight: .regular) + 1.3) > size {
-            return (14, 8)
-        } else if (amountText.widthOfRoundedString(size: 24, weight: .medium) + currencySymbol.widthOfRoundedString(size: 15, weight: .regular) + 2) > size {
-            return (18, 10)
-        } else {
-            return (24, 15)
-        }
-    }
-
     var body: some View {
-        HStack(alignment: .lastTextBaseline, spacing: 2) {
-            if net {
-                Text("\(amount < 0 ? "-" : (amount == 0 ? "" : "+"))\(currencySymbol)")
-                    .font(.system(size: downsize.small, weight: .regular, design: .rounded))
-                    .foregroundColor(Color.SubtitleText)
-                    .baselineOffset(getDollarOffset(big: downsize.big, small: downsize.small))
-            } else {
-                Text(currencySymbol)
-                    .font(.system(size: downsize.small, weight: .regular, design: .rounded))
-                    .foregroundColor(Color.SubtitleText)
-                    .baselineOffset(getDollarOffset(big: downsize.big, small: downsize.small))
+        HStack(alignment: .lastTextBaseline, spacing: 1.3) {
+            Group {
+                Text(net ? "\(amount < 0 ? "-" : (amount == 0 ? "" : "+"))\(currencySymbol)" : currencySymbol)
+                    .font(.system(bigger ? .title3 : .subheadline, design: .rounded).weight(.medium))
+                    .foregroundColor(Color.SubtitleText) +
+
+                Text("\(actualAmount, specifier: showCents && actualAmount < 100  ? "%.2f" : "%.0f")")
+                    .font(.system(bigger ? .title : .title3, design: .rounded).weight(.medium))
+                    .foregroundColor(Color.PrimaryText)
             }
 
-            if showCents && actualAmount < 100 {
-                Text("\(actualAmount, specifier: "%.2f")")
-                    .font(.system(size: downsize.big, weight: .medium, design: .rounded))
-                    .foregroundColor(Color.PrimaryText)
-                    .lineLimit(1)
-            } else {
-                Text("\(actualAmount, specifier: "%.0f")")
-                    .font(.system(size: downsize.big, weight: .medium, design: .rounded))
-                    .foregroundColor(Color.PrimaryText)
-                    .lineLimit(1)
-            }
         }
-    }
-
-    func getDollarOffset(big: CGFloat, small: CGFloat) -> CGFloat {
-        let bigFont = UIFont.rounded(ofSize: big, weight: .medium)
-        let smallFont = UIFont.rounded(ofSize: small, weight: .regular)
-
-        return bigFont.capHeight - smallFont.capHeight - 1
-    }
-}
-
-struct RecentTransactionsBiggerDollarView: View {
-    var amount: Double
-    var size: CGFloat
-    var showCents: Bool
-    var net: Bool
-
-    @AppStorage("currency", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var currency: String = Locale.current.currencyCode!
-    var currencySymbol: String {
-        return Locale.current.localizedCurrencySymbol(forCurrencyCode: currency)!
-    }
-
-    var actualAmount: Double {
-        if net {
-            return abs(amount)
-        } else {
-            return amount
-        }
-    }
-
-    var downsize: (big: CGFloat, small: CGFloat) {
-        let amountText: String
-
-        if showCents && amount < 1000 {
-            amountText = String(format: "%.2f", actualAmount)
-        } else {
-            amountText = String(format: "%.0f", actualAmount)
-        }
-
-        if (amountText.widthOfRoundedString(size: 24, weight: .medium) + currencySymbol.widthOfRoundedString(size: 15, weight: .regular) + 1.3) > size {
-            return (18, 12)
-        } else if (amountText.widthOfRoundedString(size: 30, weight: .medium) + currencySymbol.widthOfRoundedString(size: 21, weight: .regular) + 2) > size {
-            return (24, 15)
-        } else {
-            return (30, 21)
-        }
-    }
-
-    var body: some View {
-        HStack(alignment: .lastTextBaseline, spacing: 2) {
-            if net {
-                Text("\(amount < 0 ? "-" : (amount == 0 ? "" : "+"))\(currencySymbol)")
-                    .font(.system(size: downsize.small, weight: .regular, design: .rounded))
-                    .foregroundColor(Color.SubtitleText)
-                    .baselineOffset(getDollarOffset(big: downsize.big, small: downsize.small))
-            } else {
-                Text(currencySymbol)
-                    .font(.system(size: downsize.small, weight: .regular, design: .rounded))
-                    .foregroundColor(Color.SubtitleText)
-                    .baselineOffset(getDollarOffset(big: downsize.big, small: downsize.small))
-            }
-
-            if showCents && actualAmount < 100 {
-                Text("\(actualAmount, specifier: "%.2f")")
-                    .font(.system(size: downsize.big, weight: .medium, design: .rounded))
-                    .foregroundColor(Color.PrimaryText)
-                    .lineLimit(1)
-            } else {
-                Text("\(actualAmount, specifier: "%.0f")")
-                    .font(.system(size: downsize.big, weight: .medium, design: .rounded))
-                    .foregroundColor(Color.PrimaryText)
-                    .lineLimit(1)
-            }
-        }
-    }
-
-    func getDollarOffset(big: CGFloat, small: CGFloat) -> CGFloat {
-        let bigFont = UIFont.rounded(ofSize: big, weight: .medium)
-        let smallFont = UIFont.rounded(ofSize: small, weight: .regular)
-
-        return bigFont.capHeight - smallFont.capHeight - 1
+        .minimumScaleFactor(0.5)
+        .lineLimit(1)
     }
 }

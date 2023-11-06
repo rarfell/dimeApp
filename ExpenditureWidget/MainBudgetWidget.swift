@@ -352,7 +352,8 @@ struct MainBudgetWidgetEntryView: View {
                                     .frame(width: proxy.size.width)
 
                                     VStack(spacing: -4) {
-                                        WidgetBudgetDollarView(amount: difference, red: entry.totalSpent >= entry.budgetAmount, size: proxy.size.width - 50)
+                                        WidgetBudgetDollarView(amount: difference, red: entry.totalSpent >= entry.budgetAmount)
+                                            .frame(width: proxy.size.width - 50)
 
                                         if showTimeFrame(size: proxy.size.width - 50) {
                                             Text(systemSmallWidgetText)
@@ -446,7 +447,8 @@ struct MainBudgetWidgetEntryView: View {
                                     .frame(width: proxy.size.width)
 
                                     VStack(spacing: -4) {
-                                        WidgetBudgetDollarView(amount: difference, red: entry.totalSpent >= entry.budgetAmount, size: proxy.size.width - 50)
+                                        WidgetBudgetDollarView(amount: difference, red: entry.totalSpent >= entry.budgetAmount)
+                                            .frame(width: proxy.size.width - 50)
 
                                         if showTimeFrame(size: proxy.size.width - 50) {
                                             Text(systemSmallWidgetText)

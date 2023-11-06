@@ -99,6 +99,7 @@ enum ShortcutsInsightsTimeFrame: Int {
     case week = 2
     case month = 3
     case year = 4
+    case all = 5
 }
 
 @available(iOS 16, *)
@@ -111,7 +112,8 @@ extension ShortcutsInsightsTimeFrame: AppEnum {
         .day: DisplayRepresentation(title: "today"),
         .week: DisplayRepresentation(title: "this week"),
         .month: DisplayRepresentation(title: "this month"),
-        .year: DisplayRepresentation(title: "this year")
+        .year: DisplayRepresentation(title: "this year"),
+        .all: DisplayRepresentation(title: "all time")
     ]
 }
 
@@ -162,6 +164,8 @@ struct ShortcutInsightsView: View {
             return "this month"
         case .year:
             return "this year"
+        case .all:
+            return "all time"
         }
     }
 

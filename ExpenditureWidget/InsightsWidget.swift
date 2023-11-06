@@ -308,13 +308,6 @@ struct InsightsWidgetEntryView: View {
 
     @AppStorage("showCents", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var showCents: Bool = true
 
-    var dollarOffset: CGFloat {
-        let bigFont = UIFont.rounded(ofSize: 21, weight: .medium)
-        let smallFont = UIFont.rounded(ofSize: 15, weight: .regular)
-
-        return bigFont.capHeight - smallFont.capHeight
-    }
-
     var dollarText: String {
         if entry.amount < 10000 && showCents {
             return "\(String(format: "%.2f", entry.amount))"
@@ -369,16 +362,7 @@ struct InsightsWidgetEntryView: View {
                                 .font(.system(size: 10, weight: .semibold, design: .rounded))
                                 .foregroundColor(Color.SubtitleText)
 
-                            HStack(alignment: .lastTextBaseline, spacing: 1.3) {
-                                Text(currencySymbol)
-                                    .font(.system(size: 15, weight: .regular, design: .rounded))
-                                    .foregroundColor(Color.SubtitleText)
-                                    .baselineOffset(dollarOffset)
-
-                                Text(dollarText)
-                                    .font(.system(size: 21, weight: .medium, design: .rounded))
-                                    .foregroundColor(Color.PrimaryText)
-                            }
+                            InsightsWidgetDollarView(currencySymbol: currencySymbol, dollarText: dollarText)
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -503,53 +487,7 @@ struct InsightsWidgetEntryView: View {
                     .frame(maxHeight: .infinity)
                     .background(Color.PrimaryBackground)
 
-                    VStack(spacing: 8) {
-                        if entry.amount != 0 {
-                            HorizontalBarGraph(categories: entry.categories, income: entry.income)
-                                .frame(height: 16)
-
-                            VStack(spacing: 5) {
-                                ForEach(Array(entry.categories.prefix(3)), id: \.self) { category in
-                                    HStack(spacing: 7) {
-                                        RoundedRectangle(cornerRadius: 3)
-                                            .fill(entry.income ? Color(hex: Color.colorArray[entry.categories.firstIndex(of: category) ?? 0]) : Color(hex: category.colour))
-                                            .frame(width: 8, height: 8)
-                                        Text(category.name)
-                                            .lineLimit(1)
-                                            .font(.system(size: 12, weight: .semibold, design: .rounded))
-                                            .foregroundColor(Color.PrimaryText)
-                                            .frame(maxWidth: .infinity, alignment: .leading)
-
-                                        Text("\(Int(round(category.percent * 100)))%")
-                                            .font(.system(size: 12, weight: .regular, design: .rounded))
-                                            .foregroundColor(Color.SubtitleText)
-                                    }
-                                }
-                            }
-                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-                        } else {
-                            Text("NO TRANSACTIONS\n\(subtitleText1)")
-                                .font(.system(size: 10,
-                                              weight: .medium, design: .rounded))
-                                .multilineTextAlignment(.center)
-                                .foregroundColor(Color.SubtitleText)
-                                .frame(maxHeight: .infinity)
-                        }
-
-                        Link(destination: URL(string: "dimeapp://newExpense")!) {
-                            HStack(spacing: 4) {
-                                Image(systemName: "plus")
-                                    .font(.system(size: 9, weight: .medium, design: .rounded))
-
-                                Text("New Expense")
-                                    .font(.system(size: 12, weight: .medium, design: .rounded))
-                                    .foregroundColor(Color.PrimaryText)
-                            }
-                            .padding(.vertical, 4)
-                            .frame(maxWidth: .infinity)
-                            .background(RoundedRectangle(cornerRadius: 6, style: .continuous).fill(Color.SecondaryBackground))
-                        }
-                    }
+                    InsightsWidgetCategoryBreakdownView(amount: entry.amount, income: entry.income, categories: entry.categories, duration: entry.duration, ios17: true)
 //                    .frame(width: proxy.size.width * 0.43)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
@@ -569,16 +507,7 @@ struct InsightsWidgetEntryView: View {
                                 .font(.system(size: 10, weight: .semibold, design: .rounded))
                                 .foregroundColor(Color.SubtitleText)
 
-                            HStack(alignment: .lastTextBaseline, spacing: 1.3) {
-                                Text(currencySymbol)
-                                    .font(.system(size: 15, weight: .regular, design: .rounded))
-                                    .foregroundColor(Color.SubtitleText)
-                                    .baselineOffset(dollarOffset)
-
-                                Text(dollarText)
-                                    .font(.system(size: 21, weight: .medium, design: .rounded))
-                                    .foregroundColor(Color.PrimaryText)
-                            }
+                            InsightsWidgetDollarView(currencySymbol: currencySymbol, dollarText: dollarText)
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -703,53 +632,7 @@ struct InsightsWidgetEntryView: View {
                     .frame(maxHeight: .infinity)
                     .background(Color.PrimaryBackground)
 
-                    VStack(spacing: 8) {
-                        if entry.amount != 0 {
-                            HorizontalBarGraph(categories: entry.categories, income: entry.income)
-                                .frame(height: 16)
-
-                            VStack(spacing: 5) {
-                                ForEach(Array(entry.categories.prefix(3)), id: \.self) { category in
-                                    HStack(spacing: 7) {
-                                        RoundedRectangle(cornerRadius: 3)
-                                            .fill(entry.income ? Color(hex: Color.colorArray[entry.categories.firstIndex(of: category) ?? 0]) : Color(hex: category.colour))
-                                            .frame(width: 8, height: 8)
-                                        Text(category.name)
-                                            .lineLimit(1)
-                                            .font(.system(size: 12, weight: .semibold, design: .rounded))
-                                            .foregroundColor(Color.PrimaryText)
-                                            .frame(maxWidth: .infinity, alignment: .leading)
-
-                                        Text("\(Int(round(category.percent * 100)))%")
-                                            .font(.system(size: 12, weight: .regular, design: .rounded))
-                                            .foregroundColor(Color.SubtitleText)
-                                    }
-                                }
-                            }
-                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-                        } else {
-                            Text("NO TRANSACTIONS\n\(subtitleText1)")
-                                .font(.system(size: 10,
-                                              weight: .medium, design: .rounded))
-                                .multilineTextAlignment(.center)
-                                .foregroundColor(Color.SubtitleText)
-                                .frame(maxHeight: .infinity)
-                        }
-
-                        Link(destination: URL(string: "dimeapp://newExpense")!) {
-                            HStack(spacing: 4) {
-                                Image(systemName: "plus")
-                                    .font(.system(size: 9, weight: .medium, design: .rounded))
-
-                                Text("New Expense")
-                                    .font(.system(size: 12, weight: .medium, design: .rounded))
-                                    .foregroundColor(Color.PrimaryText)
-                            }
-                            .padding(.vertical, 4)
-                            .frame(maxWidth: .infinity)
-                            .background(RoundedRectangle(cornerRadius: 5).fill(Color.PrimaryBackground))
-                        }
-                    }
+                    InsightsWidgetCategoryBreakdownView(amount: entry.amount, income: entry.income, categories: entry.categories, duration: entry.duration, ios17: false)
                     .padding(15)
                     .frame(width: proxy.size.width * 0.43)
                     .frame(maxHeight: .infinity)
@@ -873,6 +756,99 @@ struct HorizontalBarGraph: View {
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
+        }
+    }
+}
+
+struct InsightsWidgetDollarView: View {
+    let currencySymbol: String
+    let dollarText: String
+
+    var body: some View {
+        HStack(alignment: .lastTextBaseline, spacing: 1.3) {
+            Group {
+                Text(currencySymbol)
+                    .font(.system(.subheadline, design: .rounded).weight(.medium))
+                    .foregroundColor(Color.SubtitleText) +
+
+                Text(dollarText)
+                    .font(.system(.title3, design: .rounded).weight(.medium))
+                    .foregroundColor(Color.PrimaryText)
+            }
+
+        }
+        .minimumScaleFactor(0.5)
+        .lineLimit(1)
+    }
+}
+
+struct InsightsWidgetCategoryBreakdownView: View {
+    let amount: Double
+    let income: Bool
+    let categories: [HoldingCategory]
+    let duration: InsightsTimePeriod
+    let ios17: Bool
+
+    var subtitleText1: String {
+        switch duration {
+        case .unknown:
+            return "NIL"
+        case .week:
+            return String(localized: "THIS WEEK").uppercased()
+        case .month:
+            return String(localized: "THIS MONTH").uppercased()
+        case .year:
+            return String(localized: "THIS YEAR").uppercased()
+        }
+    }
+
+    var body: some View {
+        VStack(spacing: 8) {
+            if amount != 0 {
+                HorizontalBarGraph(categories: categories, income: income)
+                    .frame(height: 16)
+
+                VStack(spacing: 5) {
+                    ForEach(Array(categories.prefix(3)), id: \.self) { category in
+                        HStack(spacing: 7) {
+                            RoundedRectangle(cornerRadius: 3)
+                                .fill(income ? Color(hex: Color.colorArray[categories.firstIndex(of: category) ?? 0]) : Color(hex: category.colour))
+                                .frame(width: 8, height: 8)
+                            Text(category.name)
+                                .lineLimit(1)
+                                .font(.system(size: 12, weight: .semibold, design: .rounded))
+                                .foregroundColor(Color.PrimaryText)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+
+                            Text("\(Int(round(category.percent * 100)))%")
+                                .font(.system(size: 12, weight: .regular, design: .rounded))
+                                .foregroundColor(Color.SubtitleText)
+                        }
+                    }
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+            } else {
+                Text("NO TRANSACTIONS\n\(subtitleText1)")
+                    .font(.system(size: 10,
+                                  weight: .medium, design: .rounded))
+                    .multilineTextAlignment(.center)
+                    .foregroundColor(Color.SubtitleText)
+                    .frame(maxHeight: .infinity)
+            }
+
+            Link(destination: URL(string: "dimeapp://newExpense")!) {
+                HStack(spacing: 4) {
+                    Image(systemName: "plus")
+                        .font(.system(size: 9, weight: .medium, design: .rounded))
+
+                    Text("New Expense")
+                        .font(.system(size: 12, weight: .medium, design: .rounded))
+                        .foregroundColor(Color.PrimaryText)
+                }
+                .padding(.vertical, 4)
+                .frame(maxWidth: .infinity)
+                .background(RoundedRectangle(cornerRadius: 5).fill(ios17 ? Color.SecondaryBackground : Color.PrimaryBackground))
+            }
         }
     }
 }

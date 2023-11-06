@@ -437,7 +437,7 @@ struct LogInsightsView: View {
     let currencySymbol: String
 
     @State var showMenu1 = false
-    let subtitleText = ["today", "this week", "this month", "this year"]
+    let subtitleText = ["today", "this week", "this month", "this year", "all time"]
 
     @AppStorage("logInsightsTimeFrame", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var timeframe = 2
     @AppStorage("logInsightsType", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var insightsType = 1
@@ -532,8 +532,6 @@ struct LogInsightsView: View {
                 HStack(spacing: 4) {
                     Text(LocalizedStringKey(headingText))
                         .font(.system(.body, design: .rounded).weight(.medium))
-                        .dynamicTypeSize(...DynamicTypeSize.xxLarge)
-//                        .font(.system(size: 17, weight: .medium, design: .rounded))
                         .foregroundColor(Color.PrimaryText.opacity(0.9))
                     Button {
                         showMenu1 = true
@@ -542,8 +540,6 @@ struct LogInsightsView: View {
                             .padding(2)
                             .padding(.horizontal, 6)
                             .font(.system(.body, design: .rounded).weight(.medium))
-                            .dynamicTypeSize(...DynamicTypeSize.xxLarge)
-//                        .font(.system(size: 17, weight: .medium, design: .rounded))
                             .foregroundColor(Color.PrimaryText.opacity(9))
                             .overlay(Capsule().stroke(Color.Outline, lineWidth: 1.3))
                     }
@@ -560,30 +556,6 @@ struct LogInsightsView: View {
                         TimePickerView(showMenu: $showMenu1, timeframe: $timeframe)
                     }
                 }
-//
-//                HStack(alignment: .lastTextBaseline, spacing: 4) {
-//                    Text(currencySymbol)
-//                        .font(.system(size: 25, weight: .light, design: .rounded))
-//                        .foregroundColor(Color.SubtitleText)
-//
-//                    Text("\(amount, specifier: "%.2f")")
-//                        .font(.system(size: 44, weight: .regular, design: .rounded))
-//                        .lineLimit(1)
-//
-//                }
-
-//                HStack(alignment: .lastTextBaseline, spacing: 2) {
-//                   
-//
-//                    
-//                        .foregroundColor(Color.SubtitleText)
-//
-//                    Text(numberStrings.wholePart)
-//                        .font(.system(size: fontSize, weight: .regular, design: .rounded))
-//
-//                    
-//                }
-//                .minimumScaleFactor(0.5)
 
                 EmptyView()
                     .modifier(NumberView(number: amount, dynamicTypeSize: _dynamicTypeSize.wrappedValue, netTotal: insightsType == 1, positive: netTotal.positive))
@@ -812,7 +784,7 @@ struct FilteredSearchView: View {
 struct TimePickerView: View {
     @Namespace var animation
 
-    let timeframes = ["today", "this week", "this month", "this year"]
+    let timeframes = ["today", "this week", "this month", "this year", "all time"]
 
     @Binding var showMenu: Bool
     @Binding var timeframe: Int
@@ -863,6 +835,7 @@ struct TimePickerView: View {
                         withAnimation(.easeIn(duration: 0.15)) {
                             holdingTimeframe = index + 1
                         }
+
                         timeframe = index + 1
 
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {

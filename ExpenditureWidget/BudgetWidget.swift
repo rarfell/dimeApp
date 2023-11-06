@@ -236,7 +236,8 @@ struct BudgetWidgetEntryView: View {
                                 .frame(width: proxy.size.width)
 
                                 VStack(spacing: -4) {
-                                    WidgetBudgetDollarView(amount: difference, red: entry.totalSpent >= entry.budget.budgetAmount, size: proxy.size.width - 50)
+                                    WidgetBudgetDollarView(amount: difference, red: entry.totalSpent >= entry.budget.budgetAmount)
+                                        .frame(width: proxy.size.width - 50)
 
                                     if showTimeFrame(size: proxy.size.width - 50) {
                                         Text(systemSmallWidgetText)
@@ -327,7 +328,8 @@ struct BudgetWidgetEntryView: View {
                                 .frame(width: proxy.size.width)
 
                                 VStack(spacing: -4) {
-                                    WidgetBudgetDollarView(amount: difference, red: entry.totalSpent >= entry.budget.budgetAmount, size: proxy.size.width - 50)
+                                    WidgetBudgetDollarView(amount: difference, red: entry.totalSpent >= entry.budget.budgetAmount)
+                                        .frame(width: proxy.size.width - 50)
 
                                     if showTimeFrame(size: proxy.size.width - 50) {
                                         Text(systemSmallWidgetText)
@@ -379,95 +381,31 @@ struct BudgetWidgetEntryView: View {
     }
 }
 
-// struct WidgetBudgetDollarView: View {
-//    var string: String
-//    var red: Bool
-//
-//    var currencySymbol: String {
-//        return Locale.current.currencySymbol!
-//    }
-//
-//    var dollarOffset: CGFloat {
-//        let bigFont = UIFont.rounded(ofSize: 22, weight: .medium)
-//        let smallFont = UIFont.rounded(ofSize: 14, weight: .regular)
-//
-//        return bigFont.capHeight - smallFont.capHeight - 1
-//    }
-//
-//
-//    var body: some View {
-//        HStack(alignment: .lastTextBaseline, spacing: 1.3) {
-//            Text(currencySymbol)
-//                .font(.system(size: 14, weight: .regular, design: .rounded))
-//                .foregroundColor(red ? Color("BudgetRed") : Color.SubtitleText)
-//                .baselineOffset(dollarOffset)
-//
-//            Text(string)
-//                .font(.system(size: 22, weight: .medium, design: .rounded))
-//                .foregroundColor(red ? Color("BudgetRed") : Color.PrimaryText)
-//                .lineLimit(1)
-//
-//
-//
-//        }
-//    }
-// }
-
 struct WidgetBudgetDollarView: View {
     @AppStorage("showCents", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var showCents: Bool = true
 
     var amount: Double
     var red: Bool
-    var size: CGFloat
 
     @AppStorage("currency", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var currency: String = Locale.current.currencyCode!
     var currencySymbol: String {
         return Locale.current.localizedCurrencySymbol(forCurrencyCode: currency)!
     }
 
-    var downsize: (big: CGFloat, small: CGFloat) {
-        let amountText: String
-
-        if showCents && amount < 100 {
-            amountText = String(format: "%.2f", amount)
-        } else {
-            amountText = String(format: "%.0f", amount)
-        }
-
-        if (amountText.widthOfRoundedString(size: 18, weight: .medium) + currencySymbol.widthOfRoundedString(size: 10, weight: .regular) + 1.3) > size {
-            return (14, 8)
-        } else if (amountText.widthOfRoundedString(size: 22, weight: .medium) + currencySymbol.widthOfRoundedString(size: 14, weight: .regular) + 1.3) > size {
-            return (18, 10)
-        } else {
-            return (22, 14)
-        }
-    }
-
     var body: some View {
         HStack(alignment: .lastTextBaseline, spacing: 1.3) {
-            Text(currencySymbol)
-                .font(.system(size: downsize.small, weight: .regular, design: .rounded))
-                .foregroundColor(red ? Color("BudgetRed") : Color.SubtitleText)
-                .baselineOffset(getDollarOffset(big: downsize.big, small: downsize.small))
+            Group {
+                Text(currencySymbol)
+                    .font(.system(.subheadline, design: .rounded).weight(.medium))
+                    .foregroundColor(red ? Color("BudgetRed") : Color.SubtitleText) +
 
-            if showCents && amount < 100 {
-                Text("\(amount, specifier: "%.2f")")
-                    .font(.system(size: downsize.big, weight: .medium, design: .rounded))
+                Text("\(amount, specifier: showCents && amount < 100  ? "%.2f" : "%.0f")")
+                    .font(.system(.title3, design: .rounded).weight(.medium))
                     .foregroundColor(red ? Color("BudgetRed") : Color.PrimaryText)
-                    .lineLimit(1)
-            } else {
-                Text("\(amount, specifier: "%.0f")")
-                    .font(.system(size: downsize.big, weight: .medium, design: .rounded))
-                    .foregroundColor(red ? Color("BudgetRed") : Color.PrimaryText)
-                    .lineLimit(1)
             }
+
         }
-    }
-
-    func getDollarOffset(big: CGFloat, small: CGFloat) -> CGFloat {
-        let bigFont = UIFont.rounded(ofSize: big, weight: .medium)
-        let smallFont = UIFont.rounded(ofSize: small, weight: .regular)
-
-        return bigFont.capHeight - smallFont.capHeight - 1
+        .minimumScaleFactor(0.5)
+        .lineLimit(1)
     }
 }

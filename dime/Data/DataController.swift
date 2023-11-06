@@ -648,56 +648,92 @@ class DataController: ObservableObject {
         calendar.minimumDaysInFirstWeek = 4
 
         let dateCapPredicate = NSPredicate(format: "%K <= %@", #keyPath(Transaction.date), Date.now as CVarArg)
-        let startPredicate: NSPredicate
 
-        if type == 1 {
-            let today = calendar.startOfDay(for: Date.now)
-            startPredicate = NSPredicate(format: "%K >= %@", #keyPath(Transaction.date), today as CVarArg)
-        } else if type == 2 {
-            let dateComponents = calendar.dateComponents([.weekOfYear, .yearForWeekOfYear], from: Date.now)
-            let thisWeek = calendar.date(from: dateComponents)!
-            startPredicate = NSPredicate(format: "%K >= %@", #keyPath(Transaction.date), thisWeek as CVarArg)
-        } else if type == 3 {
-            let startOfMonth = UserDefaults(suiteName: "group.com.rafaelsoh.dime")!.integer(forKey: "firstDayOfMonth")
+        // all time
+        if type == 5 {
+            let andPredicate: NSCompoundPredicate
+            let superPredicate: NSCompoundPredicate
 
-            let thisMonth = getStartOfMonth(startDay: startOfMonth)
-            startPredicate = NSPredicate(format: "%K >= %@", #keyPath(Transaction.date), thisMonth as CVarArg)
+            var categoryPredicates = [NSPredicate]()
+
+            for category in categoryFilters {
+                categoryPredicates.append(NSPredicate(format: "%K == %@", #keyPath(Transaction.category), category))
+            }
+
+            let categoryCompoundPredicate = NSCompoundPredicate(type: .or, subpredicates: categoryPredicates)
+
+            if let income = optionalIncome {
+                let incomePredicate = NSPredicate(format: "income = %d", income)
+
+                andPredicate = NSCompoundPredicate(type: .and, subpredicates: [incomePredicate, dateCapPredicate])
+
+                superPredicate = NSCompoundPredicate(type: .and, subpredicates: [andPredicate, categoryCompoundPredicate])
+            } else {
+                andPredicate = NSCompoundPredicate(type: .and, subpredicates: [dateCapPredicate])
+
+                superPredicate = NSCompoundPredicate(type: .and, subpredicates: [andPredicate, categoryCompoundPredicate])
+            }
+
+            if categoryFilters.isEmpty {
+                itemRequest.predicate = andPredicate
+            } else {
+                itemRequest.predicate = superPredicate
+            }
+
+            return itemRequest
         } else {
-            let dateComponents = calendar.dateComponents([.year], from: Date.now)
-            let thisYear = calendar.date(from: dateComponents)!
-            startPredicate = NSPredicate(format: "%K >= %@", #keyPath(Transaction.date), thisYear as CVarArg)
+            let startPredicate: NSPredicate
+
+            if type == 1 {
+                let today = calendar.startOfDay(for: Date.now)
+                startPredicate = NSPredicate(format: "%K >= %@", #keyPath(Transaction.date), today as CVarArg)
+            } else if type == 2 {
+                let dateComponents = calendar.dateComponents([.weekOfYear, .yearForWeekOfYear], from: Date.now)
+                let thisWeek = calendar.date(from: dateComponents)!
+                startPredicate = NSPredicate(format: "%K >= %@", #keyPath(Transaction.date), thisWeek as CVarArg)
+            } else if type == 3 {
+                let startOfMonth = UserDefaults(suiteName: "group.com.rafaelsoh.dime")!.integer(forKey: "firstDayOfMonth")
+
+                let thisMonth = getStartOfMonth(startDay: startOfMonth)
+                startPredicate = NSPredicate(format: "%K >= %@", #keyPath(Transaction.date), thisMonth as CVarArg)
+            } else {
+                let dateComponents = calendar.dateComponents([.year], from: Date.now)
+                let thisYear = calendar.date(from: dateComponents)!
+                startPredicate = NSPredicate(format: "%K >= %@", #keyPath(Transaction.date), thisYear as CVarArg)
+            }
+
+            let andPredicate: NSCompoundPredicate
+            let superPredicate: NSCompoundPredicate
+
+            var categoryPredicates = [NSPredicate]()
+
+            for category in categoryFilters {
+                categoryPredicates.append(NSPredicate(format: "%K == %@", #keyPath(Transaction.category), category))
+            }
+
+            let categoryCompoundPredicate = NSCompoundPredicate(type: .or, subpredicates: categoryPredicates)
+
+            if let income = optionalIncome {
+                let incomePredicate = NSPredicate(format: "income = %d", income)
+
+                andPredicate = NSCompoundPredicate(type: .and, subpredicates: [startPredicate, incomePredicate, dateCapPredicate])
+
+                superPredicate = NSCompoundPredicate(type: .and, subpredicates: [andPredicate, categoryCompoundPredicate])
+            } else {
+                andPredicate = NSCompoundPredicate(type: .and, subpredicates: [startPredicate, dateCapPredicate])
+
+                superPredicate = NSCompoundPredicate(type: .and, subpredicates: [andPredicate, categoryCompoundPredicate])
+            }
+
+            if categoryFilters.isEmpty {
+                itemRequest.predicate = andPredicate
+            } else {
+                itemRequest.predicate = superPredicate
+            }
+
+            return itemRequest
         }
 
-        let andPredicate: NSCompoundPredicate
-        let superPredicate: NSCompoundPredicate
-
-        var categoryPredicates = [NSPredicate]()
-
-        for category in categoryFilters {
-            categoryPredicates.append(NSPredicate(format: "%K == %@", #keyPath(Transaction.category), category))
-        }
-
-        let categoryCompoundPredicate = NSCompoundPredicate(type: .or, subpredicates: categoryPredicates)
-
-        if let income = optionalIncome {
-            let incomePredicate = NSPredicate(format: "income = %d", income)
-
-            andPredicate = NSCompoundPredicate(type: .and, subpredicates: [startPredicate, incomePredicate, dateCapPredicate])
-
-            superPredicate = NSCompoundPredicate(type: .and, subpredicates: [andPredicate, categoryCompoundPredicate])
-        } else {
-            andPredicate = NSCompoundPredicate(type: .and, subpredicates: [startPredicate, dateCapPredicate])
-
-            superPredicate = NSCompoundPredicate(type: .and, subpredicates: [andPredicate, categoryCompoundPredicate])
-        }
-
-        if categoryFilters.isEmpty {
-            itemRequest.predicate = andPredicate
-        } else {
-            itemRequest.predicate = superPredicate
-        }
-
-        return itemRequest
     }
 
     func getShortcutInsights(type: Int, timeframe: Int, optionalIncome: Bool?, categories: [Category]) -> Double {

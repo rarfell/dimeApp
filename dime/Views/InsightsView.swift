@@ -2260,15 +2260,18 @@ struct InsightsDollarView: View {
 
     var body: some View {
         HStack(alignment: .lastTextBaseline, spacing: 1.3) {
-            Text(symbol)
-                .font(.system(.title3, design: .rounded).weight(.medium))
-                .foregroundColor(Color.SubtitleText)
+            Group {
+                Text(symbol)
+                    .font(.system(.title3, design: .rounded).weight(.medium))
+                    .foregroundColor(Color.SubtitleText) +
 
-            Text("\(amount, specifier: showCents && amount < 100 ? "%.2f" : "%.0f")")
-                .font(.system(.title, design: .rounded).weight(.medium))
-                .foregroundColor(Color.PrimaryText)
-                .lineLimit(1)
+                Text("\(amount, specifier: showCents && amount < 100 ? "%.2f" : "%.0f")")
+                    .font(.system(.title, design: .rounded).weight(.medium))
+                    .foregroundColor(Color.PrimaryText)
+            }
         }
+        .minimumScaleFactor(0.5)
+        .lineLimit(1)
     }
 
     init(amount: Double, currencySymbol: String, showCents: Bool, net: Bool? = nil) {
