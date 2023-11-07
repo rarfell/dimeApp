@@ -386,20 +386,13 @@ struct NumberView: AnimatableModifier {
 
     func body(content _: Content) -> some View {
         HStack(alignment: .lastTextBaseline, spacing: 2) {
-            let numberStrings = splitDoubleToStrings(number, showCents: showCents)
-
             Group {
-
                 Text(netTotal ? (positive ? "+\(currencySymbol)" : "-\(currencySymbol)") : currencySymbol)
                     .font(.system(.largeTitle, design: .rounded))
                     .foregroundColor(Color.SubtitleText) +
 
-                Text(numberStrings.wholePart)
+                Text("\(number, specifier: showCents && number < 1000  ? "%.2f" : "%.0f")")
                     .font(.system(size: fontSize, weight: .regular, design: .rounded))
-                    .foregroundColor(Color.PrimaryText) +
-
-                Text(numberStrings.decimalPart)
-                    .font(.system(.largeTitle, design: .rounded))
                     .foregroundColor(Color.PrimaryText)
             }
         }
@@ -407,24 +400,6 @@ struct NumberView: AnimatableModifier {
         .lineLimit(1)
 
     }
-}
-
-func splitDoubleToStrings(_ num: Double, showCents: Bool) -> (wholePart: String, decimalPart: String) {
-    let formatter = NumberFormatter()
-    formatter.numberStyle = .decimal
-    formatter.minimumFractionDigits = 2
-    formatter.maximumFractionDigits = 2
-    let formattedNum = formatter.string(from: NSNumber(value: num))!
-    let components = formattedNum.split(separator: ".")
-    let wholePart = String(components[0])
-
-    if showCents {
-        let decimalPart = "." + (components.count > 1 ? String(components[1]) : "00")
-        return (wholePart, decimalPart)
-    } else {
-        return (wholePart, "")
-    }
-
 }
 
 struct LogInsightsView: View {
