@@ -38,6 +38,21 @@ A 100% free personal finance tracker built with iOS design guidelines in mind. [
 
 This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details.
 
+## Third party dependencies
+
+- [Alamofire](https://github.com/Alamofire/Alamofire)
+- [CloudKitSyncMonitor](https://github.com/ggruen/CloudKitSyncMonitor)
+- [ConfettiSwiftUI](https://github.com/simibac/ConfettiSwiftUI)
+- [CrookedText](https://github.com/duemunk/CrookedText)
+- [SwiftUI Introspect](https://github.com/siteline/swiftui-introspect)
+- [IsScrolling](https://github.com/fatbobman/IsScrolling)
+- [Popovers](https://github.com/aheze/Popovers/)
+- ScrollViewStyle
+- STools
+
+
+
+
 ## Contributing
 
 If you have any bug reports or feature requests, please go through [existing issues](https://github.com/rarfell/dimeApp/issues) or [create one](https://github.com/rarfell/dimeApp/issues/new/choose) if it doesn't exist yet.
