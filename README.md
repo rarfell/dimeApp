@@ -34,6 +34,11 @@ A 100% free personal finance tracker built with iOS design guidelines in mind. [
 - A gorgeous night theme for dark mode fanatics.
 - Informative home and lock screen widgets keep you updated at a glance.
 
+## How to help
+
+- Please feel free to raise [issues](https://github.com/rarfell/dimeApp/issues) for any inquiries, suggestions for improvements, or bugs you encounter.
+- You're welcome to fork the repository and propose changes through a pull request, although the decision to merge it rests with the project maintainers.
+
 ## Licence
 
 This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details.
