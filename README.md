@@ -38,6 +38,7 @@ A 100% free personal finance tracker built with iOS design guidelines in mind. [
 
 - Please feel free to raise [issues](https://github.com/rarfell/dimeApp/issues) for any inquiries, suggestions for improvements, or bugs you encounter.
 - You're welcome to fork the repository and propose changes through a pull request, although the decision to merge it rests with the project maintainers.
+- If you would like to contribute directly to the codebase, do drop [Rafael](https://x.com/rarfell) or [Yumi](https://x.com/izyumidev) a DM and we'll add you into our Discord group!
 
 ## How to build
 
@@ -54,10 +55,6 @@ A 100% free personal finance tracker built with iOS design guidelines in mind. [
 `File > Packages > Resolve Package Versions` to ensure, everything is updated.  
 
 
-## Licence
-
-This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details.
-
 ## Third party dependencies
 
 - [Alamofire](https://github.com/Alamofire/Alamofire)
@@ -71,10 +68,10 @@ This project is licensed under the GNU General Public License v3.0 - see the [LI
 - STools
 
 
+## Licence
+
+This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details.
 
 
-## Contributing
 
-If you have any bug reports or feature requests, please go through [existing issues](https://github.com/rarfell/dimeApp/issues) or [create one](https://github.com/rarfell/dimeApp/issues/new/choose) if it doesn't exist yet.
 
-If you would like to contribute directly to the codebase, do drop [Rafael](https://x.com/rarfell) or [Yumi](https://x.com/izyumidev) a DM and we'll add you into our Discord group!
