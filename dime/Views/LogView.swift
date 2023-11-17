@@ -391,7 +391,7 @@ struct NumberView: AnimatableModifier {
                     .font(.system(.largeTitle, design: .rounded))
                     .foregroundColor(Color.SubtitleText) +
 
-                Text("\(number, specifier: showCents && number < 1000  ? "%.2f" : "%.0f")")
+                Text("\(number, specifier: showCents  ? "%.2f" : "%.0f")")
                     .font(.system(size: fontSize, weight: .regular, design: .rounded))
                     .foregroundColor(Color.PrimaryText)
             }

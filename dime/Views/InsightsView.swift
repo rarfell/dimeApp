@@ -2251,7 +2251,7 @@ struct InsightsDollarView: View {
             if netPositive {
                 return "+\(currencySymbol)"
             } else {
-                return "+\(currencySymbol)"
+                return "-\(currencySymbol)"
             }
         } else {
             return currencySymbol
