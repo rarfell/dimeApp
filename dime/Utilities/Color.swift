@@ -169,6 +169,10 @@ extension Color {
         return Color("Alert")
     }
 
+    static var TertiaryBackground: Color {
+        return Color("TertiaryBackground")
+    }
+
     static var SettingsBackground: Color {
         return Color("Settings")
     }

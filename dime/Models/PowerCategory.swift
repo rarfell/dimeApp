@@ -12,6 +12,7 @@ struct PowerCategory: Hashable, Identifiable {
     let id: UUID
     let category: Category
     let percent: Double
+    let amount: Double
 }
 
 struct SuggestedCategory: Hashable {

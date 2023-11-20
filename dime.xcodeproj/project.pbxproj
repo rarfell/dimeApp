@@ -152,6 +152,7 @@
 		53D6BDDF2AF73EF100F5728E /* SettingsHapticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D6BDDE2AF73EF100F5728E /* SettingsHapticsView.swift */; };
 		53D6BDE12AF73FAB00F5728E /* SettingsSubviewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D6BDE02AF73FAB00F5728E /* SettingsSubviewModifier.swift */; };
 		53DCFAA12A498FBF0063FCDE /* CloudKitSyncMonitor in Frameworks */ = {isa = PBXBuildFile; productRef = 53DCFAA02A498FBF0063FCDE /* CloudKitSyncMonitor */; };
+		53E832E52B0A2CAF000CBBA0 /* InsightsSummaryBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53E832E42B0A2CAF000CBBA0 /* InsightsSummaryBlock.swift */; };
 		53EB930E28A65A570026BE28 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5327D2B5287C6AFB00F76ADF /* Color.swift */; };
 		53EB930F28A65B250026BE28 /* FontExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B1D1A4289383B100E28062 /* FontExtension.swift */; };
 		AE5B3D792AEE99E000AB364E /* NumberPad.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE5B3D782AEE99E000AB364E /* NumberPad.swift */; };
@@ -316,6 +317,7 @@
 		53D6BDDC2AF73E4300F5728E /* SettingsBackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsBackButton.swift; sourceTree = "<group>"; };
 		53D6BDDE2AF73EF100F5728E /* SettingsHapticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHapticsView.swift; sourceTree = "<group>"; };
 		53D6BDE02AF73FAB00F5728E /* SettingsSubviewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSubviewModifier.swift; sourceTree = "<group>"; };
+		53E832E42B0A2CAF000CBBA0 /* InsightsSummaryBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightsSummaryBlock.swift; sourceTree = "<group>"; };
 		53EB931028A65F670026BE28 /* ExpenditureWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ExpenditureWidgetExtension.entitlements; sourceTree = "<group>"; };
 		AE5B3D782AEE99E000AB364E /* NumberPad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberPad.swift; sourceTree = "<group>"; };
 		AEADEF6E2AE94DA3006EB614 /* Toast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
@@ -592,6 +594,7 @@
 			children = (
 				53D6BDC02AF6648300F5728E /* AlertButtons.swift */,
 				53D6BDC22AF668E700F5728E /* DetailedBudgetViewTopBarButtons.swift */,
+				53E832E42B0A2CAF000CBBA0 /* InsightsSummaryBlock.swift */,
 				53D6BDC42AF6B32C00F5728E /* StepperButtons.swift */,
 				53D6BDDC2AF73E4300F5728E /* SettingsBackButton.swift */,
 			);
@@ -936,6 +939,7 @@
 				533D1C3C2AE7BB6900894764 /* DynamicType.swift in Sources */,
 				53A839C128D732E1006F227C /* TabBarHiding.swift in Sources */,
 				53D6BDC32AF668E700F5728E /* DetailedBudgetViewTopBarButtons.swift in Sources */,
+				53E832E52B0A2CAF000CBBA0 /* InsightsSummaryBlock.swift in Sources */,
 				5327D2C9287C6B2500F76ADF /* SupportEmail.swift in Sources */,
 				5327D2DC287C6B5F00F76ADF /* BudgetView.swift in Sources */,
 				5327D2DE287C6B5F00F76ADF /* CustomTabBar.swift in Sources */,

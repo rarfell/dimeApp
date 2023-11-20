@@ -1250,8 +1250,6 @@ struct SingleTransactionView: View {
             HStack(spacing: 12) {
                 EmojiLogView(emoji: (transaction.category?.wrappedEmoji ?? ""),
                              colour: (transaction.category?.wrappedColour ?? "#FFFFFF"), future: future)
-//                .frame(maxWidth: .infinity, maxHeight: .infinity)
-//                .aspectRatio(1.0, contentMode: .fit)
                     .fixedSize(horizontal: true, vertical: true)
                     .overlay(alignment: .bottomTrailing) {
                         if transaction.recurringType > 0 {
