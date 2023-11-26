@@ -1997,7 +1997,9 @@ struct ColourPickerView: View {
         }
 
         if let editted = toEdit {
-            selectedColours.remove(at: selectedColours.firstIndex(of: editted.wrappedColour) ?? 0)
+            if !selectedColours.isEmpty {
+                selectedColours.remove(at: selectedColours.firstIndex(of: editted.wrappedColour) ?? 0)
+            }
         }
 
         self.selectedColours = selectedColours
