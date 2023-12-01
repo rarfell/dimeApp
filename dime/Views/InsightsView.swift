@@ -208,121 +208,123 @@ struct HorizontalPieChartView: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            if !categoryFilterMode {
-                Text("Categories")
-                    .font(.system(.callout, design: .rounded).weight(.semibold))
-                    .foregroundColor(Color.SubtitleText)
+        if !categories.isEmpty {
+            VStack(alignment: .leading, spacing: 10) {
+                if !categoryFilterMode {
+                    Text("Categories")
+                        .font(.system(.callout, design: .rounded).weight(.semibold))
+                        .foregroundColor(Color.SubtitleText)
 
-                GeometryReader { proxy in
-                    HStack(spacing: proxy.size.width * 0.015) {
-                        ForEach(categories) { category in
-                            if category.percent < 0.005 {
-                                EmptyView()
-                            } else {
-                                AnimatedHorizontalBarGraph(category: category, index: categories.firstIndex(of: category) ?? 0)
-                                    .frame(width: (proxy.size.width * (1.0 - (0.015 * Double(categories.count - 1)))) * category.percent)
-                                    .onTapGesture {
-                                        withAnimation(.easeInOut) {
-                                            if categoryFilter == category.category {
+                    GeometryReader { proxy in
+                        HStack(spacing: proxy.size.width * 0.015) {
+                            ForEach(categories) { category in
+                                if category.percent < 0.005 {
+                                    EmptyView()
+                                } else {
+                                    AnimatedHorizontalBarGraph(category: category, index: categories.firstIndex(of: category) ?? 0)
+                                        .frame(width: (proxy.size.width * (1.0 - (0.015 * Double(categories.count - 1)))) * category.percent)
+                                        .onTapGesture {
+                                            withAnimation(.easeInOut) {
+                                                if categoryFilter == category.category {
+                                                    selectedDate = nil
+                                                    categoryFilterMode = false
+                                                    categoryFilter = nil
+                                                } else {
+                                                    selectedDate = nil
+                                                    categoryFilterMode = true
+                                                    categoryFilter = category.category
+                                                    chosenAmount = category.percent * total
+                                                    chosenName = category.category.wrappedName
+                                                }
+                                            }
+                                        }
+                                        .opacity(categoryFilterMode ? (categoryFilter == category.category ? 1 : 0.5) : 1)
+                                        .overlay {
+                                            if categoryFilterMode && categoryFilter == category.category {
+                                                RoundedRectangle(cornerRadius: 6, style: .continuous)
+                                                    .stroke(Color.DarkBackground, lineWidth: 1.5)
+                                            }
+                                        }
+                                }
+                            }
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                    .frame(height: 17)
+                    .padding(.bottom, 10)
+                }
+
+                ScrollView(showsIndicators: false) {
+                    VStack(spacing: 10) {
+                        ForEach(categories, id: \.self) { category in
+                            if !categoryFilterMode || categoryFilter == category.category {
+                                let boxColor = category.category.income ? Color(hex: Color.colorArray[categories.firstIndex(of: category) ?? 0]) : Color(hex: category.category.wrappedColour)
+
+                                HStack(spacing: 10) {
+
+                                    Text(category.category.fullName)
+                                        .font(.system(.title3, design: .rounded).weight(.semibold))
+                                        .foregroundColor(Color.PrimaryText)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+
+                                    Text("\(currencySymbol)\(category.amount, specifier: (showCents && category.amount < 100) ? "%.2f" : "%.0f")")
+                                        .font(.system(categoryFilterMode && categoryFilter == category.category ? .title3 : .body, design: .rounded).weight(.medium))
+                                        .foregroundColor(Color.SubtitleText)
+                                        .lineLimit(1)
+                                        .layoutPriority(1)
+
+                                    if categoryFilterMode && categoryFilter == category.category {
+                                        Button {
+                                            withAnimation(.easeInOut) {
                                                 selectedDate = nil
                                                 categoryFilterMode = false
                                                 categoryFilter = nil
-                                            } else {
-                                                selectedDate = nil
-                                                categoryFilterMode = true
-                                                categoryFilter = category.category
-                                                chosenAmount = category.percent * total
-                                                chosenName = category.category.wrappedName
                                             }
+                                        } label: {
+                                            Image(systemName: "xmark")
+                                                .font(.system(.footnote, design: .rounded).weight(.bold))
+                                                .foregroundColor(Color.SubtitleText)
+                                                .padding(5)
+                                                .background(Color.SecondaryBackground, in: Circle())
                                         }
+
+                                    } else {
+
+                                        Text("\(category.percent * 100, specifier: "%.0f")%")
+                                            .font(.system(.subheadline, design: .rounded).weight(.semibold))
+                                            .foregroundColor(boxColor)
+                                            .padding(.vertical, 3)
+                                            .frame(width: percentWidth)
+                                            .background(boxColor.opacity(0.23), in: RoundedRectangle(cornerRadius: 8, style: .continuous))
                                     }
-                                    .opacity(categoryFilterMode ? (categoryFilter == category.category ? 1 : 0.5) : 1)
-                                    .overlay {
-                                        if categoryFilterMode && categoryFilter == category.category {
-                                            RoundedRectangle(cornerRadius: 6, style: .continuous)
-                                                .stroke(Color.DarkBackground, lineWidth: 1.5)
-                                        }
-                                    }
-                            }
-                        }
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                }
-                .frame(height: 17)
-                .padding(.bottom, 10)
-            }
-
-            ScrollView(showsIndicators: false) {
-                VStack(spacing: 10) {
-                    ForEach(categories, id: \.self) { category in
-                        if !categoryFilterMode || categoryFilter == category.category {
-                            let boxColor = category.category.income ? Color(hex: Color.colorArray[categories.firstIndex(of: category) ?? 0]) : Color(hex: category.category.wrappedColour)
-
-                            HStack(spacing: 10) {
-
-                                Text(category.category.fullName)
-                                    .font(.system(.title3, design: .rounded).weight(.semibold))
-                                    .foregroundColor(Color.PrimaryText)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-
-                                Text("\(currencySymbol)\(category.amount, specifier: (showCents && category.amount < 100) ? "%.2f" : "%.0f")")
-                                    .font(.system(categoryFilterMode && categoryFilter == category.category ? .title3 : .body, design: .rounded).weight(.medium))
-                                    .foregroundColor(Color.SubtitleText)
-                                    .lineLimit(1)
-                                    .layoutPriority(1)
-
-                                if categoryFilterMode && categoryFilter == category.category {
-                                    Button {
-                                        withAnimation(.easeInOut) {
+                                }
+                                .padding(.vertical, categoryFilterMode && categoryFilter == category.category ? 10 : 5)
+                                .padding(.horizontal, categoryFilterMode && categoryFilter == category.category ? 10 : 0)
+                                .background(RoundedRectangle(cornerRadius: 12).fill(categoryFilterMode && categoryFilter == category.category ? Color.TertiaryBackground : Color.PrimaryBackground))
+                                .overlay(RoundedRectangle(cornerRadius: 12).strokeBorder(categoryFilterMode && categoryFilter == category.category ? Color.Outline : Color.clear, lineWidth: 1.3))
+                                .fixedSize(horizontal: false, vertical: true)
+                                .contentShape(Rectangle())
+                                .drawingGroup()
+                                .onTapGesture {
+                                    withAnimation(.easeInOut) {
+                                        if !categoryFilterMode {
                                             selectedDate = nil
-                                            categoryFilterMode = false
-                                            categoryFilter = nil
+                                            categoryFilterMode = true
+                                            categoryFilter = category.category
+                                            chosenAmount = category.percent * total
+                                            chosenName = category.category.wrappedName
                                         }
-                                    } label: {
-                                        Image(systemName: "xmark")
-                                            .font(.system(.footnote, design: .rounded).weight(.bold))
-                                            .foregroundColor(Color.SubtitleText)
-                                            .padding(5)
-                                            .background(Color.SecondaryBackground, in: Circle())
-                                    }
-
-                                } else {
-
-                                    Text("\(category.percent * 100, specifier: "%.0f")%")
-                                        .font(.system(.subheadline, design: .rounded).weight(.semibold))
-                                        .foregroundColor(boxColor)
-                                        .padding(.vertical, 3)
-                                        .frame(width: percentWidth)
-                                        .background(boxColor.opacity(0.23), in: RoundedRectangle(cornerRadius: 8, style: .continuous))
-                                }
-                            }
-                            .padding(.vertical, categoryFilterMode && categoryFilter == category.category ? 10 : 5)
-                            .padding(.horizontal, categoryFilterMode && categoryFilter == category.category ? 10 : 0)
-                            .background(RoundedRectangle(cornerRadius: 12).fill(categoryFilterMode && categoryFilter == category.category ? Color.TertiaryBackground : Color.PrimaryBackground))
-                            .overlay(RoundedRectangle(cornerRadius: 12).strokeBorder(categoryFilterMode && categoryFilter == category.category ? Color.Outline : Color.clear, lineWidth: 1.3))
-                            .fixedSize(horizontal: false, vertical: true)
-                            .contentShape(Rectangle())
-                            .drawingGroup()
-                            .onTapGesture {
-                                withAnimation(.easeInOut) {
-                                    if !categoryFilterMode {
-                                        selectedDate = nil
-                                        categoryFilterMode = true
-                                        categoryFilter = category.category
-                                        chosenAmount = category.percent * total
-                                        chosenName = category.category.wrappedName
                                     }
                                 }
+
                             }
 
                         }
-
                     }
                 }
             }
+            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
         }
-        .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
     }
 
     init(date: Date, categoryFilter: Binding<Category?>?, categoryFilterMode: Binding<Bool>, selectedDate: Binding<Date?>?, chosenAmount: Binding<Double>, chosenName: Binding<String>, type: ChartTimeFrame, income: Bool) {
@@ -1539,13 +1541,7 @@ struct MonthGraphView: View {
                     categoryFilterMode = false
                 }
                 .padding(.bottom, incomeFiltering ? 5 : 20)
-
-//                if selectedDate == nil && incomeFiltering {
-//                    HorizontalPieChartView(date: showingMonth, categoryFilter: $categoryFilter, categoryFilterMode: $categoryFilterMode, selectedDate: $selectedDate, chosenAmount: $chosenCategoryAmount, chosenName: $chosenCategoryName, type: .month, income: income)
-//                        .padding(.horizontal, 30)
-//                        .id(refreshID1)
-//                }
-
+                
                 Group {
                     if !incomeFiltering {
                         FilteredInsightsView(startDate: showingMonth, type: 2)
@@ -1924,36 +1920,6 @@ struct YearGraphView: View {
                     categoryFilterMode = false
                 }
                 .padding(.bottom, incomeFiltering ? 5 : 20)
-
-//                if selectedDate == nil && incomeFiltering {
-//                    HorizontalPieChartView(date: showingYear, categoryFilter: $categoryFilter, categoryFilterMode: $categoryFilterMode, selectedDate: $selectedDate, chosenAmount: $chosenCategoryAmount, chosenName: $chosenCategoryName, type: .year, income: income)
-//                        .padding(.horizontal, 30)
-//                        .id(refreshID1)
-//                }
-
-//                Group {
-//                    if !incomeFiltering {
-//                        FilteredInsightsView(startDate: showingYear, type: 3)
-//                            .padding(.bottom, 70)
-//                    } else {
-//                        if selectedDate != nil {
-//                            FilteredInsightsView(startDate: selectedDate ?? Date.now, income: income, type: 2)
-//                                .padding(.bottom, 70)
-//
-//                        } else if categoryFilterMode {
-//                            FilteredCategoryInsightsView(category: categoryFilter, date: showingYear, type: .year)
-//                                .padding(.bottom, 70)
-//                        } else {
-//                            FilteredInsightsView(startDate: showingYear, income: income, type: 3)
-//                                .padding(.bottom, 70)
-//                        }
-//                    }
-//                }
-//                .padding(.horizontal, 20)
-//                .onTapGesture {
-//                    selectedDate = nil
-//                    categoryFilterMode = false
-//                }
 
                 Group {
                     if !incomeFiltering {
