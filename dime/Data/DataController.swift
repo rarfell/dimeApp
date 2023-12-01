@@ -34,22 +34,25 @@ class DataController: ObservableObject {
 
     init() {
         let description = NSPersistentStoreDescription()
+
         description.shouldMigrateStoreAutomatically = true
         description.shouldInferMappingModelAutomatically = true
         description.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
         description.setOption(true as NSNumber, forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
 
-        let keyValueStore = NSUbiquitousKeyValueStore.default
+//        let keyValueStore = NSUbiquitousKeyValueStore.default
+//
+//        if keyValueStore.object(forKey: "icloud_sync") == nil {
+//            keyValueStore.set(true, forKey: "icloud_sync")
+//        }
+//
+//        if !keyValueStore.bool(forKey: "icloud_sync") {
+//            description.cloudKitContainerOptions = nil
+//        } else {
+//            description.cloudKitContainerOptions = NSPersistentCloudKitContainerOptions(containerIdentifier: "iCloud.com.rafaelsoh.dime")
+//        }
 
-        if keyValueStore.object(forKey: "icloud_sync") == nil {
-            keyValueStore.set(true, forKey: "icloud_sync")
-        }
-
-        if !keyValueStore.bool(forKey: "icloud_sync") {
-            description.cloudKitContainerOptions = nil
-        } else {
-            description.cloudKitContainerOptions = NSPersistentCloudKitContainerOptions(containerIdentifier: "iCloud.com.rafaelsoh.dime")
-        }
+        description.cloudKitContainerOptions = NSPersistentCloudKitContainerOptions(containerIdentifier: "iCloud.com.rafaelsoh.dime")
 
         let groupID = "group.com.rafaelsoh.dime"
 
@@ -68,19 +71,19 @@ class DataController: ObservableObject {
             self.container.viewContext.automaticallyMergesChangesFromParent = true
         }
 
-        #if DEBUG
-            do {
-                // Use the container to initialize the development schema.
-                try container.initializeCloudKitSchema(options: [])
-            } catch {
-                // Handle any errors.
-            }
-        #endif
-//        do {
-//            try container.initializeCloudKitSchema()
-//        } catch {
-//            print(error)
-//        }
+//        #if DEBUG
+//            do {
+//                // Use the container to initialize the development schema.
+//                try container.initializeCloudKitSchema(options: [])
+//            } catch {
+//                // Handle any errors.
+//            }
+//        #endif
+////        do {
+////            try container.initializeCloudKitSchema()
+////        } catch {
+////            print(error)
+////        }
     }
 
     // internal variables

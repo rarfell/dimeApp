@@ -203,6 +203,12 @@ struct TransactionView: View {
         }
     }
 
+    var widthOfCategoryButton: CGFloat {
+        let fontSize = UIFont.getBodyFontSize(dynamicTypeSize: dynamicTypeSize)
+
+        return "Category".widthOfRoundedString(size: fontSize, weight: .semibold) + 50
+    }
+
     var capsuleWidth: CGFloat {
         if dynamicTypeSize > .xLarge {
             return 120
@@ -227,13 +233,11 @@ struct TransactionView: View {
                         HStack(spacing: 6.5) {
                             Image(systemName: toastImage)
                                 .font(.system(.subheadline, design: .rounded).weight(.semibold))
-                            //                                .font(.system(size: 15, weight: .semibold))
                                 .foregroundColor(Color.AlertRed)
 
                             Text(toastTitle)
                                 .font(.system(.body, design: .rounded).weight(.semibold))
                                 .lineLimit(1)
-                            //                                .font(.system(size: 16, weight: .semibold, design: .rounded))
                                 .foregroundColor(Color.AlertRed)
                         }
                         .padding(8)
@@ -255,7 +259,6 @@ struct TransactionView: View {
                                     .font(.system(.body, design: .rounded).weight(.semibold))
 
                                     .lineLimit(1)
-                                //                                    .font(.system(size: 18, weight: .semibold, design: .rounded))
                                     .foregroundColor(income == false ? Color.PrimaryText : Color.SubtitleText)
                                     .padding(6)
                                     .frame(width: capsuleWidth)
@@ -463,14 +466,12 @@ struct TransactionView: View {
                                 } label: {
                                     HStack(spacing: 3) {
                                         Text(transaction.wrappedNote)
-//                                            .font(.system(size: 17.5, weight: .semibold, design: .rounded))
                                             .foregroundStyle(Color.PrimaryText)
                                             .lineLimit(1)
                                             .padding(.vertical, 3.5)
                                             .padding(.horizontal, 7)
 
                                         Text("\(currencySymbol)\(Int(round(transaction.wrappedAmount)))")
-//                                            .font(.system(size: 17, weight: .semibold, design: .rounded))
                                             .lineLimit(1)
                                             .foregroundStyle(Color(hex: transaction.wrappedColour))
                                             .padding(.vertical, 3.5)
@@ -510,8 +511,6 @@ struct TransactionView: View {
                             .foregroundColor(Color.SubtitleText)
                             .font(.system(.subheadline, design: .rounded).weight(.semibold))
 
-                            //                                    .font(.system(size: 16, weight: .semibold, design: .rounded))
-
                             Group {
                                 if isDateToday(date: date) {
                                     Text("Today, \(getDateString(date: date))")
@@ -523,15 +522,11 @@ struct TransactionView: View {
                             }
                             .font(.system(.body, design: .rounded).weight(.semibold))
 
-                            //                            .font(.system(size: 17.5, weight: .semibold, design: .rounded))
-
                             if showTime {
                                 Spacer()
 
                                 Text(getTimeString(date: date))
                                     .font(.system(.body, design: .rounded).weight(.semibold))
-
-                                //                                    .font(.system(size: 17.5, weight: .semibold, design: .rounded))
                             }
                         }
                         .foregroundColor(Color.PrimaryText)
@@ -553,11 +548,9 @@ struct TransactionView: View {
                             HStack(spacing: 4) {
                                 Image(systemName: "plus")
                                     .font(.system(.subheadline, design: .rounded).weight(.semibold))
-                                //                                    .font(.system(size: 16, weight: .semibold, design: .rounded))
+
                                 Text("Category")
                                     .font(.system(.body, design: .rounded).weight(.semibold))
-
-                                //                                    .font(.system(size: 17.5, weight: .semibold, design: .rounded))
                                     .lineLimit(1)
                             }
                             .padding(.vertical, 8.5)
@@ -579,108 +572,125 @@ struct TransactionView: View {
                                 showCategorySheet = true
                             }
                         } else {
+
                             Group {
-                                if let unwrappedCategory = category {
-                                    HStack(spacing: 5) {
-                                        Text(unwrappedCategory.wrappedEmoji)
-                                            .font(.system(.footnote, design: .rounded).weight(.semibold))
+                                if showCategoryPicker {
+                                    HStack(spacing: 10) {
 
-                                        //                                            .font(.system(size: 14))
-                                        Text(unwrappedCategory.wrappedName)
+                                        Text("Close")
                                             .font(.system(.body, design: .rounded).weight(.semibold))
-
-                                        //                                            .font(.system(size: 17.5, weight: .semibold, design: .rounded))
                                             .lineLimit(1)
+
+//                                        Image(systemName: "xmark.circle.fill")
+//                                            .font(.system(.footnote, design: .rounded).weight(.bold))
                                     }
                                     .padding(.vertical, 8.5)
                                     .padding(.horizontal, 10)
-                                    .foregroundColor(Color(hex: unwrappedCategory.wrappedColour))
-                                    .background(
-                                        Color(hex: unwrappedCategory.wrappedColour).opacity(0.35),
+                                    .frame(width: widthOfCategoryButton)
+                                    .foregroundColor(Color.AlertRed)
+                                    .background(Color.AlertRed.opacity(0.23),
                                         in: RoundedRectangle(cornerRadius: 11.5, style: .continuous)
                                     )
-                                    .popover(
-                                        present: $showCategoryPicker,
-                                        attributes: {
-                                            $0.position = .absolute(
-                                                originAnchor: .topRight,
-                                                popoverAnchor: .bottomRight
-                                            )
-                                            $0.rubberBandingMode = .none
-                                            $0.sourceFrameInset = UIEdgeInsets(top: -10, left: 0, bottom: 0, right: 0)
-                                            $0.presentation.animation = .easeInOut(duration: 0.2)
-                                            $0.dismissal.animation = .easeInOut(duration: 0.3)
-                                        }
-                                    ) {
-                                        CategoryPickerView(
-                                            category: $category, showPicker: $showCategoryPicker,
-                                            showSheet: $showCategorySheet, income: income, darkMode: darkMode
-                                        )
-                                        .environment(\.managedObjectContext, self.moc)
-                                    } background: {
-                                        backgroundColor.opacity(0.6)
-                                    }
                                 } else {
-                                    HStack(spacing: 5.5) {
-                                        if #available(iOS 17.0, *) {
-                                            Image(systemName: "circle.grid.2x2")
-                                                .font(.system(.subheadline, design: .rounded).weight(.semibold))
+                                    if let unwrappedCategory = category {
+                                        HStack(spacing: 5) {
+                                            Text(unwrappedCategory.wrappedEmoji)
+                                                .font(.system(.footnote, design: .rounded).weight(.semibold))
 
-                                            //                                                .font(.system(size: 16, weight: .semibold, design: .rounded))
-                                                .symbolEffect(
-                                                    .bounce.up.byLayer, options: .repeating.speed(0.5),
-                                                    value: showCategoryPicker)
-                                        } else {
-                                            Image(systemName: "circle.grid.2x2")
-                                                .font(.system(.subheadline, design: .rounded).weight(.semibold))
-
-                                            //                                                .font(.system(size: 16, weight: .semibold, design: .rounded))
+                                            Text(unwrappedCategory.wrappedName)
+                                                .font(.system(.body, design: .rounded).weight(.semibold))
+                                                .lineLimit(1)
                                         }
-
-                                        Text("Category")
-                                            .font(.system(.body, design: .rounded).weight(.semibold))
-                                        //                                            .font(.system(size: 17.5, weight: .semibold, design: .rounded))
-                                            .lineLimit(1)
-                                    }
-                                    .padding(.vertical, 8.5)
-                                    .padding(.horizontal, 10)
-                                    .foregroundColor(categoryButtonTextColor)
-                                    .background(
-                                        categoryButtonBackgroundColor,
-                                        in: RoundedRectangle(cornerRadius: 11.5, style: .continuous)
-                                    )
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 11.5, style: .continuous)
-                                            .strokeBorder(categoryButtonOutlineColor, lineWidth: 1.5)
-                                    )
-                                    .drawingGroup()
-                                    .offset(x: shake ? -5 : 0)
-                                    .popover(
-                                        present: $showCategoryPicker,
-                                        attributes: {
-                                            $0.position = .absolute(
-                                                originAnchor: .topRight,
-                                                popoverAnchor: .bottomRight
-                                            )
-                                            $0.rubberBandingMode = .none
-                                            $0.sourceFrameInset = UIEdgeInsets(top: -10, left: 0, bottom: 0, right: 0)
-                                            $0.presentation.animation = .easeInOut(duration: 0.2)
-                                            $0.dismissal.animation = .easeInOut(duration: 0.3)
-                                        }
-                                    ) {
-                                        CategoryPickerView(
-                                            category: $category, showPicker: $showCategoryPicker,
-                                            showSheet: $showCategorySheet, income: income, darkMode: darkMode
+                                        .padding(.vertical, 8.5)
+                                        .padding(.horizontal, 10)
+                                        .foregroundColor(Color(hex: unwrappedCategory.wrappedColour))
+                                        .background(
+                                            Color(hex: unwrappedCategory.wrappedColour).opacity(0.35),
+                                            in: RoundedRectangle(cornerRadius: 11.5, style: .continuous)
                                         )
-                                        .environment(\.managedObjectContext, self.moc)
-                                    } background: {
-                                        backgroundColor.opacity(0.6)
+    //                                    .popover(
+    //                                        present: $showCategoryPicker,
+    //                                        attributes: {
+    //                                            $0.position = .absolute(
+    //                                                originAnchor: .topRight,
+    //                                                popoverAnchor: .bottomRight
+    //                                            )
+    //                                            $0.rubberBandingMode = .none
+    //                                            $0.sourceFrameInset = UIEdgeInsets(top: -10, left: 0, bottom: 0, right: 0)
+    //                                            $0.presentation.animation = .easeInOut(duration: 0.2)
+    //                                            $0.dismissal.animation = .easeInOut(duration: 0.3)
+    //                                        }
+    //                                    ) {
+    //                                        CategoryPickerView(
+    //                                            category: $category, showPicker: $showCategoryPicker,
+    //                                            showSheet: $showCategorySheet, income: income, darkMode: darkMode
+    //                                        )
+    //                                        .environment(\.managedObjectContext, self.moc)
+    //                                    } background: {
+    //                                        backgroundColor.opacity(0.6)
+    //                                    }
+                                    } else {
+                                        HStack(spacing: 5.5) {
+                                            if #available(iOS 17.0, *) {
+                                                Image(systemName: "circle.grid.2x2")
+                                                    .font(.system(.subheadline, design: .rounded).weight(.semibold))
+                                                    .symbolEffect(
+                                                        .bounce.up.byLayer, options: .repeating.speed(0.5),
+                                                        value: showCategoryPicker)
+                                            } else {
+                                                Image(systemName: "circle.grid.2x2")
+                                                    .font(.system(.subheadline, design: .rounded).weight(.semibold))
+                                            }
+
+                                            Text("Category")
+                                                .font(.system(.body, design: .rounded).weight(.semibold))
+                                                .lineLimit(1)
+                                        }
+                                        .padding(.vertical, 8.5)
+                                        .padding(.horizontal, 10)
+                                        .frame(width: widthOfCategoryButton)
+                                        .foregroundColor(categoryButtonTextColor)
+                                        .background(
+                                            categoryButtonBackgroundColor,
+                                            in: RoundedRectangle(cornerRadius: 11.5, style: .continuous)
+                                        )
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 11.5, style: .continuous)
+                                                .strokeBorder(categoryButtonOutlineColor, lineWidth: 1.5)
+                                        )
+                                        .drawingGroup()
+                                        .offset(x: shake ? -5 : 0)
+    //                                    .popover(
+    //                                        present: $showCategoryPicker,
+    //                                        attributes: {
+    //                                            $0.position = .absolute(
+    //                                                originAnchor: .topRight,
+    //                                                popoverAnchor: .bottomRight
+    //                                            )
+    //                                            $0.rubberBandingMode = .none
+    //                                            $0.sourceFrameInset = UIEdgeInsets(top: -10, left: 0, bottom: 0, right: 0)
+    //                                            $0.presentation.animation = .easeInOut(duration: 0.2)
+    //                                            $0.dismissal.animation = .easeInOut(duration: 0.3)
+    //                                        }
+    //                                    ) {
+    //                                        CategoryPickerView(
+    //                                            category: $category, showPicker: $showCategoryPicker,
+    //                                            showSheet: $showCategorySheet, income: income, darkMode: darkMode
+    //                                        )
+    //                                        .environment(\.managedObjectContext, self.moc)
+    //                                    } background: {
+    //                                        backgroundColor.opacity(0.6)
+    //                                    }
                                     }
                                 }
+
                             }
                             .contentShape(Rectangle())
                             .onTapGesture {
-                                showCategoryPicker = true
+                                withAnimation(.easeInOut) {
+                                    showCategoryPicker.toggle()
+                                }
+
                             }
                         }
                     }
@@ -689,15 +699,25 @@ struct TransactionView: View {
 
                 // date and category picker
 
-                NumberPad(
-                    price: $price,
-                    category: $category,
-                    isEditingDecimal: $isEditingDecimal,
-                    decimalValuesAssigned: $decimalValuesAssigned,
-                    showingNotePicker: showingNotePicker
-                ) {
-                    submit()
+                if showCategoryPicker {
+                    NewCategoryPickerView(
+                        category: $category, showPicker: $showCategoryPicker,
+                        showSheet: $showCategorySheet, income: income
+                    )
+                    .transition(AnyTransition.move(edge: .trailing).combined(with: .opacity))
+                } else {
+                    NumberPad(
+                        price: $price,
+                        category: $category,
+                        isEditingDecimal: $isEditingDecimal,
+                        decimalValuesAssigned: $decimalValuesAssigned,
+                        showingNotePicker: showingNotePicker
+                    ) {
+                        submit()
+                    }
+                    .transition(AnyTransition.move(edge: .leading).combined(with: .opacity))
                 }
+
             }
             .padding(17)
             .frame(width: proxy.size.width, height: proxy.size.height)
@@ -1077,7 +1097,7 @@ struct TransactionView: View {
             dataController.updateRecurringTransaction(transaction: transaction)
         }
 
-        dataController.save()
+        try? moc.save()
 
         dismiss()
     }
@@ -1219,28 +1239,9 @@ struct CategoryPickerView: View {
 
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
 
-    var fontSize: CGFloat {
-        switch dynamicTypeSize {
-        case .xSmall:
-            return 14
-        case .small:
-            return 15
-        case .medium:
-            return 16
-        case .large:
-            return 17
-        case .xLarge:
-            return 19
-        case .xxLarge:
-            return 21
-        case .xxxLarge:
-            return 23
-        default:
-            return 23
-        }
-    }
-
     var heightOfScrollView: Double {
+        let fontSize = UIFont.getBodyFontSize(dynamicTypeSize: dynamicTypeSize)
+
         let font = UIFont.rounded(ofSize: fontSize, weight: .semibold)
 
         if categories.count == 1 && initialCategory != nil {
@@ -1386,28 +1387,8 @@ struct NoteView: View {
 
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
 
-    var fontSize: CGFloat {
-        switch dynamicTypeSize {
-        case .xSmall:
-            return 14
-        case .small:
-            return 15
-        case .medium:
-            return 16
-        case .large:
-            return 17
-        case .xLarge:
-            return 19
-        case .xxLarge:
-            return 21
-        case .xxxLarge:
-            return 23
-        default:
-            return 23
-        }
-    }
-
     var noteWidth: CGFloat {
+        let fontSize: CGFloat = UIFont.getBodyFontSize(dynamicTypeSize: dynamicTypeSize)
         //        let fontSize: CGFloat = fontSize
         let systemFont = UIFont.systemFont(ofSize: fontSize, weight: .semibold)
         let roundedFont: UIFont

@@ -1117,14 +1117,7 @@ struct WeekGraphView: View {
                     selectedDate = nil
                     categoryFilterMode = false
                 }
-//                .frame(height: getGraphHeight(incomeTracking: incomeTracking, incomeFiltering: incomeFiltering, multiplier: multiplier), alignment: .top)
                 .padding(.bottom, incomeFiltering ? 5 : 10)
-//
-//                if selectedDate == nil && incomeFiltering {
-//                    HorizontalPieChartView(date: showingWeek, categoryFilter: $categoryFilter, categoryFilterMode: $categoryFilterMode, selectedDate: $selectedDate, chosenAmount: $chosenCategoryAmount, chosenName: $chosenCategoryName, type: .week, income: income)
-//                        .padding(.horizontal, 30)
-//                        .id(refreshID1)
-//                }
 
                 Group {
                     if !incomeFiltering {
@@ -1135,6 +1128,7 @@ struct WeekGraphView: View {
                         if selectedDate == nil {
                             HorizontalPieChartView(date: showingWeek, categoryFilter: $categoryFilter, categoryFilterMode: $categoryFilterMode, selectedDate: $selectedDate, chosenAmount: $chosenCategoryAmount, chosenName: $chosenCategoryName, type: .week, income: income)
                                 .padding(.horizontal, 30)
+                                .padding(.bottom, 70)
                                 .id(refreshID1)
 
                             if categoryFilterMode {
@@ -1561,6 +1555,7 @@ struct MonthGraphView: View {
                         if selectedDate == nil {
                             HorizontalPieChartView(date: showingMonth, categoryFilter: $categoryFilter, categoryFilterMode: $categoryFilterMode, selectedDate: $selectedDate, chosenAmount: $chosenCategoryAmount, chosenName: $chosenCategoryName, type: .month, income: income)
                                 .padding(.horizontal, 30)
+                                .padding(.bottom, 70)
                                 .id(refreshID1)
 
                             if categoryFilterMode {
@@ -1969,6 +1964,7 @@ struct YearGraphView: View {
                         if selectedDate == nil {
                             HorizontalPieChartView(date: showingYear, categoryFilter: $categoryFilter, categoryFilterMode: $categoryFilterMode, selectedDate: $selectedDate, chosenAmount: $chosenCategoryAmount, chosenName: $chosenCategoryName, type: .year, income: income)
                                 .padding(.horizontal, 30)
+                                .padding(.bottom, 70)
                                 .id(refreshID1)
 
                             if categoryFilterMode {

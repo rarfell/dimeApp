@@ -87,6 +87,7 @@ struct SettingsHapticsView: View {
         .modifier(SettingsSubviewModifier())
         .onChange(of: hapticType) { newValue in
             if newValue == 2 {
+                UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
 
                 withAnimation(.easeInOut(duration: 0.1)) {
                     alternateShake = true

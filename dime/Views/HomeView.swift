@@ -137,25 +137,6 @@ struct HomeView: View {
                 showPopup = newValue
             }
         }
-//        .onChange(of: transactionManager.toDelete) { newValue in
-//            if let unwrapped = newValue {
-//                if transactionManager.deletionType == .instant {
-//                    withAnimation(.easeInOut(duration: 0.5)) {
-//                        moc.delete(unwrapped)
-//                    }
-//                    transactionManager.showToast = true
-//                } else {
-//                    transactionManager.showPopup = true
-//                }
-//            }
-//        }
-//        .fullScreenCover(isPresented: $transactionManager.showPopup, onDismiss: {
-//            transactionManager.toDelete = nil
-//        }) {
-//            if let unwrapped = transactionManager.toDelete {
-//                DeleteTransactionAlert(toDelete: unwrapped, stopRecurring: (transactionManager.future && unwrapped.wrappedDate < Date.now && unwrapped.recurringType > 0), showToast: $transactionManager.showToast, confirmDelete: $transactionManager.confirmedDelete)
-//            }
-//        }
         .fullScreenCover(item: $transactionManager.toEdit, onDismiss: {
             transactionManager.toEdit = nil
         }) { transaction in
