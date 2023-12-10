@@ -42,7 +42,7 @@ struct BrandNewBudgetView: View {
     var initialProgress: Double
 
     @State var showToast: Bool = false
-    @State var toastMessage: String = "Missing Category"
+    @State var toastMessage: String = String(.missingCategory)
 
     // stage one (ignore if editing), overall budget or category budget
     @State var categoryBudget: Bool = false
@@ -543,7 +543,7 @@ struct BrandNewBudgetView: View {
                 Button {
                     if progress == 2 && selectedCategory == nil {
                         showToast = true
-                        toastMessage = "Missing Category"
+                        toastMessage = String(.missingCategory)
                         UINotificationFeedbackGenerator().notificationOccurred(.error)
                         return
                     }
@@ -709,7 +709,7 @@ struct BrandNewBudgetView: View {
         if price == 0 {
             UINotificationFeedbackGenerator().notificationOccurred(.error)
             showToast = true
-            toastMessage = "Missing Amount"
+            toastMessage = String(.missingAmount)
             return
         }
 

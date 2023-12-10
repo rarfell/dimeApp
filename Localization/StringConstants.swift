@@ -9,8 +9,10 @@ import SwiftUI
 
 enum LocalizedString: String {
     case new = "new"
+    case edit = "edit"
     case cancel = "cancel"
     case delete = "delete"
+    case deleteConfirmation = "delete_confirmation"
     
     //MARK: - Welcome Sheet
     
@@ -66,7 +68,6 @@ enum LocalizedString: String {
     case suggested = "suggested"
     case suggestionsHidden = "suggestions_hidden"
 
-    case deleteConfirmation = "delete_confirmation"
     case deleteTransactionsWarning = "delete_transactions_warning"
     case actionCannotBeUndoneWarning = "action_cannot_be_undone_warning"
 
@@ -101,6 +102,29 @@ enum LocalizedString: String {
     case partTime = "part_time"
     case investments = "investments"
     case tips = "tips"
+    
+    //MARK: - New Transaction
+    case addNote = "add_note"
+    case category = "category"
+    case currentDate = "today_date"
+
+    // Recurring picker
+    case none = "none"
+    case daily = "daily"
+    case weekly = "weekly"
+    case monthly = "monthly"
+    case custom = "custom"
+
+    // Custom recurrency picker
+    case days = "days"
+    case weeks = "weeks"
+    case months = "months"
+    case customInterval = "custom_interval"
+    case repeats = "repeats"
+
+    // Validation
+    case missingAmount = "missing_amount"
+    case missingCategory = "missing_category"
     
     //MARK: - Log View
     case deleteRecurringTransaction = "delete_recurring_transaction"

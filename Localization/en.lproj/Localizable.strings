@@ -7,8 +7,10 @@
 */
 
 "new" = "New";
+"edit" = "Edit";
 "cancel" = "Cancel";
 "delete" = "Delete";
+"delete_confirmation" = "Delete %@?";
 
 //MARK: - Welcome Sheet
 
@@ -65,7 +67,6 @@
 "suggested" = "SUGGESTED";
 "suggestions_hidden" = "Suggestions Hidden";
 
-"delete_confirmation" = "Delete '%@'?";
 "delete_transactions_warning" = "This action cannot be undone, and all %@ transactions would be deleted.";
 "action_cannot_be_undone_warning" = "This action cannot be undone.";
 
@@ -102,26 +103,30 @@
 "tips" = "Tips";
 
 
-//MARK: - New Transaction Page
+//MARK: - New Transaction
 
-"Today, %@" = "Today, %@";
-"Add Note" = "Add Note";
-"Category" = "Category";
+"add_note" = "Add Note";
+"category" = "Category";
+"today_date" = "Today, %@";
+
+// Recurring picker
 "none" = "none";
 "daily" = "daily";
 "weekly" = "weekly";
 "monthly" = "monthly";
 "custom" = "custom";
-"Custom Interval" = "Custom Interval";
-"Repeats every" = "Repeats every";
+
+// Custom recurrency picker
 "days" = "days";
 "weeks" = "weeks";
 "months" = "months";
-"Edit" = "Edit";
-"Delete Expense?" = "Delete Expense?";
-"Missing Amount" = "Missing Amount";
-"Missing Category" = "Missing Category";
-"transaction-view-income-picker" = "Income";
+"custom_interval" = "Custom Interval";
+"repeats" = "Repeats every";
+
+// Validation
+"missing_amount" = "Missing Amount";
+"missing_category" = "Missing Category";
+
 
 //MARK: - Log View
 "delete_recurring_transaction" = "The transaction will no longer be automatically logged.";

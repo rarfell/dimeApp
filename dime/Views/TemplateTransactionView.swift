@@ -209,7 +209,7 @@ struct TemplateTransactionView: View {
                                     }
                                 }
 
-                            Text("transaction-view-income-picker")
+                            Text(.income)
                                 .font(.system(size: 18, weight: .semibold, design: .rounded))
                                 .foregroundColor(income == true ? Color.PrimaryText : Color.SubtitleText)
                                 .padding(6)
@@ -462,7 +462,8 @@ struct TemplateTransactionView: View {
                         }
 
                     VStack(alignment: .leading, spacing: 1.5) {
-                        Text("Delete Expense?")
+                        // TODO: check confirmDeletion
+                        Text(.deleteConfirmation, for: "Expense")
                             .font(.system(size: 20, weight: .medium, design: .rounded))
                             .foregroundColor(.PrimaryText)
 
@@ -656,13 +657,13 @@ struct TemplateTransactionView: View {
             return
         } else if transactionValue == 0 {
             toastImage = "centsign.circle"
-            toastTitle = "Missing Amount"
+            toastTitle = String(.missingAmount)
             showToast = true
             generator.notificationOccurred(.error)
             return
         } else if category == nil {
             toastImage = "tray"
-            toastTitle = "Missing Category"
+            toastTitle = String(.missingCategory)
             showToast = true
             generator.notificationOccurred(.error)
             return

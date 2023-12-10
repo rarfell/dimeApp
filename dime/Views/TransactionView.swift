@@ -114,8 +114,8 @@ struct TransactionView: View {
         let dateSize: CGSize
 
         if isDateToday(date: date) {
-            dateSize = (("Today, " + getDateString(date: date)) as NSString).size(
-                withAttributes: attributes)
+            dateSize = String(.currentDate,
+                              for: (getDateString(date: date)) as NSString).size(withAttributes: attributes)
         } else {
             dateSize = (getDateString(date: date) as NSString).size(withAttributes: attributes)
         }
@@ -206,7 +206,8 @@ struct TransactionView: View {
     var widthOfCategoryButton: CGFloat {
         let fontSize = UIFont.getBodyFontSize(dynamicTypeSize: dynamicTypeSize)
 
-        return "Category".widthOfRoundedString(size: fontSize, weight: .semibold) + 50
+        return String(.category)
+            .widthOfRoundedString(size: fontSize, weight: .semibold) + 50
     }
 
     var capsuleWidth: CGFloat {
@@ -272,7 +273,7 @@ struct TransactionView: View {
                                         }
                                     }
 
-                                Text("transaction-view-income-picker")
+                                Text(.income)
                                     .font(.system(.body, design: .rounded).weight(.semibold))
 
                                     .lineLimit(1)
@@ -513,7 +514,7 @@ struct TransactionView: View {
 
                             Group {
                                 if isDateToday(date: date) {
-                                    Text("Today, \(getDateString(date: date))")
+                                    Text(.currentDate, for: getDateString(date: date))
                                         .lineLimit(1)
                                 } else {
                                     Text(getDateString(date: date))
@@ -549,7 +550,7 @@ struct TransactionView: View {
                                 Image(systemName: "plus")
                                     .font(.system(.subheadline, design: .rounded).weight(.semibold))
 
-                                Text("Category")
+                                Text(.category)
                                     .font(.system(.body, design: .rounded).weight(.semibold))
                                     .lineLimit(1)
                             }
@@ -642,7 +643,7 @@ struct TransactionView: View {
                                                     .font(.system(.subheadline, design: .rounded).weight(.semibold))
                                             }
 
-                                            Text("Category")
+                                            Text(.category)
                                                 .font(.system(.body, design: .rounded).weight(.semibold))
                                                 .lineLimit(1)
                                         }
@@ -736,7 +737,8 @@ struct TransactionView: View {
                         }
 
                     VStack(alignment: .leading, spacing: 1.5) {
-                        Text("Delete Expense?")
+                        // TODO: check confirmDeletion
+                        Text(.deleteConfirmation, for: "Expense")
                             .font(.system(size: 20, weight: .medium, design: .rounded))
                             .foregroundColor(.PrimaryText)
 
@@ -1000,13 +1002,13 @@ struct TransactionView: View {
             return
         } else if price == 0 {
             toastImage = "centsign.circle"
-            toastTitle = "Missing Amount"
+            toastTitle = String(.missingAmount)
             showToast = true
             generator.notificationOccurred(.error)
             return
         } else if category == nil {
             toastImage = "tray"
-            toastTitle = "Missing Category"
+            toastTitle = String(.missingCategory)
             showToast = true
 
             toggleFieldColors()
@@ -1402,7 +1404,7 @@ struct NoteView: View {
 
         let size = (note as NSString).size(withAttributes: attributes)
 
-        let placeholder = String(localized: "Add Note")
+        let placeholder = String(.addNote)
         let placeholderSize = (placeholder as NSString).size(withAttributes: attributes)
 
         if !note.isEmpty {
@@ -1429,7 +1431,7 @@ struct NoteView: View {
                     .foregroundColor(Color.PrimaryText)
 
                 if note.isEmpty {
-                    Text("Add Note")
+                    Text(.addNote)
                         .foregroundColor(Color.SubtitleText)
                 }
             }
@@ -1467,8 +1469,8 @@ struct RecurringPickerView: View {
 
     @Binding var showPicker: Bool
 
-    let stringArray = ["none", "daily", "weekly", "monthly"]
-    let stringArray2 = ["", "days", "weeks", "months"]
+    let stringArray = [String(.none), String(.daily), String(.weekly), String(.monthly)]
+    let stringArray2 = ["", String(.days), String(.weeks), String(.months)]
 
     @AppStorage("bottomEdge", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime"))
     var bottomEdge: Double = 15
@@ -1645,7 +1647,7 @@ struct CustomRecurringView: View {
 
                 Spacer()
 
-                Text("Custom Interval")
+                Text(.customInterval)
                     .font(.system(.body, design: .rounded).weight(.semibold))
                     .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
                 //                    .font(.system(size: 18, weight: .semibold, design: .rounded))
@@ -1673,7 +1675,7 @@ struct CustomRecurringView: View {
             }
 
             HStack(spacing: 10) {
-                Text("Repeats every")
+                Text(.repeats)
                     .font(.system(size: 23, weight: .medium, design: .rounded))
                     .foregroundColor(Color.PrimaryText)
                     .padding(.trailing, 3)
