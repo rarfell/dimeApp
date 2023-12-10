@@ -146,26 +146,26 @@ struct ShortcutInsightsView: View {
     var leftText: String {
         switch type {
         case .net:
-            return "Net total"
+            return String(.netTotal)
         case .income:
-            return "Earned"
+            return String(.earned)
         case .spent:
-            return "Spent"
+            return String(.spent)
         }
     }
 
     var rightText: String {
         switch timeframe {
         case .day:
-            return "today"
+            return String(.today)
         case .week:
-            return "this week"
+            return String(.thisWeek)
         case .month:
-            return "this month"
+            return String(.thisMonth)
         case .year:
-            return "this year"
+            return String(.thisYear)
         case .all:
-            return "all time"
+            return String(.allTime)
         }
     }
 

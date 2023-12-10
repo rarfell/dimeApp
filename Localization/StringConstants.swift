@@ -14,6 +14,7 @@ enum LocalizedString: String {
     case delete = "delete"
     case deleteConfirmation = "delete_confirmation"
     
+    
     //MARK: - Welcome Sheet
     
     case appName = "app_name"
@@ -28,6 +29,7 @@ enum LocalizedString: String {
     case easilyAddEntries = "easily_add_entries"
     case spendingInsights = "spending_insights"
     case spendingLimitGoals = "spending_limit_goals"
+    
     
     //MARK: - Update Sheet
     
@@ -50,6 +52,7 @@ enum LocalizedString: String {
     case customCategoryColorsSubtitle = "custom_category_colors_subtitle"
     case newToastsSubtitle = "new_toasts_subtitle"
     case customTimeFramesSubtitle = "custom_time_frames_subtitle"
+    
     
     //MARK: - Categories
     case categories = "categories"
@@ -103,6 +106,7 @@ enum LocalizedString: String {
     case investments = "investments"
     case tips = "tips"
     
+    
     //MARK: - New Transaction
     case addNote = "add_note"
     case category = "category"
@@ -126,8 +130,40 @@ enum LocalizedString: String {
     case missingAmount = "missing_amount"
     case missingCategory = "missing_category"
     
+    
     //MARK: - Log View
+    
     case deleteRecurringTransaction = "delete_recurring_transaction"
+    case logEmpty = "log_empty"
+    case firstEntryTip = "add_first_entry_tip"
+
+    case searchByNote = "search_entry_by_note"
+    case noEntriesFound = "no_entries_found"
+    case tryDifferentQuery = "try_different_query"
+
+    // Search filters
+    case allEntries = "all_entries"
+    case categoryFilter = "by_category"
+    case typeFilter = "by_type"
+    case dayFilter = "by_day"
+    case weekFilter = "by_week"
+    case monthFilter = "by_month"
+    case recurringFilter = "recurring"
+    case upcomingFilter = "upcoming"
+
+    case totalSpent = "total_spent"
+    case totalIncome = "total_income"
+    case netTotalCapitalized = "net_total_capitalized"
+    case netTotal = "net_total"
+    case spent = "spent"
+    case earned = "earned"
+
+    case today = "today"
+    case yesterday = "yesterday"
+    case thisWeek = "this_week"
+    case thisMonth = "this_month"
+    case thisYear = "this_year"
+    case allTime = "all_time"
 }
 
 extension String {

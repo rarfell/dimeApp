@@ -130,37 +130,36 @@
 
 //MARK: - Log View
 "delete_recurring_transaction" = "The transaction will no longer be automatically logged.";
-"Your Log is Empty" = "Your Log is Empty";
-"Press the plus button to add your first entry" = "Press the plus button to add your first entry";
-"Search entry by note" = "Search entry by note";
-"all entries" = "all entries";
-"by type" = "by type";
-"by day" = "by day";
-"by week" = "by week";
-"by month" = "by month";
-"by category" = "by category";
+"log_empty" = "Your Log is Empty";
+"add_first_entry_tip" = "Press the plus button to add your first entry"; // unused
+
+"search_entry_by_note" = "Search entry by note";
+"no_entries_found" = "No entries found.";
+"try_different_query" = "Try a different search query!";
+
+// Search filters
+"all_entries" = "all entries";
+"by_category" = "by category";
+"by_type" = "by type";
+"by_day" = "by day";
+"by_week" = "by week";
+"by_month" = "by month";
 "recurring" = "recurring";
-"filter-tag-type" = "by type";
-"filter-tag-day" = "by day";
-"filter-tag-category" = "by category";
-"filter-tag-week" = "by week";
-"filter-tag-month" = "by month";
-"filter-tag-recurring" = "recurring";
-"filter-picker-income" = "Income";
-"filter-tag-upcoming" = "upcoming";
-"Total Spent" = "Total Spent";
-"Total Income" = "Total Income";
-"Net Total" = "Net Total";
-"Net total" = "Net total";
-"Spent" = "Spent";
-"Earned" = "Earned";
+"upcoming" = "upcoming";
+
+"total_spent" = "Total Spent";
+"total_income" = "Total Income";
+"net_total_capitalized" = "Net Total";
+"net_total" = "Net total";
+"spent" = "Spent";
+"earned" = "Earned";
+
 "today" = "today";
-"this week" = "this week";
-"this month" = "this month";
-"this year" = "this year";
-"No entries found." = "No entries found.";
-"Try a different search query!" = "Try a different search query!";
 "yesterday" = "yesterday";
+"this_week" = "this week";
+"this_month" = "this month";
+"this_year" = "this year";
+"all_time" = "all time";
 
 
 //MARK: - Insights

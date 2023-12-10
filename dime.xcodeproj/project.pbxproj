@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		49A74CD52B23F5CF00FCA467 /* StringConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A74CD42B23F5CF00FCA467 /* StringConstants.swift */; };
+		49E3745D2B2573C80044F240 /* StringConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A74CD42B23F5CF00FCA467 /* StringConstants.swift */; };
 		530C89D62A793B6C00B5028D /* ShortcutsEntities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 530C89D52A793B6C00B5028D /* ShortcutsEntities.swift */; };
 		530C9DFD28ACE14A0038535F /* BudgetWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 530C9DFC28ACE14A0038535F /* BudgetWidget.swift */; };
 		530C9DFE28ACE14A0038535F /* BudgetWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 530C9DFC28ACE14A0038535F /* BudgetWidget.swift */; };
@@ -1028,6 +1029,7 @@
 				53B1D191288ED7E500E28062 /* ExpenditureWidget.swift in Sources */,
 				5321E1DE291FE2CE00D5A931 /* CategoryCreationErrors.swift in Sources */,
 				53D520FC2AAF1190000AC055 /* TemplateTransactionWidget.swift in Sources */,
+				49E3745D2B2573C80044F240 /* StringConstants.swift in Sources */,
 				53980E5D28A77B62009CC4E2 /* Helper.swift in Sources */,
 				53D0298128C62BF600443F2B /* Currency.swift in Sources */,
 				53A32B3928AB6C8700628905 /* Line.swift in Sources */,

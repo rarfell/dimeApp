@@ -149,9 +149,9 @@ struct ExpenditureWidgetEntryView: View {
         case .unknown:
             return "NIL"
         case .day:
-            return String(localized: "today")
+            return String(.today)
         case .week:
-            return String(localized: "this week")
+            return String(.thisWeek)
         case .month:
             let formatter = DateFormatter()
             formatter.dateFormat = "MMM"
