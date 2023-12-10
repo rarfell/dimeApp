@@ -6,66 +6,104 @@
   
 */
 
-// welcome sheet
+"new" = "New";
+"cancel" = "Cancel";
+"delete" = "Delete";
 
-"dime_name" = "Dime";
-"welcome_header_1" = "Track your finances";
-"welcome_subtitle_1" = "Add new entries in a simple, straightforward manner";
-"welcome_header_2" = "Analyse your expenditure";
-"welcome_subtitle_2" = "Draw insights from your spending over various time periods";
-"welcome_header_3" = "Stick to budgets";
-"welcome_subtitle_3" = "Set categorical and time-based goals to limit your spending";
-"Get Started" = "Get Started";
+//MARK: - Welcome Sheet
 
-// categories
+"app_name" = "Dime";
+"get_started" = "Get Started";
 
-"Categories" = "Categories";
+// Headers
+"track_finance" = "Track your finances";
+"analyze_expenditure" = "Analyse your expenditure";
+"stick_to_budget" = "Stick to budgets";
+
+// Subtitles
+"easily_add_entries" = "Add new entries in a simple, straightforward manner";
+"spending_insights" = "Draw insights from your spending over various time periods";
+"spending_limit_goals" = "Set categorical and time-based goals to limit your spending";
+
+//MARK: - Update Sheet
+
+// Headers
+"siri_shortcuts" = "Siri Shorcuts";
+"data_import" = "Data Import";
+"future_transactions" = "Future Transactions";
+"app_icons" = "App Icons";
+"redesigned_screens" = "Re-designed Screens";
+"custom_category_colors" = "Custom Category Colors";
+"new_toasts" = "New Toasts";
+"custom_time_frames" = "Custom Time Frames";
+
+// Subtitles
+"siri_shortcuts_subtitle" = "3 new Siri shortcuts allow you to conveniently add new transactions or access insights.";
+"data_import_subtitle" = "Transfer pre-existing logs from other applications with a step-by-step guide.";
+"future_transactions_subtitle" = "With date restrictions lifted, log and view upcoming expenses/incomes.";
+"app_icons_subtitle" = "Choose from 3 new skeuomorphic icons beautifully crafted by the talented @rudra_dsigns.";
+"redesigned_screens_subtitle" = "Budget and category creation screens have been completely reworked.";
+"custom_category_colors_subtitle" = "Using the stock iOS color picker, give your categories a long-awaited aesthetic refresh.";
+"new_toasts_subtitle" = "Similarly, alert toasts across the app have been re-designed.";
+"custom_time_frames_subtitle" = "Change the start of a month's cycle to align with payday.";
+
+//MARK: - Categories
+
+"categories" = "Categories";
+"category_name" = "Category Name";
+
+"income" = "Income";
+"income_category" = "Income Category";
+"income_categories" = "INCOME CATEGORIES";
 "no_income_categories" = "No income categories found, click the 'New' button to add some";
-"no_expense_categories" = "No expense categories found, click the 'New' button to add some";
-"Suggestions Hidden" = "Suggestions Hidden";
-"Successfully Edited" = "Successfully Edited";
-"INCOME CATEGORIES" = "INCOME CATEGORIES";
-"EXPENSE CATEGORIES" = "EXPENSE CATEGORIES";
-"SUGGESTED" = "SUGGESTED";
-"Income Category" = "Income Category";
-"Expense Category" = "Expense Category";
-"New" = "New";
-"Expense" = "Expense";
-"Income" = "Income";
-"Delete" = "Delete";
-"Cancel" = "Cancel";
-"Delete '%@'?" = "Delete '%@'?";
-"This action cannot be undone, and all %@ transactions would be deleted." = "This action cannot be undone, and all %@ transactions would be deleted.";
-"Category Name" = "Category Name";
-"Missing Name" = "Missing Name";
-"Missing Emoji" = "Missing Emoji";
-"Incomplete Entry" = "Incomplete Entry";
-"Missing Information" = "Missing Information";
-"This action cannot be undone." = "This action cannot be undone.";
-"Duplicate Found" = "Duplicate Found";
-"Please Edit Accordingly" = "Please Edit Accordingly";
-"Please Change Emoji" = "Please Change Emoji";
-"Please Change Name" = "Please Change Name";
-"Food" = "Food";
-"Transport" = "Transport";
-"Rent" = "Rent";
-"Subscriptions" = "Subscriptions";
-"Groceries" = "Groceries";
-"Family" = "Family";
-"Utilities" = "Utilities";
-"Fashion" = "Fashion";
-"Healthcare" = "Healthcare";
-"Pets" = "Pets";
-"Sneakers" = "Sneakers";
-"Gifts" = "Gifts";
-"Paycheck" = "Paycheck";
-"Allowance" = "Allowance";
-"Part-Time" = "Part-Time";
-"Investments" = "Investments";
-"Tips" = "Tips";
-"Successfully Added" = "Successfully Added";
 
-// new transaction page
+"expense" = "Expense";
+"expense_category" = "Expense Category";
+"expense_categories" = "EXPENSE CATEGORIES";
+"no_expense_categories" = "No expense categories found, click the 'New' button to add some";
+
+"suggested" = "SUGGESTED";
+"suggestions_hidden" = "Suggestions Hidden";
+
+"delete_confirmation" = "Delete '%@'?";
+"delete_transactions_warning" = "This action cannot be undone, and all %@ transactions would be deleted.";
+"action_cannot_be_undone_warning" = "This action cannot be undone.";
+
+"edit_accordingly" = "Please Edit Accordingly"; // unused
+"successfully_edited" = "Successfully Edited"; // unused
+"successfully_added" = "Successfully Added"; // unused
+
+// Validation
+"missing_name" = "Missing Name";
+"missing_information" = "Missing Information"; // unused
+"missing_emoji" = "Missing Emoji";
+"incomplete_entry" = "Incomplete Entry";
+"duplicate_found" = "Duplicate Found";
+"change_emoji" = "Please Change Emoji"; // unused
+"change_name" = "Please Change Name"; // unused
+
+// Default categories
+"food" = "Food";
+"transport" = "Transport";
+"rent" = "Rent";
+"subscriptions" = "Subscriptions";
+"groceries" = "Groceries";
+"family" = "Family";
+"utilities" = "Utilities";
+"fashion" = "Fashion";
+"healthcare" = "Healthcare";
+"pets" = "Pets";
+"sneakers" = "Sneakers";
+"gifts" = "Gifts";
+"paycheck" = "Paycheck";
+"allowance" = "Allowance";
+"part_time" = "Part-Time";
+"investments" = "Investments";
+"tips" = "Tips";
+
+
+//MARK: - New Transaction Page
+
 "Today, %@" = "Today, %@";
 "Add Note" = "Add Note";
 "Category" = "Category";
@@ -85,7 +123,8 @@
 "Missing Category" = "Missing Category";
 "transaction-view-income-picker" = "Income";
 
-// log view
+//MARK: - Log View
+"delete_recurring_transaction" = "The transaction will no longer be automatically logged.";
 "Your Log is Empty" = "Your Log is Empty";
 "Press the plus button to add your first entry" = "Press the plus button to add your first entry";
 "Search entry by note" = "Search entry by note";
@@ -119,7 +158,7 @@
 "yesterday" = "yesterday";
 
 
-// insights
+//MARK: - Insights
 "Insights" = "Insights";
 "Analyse Your Expenditure" = "Analyse Your Expenditure";
 "As transactions start piling up" = "As transactions start piling up";
@@ -140,7 +179,7 @@
 "Jul" = "Jul";
 "Oct" = "Oct";
 
-// budgets
+//MARK: - Budgets
 "Budgets" = "Budgets";
 "Budget Your Finances" = "Budget Your Finances";
 "Link budgets to categories and set appropriate expenditure goals" = "Link budgets to categories and set appropriate expenditure goals";
@@ -198,7 +237,7 @@
 "OVERALL SPENT: %@" = "OVERALL SPENT: %@";
 "Delete your overall budget?" = "Delete your overall budget?";
 
-// Settings
+//MARK: - Settings
 "Settings" = "Settings";
 "GENERAL" = "GENERAL";
 "DATA" = "DATA";
@@ -270,7 +309,7 @@
 "🌮 Taco-Sized Tip" = "🌮 Taco-Sized Tip";
 "🍕 Pizza-Sized Tip" = "🍕 Pizza-Sized Tip";
 
-// Widgets
+//MARK: - Widgets
 
 // Labels
 "Recent Transactions" = "Recent Transactions";

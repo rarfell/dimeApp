@@ -685,7 +685,7 @@ struct SearchView: View {
                 Button {
                     dismiss()
                 } label: {
-                    Text("Cancel")
+                    Text(.cancel)
                         .foregroundColor(Color.PrimaryText)
                         .font(.system(.body, design: .rounded).weight(.medium))
                         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
@@ -1328,7 +1328,7 @@ struct SingleTransactionView: View {
 //                        toDelete = transaction
 //                        deleteMode = true
                     } label: {
-                        Label("Delete", systemImage: "xmark.bin")
+                        Label(String(.delete), systemImage: "xmark.bin")
                     }
                 }
             }
@@ -1512,14 +1512,15 @@ struct DeleteTransactionAlert: View {
     var body: some View {
         if let unwrappedToDelete = transactionManager.toDelete {
             VStack(alignment: .leading, spacing: 1.5) {
-                Text(stopRecurring ? "Stop Recurring?" : "Delete '\(unwrappedToDelete.wrappedNote)'?")
+                // TODO: Check if this is correct (lutz)
+                Text(stopRecurring ? "Stop Recurring?" : String(.deleteConfirmation, for: unwrappedToDelete.wrappedNote ?? ""))
                     .font(.system(.title2, design: .rounded).weight(.medium))
                     .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                    .font(.system(size: 25, weight: .medium, design: .rounded))
                     .foregroundColor(.PrimaryText)
                     .accessibilityLabel("Delete \(unwrappedToDelete.wrappedNote) transaction confirmation. This action cannot be undone.")
 
-                Text(stopRecurring ? "The transaction will no longer be automatically logged." : "This action cannot be undone.")
+                Text(stopRecurring ? .deleteRecurringTransaction : .actionCannotBeUndoneWarning)
                     .font(.system(.title3, design: .rounded).weight(.medium))
                     .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                    .font(.system(size: 20, weight: .medium, design: .rounded))
@@ -1543,14 +1544,14 @@ struct DeleteTransactionAlert: View {
                         }
                     }
                 } label: {
-                    DeleteButton(text: stopRecurring ? "Confirm" : "Delete", red: true)
+                    DeleteButton(text: stopRecurring ? "Confirm" : String(.delete), red: true)
                 }
                 .padding(.bottom, 8)
 
                 Button {
                     transactionManager.showPopup = false
                 } label: {
-                    DeleteButton(text: "Cancel", red: false)
+                    DeleteButton(text: String(.cancel), red: false)
                 }
             }
             .padding(13)
@@ -1925,7 +1926,7 @@ struct IncomeFilterToggleView: View {
 
     var body: some View {
         HStack(spacing: 0) {
-            Text("Expense")
+            Text(.expense)
 //                .font(.system(size: 17, weight: .semibold, design: .rounded))
                 .font(.system(.body, design: .rounded).weight(.semibold))
                 .dynamicTypeSize(...DynamicTypeSize.xxxLarge)

@@ -27,9 +27,9 @@ struct WelcomeSheetView: View {
     let timer = Timer.publish(every: 0.16, on: .main, in: .common).autoconnect()
 
     let welcomeFeatures = [
-        WelcomeSheetFeatureRow(icon: "list.bullet.rectangle.fill", header: "welcome_header_1", subtitle: "welcome_subtitle_1"),
-        WelcomeSheetFeatureRow(icon: "chart.bar.xaxis", header: "welcome_header_2", subtitle: "welcome_subtitle_2"),
-        WelcomeSheetFeatureRow(icon: "archivebox.fill", header: "welcome_header_3", subtitle: "welcome_subtitle_3")
+        WelcomeSheetFeatureRow(icon: "list.bullet.rectangle.fill", header: String(.trackFinance), subtitle: String(.easilyAddEntries)),
+        WelcomeSheetFeatureRow(icon: "chart.bar.xaxis", header: String(.analyzeExpenditure), subtitle: String(.spendingInsights)),
+        WelcomeSheetFeatureRow(icon: "archivebox.fill", header: String(.stickToBudget), subtitle: String(.spendingLimitGoals))
     ]
 
     var body: some View {
@@ -43,7 +43,7 @@ struct WelcomeSheetView: View {
                             .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
                             .padding(.bottom, 20)
 
-                        Text("dime_name")
+                        Text(.appName)
                             .font(.system(size: 30, weight: .medium, design: .rounded))
                             .foregroundColor(Color.PrimaryText)
 
@@ -66,7 +66,7 @@ struct WelcomeSheetView: View {
                                         .offset(y: 2)
 
                                     VStack(alignment: .leading, spacing: 5) {
-                                        Text(LocalizedStringKey(welcomeFeatures[rowIndex].header))
+                                        Text(welcomeFeatures[rowIndex].header)
                                             .font(.system(size: 18, weight: .medium, design: .rounded))
                                             .foregroundColor(Color.PrimaryText)
 
@@ -97,7 +97,7 @@ struct WelcomeSheetView: View {
                             firstPage = false
                         }
                     } label: {
-                        Text("Get Started")
+                        Text(.getStarted)
                             .font(.system(size: 20, weight: .semibold, design: .rounded))
                             .foregroundColor(Color.LightIcon)
                             .padding(.vertical, 12)

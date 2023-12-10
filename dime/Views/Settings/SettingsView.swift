@@ -533,9 +533,9 @@ struct SettingsView: View {
       let type: String
 
       if transaction.income {
-        type = "Income"
+          type = String(.income)
       } else {
-        type = "Expense"
+          type = String(.expense)
       }
 
       string.removeAll(where: { $0 == "," })

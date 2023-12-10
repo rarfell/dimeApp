@@ -463,7 +463,7 @@ struct MainBudgetView: View {
                 toDelete = budget
 
             } label: {
-                Label("Delete", systemImage: "xmark.bin")
+                Label(String(.delete), systemImage: "xmark.bin")
             }
         }
         .onAppear {
@@ -728,7 +728,7 @@ struct SingleBudgetView: View {
                         Button {
                             toDelete = budget
                         } label: {
-                            Label("Delete", systemImage: "xmark.bin")
+                            Label(String(.delete), systemImage: "xmark.bin")
                         }
                     }
                     .offset(x: offset)
@@ -880,7 +880,7 @@ struct SingleBudgetView: View {
                     Button {
                         toDelete = budget
                     } label: {
-                        Label("Delete", systemImage: "xmark.bin")
+                        Label(String(.delete), systemImage: "xmark.bin")
                     }
                 }
             }
@@ -1086,7 +1086,7 @@ struct DeleteBudgetAlert: View {
                     .font(.system(.title2, design: .rounded).weight(.medium))
                     .foregroundColor(.PrimaryText)
 
-                Text("This action cannot be undone.")
+                Text(.actionCannotBeUndoneWarning)
                     .font(.system(.title3, design: .rounded).weight(.medium))
                     .foregroundColor(.SubtitleText)
                     .padding(.bottom, 25)
@@ -1101,7 +1101,7 @@ struct DeleteBudgetAlert: View {
                     }
 
                 } label: {
-                    DeleteButton(text: "Delete", red: true)
+                    DeleteButton(text: String(.delete), red: true)
                 }
                 .padding(.bottom, 8)
 
@@ -1111,7 +1111,7 @@ struct DeleteBudgetAlert: View {
                     }
 
                 } label: {
-                    DeleteButton(text: "Cancel", red: false)
+                    DeleteButton(text: String(.cancel), red: false)
                 }
             }
             .padding(13)
@@ -1170,7 +1170,7 @@ struct DeleteMainBudgetAlert: View {
                     .font(.system(.title2, design: .rounded).weight(.medium))
                     .foregroundColor(.PrimaryText)
 
-                Text("This action cannot be undone.")
+                Text(.actionCannotBeUndoneWarning)
                     .font(.system(.title3, design: .rounded).weight(.medium))
                     .foregroundColor(.SubtitleText)
                     .padding(.bottom, 25)
@@ -1184,7 +1184,7 @@ struct DeleteMainBudgetAlert: View {
                     }
 
                 } label: {
-                    DeleteButton(text: "Delete", red: true)
+                    DeleteButton(text: String(.delete), red: true)
                 }
                 .padding(.bottom, 8)
 
@@ -1194,7 +1194,7 @@ struct DeleteMainBudgetAlert: View {
                     }
 
                 } label: {
-                    DeleteButton(text: "Cancel", red: false)
+                    DeleteButton(text: String(.cancel), red: false)
                 }
             }
             .multilineTextAlignment(.leading)

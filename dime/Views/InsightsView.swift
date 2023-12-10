@@ -211,7 +211,7 @@ struct HorizontalPieChartView: View {
         if !categories.isEmpty {
             VStack(alignment: .leading, spacing: 10) {
                 if !categoryFilterMode {
-                    Text("Categories")
+                    Text(.categories)
                         .font(.system(.callout, design: .rounded).weight(.semibold))
                         .foregroundColor(Color.SubtitleText)
 

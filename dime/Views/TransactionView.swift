@@ -38,9 +38,9 @@ struct TransactionView: View {
 
     var transactionTypeString: String {
         if income {
-            return "Income"
+            return String(.income)
         } else {
-            return "Expense"
+            return String(.expense)
         }
     }
 
@@ -255,7 +255,7 @@ struct TransactionView: View {
                                 .offset(x: swipingOffset)
 
                             HStack(spacing: 0) {
-                                Text("Expense")
+                                Text(.expense)
                                     .font(.system(.body, design: .rounded).weight(.semibold))
 
                                     .lineLimit(1)
@@ -740,7 +740,7 @@ struct TransactionView: View {
                             .font(.system(size: 20, weight: .medium, design: .rounded))
                             .foregroundColor(.PrimaryText)
 
-                        Text("This action cannot be undone.")
+                        Text(.actionCannotBeUndoneWarning)
                             .font(.system(size: 16, weight: .medium, design: .rounded))
                             .foregroundColor(.SubtitleText)
                             .padding(.bottom, 15)
@@ -758,7 +758,7 @@ struct TransactionView: View {
                             dismiss()
 
                         } label: {
-                            Text("Delete")
+                            Text(.delete)
                                 .font(.system(size: 20, weight: .semibold, design: .rounded))
                                 .foregroundColor(.white)
                                 .frame(height: 45)
@@ -775,7 +775,7 @@ struct TransactionView: View {
                             }
 
                         } label: {
-                            Text("Cancel")
+                            Text(.cancel)
                                 .font(.system(size: 20, weight: .semibold, design: .rounded))
                                 .foregroundColor(Color.PrimaryText.opacity(0.9))
                                 .frame(height: 45)
@@ -991,7 +991,7 @@ struct TransactionView: View {
 
         if price == 0 && category == nil {
             toastImage = "questionmark.app"
-            toastTitle = "Incomplete Entry"
+            toastTitle = String(.incompleteEntry)
             showToast = true
             toggleFieldColors()
 

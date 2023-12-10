@@ -21,40 +21,40 @@ struct SuggestedCategory: Hashable {
 
     static var expenses: [SuggestedCategory] {
         var holding = [SuggestedCategory]()
-        let food = SuggestedCategory(name: "Food", emoji: "🍔")
+        let food = SuggestedCategory(name: String(.food), emoji: "🍔")
         holding.append(food)
 
-        let transport = SuggestedCategory(name: "Transport", emoji: "🚆")
+        let transport = SuggestedCategory(name: String(.transport), emoji: "🚆")
         holding.append(transport)
 
-        let housing = SuggestedCategory(name: "Rent", emoji: "🏠")
+        let housing = SuggestedCategory(name: String(.rent), emoji: "🏠")
         holding.append(housing)
 
-        let subscriptions = SuggestedCategory(name: "Subscriptions", emoji: "🔄")
+        let subscriptions = SuggestedCategory(name: String(.subscriptions), emoji: "🔄")
         holding.append(subscriptions)
 
-        let groceries = SuggestedCategory(name: "Groceries", emoji: "🛒")
+        let groceries = SuggestedCategory(name: String(.groceries), emoji: "🛒")
         holding.append(groceries)
 
-        let family = SuggestedCategory(name: "Family", emoji: "👨‍👩‍👦")
+        let family = SuggestedCategory(name: String(.family), emoji: "👨‍👩‍👦")
         holding.append(family)
 
-        let utilities = SuggestedCategory(name: "Utilities", emoji: "💡")
+        let utilities = SuggestedCategory(name: String(.utilities), emoji: "💡")
         holding.append(utilities)
 
-        let fashion = SuggestedCategory(name: "Fashion", emoji: "👔")
+        let fashion = SuggestedCategory(name: String(.fashion), emoji: "👔")
         holding.append(fashion)
 
-        let healthcare = SuggestedCategory(name: "Healthcare", emoji: "🚑")
+        let healthcare = SuggestedCategory(name: String(.healthcare), emoji: "🚑")
         holding.append(healthcare)
 
-        let pets = SuggestedCategory(name: "Pets", emoji: "🐕")
+        let pets = SuggestedCategory(name: String(.pets), emoji: "🐕")
         holding.append(pets)
 
-        let sneakers = SuggestedCategory(name: "Sneakers", emoji: "👟")
+        let sneakers = SuggestedCategory(name: String(.sneakers), emoji: "👟")
         holding.append(sneakers)
 
-        let gifts = SuggestedCategory(name: "Gifts", emoji: "🎁")
+        let gifts = SuggestedCategory(name: String(.gifts), emoji: "🎁")
         holding.append(gifts)
 
         return holding
@@ -62,22 +62,22 @@ struct SuggestedCategory: Hashable {
 
     static var incomes: [SuggestedCategory] {
         var holding = [SuggestedCategory]()
-        let paycheck = SuggestedCategory(name: "Paycheck", emoji: "💰")
+        let paycheck = SuggestedCategory(name: String(.paycheck), emoji: "💰")
         holding.append(paycheck)
 
-        let allowance = SuggestedCategory(name: "Allowance", emoji: "🤑")
+        let allowance = SuggestedCategory(name: String(.allowance), emoji: "🤑")
         holding.append(allowance)
 
-        let parttime = SuggestedCategory(name: "Part-Time", emoji: "💼")
+        let parttime = SuggestedCategory(name: String(.partTime), emoji: "💼")
         holding.append(parttime)
 
-        let investments = SuggestedCategory(name: "Investments", emoji: "💹")
+        let investments = SuggestedCategory(name: String(.investments), emoji: "💹")
         holding.append(investments)
 
-        let gifts = SuggestedCategory(name: "Gifts", emoji: "🧧")
+        let gifts = SuggestedCategory(name: String(.gifts), emoji: "🧧")
         holding.append(gifts)
 
-        let tips = SuggestedCategory(name: "Tips", emoji: "🪙")
+        let tips = SuggestedCategory(name: String(.tips), emoji: "🪙")
         holding.append(tips)
 
         return holding
