@@ -163,25 +163,28 @@
 
 
 //MARK: - Insights
-"Insights" = "Insights";
-"Analyse Your Expenditure" = "Analyse Your Expenditure";
-"As transactions start piling up" = "As transactions start piling up";
-"Expenses" = "Expenses";
-"SPENT/DAY" = "SPENT/DAY";
-"INCOME/DAY" = "INCOME/DAY";
-"SPENT/MTH" = "SPENT/MTH";
-"INCOME/MTH" = "INCOME/MTH";
-"AVG/DAY" = "AVG/DAY";
-"AVG/MTH" = "AVG/MTH";
-"That's all, buddy." = "That's all, buddy.";
-"Into the unknown." = "Into the unknown.";
+"insights" = "Insights";
+"expenses" = "Expenses"; // unused
+"analyse_expenditure" = "Analyse Your Expenditure";
+"transactions_piling_up" = "As transactions start piling up";
+"thats_all" = "That's all, buddy.";
+"into_unknown." = "Into the unknown.";
+
+// Date ranges
+"spent_day" = "SPENT/DAY"; // unused
+"income_day" = "INCOME/DAY"; // unused
+"spent_month" = "SPENT/MTH"; // unused
+"income_month" = "INCOME/MTH"; // unused
+"average_day" = "AVG/DAY";
+"average_month" = "AVG/MTH";
+
 "week" = "week";
 "month" = "month";
 "year" = "year";
-"Jan" = "Jan";
-"Apr" = "Apr";
-"Jul" = "Jul";
-"Oct" = "Oct";
+"jan" = "Jan";
+"apr" = "Apr";
+"jul" = "Jul";
+"oct" = "Oct";
 
 //MARK: - Budgets
 "Budgets" = "Budgets";

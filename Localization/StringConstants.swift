@@ -164,6 +164,31 @@ enum LocalizedString: String {
     case thisMonth = "this_month"
     case thisYear = "this_year"
     case allTime = "all_time"
+    
+    
+    //MARK: - Insights
+    case insights = "insights"
+    case expenses = "expenses"
+    case analyseExpenditure = "analyse_expenditure"
+    case transactionsPilingUp = "transactions_piling_up"
+    case thatsAll = "thats_all"
+    case intoUnknown = "into_unknown."
+    
+    // Date ranges
+    case spentDay = "spent_day"
+    case incomeDay = "income_day"
+    case spentMonth = "spent_month"
+    case incomeMonth = "income_month"
+    case averageDay = "average_day"
+    case averageMonth = "average_month"
+
+    case week = "week"
+    case month = "month"
+    case year = "year"
+    case jan = "jan"
+    case apr = "apr"
+    case jul = "jul"
+    case oct = "oct"
 }
 
 extension String {

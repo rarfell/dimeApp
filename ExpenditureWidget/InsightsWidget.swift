@@ -16,7 +16,7 @@ struct InsightsWidget: Widget {
         IntentConfiguration(kind: kind, intent: InsightsWidgetConfigurationIntent.self, provider: InsightsProvider()) { entry in
             InsightsWidgetEntryView(entry: entry)
         }
-        .configurationDisplayName("Insights")
+        .configurationDisplayName(String(.insights))
         .description("Analyse your expenditure breakdowns over various time periods.")
         .supportedFamilies([.systemMedium])
     }
@@ -298,7 +298,7 @@ struct InsightsWidgetEntryView: View {
 
     let numberArray = [1, 8, 15, 22, 29]
     let monthNumberArray = [1, 4, 7, 10]
-    let monthNames: [Int: String] = [1: "Jan", 4: "Apr", 7: "Jul", 10: "Oct"]
+    let monthNames: [Int: String] = [1: String(.jan), 4: String(.apr), 7: String(.jul), 10: String(.oct)]
 
     @AppStorage("firstDayOfMonth", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var firstDayOfMonth: Int = 1
     @AppStorage("currency", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var currency: String = Locale.current.currencyCode!

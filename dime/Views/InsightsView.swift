@@ -21,11 +21,11 @@ struct InsightsView: View {
 
     var chartTypeString: String {
         if chartType == 1 {
-            return "week"
+            return String(.week)
         } else if chartType == 2 {
-            return "month"
+            return String(.month)
         } else if chartType == 3 {
-            return "year"
+            return String(.year)
         } else {
             return ""
         }
@@ -42,13 +42,13 @@ struct InsightsView: View {
                     .frame(width: 75, height: 75)
                     .padding(.bottom, 20)
 
-                Text("Analyse Your Expenditure")
+                Text(.analyseExpenditure)
                     .font(.system(.title2, design: .rounded).weight(.medium))
 //                    .font(.system(size: 23.5, weight: .medium, design: .rounded))
                     .foregroundColor(Color.PrimaryText.opacity(0.8))
                     .multilineTextAlignment(.center)
 
-                Text("As transactions start piling up")
+                Text(.transactionsPilingUp)
                     .font(.system(.body, design: .rounded).weight(.medium))
 //                    .font(.system(size: 18, weight: .medium, design: .rounded))
                     .foregroundColor(Color.SubtitleText.opacity(0.7))
@@ -64,7 +64,7 @@ struct InsightsView: View {
         } else {
             VStack(spacing: 5) {
                 HStack {
-                    Text("Insights")
+                    Text(.insights)
                         .font(.system(.title, design: .rounded).weight(.semibold))
                         .accessibility(addTraits: .isHeader)
                     Spacer()
@@ -784,7 +784,7 @@ struct SingleGraphView: View {
                     }
                 } else {
                     VStack(alignment: .trailing, spacing: 1.3) {
-                        Text(type == 3 ? "AVG/MTH" : "AVG/DAY")
+                        Text(type == 3 ? .averageMonth : .averageDay)
                             .lineLimit(1)
                             .font(.system(.callout, design: .rounded).weight(.semibold))
                             .foregroundColor(Color.SubtitleText)
@@ -1977,7 +1977,7 @@ struct SingleYearBarGraphView: View {
     var pastYearTotal: Double = 0
 
     let numberArray = [1, 4, 7, 10]
-    let monthNames: [Int: String] = [1: "Jan", 4: "Apr", 7: "Jul", 10: "Oct"]
+    let monthNames: [Int: String] = [1: String(.jan), 4: String(.apr), 7: String(.jul), 10: String(.oct)]
 
     var body: some View {
         ZStack(alignment: .top) {
@@ -2354,7 +2354,7 @@ struct SwipeEndView: View {
 //                                        .font(.system(size: 22, weight: .medium))
                 .foregroundColor(Color.SubtitleText)
 
-            Text(left ? "That's all, buddy." : "Into the unknown.")
+            Text(left ? .thatsAll : .intoUnknown)
                 .font(.system(.subheadline, design: .rounded).weight(.semibold))
 //                                        .font(.system(size: 14, weight: .semibold, design: .rounded))
                 .frame(width: 90)
