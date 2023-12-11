@@ -46,9 +46,9 @@ struct SettingsView: View {
   var firstWeekday: Int = 1
   var firstWeekdayString: String {
     if firstWeekday == 1 {
-      return String(localized: "Sunday")
+        return String(.sunday)
     } else {
-      return String(localized: "Monday")
+        return String(.monday)
     }
   }
 

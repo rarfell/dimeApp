@@ -109,6 +109,7 @@ extension ShortcutsInsightsTimeFrame: AppEnum {
     }
 
     static var caseDisplayRepresentations: [ShortcutsInsightsTimeFrame: DisplayRepresentation] = [
+        // TODO: Localize DisplayRepresentation
         .day: DisplayRepresentation(title: "today"),
         .week: DisplayRepresentation(title: "this week"),
         .month: DisplayRepresentation(title: "this month"),
@@ -128,6 +129,7 @@ extension ShortcutsInsightsType: AppEnum {
     }
 
     static var caseDisplayRepresentations: [ShortcutsInsightsType: DisplayRepresentation] = [
+        // TODO: Localize DisplayRepresentation
         .net: DisplayRepresentation(title: "net total"),
         .income: DisplayRepresentation(title: "total income"),
         .spent: DisplayRepresentation(title: "total expenditure")

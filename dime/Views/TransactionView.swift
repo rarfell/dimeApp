@@ -737,7 +737,6 @@ struct TransactionView: View {
                         }
 
                     VStack(alignment: .leading, spacing: 1.5) {
-                        // TODO: check confirmDeletion
                         Text(.deleteConfirmation, for: "Expense")
                             .font(.system(size: 20, weight: .medium, design: .rounded))
                             .foregroundColor(.PrimaryText)

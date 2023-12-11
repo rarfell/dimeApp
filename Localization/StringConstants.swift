@@ -8,8 +8,10 @@
 import SwiftUI
 
 enum LocalizedString: String {
+    case newCapitalized = "new_capitalized"
     case new = "new"
     case edit = "edit"
+    case continueString = "continue" // cannot be continue (reserved word)
     case cancel = "cancel"
     case delete = "delete"
     case deleteConfirmation = "delete_confirmation"
@@ -189,6 +191,68 @@ enum LocalizedString: String {
     case apr = "apr"
     case jul = "jul"
     case oct = "oct"
+    
+    //MARK: - Budgets
+    case budgets = "budgets"
+    case budgetDescription = "budget_description"
+    case budgetGuide = "budget_guide"
+    case noBudgetsFound = "no_budgets_found"
+    case addFirstBudget = "add_first_budget"
+    case categoricalBudget = "category_budget"
+    case overallBudget = "overall_budget"
+    case newBudget = "new_budget"
+    case overallBudgetCapitalized = "overall_budget_capitalized"
+    case selectCategory = "select_category"
+    case linkBudgetToCategory = "link_budget_to_category"
+    case chooseTimeFrame = "choose_time_frame"
+    case budgetRefreshGuide = "budget_refresh_guide"
+    case pickStartDate = "pick_start_date"
+    case dailyCapitalized = "daily_capitalized"
+    case weeklyCapitalized = "weekly_capitalized"
+    case monthlyCapitalized = "monthly_capitalized"
+    case yearlyCapitalized = "yearly_capitalized"
+    case whichStartDay = "which_start_day"
+
+    // Weekdays
+    case sunday = "sunday"
+    case monday = "monday"
+    case tuesday = "tuesday"
+    case wednesday = "wednesday"
+    case thursday = "thursday"
+    case friday = "friday"
+    case saturday = "saturday"
+
+    case startOfMonth = "start_of_month"
+    case customDayOfMonth = "custom_day_of_month"
+    case setBudgetAmount = "set_budget_amount"
+    case budgetAmountDescription = "budget_amount_description"
+    case amountSpent = "amount_spent"
+    case left = "left"
+    case over = "over"
+    case leftCustom = "left_custom"
+    case overCustom = "over_custom"
+    case leftToday = "left_today"
+    case leftOnTimePeriod = "left_on_time_period"
+    case overToday = "over_today"
+    case overOnDate = "over_on_date"
+    case leftThisWeek = "left_this_week"
+    case overThisWeek = "over_this_week"
+    case leftEachDay = "left_each_day"
+    case leftThisMonth = "left_this_month"
+    case overThisMonth = "over_this_month"
+    case leftThisYear = "left_this_year"
+    case overThisYear = "over_this_year"
+    case llddLeft = "lldd_left"
+    case lldhLeft = "lldh_left"
+    case daysLeft = "days_left"
+    case hoursLeft = "hours_left"
+    case prettySpent = "pretty_spent"
+    case overallSpent = "overall_spent"
+    case back = "back"
+    
+    case budgetDeletionConfirmation = "budget_deletion_confirmation"
+    case overallBudgetDeletionConfirmation = "overall_budget_deletion_confirmation"
+    
 }
 
 extension String {

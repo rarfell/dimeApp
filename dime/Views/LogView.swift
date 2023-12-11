@@ -1520,7 +1520,6 @@ struct DeleteTransactionAlert: View {
     var body: some View {
         if let unwrappedToDelete = transactionManager.toDelete {
             VStack(alignment: .leading, spacing: 1.5) {
-                // TODO: Check if this is correct (lutz)
                 Text(stopRecurring ? "Stop Recurring?" : String(.deleteConfirmation, for: unwrappedToDelete.wrappedNote ?? ""))
                     .font(.system(.title2, design: .rounded).weight(.medium))
                     .dynamicTypeSize(...DynamicTypeSize.xxxLarge)

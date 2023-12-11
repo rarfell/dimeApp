@@ -139,6 +139,7 @@ struct IncomeCategoryEntity: AppEntity, Identifiable {
     var income: Bool
 
     var displayRepresentation: DisplayRepresentation {
+        // TODO: Localize DisplayRepresentation
         DisplayRepresentation(title: "\(emoji) \(name)")
     }
 
@@ -215,6 +216,7 @@ struct ExpenseCategoryEntity: AppEntity, Identifiable {
     var income: Bool
 
     var displayRepresentation: DisplayRepresentation {
+        // TODO: Localize DisplayRepresentation
         DisplayRepresentation(title: "\(emoji) \(name)")
     }
 
@@ -287,6 +289,7 @@ struct BudgetEntity: AppEntity, Identifiable {
     var emoji: String
 
     var displayRepresentation: DisplayRepresentation {
+        // TODO: Localize DisplayRepresentation
         DisplayRepresentation(title: "\(emoji) \(name)")
     }
 

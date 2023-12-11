@@ -83,6 +83,7 @@ extension ShortcutsBudgetsType: AppEnum {
     }
 
     static var caseDisplayRepresentations: [ShortcutsBudgetsType: DisplayRepresentation] = [
+        // TODO: Localize DisplayRepresentation
         .overall: DisplayRepresentation(title: "overall budget"),
         .category: DisplayRepresentation(title: "categorical budget")
     ]
@@ -132,11 +133,11 @@ struct ShortcutBudgetView: View {
                 .lineLimit(1)
 
             if amount > 0 {
-                Text("left \(budgetType)")
+                Text(.leftCustom, for: budgetType)
                     .font(.system(size: 16, weight: .medium, design: .rounded))
                     .foregroundColor(Color.SubtitleText)
             } else {
-                Text("over \(budgetType)")
+                Text(.leftCustom, for: budgetType)
                     .font(.system(size: 16, weight: .medium, design: .rounded))
                     .foregroundColor(Color.SubtitleText)
             }

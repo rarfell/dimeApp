@@ -98,7 +98,7 @@ struct CategoryView: View {
                         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                        .font(.system(size: 14.5, weight: .semibold, design: .rounded))
 
-                    Text(.new)
+                    Text(.newCapitalized)
                         .font(.system(.body, design: .rounded).weight(.semibold))
                         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                        .font(.system(size: 18, weight: .semibold, design: .rounded))
@@ -164,7 +164,6 @@ struct CategoryListView: View {
     @State private var deleteMode = false
     @State private var toDelete: Category?
     var alertMessage: String {
-        // TODO: Check if this is correct (lutz)
         String(.deleteConfirmation, for: toDelete?.wrappedName ?? "")
     }
 
@@ -593,12 +592,10 @@ struct CategoryListView: View {
                     }
 
                 VStack(alignment: .leading, spacing: 1.5) {
-                    // TODO: Check if this is correct (lutz)
                     Text(.deleteConfirmation, for: toDelete?.wrappedName ?? "")
                         .font(.system(size: 20, weight: .medium, design: .rounded))
                         .foregroundColor(.PrimaryText)
 
-                    // TODO: Check if this is correct (lutz)
                     Text(.deleteTransactionsWarning, for: toDelete?.wrappedName ?? "")
                         .font(.system(size: 16, weight: .medium, design: .rounded))
                         .foregroundColor(.SubtitleText)
@@ -1254,7 +1251,6 @@ struct EditCategoryAlert: View {
     @State private var deleteMode = false
     @State private var toDelete: Category?
     var alertMessage: String {
-        // TODO: Check if this is correct (lutz)
         String(.deleteConfirmation, for: toDelete?.wrappedName ?? "")
     }
 
@@ -1545,7 +1541,6 @@ struct DeleteCategoryAlert: View {
                 }
 
             VStack(alignment: .leading, spacing: 1.5) {
-                // TODO: Check if this is correct (lutz)
                 Text(.deleteConfirmation, for: toDelete.wrappedName ?? "")
                     .font(.system(.title2, design: .rounded).weight(.medium))
                     .dynamicTypeSize(...DynamicTypeSize.xxxLarge)

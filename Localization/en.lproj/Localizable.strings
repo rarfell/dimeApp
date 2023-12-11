@@ -6,8 +6,9 @@
   
 */
 
-"new" = "New";
+"new_capitalized" = "New";
 "edit" = "Edit";
+"continue" = "Continue";
 "cancel" = "Cancel";
 "delete" = "Delete";
 "delete_confirmation" = "Delete %@?";
@@ -187,62 +188,71 @@
 "oct" = "Oct";
 
 //MARK: - Budgets
-"Budgets" = "Budgets";
-"Budget Your Finances" = "Budget Your Finances";
-"Link budgets to categories and set appropriate expenditure goals" = "Link budgets to categories and set appropriate expenditure goals";
-"No Budgets Found" = "No Budgets Found";
-"Add your first budget today!" = "Add your first budget today!";
-"category budget" = "category budget";
-"overall budget" = "overall budget";
-"new" = "new";
-"New Budget" = "New Budget";
-"Overall Budget" = "Overall Budget";
-"Select a category" = "Select a category";
-"Begin by linking this budget to an existing category." = "Begin by linking this budget to an existing category.";
-"Choose a time frame" = "Choose a time frame";
-"The budget will periodically refresh according to your preference." = "The budget will periodically refresh according to your preference.";
-"Continue" = "Continue";
-"Pick a start date" = "Pick a start date";
-"Daily" = "Daily";
-"Weekly" = "Weekly";
-"Monthly" = "Monthly";
-"Yearly" = "Yearly";
-"Which day of the %@ do you want your budget to start from?" = "Which day of the %@ do you want your budget to start from?";
-"weekNewBudget" = "week";
-"monthNewBudget" = "month";
-"yearNewBudget" = "year";
-"Sunday" = "Sunday";
-"Monday" = "Monday";
-"Tuesday" = "Tuesday";
-"Wednesday" = "Wednesday";
-"Thursday" = "Thursday";
-"Friday" = "Friday";
-"Saturday" = "Saturday";
-"Start of month" = "Start of month";
-"%@ of month" = "%@ of month";
-"Set budget amount" = "Set budget amount";
-"Feel free to edit this in the future." = "Feel free to edit this in the future.";
-"%@ SPENT" = "%@ SPENT";
-"left %@" = "left %@";
-"over %@" = "over %@";
-"left today" = "left today";
-"left on %@" = "left on %@";
-"over today" = "over today";
-"over on %@" = "over on %@";
-"left this week" = "left this week";
-"over this week" = "over this week";
-"left each day" = "left each day";
-"left this month" = "left this month";
-"over this month" = "over this month";
-"left this year" = "left this year";
-"over this year" = "over this year";
-"%lldd left" = "%lldd left";
-"%lldh left" = "%lldh left";
-"%@ • %@ spent" = "%@ • %@ spent";
-"Back" = "Back";
-"Delete the '%@' budget?" = "Delete the '%@' budget?";
-"OVERALL SPENT: %@" = "OVERALL SPENT: %@";
-"Delete your overall budget?" = "Delete your overall budget?";
+"budgets" = "Budgets";
+"budget_description" = "Budget Your Finances";
+"budget_guide" = "Link budgets to categories and set appropriate expenditure goals";
+"no_budgets_found" = "No Budgets Found";
+"add_first_budget" = "Add your first budget today!";
+"categorical_budget" = "categorical budget";
+"overall_budget" = "overall budget";
+"new" = "new"; // unused
+"new_budget" = "New Budget"; // unused
+"overall_budget_capitalized" = "Overall Budget";
+
+// Instructions
+"select_category" = "Select a category";
+"link_budget_to_category" = "Begin by linking this budget to an existing category.";
+"choose_time_frame" = "Choose a time frame";
+"budget_refresh_guide" = "The budget will periodically refresh according to your preference.";
+"pick_start_date" = "Pick a start date";
+"which_start_day" = "Which day of the %@ do you want your budget to start from?";
+"set_budget_amount" = "Set budget amount";
+"budget_amount_description" = "Try your best to stay under this limit! Also, feel free to change this in the future.";
+
+
+"daily_capitalized" = "Daily";
+"weekly_capitalized" = "Weekly";
+"monthly_capitalized" = "Monthly";
+"yearly_capitalized" = "Yearly";
+
+
+// Weekdays
+"sunday" = "Sunday";
+"monday" = "Monday";
+"tuesday" = "Tuesday";
+"wednesday" = "Wednesday";
+"thursday" = "Thursday";
+"friday" = "Friday";
+"saturday" = "Saturday";
+
+"start_of_month" = "Start of month";
+"custom_day_of_month" = "%@ of month";
+
+"amount_spent" = "%@ SPENT";
+"left" = "left";
+"over" = "over";
+"left_custom" = "left %@";
+"over_custom" = "over %@";
+"left_today" = "left today";
+"left_on_time_period" = "left on %@";
+"over_today" = "over today";
+"over_on_date" = "over on %@";
+"left_this_week" = "left this week";
+"over_this_week" = "over this week";
+"left_each_day" = "left each day";
+"left_this_month" = "left this month";
+"over_this_month" = "over this month";
+"left_this_year" = "left this year";
+"over_this_year" = "over this year";
+"lldd_left" = "%lldd left";
+"lldh_left" = "%lldh left";
+"days_left" = "%lldd days left";
+"hours_left" = "%lldh hours left";
+"pretty_spent" = "%@ • %@ spent";
+"back" = "Back";
+"budget_deletion_confirmation" = "Delete the '%@' budget?";
+"overall_spent" = "OVERALL SPENT: %@";
+"overall_budget_deletion_confirmation" = "Delete your overall budget?";
 
 //MARK: - Settings
 "Settings" = "Settings";
