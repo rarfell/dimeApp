@@ -108,6 +108,9 @@ struct SettingsView: View {
 
   @AppStorage("incomeTracking", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime"))
   var incomeTracking: Bool = true
+    
+  @AppStorage("showExpenseOrIncomeSign", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime"))
+  var showExpenseOrIncomeSign: Bool = true
 
   @AppStorage(
     "showUpcomingTransactions", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime"))
@@ -247,6 +250,12 @@ struct SettingsView: View {
               NavigationLink(destination: SettingsWeekStartView()) {
                 SettingsRowView(systemImage: "calendar", title: "Time Frames", colour: 109)
               }
+                
+              ToggleRow(
+                icon: "plus.forwardslash.minus", color: "123", text: "Display Expense/income sign", bool: showExpenseOrIncomeSign,
+                onTap: {
+                    showExpenseOrIncomeSign.toggle()
+                })
             }
             .padding(10)
             .background(Color.SettingsBackground, in: RoundedRectangle(cornerRadius: 9))
