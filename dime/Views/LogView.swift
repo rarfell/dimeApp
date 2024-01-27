@@ -638,16 +638,7 @@ struct SearchView: View {
     @State var searchQuery = ""
 
     var body: some View {
-        ZStack(alignment: .top) {
-            ScrollView {
-                if searchQuery == "" {
-                    EmptyView()
-                } else {
-                    FilteredSearchView(searchQuery: searchQuery)
-                }
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-
+        VStack(spacing: 18) {
             HStack(spacing: 9) {
                 HStack {
                     Image(systemName: "magnifyingglass")
@@ -692,6 +683,15 @@ struct SearchView: View {
 //                        .font(.system(size: 18, weight: .medium, design: .rounded))
                 }
             }
+            
+            ScrollView {
+                if searchQuery == "" {
+                    EmptyView()
+                } else {
+                    FilteredSearchView(searchQuery: searchQuery)
+                }
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .padding(15)
         .background(Color.PrimaryBackground)
@@ -729,7 +729,6 @@ struct FilteredSearchView: View {
             ListView(transactions: _transactions)
         }
         .frame(maxHeight: .infinity)
-        .padding(.top, 80)
     }
 
     init(searchQuery: String) {
