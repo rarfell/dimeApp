@@ -89,11 +89,11 @@ struct LockBudgetWidgetProvider: IntentTimelineProvider {
             if budget.type == 1 {
                 let components = calendar.dateComponents([.hour], from: budget.startDate!, to: Date.now)
 
-                timeLeft = String(localized: "\(24 - components.hour!) hours left")
+                timeLeft = String(.hoursLeft, for: 24 - (components.hour ?? 0))
             } else if budget.type == 2 {
                 let components = calendar.dateComponents([.day], from: budget.startDate!, to: Date.now)
 
-                timeLeft = String(localized: "\(7 - components.day!) days left")
+                timeLeft = String(.daysLeft, for: 7 - (components.day ?? 0))
             } else {
                 let components1 = calendar.dateComponents([.day], from: budget.startDate!, to: budget.endDate)
                 let numberOfDays = components1.day!
@@ -102,7 +102,7 @@ struct LockBudgetWidgetProvider: IntentTimelineProvider {
                 let numberOfDaysPast = components2.day!
 
                 let daysLeftNumber = Int(numberOfDays - numberOfDaysPast)
-                timeLeft = String(localized: "\(daysLeftNumber) days left")
+                timeLeft = String(.daysLeft, for: daysLeftNumber)
             }
 
             return (holdingTotal, timeLeft, returnBudget)
@@ -128,23 +128,23 @@ struct LockBudgetWidgetEntryView: View {
     var budgetType: String {
         switch entry.budget.type {
         case 1:
-            return String(localized: "today")
+            return String(.today)
         case 2:
-            return String(localized: "this week")
+            return String(.thisWeek)
         case 3:
-            return String(localized: "this month")
+            return String(.thisMonth)
         case 4:
-            return String(localized: "this year")
+            return String(.thisYear)
         default:
-            return "this week"
+            return String(.thisWeek)
         }
     }
 
     var subtitle: String {
         if entry.budget.budgetAmount > entry.totalSpent {
-            return String(localized: "left")
+            return String(.left)
         } else {
-            return String(localized: "over")
+            return String(.over)
         }
     }
 

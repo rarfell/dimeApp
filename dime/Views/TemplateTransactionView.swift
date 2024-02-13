@@ -31,9 +31,9 @@ struct TemplateTransactionView: View {
 
     var transactionTypeString: String {
         if income {
-            return "Income"
+            return String(.income)
         } else {
-            return "Expense"
+            return String(.expense)
         }
     }
 
@@ -187,7 +187,7 @@ struct TemplateTransactionView: View {
                         .frame(maxWidth: 200)
                     } else {
                         HStack(spacing: 0) {
-                            Text("Expense")
+                            Text(.expense)
                                 .font(.system(size: 18, weight: .semibold, design: .rounded))
                                 .foregroundColor(income == false ? Color.PrimaryText : Color.SubtitleText)
                                 .padding(6)
@@ -209,7 +209,7 @@ struct TemplateTransactionView: View {
                                     }
                                 }
 
-                            Text("transaction-view-income-picker")
+                            Text(.income)
                                 .font(.system(size: 18, weight: .semibold, design: .rounded))
                                 .foregroundColor(income == true ? Color.PrimaryText : Color.SubtitleText)
                                 .padding(6)
@@ -462,11 +462,11 @@ struct TemplateTransactionView: View {
                         }
 
                     VStack(alignment: .leading, spacing: 1.5) {
-                        Text("Delete Expense?")
+                        Text(.deleteConfirmation, for: "Expense")
                             .font(.system(size: 20, weight: .medium, design: .rounded))
                             .foregroundColor(.PrimaryText)
 
-                        Text("This action cannot be undone.")
+                        Text(.actionCannotBeUndoneWarning)
                             .font(.system(size: 16, weight: .medium, design: .rounded))
                             .foregroundColor(.SubtitleText)
                             .padding(.bottom, 15)
@@ -484,7 +484,7 @@ struct TemplateTransactionView: View {
                             dismiss()
 
                         } label: {
-                            Text("Delete")
+                            Text(.delete)
                                 .font(.system(size: 20, weight: .semibold, design: .rounded))
                                 .foregroundColor(.white)
                                 .frame(height: 45)
@@ -500,7 +500,7 @@ struct TemplateTransactionView: View {
                             }
 
                         } label: {
-                            Text("Cancel")
+                            Text(.cancel)
                                 .font(.system(size: 20, weight: .semibold, design: .rounded))
                                 .foregroundColor(Color.PrimaryText.opacity(0.9))
                                 .frame(height: 45)
@@ -649,20 +649,20 @@ struct TemplateTransactionView: View {
 
         if transactionValue == 0 && category == nil {
             toastImage = "questionmark.app"
-            toastTitle = "Incomplete Entry"
+            toastTitle = String(.incompleteEntry)
             showToast = true
             generator.notificationOccurred(.error)
 
             return
         } else if transactionValue == 0 {
             toastImage = "centsign.circle"
-            toastTitle = "Missing Amount"
+            toastTitle = String(.missingAmount)
             showToast = true
             generator.notificationOccurred(.error)
             return
         } else if category == nil {
             toastImage = "tray"
-            toastTitle = "Missing Category"
+            toastTitle = String(.missingCategory)
             showToast = true
             generator.notificationOccurred(.error)
             return

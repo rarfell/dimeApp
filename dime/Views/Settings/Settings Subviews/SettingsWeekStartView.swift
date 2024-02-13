@@ -15,7 +15,7 @@ struct SettingsWeekStartView: View {
   var firstDayOfMonth: Int = 1
   @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
 
-  let options = ["Sunday", "Monday"]
+    let options = [String(.sunday), String(.monday)]
 
   @Environment(\.dynamicTypeSize) var dynamicTypeSize
 
@@ -120,7 +120,7 @@ struct SettingsWeekStartView: View {
             ForEach(1..<29) { day in
 
               HStack {
-                Text("\(getOrdinal(day)) of month")
+                  Text(.customDayOfMonth, for: getOrdinal(day))
                   .font(.system(.body, design: .rounded))
                   .foregroundColor(Color.PrimaryText)
 

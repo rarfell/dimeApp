@@ -175,6 +175,7 @@ extension TransactionType: AppEnum {
     }
 
     static var caseDisplayRepresentations: [TransactionType: DisplayRepresentation] = [
+        // TODO: Localize DisplayRepresentation
         .income: DisplayRepresentation(title: "income",
                                        image: .init(systemName: "plus.square.fill")),
         .expense: DisplayRepresentation(title: "expense",
@@ -193,6 +194,7 @@ extension RepeatType: AppEnum {
     }
 
     static var caseDisplayRepresentations: [RepeatType: DisplayRepresentation] = [
+        // TODO: Localize DisplayRepresentation
         .daily: DisplayRepresentation(title: "Daily"),
         .weekly: DisplayRepresentation(title: "Weekly"),
         .monthly: DisplayRepresentation(title: "Monthly")

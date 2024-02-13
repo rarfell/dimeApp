@@ -42,7 +42,7 @@ struct BrandNewBudgetView: View {
     var initialProgress: Double
 
     @State var showToast: Bool = false
-    @State var toastMessage: String = "Missing Category"
+    @State var toastMessage: String = String(.missingCategory)
 
     // stage one (ignore if editing), overall budget or category budget
     @State var categoryBudget: Bool = false
@@ -60,7 +60,13 @@ struct BrandNewBudgetView: View {
     @State var chosenDayMonth = 1
     @State var chosenDayYear = Date.now
 
-    let weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+    let weekdays = [String(.sunday),
+                    String(.monday),
+                    String(.tuesday),
+                    String(.wednesday),
+                    String(.thursday),
+                    String(.friday),
+                    String(.saturday)]
 
     var timeFrameString: String {
         switch budgetTimeFrame {
@@ -120,7 +126,7 @@ struct BrandNewBudgetView: View {
     // height of pickers
 
     var heightOfPicker: CGFloat {
-        return (("Sunday".heightOfRoundedString(size: UIFont.textStyleSize(.title3), weight: .medium) + 16) * 5) + 10
+        return ((String(.sunday).heightOfRoundedString(size: UIFont.textStyleSize(.title3), weight: .medium) + 16) * 5) + 10
     }
 
     // editMode
@@ -143,10 +149,10 @@ struct BrandNewBudgetView: View {
     var instructions: [InstructionHeadings] {
         [
             InstructionHeadings(title: "Indicate budget type", subtitle: "The overall budget tracks expenses across the board, while categorical budgets are tied to expenses of a particular type only."),
-            InstructionHeadings(title: "Select a category", subtitle: "Begin by linking this budget to an existing category."),
-            InstructionHeadings(title: "Choose a time frame", subtitle: "The budget will periodically refresh according to your preference."),
-            InstructionHeadings(title: "Pick a start date", subtitle: "Which day of the \(timeFrameString) do you want your budget to start from?"),
-            InstructionHeadings(title: "Set budget amount", subtitle: "Try your best to stay under this limit! Also, feel free to change this in the future.")
+            InstructionHeadings(title: String(.selectCategory), subtitle: String(.linkBudgetToCategory)),
+            InstructionHeadings(title: String(.chooseTimeFrame), subtitle: String(.budgetRefreshGuide)),
+            InstructionHeadings(title: String(.pickStartDate), subtitle: String(.whichStartDay, for: timeFrameString)),
+            InstructionHeadings(title: String(.setBudgetAmount), subtitle: String(.budgetAmountDescription))
         ]
     }
 
@@ -262,7 +268,7 @@ struct BrandNewBudgetView: View {
                 VStack {
                     VStack(alignment: .leading, spacing: 0) {
                         HStack {
-                            Text("Overall Budget")
+                            Text(.overallBudget)
                             Spacer()
 
                             if !categoryBudget {
@@ -457,9 +463,9 @@ struct BrandNewBudgetView: View {
                                     ForEach(1 ..< 29) { day in
                                         HStack {
                                             if Int(day) == 1 {
-                                                Text("Start of month")
+                                                Text(.startOfMonth)
                                             } else {
-                                                Text("\(getOrdinal(day)) of month")
+                                                Text(.customDayOfMonth, for: getOrdinal(day))
                                             }
 
                                             Spacer()
@@ -543,7 +549,7 @@ struct BrandNewBudgetView: View {
                 Button {
                     if progress == 2 && selectedCategory == nil {
                         showToast = true
-                        toastMessage = "Missing Category"
+                        toastMessage = String(.missingCategory)
                         UINotificationFeedbackGenerator().notificationOccurred(.error)
                         return
                     }
@@ -570,7 +576,7 @@ struct BrandNewBudgetView: View {
                         }
                     }
                 } label: {
-                    Text("Continue")
+                    Text(.continueString)
                         .font(.system(.title3, design: .rounded).weight(.semibold))
 //                        .font(.system(size: 19, weight: .semibold, design: .rounded))
 
@@ -709,7 +715,7 @@ struct BrandNewBudgetView: View {
         if price == 0 {
             UINotificationFeedbackGenerator().notificationOccurred(.error)
             showToast = true
-            toastMessage = "Missing Amount"
+            toastMessage = String(.missingAmount)
             return
         }
 

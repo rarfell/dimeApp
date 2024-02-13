@@ -750,7 +750,7 @@ struct ImportDataView: View {
                             }
                         }
                     } label: {
-                        Text("Continue")
+                        Text(.continueString)
                             .font(.system(.title3, design: .rounded).weight(.semibold))
 
 //                            .font(.system(size: 19, weight: .semibold, design: .rounded))

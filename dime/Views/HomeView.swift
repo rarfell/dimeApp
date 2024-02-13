@@ -70,7 +70,7 @@ struct HomeView: View {
 
                 InsightsView()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .tag("Insights")
+                    .tag(String(.insights))
 
                 BudgetView()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -163,7 +163,7 @@ struct HomeView: View {
             }
 
             if appLockVM.isAppLockEnabled && fromURL3 {
-                currentTab = "Insights"
+                currentTab = String(.insights)
             }
 
             if appLockVM.isAppLockEnabled && fromURL4 {
@@ -174,7 +174,7 @@ struct HomeView: View {
             if url.host == "search" {
                 currentTab = "Log"
             } else if url.host == "insights" {
-                currentTab = "Insights"
+                currentTab = String(.insights)
             } else if url.host == "budget" {
                 currentTab = "Budget"
             }

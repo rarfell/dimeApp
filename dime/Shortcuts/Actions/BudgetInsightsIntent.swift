@@ -83,6 +83,7 @@ extension ShortcutsBudgetsType: AppEnum {
     }
 
     static var caseDisplayRepresentations: [ShortcutsBudgetsType: DisplayRepresentation] = [
+        // TODO: Localize DisplayRepresentation
         .overall: DisplayRepresentation(title: "overall budget"),
         .category: DisplayRepresentation(title: "categorical budget")
     ]
@@ -99,15 +100,15 @@ struct ShortcutBudgetView: View {
     var budgetType: String {
         switch type {
         case 1:
-            return String(localized: "today")
+            return String(.today)
         case 2:
-            return String(localized: "this week")
+            return String(.thisWeek)
         case 3:
-            return String(localized: "this month")
+            return String(.thisMonth)
         case 4:
-            return String(localized: "this year")
+            return String(.thisYear)
         default:
-            return "this week"
+            return String(.thisWeek)
         }
     }
 
@@ -132,11 +133,11 @@ struct ShortcutBudgetView: View {
                 .lineLimit(1)
 
             if amount > 0 {
-                Text("left \(budgetType)")
+                Text(.leftCustom, for: budgetType)
                     .font(.system(size: 16, weight: .medium, design: .rounded))
                     .foregroundColor(Color.SubtitleText)
             } else {
-                Text("over \(budgetType)")
+                Text(.leftCustom, for: budgetType)
                     .font(.system(size: 16, weight: .medium, design: .rounded))
                     .foregroundColor(Color.SubtitleText)
             }

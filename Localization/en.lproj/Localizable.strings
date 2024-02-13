@@ -1,0 +1,365 @@
+/* 
+  Localizable.strings
+  dime
+
+  Created by Rafael Soh on 6/3/23.
+  
+*/
+
+"new_capitalized" = "New";
+"edit" = "Edit";
+"continue" = "Continue";
+"cancel" = "Cancel";
+"delete" = "Delete";
+"delete_confirmation" = "Delete %@?";
+
+//MARK: - Welcome Sheet
+
+"app_name" = "Dime";
+"get_started" = "Get Started";
+
+// Headers
+"track_finance" = "Track your finances";
+"analyze_expenditure" = "Analyse your expenditure";
+"stick_to_budget" = "Stick to budgets";
+
+// Subtitles
+"easily_add_entries" = "Add new entries in a simple, straightforward manner";
+"spending_insights" = "Draw insights from your spending over various time periods";
+"spending_limit_goals" = "Set categorical and time-based goals to limit your spending";
+
+//MARK: - Update Sheet
+
+// Headers
+"siri_shortcuts" = "Siri Shorcuts";
+"data_import" = "Data Import";
+"future_transactions" = "Future Transactions";
+"app_icons" = "App Icons";
+"redesigned_screens" = "Re-designed Screens";
+"custom_category_colors" = "Custom Category Colors";
+"new_toasts" = "New Toasts";
+"custom_time_frames" = "Custom Time Frames";
+
+// Subtitles
+"siri_shortcuts_subtitle" = "3 new Siri shortcuts allow you to conveniently add new transactions or access insights.";
+"data_import_subtitle" = "Transfer pre-existing logs from other applications with a step-by-step guide.";
+"future_transactions_subtitle" = "With date restrictions lifted, log and view upcoming expenses/incomes.";
+"app_icons_subtitle" = "Choose from 3 new skeuomorphic icons beautifully crafted by the talented @rudra_dsigns.";
+"redesigned_screens_subtitle" = "Budget and category creation screens have been completely reworked.";
+"custom_category_colors_subtitle" = "Using the stock iOS color picker, give your categories a long-awaited aesthetic refresh.";
+"new_toasts_subtitle" = "Similarly, alert toasts across the app have been re-designed.";
+"custom_time_frames_subtitle" = "Change the start of a month's cycle to align with payday.";
+
+//MARK: - Categories
+
+"categories" = "Categories";
+"category_name" = "Category Name";
+
+"income" = "Income";
+"income_category" = "Income Category";
+"income_categories" = "INCOME CATEGORIES";
+"no_income_categories" = "No income categories found, click the 'New' button to add some";
+
+"expense" = "Expense";
+"expense_category" = "Expense Category";
+"expense_categories" = "EXPENSE CATEGORIES";
+"no_expense_categories" = "No expense categories found, click the 'New' button to add some";
+
+"suggested" = "SUGGESTED";
+"suggestions_hidden" = "Suggestions Hidden";
+
+"delete_transactions_warning" = "This action cannot be undone, and all %@ transactions would be deleted.";
+"action_cannot_be_undone_warning" = "This action cannot be undone.";
+
+"edit_accordingly" = "Please Edit Accordingly"; // unused
+"successfully_edited" = "Successfully Edited"; // unused
+"successfully_added" = "Successfully Added"; // unused
+
+// Validation
+"missing_name" = "Missing Name";
+"missing_information" = "Missing Information"; // unused
+"missing_emoji" = "Missing Emoji";
+"incomplete_entry" = "Incomplete Entry";
+"duplicate_found" = "Duplicate Found";
+"change_emoji" = "Please Change Emoji"; // unused
+"change_name" = "Please Change Name"; // unused
+
+// Default categories
+"food" = "Food";
+"transport" = "Transport";
+"rent" = "Rent";
+"subscriptions" = "Subscriptions";
+"groceries" = "Groceries";
+"family" = "Family";
+"utilities" = "Utilities";
+"fashion" = "Fashion";
+"healthcare" = "Healthcare";
+"pets" = "Pets";
+"sneakers" = "Sneakers";
+"gifts" = "Gifts";
+"paycheck" = "Paycheck";
+"allowance" = "Allowance";
+"part_time" = "Part-Time";
+"investments" = "Investments";
+"tips" = "Tips";
+
+
+//MARK: - New Transaction
+
+"add_note" = "Add Note";
+"category" = "Category";
+"today_date" = "Today, %@";
+
+// Recurring picker
+"none" = "none";
+"daily" = "daily";
+"weekly" = "weekly";
+"monthly" = "monthly";
+"custom" = "custom";
+
+// Custom recurrency picker
+"days" = "days";
+"weeks" = "weeks";
+"months" = "months";
+"custom_interval" = "Custom Interval";
+"repeats" = "Repeats every";
+
+// Validation
+"missing_amount" = "Missing Amount";
+"missing_category" = "Missing Category";
+
+
+//MARK: - Log View
+"delete_recurring_transaction" = "The transaction will no longer be automatically logged.";
+"log_empty" = "Your Log is Empty";
+"add_first_entry_tip" = "Press the plus button to add your first entry"; // unused
+
+"search_entry_by_note" = "Search entry by note";
+"no_entries_found" = "No entries found.";
+"try_different_query" = "Try a different search query!";
+
+// Search filters
+"all_entries" = "all entries";
+"by_category" = "by category";
+"by_type" = "by type";
+"by_day" = "by day";
+"by_week" = "by week";
+"by_month" = "by month";
+"recurring" = "recurring";
+"upcoming" = "upcoming";
+
+"total_spent" = "Total Spent";
+"total_income" = "Total Income";
+"net_total_capitalized" = "Net Total";
+"net_total" = "Net total";
+"spent" = "Spent";
+"earned" = "Earned";
+
+"today" = "today";
+"yesterday" = "yesterday";
+"this_week" = "this week";
+"this_month" = "this month";
+"this_year" = "this year";
+"all_time" = "all time";
+
+
+//MARK: - Insights
+"insights" = "Insights";
+"expenses" = "Expenses"; // unused
+"analyse_expenditure" = "Analyse Your Expenditure";
+"transactions_piling_up" = "As transactions start piling up";
+"thats_all" = "That's all, buddy.";
+"into_unknown." = "Into the unknown.";
+
+// Date ranges
+"spent_day" = "SPENT/DAY"; // unused
+"income_day" = "INCOME/DAY"; // unused
+"spent_month" = "SPENT/MTH"; // unused
+"income_month" = "INCOME/MTH"; // unused
+"average_day" = "AVG/DAY";
+"average_month" = "AVG/MTH";
+
+"week" = "week";
+"month" = "month";
+"year" = "year";
+"jan" = "Jan";
+"apr" = "Apr";
+"jul" = "Jul";
+"oct" = "Oct";
+
+//MARK: - Budgets
+"budgets" = "Budgets";
+"budget_description" = "Budget Your Finances";
+"budget_guide" = "Link budgets to categories and set appropriate expenditure goals";
+"no_budgets_found" = "No Budgets Found";
+"add_first_budget" = "Add your first budget today!";
+"categorical_budget" = "categorical budget";
+"overall_budget" = "overall budget";
+"new" = "new"; // unused
+"new_budget" = "New Budget"; // unused
+"overall_budget_capitalized" = "Overall Budget";
+
+// Instructions
+"select_category" = "Select a category";
+"link_budget_to_category" = "Begin by linking this budget to an existing category.";
+"choose_time_frame" = "Choose a time frame";
+"budget_refresh_guide" = "The budget will periodically refresh according to your preference.";
+"pick_start_date" = "Pick a start date";
+"which_start_day" = "Which day of the %@ do you want your budget to start from?";
+"set_budget_amount" = "Set budget amount";
+"budget_amount_description" = "Try your best to stay under this limit! Also, feel free to change this in the future.";
+
+
+"daily_capitalized" = "Daily";
+"weekly_capitalized" = "Weekly";
+"monthly_capitalized" = "Monthly";
+"yearly_capitalized" = "Yearly";
+
+
+// Weekdays
+"sunday" = "Sunday";
+"monday" = "Monday";
+"tuesday" = "Tuesday";
+"wednesday" = "Wednesday";
+"thursday" = "Thursday";
+"friday" = "Friday";
+"saturday" = "Saturday";
+
+"start_of_month" = "Start of month";
+"custom_day_of_month" = "%@ of month";
+
+"amount_spent" = "%@ SPENT";
+"left" = "left";
+"over" = "over";
+"left_custom" = "left %@";
+"over_custom" = "over %@";
+"left_today" = "left today";
+"left_on_time_period" = "left on %@";
+"over_today" = "over today";
+"over_on_date" = "over on %@";
+"left_this_week" = "left this week";
+"over_this_week" = "over this week";
+"left_each_day" = "left each day";
+"left_this_month" = "left this month";
+"over_this_month" = "over this month";
+"left_this_year" = "left this year";
+"over_this_year" = "over this year";
+"lldd_left" = "%lldd left";
+"lldh_left" = "%lldh left";
+"days_left" = "%lldd days left";
+"hours_left" = "%lldh hours left";
+"pretty_spent" = "%@ • %@ spent";
+"back" = "Back";
+"budget_deletion_confirmation" = "Delete the '%@' budget?";
+"overall_spent" = "OVERALL SPENT: %@";
+"overall_budget_deletion_confirmation" = "Delete your overall budget?";
+
+//MARK: - Settings
+"Settings" = "Settings";
+"GENERAL" = "GENERAL";
+"DATA" = "DATA";
+"OTHERS" = "OTHERS";
+"Appearance" = "Appearance";
+"Start of Week" = "Start of Week";
+"Notifications" = "Notifications";
+"Currency" = "Currency";
+"Number Entry" = "Number Entry";
+"Authentication" = "Authentication";
+"Income Tracking" = "Income Tracking";
+"Display Cents" = "Display Cents";
+"iCloud Sync" = "iCloud Sync";
+"Export Data" = "Export Data";
+"Erase Data" = "Erase Data";
+"Animated Charts" = "Animated Charts";
+"Feature Lab" = "Feature Lab";
+"Tip Jar" = "Tip Jar";
+"Report Bug" = "Report Bug";
+"Rate on App Store" = "Rate on App Store";
+"Share with Friends" = "Share with Friends";
+"Follow Dime on Twitter" = "Follow Dime on Twitter";
+"Follow Rafael on Instagram" = "Follow Rafael on Instagram";
+"Light" = "Light";
+"Dark" = "Dark";
+"System" = "System";
+"Mornings" = "Mornings";
+"Evenings" = "Evenings";
+"Custom" = "Custom";
+"Off" = "Off";
+"On" = "On";
+"Type 1" = "Type 1";
+"Type 2" = "Type 2";
+"Close and reload app for change to take effect." = "Close and reload app for change to take effect.";
+"Enable Notifications" = "Enable Notifications";
+"Every morning (8:00 AM)" = "Every morning (8:00 AM)";
+"Every evening (8:00 PM)" = "Every evening (8:00 PM)";
+"Custom Time" = "Custom Time";
+"Currencies" = "Currencies";
+"Number Entry Method" = "Number Entry Method";
+"\"Pre-dotted\"" = "\"Pre-dotted\"";
+"If you're too lazy to add a decimal point, I gotchu covered." = "If you're too lazy to add a decimal point, I gotchu covered.";
+"\"Cent-less\"" = "\"Cent-less\"";
+"If your transactions usually amount to whole numbers - this one is for you." = "If your transactions usually amount to whole numbers - this one is for you.";
+"Enable Sync" = "Enable Sync";
+"Permanently Delete Everythin'" = "Permanently Delete Everythin'";
+"This action would delete all existing transactions, categories, and budgets, and cannot be undone." = "This action would delete all existing transactions, categories, and budgets, and cannot be undone.";
+"Danger Zone" = "Danger Zone";
+"This action genuinely cannot be undone. Long press to confirm." = "This action genuinely cannot be undone. Long press to confirm.";
+"Delete Literally Everything" = "Delete Literally Everything";
+"Back Out" = "Back Out";
+"Celebrate Expenses" = "Celebrate Expenses";
+"Show Line Graph" = "Show Line Graph";
+"Budget Rows" = "Budget Rows";
+"Experimental features - proceed with caution." = "Experimental features - proceed with caution.";
+"Replace Time Label" = "Replace Time Label";
+"Swaps the time label of each transaction with its category name. However, if you do not manually input a note for each transaction - in which case the note is the category name by default - duplicate text will appear." = "Swaps the time label of each transaction with its category name. However, if you do not manually input a note for each transaction - in which case the note is the category name by default - duplicate text will appear.";
+"Keep the streak going!" = "Keep the streak going!";
+"Remember to input your expenses today." = "Remember to input your expenses today.";
+"Loading" = "Loading";
+"Unable to load tip options, please try again later 🥲" = "Unable to load tip options, please try again later 🥲";
+"Hey! Dime was built by a solo student developer, and is intended to be completely free-of-charge, with no paywalls or ads. If you enjoy using Dime and want to support development, please consider a small tip." = "Hey! Dime was built by a solo student developer, and is intended to be completely free-of-charge, with no paywalls or ads. If you enjoy using Dime and want to support development, please consider a small tip.";
+"Tip failed to go through, please try again!" = "Tip failed to go through, please try again!";
+"Thanks a million, %@ Rafael" = "Thanks a million, %@ Rafael";
+"Have a great day ahead!" = "Have a great day ahead!";
+"Version %@ (%@)" = "Version %@ (%@)";
+"Made with ❤️ by %@ from 🇸🇬" = "Made with ❤️ by %@ from 🇸🇬";
+"☕ Coffee-Sized Tip" = "☕ Coffee-Sized Tip";
+"🌮 Taco-Sized Tip" = "🌮 Taco-Sized Tip";
+"🍕 Pizza-Sized Tip" = "🍕 Pizza-Sized Tip";
+
+//MARK: - Widgets
+
+// Labels
+"Recent Transactions" = "Recent Transactions";
+"View your latest expenses." = "View your latest expenses.";
+"Analyse your expenditure breakdowns over various time periods." = "Analyse your expenditure breakdowns over various time periods.";
+"Monitor how you are sticking to your overall budgets." = "Monitor how you are sticking to your overall budgets.";
+"Budget" = "Budget";
+"Monitor how you are sticking to your budgets." = "Monitor how you are sticking to your budgets.";
+"New Expense" = "New Expense";
+"A convenient button to log new purchases." = "A convenient button to log new purchases.";
+
+"%lld%% spent" = "%lld%% spent";
+"NO RECENT EXPENSES" = "NO RECENT EXPENSES";
+"RECENT EXPENSES" = "RECENT EXPENSES";
+"in %@" = "in %@";
+"net" = "net";
+"earned" = "earned";
+"spent" = "spent";
+"Time Period" = "Time Period";
+"NO TRANSACTIONS\n%@" = "NO TRANSACTIONS\n%@";
+"THIS WEEK" = "THIS WEEK";
+"THIS MONTH" = "THIS MONTH";
+"THIS YEAR" = "THIS YEAR";
+"EARNED " = "EARNED ";
+"SPENT " = "SPENT ";
+"ADD OVERALL BUDGET" = "ADD OVERALL BUDGET";
+"Percent Spent" = "Percent Spent";
+"Create your overall budget in the app" = "Create your overall budget in the app";
+"ADD BUDGET" = "ADD BUDGET";
+"over" = "over";
+"SPENT: %@" = "SPENT: %@";
+"Select budget in widget options" = "Select budget in widget options";
+"Budget no longer exists - please select new budget from widget options." = "Budget no longer exists - please select new budget from widget options.";
+"left" = "left";
+"SELECT BUDGET" = "SELECT BUDGET";
+"SELECT BUDGET IN WIDGET OPTIONS" = "SELECT BUDGET IN WIDGET OPTIONS";

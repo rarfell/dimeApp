@@ -40,7 +40,7 @@ struct CategoryView: View {
 
             HStack {
                 HStack(spacing: 0) {
-                    Text("Expense")
+                    Text(.expense)
                         .font(.system(.body, design: .rounded).weight(.semibold))
                         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                        .font(.system(size: 18, weight: .semibold, design: .rounded))
@@ -63,7 +63,7 @@ struct CategoryView: View {
                             }
                         }
 
-                    Text("Income")
+                    Text(.income)
                         .font(.system(.body, design: .rounded).weight(.semibold))
                         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                        .font(.system(size: 18, weight: .semibold, design: .rounded))
@@ -98,7 +98,7 @@ struct CategoryView: View {
                         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                        .font(.system(size: 14.5, weight: .semibold, design: .rounded))
 
-                    Text("New")
+                    Text(.newCapitalized)
                         .font(.system(.body, design: .rounded).weight(.semibold))
                         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                        .font(.system(size: 18, weight: .semibold, design: .rounded))
@@ -164,7 +164,7 @@ struct CategoryListView: View {
     @State private var deleteMode = false
     @State private var toDelete: Category?
     var alertMessage: String {
-        "Delete '" + (toDelete?.wrappedName ?? "") + "'?"
+        String(.deleteConfirmation, for: toDelete?.wrappedName ?? "")
     }
 
     // edit mode
@@ -180,11 +180,11 @@ struct CategoryListView: View {
         positive ? Color.IncomeGreen : Color.AlertRed
     }
 
-    var sectionHeader: LocalizedStringKey {
+    var sectionHeader: String {
         if income {
-            return "INCOME CATEGORIES"
+            return String(.incomeCategories)
         } else {
-            return "EXPENSE CATEGORIES"
+            return String(.expenseCategories)
         }
     }
 
@@ -295,7 +295,7 @@ struct CategoryListView: View {
                     .frame(height: 35)
                     .frame(maxWidth: .infinity)
                     .overlay {
-                        Text("Categories")
+                        Text(.categories)
                             .font(.system(.title3, design: .rounded).weight(.medium))
                             .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                            .font(.system(size: 20, weight: .medium, design: .rounded))
@@ -393,7 +393,7 @@ struct CategoryListView: View {
                     .frame(height: 35)
                     .frame(maxWidth: .infinity)
                     .overlay {
-                        Text("Categories")
+                        Text(.categories)
                             .font(.system(.title3, design: .rounded).weight(mode == .settings ? .semibold : .medium))
                             .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                            .font(.system(size: 20, weight: mode == .settings ? .semibold : .medium, design: .rounded))
@@ -416,9 +416,9 @@ struct CategoryListView: View {
 
                                     Group {
                                         if income {
-                                            Text("no_income_categories")
+                                            Text(.noIncomeCategories)
                                         } else {
-                                            Text("no_expense_categories")
+                                            Text(.noExpenseCategories)
                                         }
                                     }
                                     .font(.system(.body, design: .rounded).weight(.medium))
@@ -592,11 +592,11 @@ struct CategoryListView: View {
                     }
 
                 VStack(alignment: .leading, spacing: 1.5) {
-                    Text("Delete '\(toDelete?.wrappedName ?? "")'?")
+                    Text(.deleteConfirmation, for: toDelete?.wrappedName ?? "")
                         .font(.system(size: 20, weight: .medium, design: .rounded))
                         .foregroundColor(.PrimaryText)
 
-                    Text("This action cannot be undone, and all \(toDelete?.wrappedName ?? "") transactions would be deleted.")
+                    Text(.deleteTransactionsWarning, for: toDelete?.wrappedName ?? "")
                         .font(.system(size: 16, weight: .medium, design: .rounded))
                         .foregroundColor(.SubtitleText)
                         .padding(.bottom, 15)
@@ -614,7 +614,7 @@ struct CategoryListView: View {
                         deleteMode = false
 
                     } label: {
-                        Text("Delete")
+                        Text(.delete)
                             .font(.system(size: 20, weight: .semibold, design: .rounded))
                             .foregroundColor(.white)
                             .frame(height: 45)
@@ -630,7 +630,7 @@ struct CategoryListView: View {
                         }
 
                     } label: {
-                        Text("Cancel")
+                        Text(.cancel)
                             .font(.system(size: 20, weight: .semibold, design: .rounded))
                             .foregroundColor(Color.PrimaryText.opacity(0.9))
                             .frame(height: 45)
@@ -688,7 +688,7 @@ struct CategoryListView: View {
         }
         .onChange(of: showSuggestions) { newValue in
             if !newValue {
-                toastTitle = "Suggestions Hidden"
+                toastTitle = String(.suggestionsHidden)
                 toastImage = "eye.slash"
                 showToast = true
                 positive = true
@@ -818,20 +818,20 @@ struct NewCategoryAlert: View {
                         .frame(maxWidth: 200)
                     } else {
                         if expenseCategories.count == 24 {
-                            Text("Income Category")
+                            Text(.incomeCategory)
                                 .font(.system(.body, design: .rounded).weight(.semibold))
                                 .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                                .font(.system(size: 18, weight: .semibold, design: .rounded))
                                 .padding(.top, 4)
                         } else if budgetMode {
-                            Text("Expense Category")
+                            Text(.expenseCategory)
                                 .font(.system(.body, design: .rounded).weight(.semibold))
                                 .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                                .font(.system(size: 18, weight: .semibold, design: .rounded))
                                 .padding(.top, 4)
                         } else {
                             HStack(spacing: 0) {
-                                Text("Expense")
+                                Text(.expense)
                                     .font(.system(.callout, design: .rounded).weight(.semibold))
                                     .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                                    .font(.system(size: 16, weight: .semibold, design: .rounded))
@@ -854,7 +854,7 @@ struct NewCategoryAlert: View {
                                         }
                                     }
 
-                                Text("Income")
+                                Text(.income)
                                     .font(.system(.callout, design: .rounded).weight(.semibold))
                                     .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                                    .font(.system(size: 16, weight: .semibold, design: .rounded))
@@ -985,7 +985,7 @@ struct NewCategoryAlert: View {
 //                                }
 //                        }
 //                    }
-                    NormalTextField(text: $newName, placeholder: "Category Name", action: verification)
+                    NormalTextField(text: $newName, placeholder: String(.categoryName), action: verification)
                         .focused($focusedField, equals: .name)
                         .padding(.horizontal, 15)
                         .padding(.vertical, 5)
@@ -1065,20 +1065,20 @@ struct NewCategoryAlert: View {
 
             switch outcome {
             case .incomplete:
-                toastTitle = "Incomplete Entry"
+                toastTitle = String(.incompleteEntry)
                 toastImage = "questionmark.app"
             case .missingEmoji:
-                toastTitle = "Missing Emoji"
+                toastTitle = String(.missingEmoji)
                 toastImage = "person.fill"
 
                 focusedField = .emoji
             case .missingName:
-                toastTitle = "Missing Name"
+                toastTitle = String(.missingName)
                 toastImage = "character.cursor.ibeam"
 
                 focusedField = .name
             case .duplicate:
-                toastTitle = "Duplicate Found"
+                toastTitle = String(.duplicateFound)
                 toastImage = "externaldrive"
             case .duplicateEmoji:
                 toastTitle = "Duplicate Emoji"
@@ -1251,7 +1251,7 @@ struct EditCategoryAlert: View {
     @State private var deleteMode = false
     @State private var toDelete: Category?
     var alertMessage: String {
-        "Delete '" + (toDelete?.wrappedName ?? "") + "'?"
+        String(.deleteConfirmation, for: toDelete?.wrappedName ?? "")
     }
 
     @State var showNativePicker: Bool = false
@@ -1296,7 +1296,7 @@ struct EditCategoryAlert: View {
                         .transition(AnyTransition.opacity.combined(with: .move(edge: .top)))
                         .frame(maxWidth: 200)
                     } else {
-                        Text(toEdit.income ? "Income" : "Expense")
+                        Text(toEdit.income ? .income : .expense)
                             .font(.system(.body, design: .rounded).weight(.semibold))
                             .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                            .font(.system(size: 18, weight: .semibold, design: .rounded))
@@ -1386,7 +1386,7 @@ struct EditCategoryAlert: View {
                         }
                     }
 
-                    NormalTextField(text: $newName, placeholder: "Category Name", action: verification)
+                    NormalTextField(text: $newName, placeholder: String(.categoryName), action: verification)
                         .focused($focusedField, equals: .name)
                         .padding(.horizontal, 15)
                         .padding(.vertical, 5)
@@ -1460,20 +1460,20 @@ struct EditCategoryAlert: View {
 
             switch outcome {
             case .incomplete:
-                toastTitle = "Incomplete Entry"
+                toastTitle = String(.incompleteEntry)
                 toastImage = "questionmark.app"
             case .missingEmoji:
-                toastTitle = "Missing Emoji"
+                toastTitle = String(.missingEmoji)
                 toastImage = "person.fill"
 
                 focusedField = .emoji
             case .missingName:
-                toastTitle = "Missing Name"
+                toastTitle = String(.missingName)
                 toastImage = "character.cursor.ibeam"
 
                 focusedField = .name
             case .duplicate:
-                toastTitle = "Duplicate Found"
+                toastTitle = String(.duplicateFound)
                 toastImage = "externaldrive"
             case .duplicateEmoji:
                 toastTitle = "Duplicate Emoji"
@@ -1541,13 +1541,13 @@ struct DeleteCategoryAlert: View {
                 }
 
             VStack(alignment: .leading, spacing: 1.5) {
-                Text("Delete '\(toDelete.wrappedName)'?")
+                Text(.deleteConfirmation, for: toDelete.wrappedName ?? "")
                     .font(.system(.title2, design: .rounded).weight(.medium))
                     .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                    .font(.system(size: 20, weight: .medium, design: .rounded))
                     .foregroundColor(.PrimaryText)
 
-                Text("This action cannot be undone.")
+                Text(.actionCannotBeUndoneWarning)
                     .font(.system(.title3, design: .rounded).weight(.medium))
                     .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                    .font(.system(size: 16, weight: .medium, design: .rounded))
@@ -1567,7 +1567,7 @@ struct DeleteCategoryAlert: View {
                     }
 
                 } label: {
-                    Text("Delete")
+                    Text(.delete)
                         .font(.system(.title3, design: .rounded).weight(.semibold))
                         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
                         .foregroundColor(.white)
@@ -1583,7 +1583,7 @@ struct DeleteCategoryAlert: View {
                     }
 
                 } label: {
-                    Text("Cancel")
+                    Text(.cancel)
                         .font(.system(.title3, design: .rounded).weight(.semibold))
                         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                        .font(.system(size: 20, weight: .semibold, design: .rounded))
@@ -1683,7 +1683,7 @@ struct SuggestedCategoriesView: View {
 
     var body: some View {
         if !suggestions.isEmpty {
-            Section(header: Text("SUGGESTED").foregroundColor(Color.SubtitleText)) {
+            Section(header: Text(.suggested).foregroundColor(Color.SubtitleText)) {
                 ForEach(suggestions, id: \.self) { category in
                     HStack(spacing: 8) {
                         Text(category.emoji)

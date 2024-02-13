@@ -46,9 +46,9 @@ struct SettingsView: View {
   var firstWeekday: Int = 1
   var firstWeekdayString: String {
     if firstWeekday == 1 {
-      return String(localized: "Sunday")
+        return String(.sunday)
     } else {
-      return String(localized: "Monday")
+        return String(.monday)
     }
   }
 
@@ -533,9 +533,9 @@ struct SettingsView: View {
       let type: String
 
       if transaction.income {
-        type = "Income"
+          type = String(.income)
       } else {
-        type = "Expense"
+          type = String(.expense)
       }
 
       string.removeAll(where: { $0 == "," })

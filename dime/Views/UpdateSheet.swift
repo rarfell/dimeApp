@@ -19,14 +19,14 @@ struct UpdateAlert: View {
     @State var opacity = 0.0
 
     let welcomeFeatures = [
-        WelcomeSheetFeatureRow(icon: "appclip", header: "Siri Shorcuts", subtitle: "3 new Siri shortcuts allow you to conveniently add new transactions or access insights."),
-        WelcomeSheetFeatureRow(icon: "arrow.down.doc.fill", header: "Data Import", subtitle: "Transfer pre-existing logs from other applications with a step-by-step guide."),
-        WelcomeSheetFeatureRow(icon: "sun.haze.fill", header: "Future Transactions", subtitle: "With date restrictions lifted, log and view upcoming expenses/incomes."),
-        WelcomeSheetFeatureRow(icon: "app.gift.fill", header: "App Icons", subtitle: "Choose from 3 new skeuomorphic icons beautifully crafted by the talented @rudra_dsigns."),
-        WelcomeSheetFeatureRow(icon: "circle.grid.2x2.fill", header: "Re-designed Screens", subtitle: "Budget and category creation screens have been completely reworked."),
-        WelcomeSheetFeatureRow(icon: "swatchpalette.fill", header: "Custom Category Colors", subtitle: "Using the stock iOS color picker, give your categories a long-awaited aesthetic refresh."),
-        WelcomeSheetFeatureRow(icon: "exclamationmark.octagon.fill", header: "New Toasts", subtitle: "Similarly, alert toasts across the app have been re-designed."),
-        WelcomeSheetFeatureRow(icon: "calendar", header: "Custom Time Frames", subtitle: "Change the start of a month's cycle to align with payday.")
+        WelcomeSheetFeatureRow(icon: "appclip", header: String(.siriShortcuts), subtitle: String(.siriShortcutsSubtitle)),
+        WelcomeSheetFeatureRow(icon: "arrow.down.doc.fill", header: String(.dataImport), subtitle: String(.dataImportSubtitle)),
+        WelcomeSheetFeatureRow(icon: "sun.haze.fill", header: String(.futureTransactions), subtitle: String(.futureTransactionsSubtitle)),
+        WelcomeSheetFeatureRow(icon: "app.gift.fill", header: String(.appIcons), subtitle: String(.appIconsSubtitle)),
+        WelcomeSheetFeatureRow(icon: "circle.grid.2x2.fill", header: String(.redesignedScreens), subtitle: String(.redesignedScreensSubtitle)),
+        WelcomeSheetFeatureRow(icon: "swatchpalette.fill", header: String(.customCategoryColors), subtitle: String(.customCategoryColorsSubtitle)),
+        WelcomeSheetFeatureRow(icon: "exclamationmark.octagon.fill", header: String(.newToasts), subtitle: String(.newToastsSubtitle)),
+        WelcomeSheetFeatureRow(icon: "calendar", header: String(.customTimeFrames), subtitle: String(.customTimeFramesSubtitle))
     ]
 
     var body: some View {

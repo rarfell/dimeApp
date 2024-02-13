@@ -29,7 +29,7 @@ struct InsightsSummaryBlockView: View {
                 .padding(.horizontal, 3)
 
             VStack(alignment: .leading, spacing: 0) {
-                Text(income ? "Income" : "Expenses")
+                Text(income ? .income : .expense)
                     .font(.system(.caption, design: .rounded).weight(.semibold))
                     .lineLimit(1)
                     .foregroundColor(Color.SubtitleText)

@@ -40,7 +40,10 @@ struct LogView: View {
     @State var navBarText = ""
     @State var showMenu = false
     @AppStorage("logTimeFrame", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var logTimeFrame = 2
-    let subtitleText = ["today", "this week", "this month", "this year"]
+    let subtitleText = [String(.today),
+                        String(.thisWeek),
+                        String(.thisMonth),
+                        String(.thisYear)]
 
     // show filter menu
     @State var showFilter = false
@@ -76,7 +79,7 @@ struct LogView: View {
                     .padding(.bottom, 20)
                     .accessibility(hidden: true)
 
-                Text("Your Log is Empty")
+                Text(.logEmpty)
                     .font(.system(.title2, design: .rounded).weight(.medium))
 //                    .font(.system(size: 23.5, weight: .medium, design: .rounded))
                     .multilineTextAlignment(.center)
@@ -119,25 +122,22 @@ struct LogView: View {
                         Spacer()
 
                         switch filter {
-                        case .all:
-//                            Text(navBarText)
-//                            .font(.system(size: 16, weight: .semibold, design: .rounded))
-//                            .opacity(0)
-                            EmptyView()
-                        case .category:
-                            filterTagView(text: "filter-tag-category")
                         case .day:
-                            filterTagView(text: "filter-tag-day")
+                            filterTagView(text: String(.dayFilter))
                         case .week:
-                            filterTagView(text: "filter-tag-week")
+                            filterTagView(text: String(.weekFilter))
                         case .month:
-                            filterTagView(text: "filter-tag-month")
-                        case .recurring:
-                            filterTagView(text: "filter-tag-recurring")
+                            filterTagView(text: String(.monthFilter))
+                        case .category:
+                            filterTagView(text: String(.categoryFilter))
                         case .type:
-                            filterTagView(text: "filter-tag-type")
+                            filterTagView(text: String(.typeFilter))
+                        case .recurring:
+                            filterTagView(text: String(.recurringFilter))
                         case .upcoming:
-                            filterTagView(text: "filter-tag-upcoming")
+                            filterTagView(text: String(.upcomingFilter))
+                        case .all:
+                            EmptyView()
                         }
 
                         Spacer()
@@ -318,7 +318,7 @@ struct LogView: View {
     }
 
     @ViewBuilder
-    func filterTagView(text: LocalizedStringKey) -> some View {
+    func filterTagView(text: String) -> some View {
         HStack(spacing: 10) {
             Text(text)
                 .font(.system(.body, design: .rounded).weight(.medium))
@@ -412,7 +412,11 @@ struct LogInsightsView: View {
     let currencySymbol: String
 
     @State var showMenu1 = false
-    let subtitleText = ["today", "this week", "this month", "this year", "all time"]
+    let subtitleText = [String(.today),
+                        String(.thisWeek),
+                        String(.thisMonth),
+                        String(.thisYear),
+                        String(.allTime)]
 
     @AppStorage("logInsightsTimeFrame", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var timeframe = 2
     @AppStorage("logInsightsType", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var insightsType = 1
@@ -493,11 +497,11 @@ struct LogInsightsView: View {
 
     var headingText: String {
         if insightsType == 1 {
-            return "Net total"
+            return String(.netTotal)
         } else if insightsType == 2 {
-            return "Earned"
+            return String(.earned)
         } else {
-            return "Spent"
+            return String(.spent)
         }
     }
 
@@ -542,7 +546,7 @@ struct LogInsightsView: View {
                     Button {
                         insightsType = 3
                     } label: {
-                        Label("Total Spent", systemImage: "minus")
+                        Label(String(.totalSpent), systemImage: "minus")
                     }
                 }
 
@@ -550,7 +554,7 @@ struct LogInsightsView: View {
                     Button {
                         insightsType = 2
                     } label: {
-                        Label("Total Income", systemImage: "plus")
+                        Label(String(.totalIncome), systemImage: "plus")
                     }
                 }
 
@@ -558,7 +562,7 @@ struct LogInsightsView: View {
                     Button {
                         insightsType = 1
                     } label: {
-                        Label("Net Total", systemImage: "alternatingcurrent")
+                        Label(String(.netTotalCapitalized), systemImage: "alternatingcurrent")
                     }
                 }
             }
@@ -656,7 +660,7 @@ struct SearchView: View {
                         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
                         .foregroundColor(Color.DarkIcon.opacity(0.8))
                         .accessibility(hidden: true)
-                    TextField("Search entry by note", text: $searchQuery)
+                    TextField(String(.searchByNote), text: $searchQuery)
                         .introspectTextField { textField in
                             textField.becomeFirstResponder()
                         }
@@ -685,7 +689,7 @@ struct SearchView: View {
                 Button {
                     dismiss()
                 } label: {
-                    Text("Cancel")
+                    Text(.cancel)
                         .foregroundColor(Color.PrimaryText)
                         .font(.system(.body, design: .rounded).weight(.medium))
                         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
@@ -710,12 +714,12 @@ struct FilteredSearchView: View {
                     Text("📭️")
                         .font(.system(size: 50))
                         .padding(.bottom, 15)
-                    Text("No entries found.")
+                    Text(.noEntriesFound)
                         .font(.system(.title3, design: .rounded).weight(.medium))
                         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                        .font(.system(size: 18, weight: .medium, design: .rounded))
                         .foregroundColor(Color.PrimaryText)
-                    Text("Try a different search query!")
+                    Text(.tryDifferentQuery)
                         .font(.system(.subheadline, design: .rounded).weight(.regular))
                         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                        .font(.system(size: 14, weight: .regular, design: .rounded))
@@ -759,7 +763,11 @@ struct FilteredSearchView: View {
 struct TimePickerView: View {
     @Namespace var animation
 
-    let timeframes = ["today", "this week", "this month", "this year", "all time"]
+    let timeframes = [String(.today),
+                        String(.thisWeek),
+                        String(.thisMonth),
+                        String(.thisYear),
+                        String(.allTime)]
 
     @Binding var showMenu: Bool
     @Binding var timeframe: Int
@@ -1328,7 +1336,7 @@ struct SingleTransactionView: View {
 //                        toDelete = transaction
 //                        deleteMode = true
                     } label: {
-                        Label("Delete", systemImage: "xmark.bin")
+                        Label(String(.delete), systemImage: "xmark.bin")
                     }
                 }
             }
@@ -1512,14 +1520,14 @@ struct DeleteTransactionAlert: View {
     var body: some View {
         if let unwrappedToDelete = transactionManager.toDelete {
             VStack(alignment: .leading, spacing: 1.5) {
-                Text(stopRecurring ? "Stop Recurring?" : "Delete '\(unwrappedToDelete.wrappedNote)'?")
+                Text(stopRecurring ? "Stop Recurring?" : String(.deleteConfirmation, for: unwrappedToDelete.wrappedNote ?? ""))
                     .font(.system(.title2, design: .rounded).weight(.medium))
                     .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                    .font(.system(size: 25, weight: .medium, design: .rounded))
                     .foregroundColor(.PrimaryText)
                     .accessibilityLabel("Delete \(unwrappedToDelete.wrappedNote) transaction confirmation. This action cannot be undone.")
 
-                Text(stopRecurring ? "The transaction will no longer be automatically logged." : "This action cannot be undone.")
+                Text(stopRecurring ? .deleteRecurringTransaction : .actionCannotBeUndoneWarning)
                     .font(.system(.title3, design: .rounded).weight(.medium))
                     .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                    .font(.system(size: 20, weight: .medium, design: .rounded))
@@ -1543,14 +1551,14 @@ struct DeleteTransactionAlert: View {
                         }
                     }
                 } label: {
-                    DeleteButton(text: stopRecurring ? "Confirm" : "Delete", red: true)
+                    DeleteButton(text: stopRecurring ? "Confirm" : String(.delete), red: true)
                 }
                 .padding(.bottom, 8)
 
                 Button {
                     transactionManager.showPopup = false
                 } label: {
-                    DeleteButton(text: "Cancel", red: false)
+                    DeleteButton(text: String(.cancel), red: false)
                 }
             }
             .padding(13)
@@ -1747,7 +1755,7 @@ struct NoResultsView: View {
 //                    .font(.system(size: 38, weight: .regular, design: .rounded))
                     .foregroundColor(Color.SubtitleText)
 
-                Text("No entries found.")
+                Text(.noEntriesFound)
                     .font(.system(.title3, design: .rounded).weight(.medium))
                     .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 //                    .font(.system(size: 21, weight: .medium, design: .rounded))
@@ -1771,7 +1779,7 @@ struct NoResultsView: View {
                     .font(.system(size: 38, weight: .regular, design: .rounded))
                     .foregroundColor(Color.SubtitleText)
 
-                Text("No entries found.")
+                Text(.noEntriesFound)
                     .font(.system(size: 21, weight: .medium, design: .rounded))
                     .foregroundColor(Color.SubtitleText)
 
@@ -1925,7 +1933,7 @@ struct IncomeFilterToggleView: View {
 
     var body: some View {
         HStack(spacing: 0) {
-            Text("Expense")
+            Text(.expense)
 //                .font(.system(size: 17, weight: .semibold, design: .rounded))
                 .font(.system(.body, design: .rounded).weight(.semibold))
                 .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
@@ -1948,7 +1956,7 @@ struct IncomeFilterToggleView: View {
                     }
                 }
 
-            Text("filter-picker-income")
+            Text(.income)
 //                .font(.system(size: 17, weight: .semibold, design: .rounded))
                 .font(.system(.body, design: .rounded).weight(.semibold))
                 .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
@@ -2206,9 +2214,9 @@ func dateConverter(date: Date) -> String {
     let startOfCurrentYear = calendar.date(from: dateComponents) ?? Date.now
 
     if calendar.isDateInToday(date) {
-        return String(localized: "today")
+        return String(.today)
     } else if calendar.isDateInYesterday(date) {
-        return String(localized: "yesterday")
+        return String(.yesterday)
     } else if startOfCurrentYear > date {
         let dateFormatter = DateFormatter()
 
@@ -2231,9 +2239,9 @@ func dateConverterAccessibilityLabel(date: Date) -> String {
     let calendar = Calendar.current
 
     if calendar.isDateInToday(date) {
-        return "today"
+        return String(.today)
     } else if calendar.isDateInYesterday(date) {
-        return "yesterday"
+        return String(.yesterday)
     } else {
         let dateFormatter = DateFormatter()
 

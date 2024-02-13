@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		49A74CD52B23F5CF00FCA467 /* StringConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A74CD42B23F5CF00FCA467 /* StringConstants.swift */; };
+		49E3745D2B2573C80044F240 /* StringConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A74CD42B23F5CF00FCA467 /* StringConstants.swift */; };
 		530C89D62A793B6C00B5028D /* ShortcutsEntities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 530C89D52A793B6C00B5028D /* ShortcutsEntities.swift */; };
 		530C9DFD28ACE14A0038535F /* BudgetWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 530C9DFC28ACE14A0038535F /* BudgetWidget.swift */; };
 		530C9DFE28ACE14A0038535F /* BudgetWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 530C9DFC28ACE14A0038535F /* BudgetWidget.swift */; };
@@ -205,6 +207,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		49A74CD42B23F5CF00FCA467 /* StringConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringConstants.swift; sourceTree = "<group>"; };
 		530C89D52A793B6C00B5028D /* ShortcutsEntities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutsEntities.swift; sourceTree = "<group>"; };
 		530C9DFC28ACE14A0038535F /* BudgetWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetWidget.swift; sourceTree = "<group>"; };
 		5311A22E29F04EF300A5BE20 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; name = Base; path = Base.lproj/WidgetConfiguration.intentdefinition; sourceTree = "<group>"; };
@@ -375,6 +378,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		49A74CD32B23F59F00FCA467 /* Localization */ = {
+			isa = PBXGroup;
+			children = (
+				5328588929B4F8D500CB64D0 /* Localizable.strings */,
+				53423C6229B9B37F000CB54F /* Localizable.stringsdict */,
+				49A74CD42B23F5CF00FCA467 /* StringConstants.swift */,
+			);
+			path = Localization;
+			sourceTree = "<group>";
+		};
 		530C89D42A793B4400B5028D /* Shortcuts */ = {
 			isa = PBXGroup;
 			children = (
@@ -409,8 +422,7 @@
 		5327D27A287C697400F76ADF = {
 			isa = PBXGroup;
 			children = (
-				5328588929B4F8D500CB64D0 /* Localizable.strings */,
-				53423C6229B9B37F000CB54F /* Localizable.stringsdict */,
+				49A74CD32B23F59F00FCA467 /* Localization */,
 				53EB931028A65F670026BE28 /* ExpenditureWidgetExtension.entitlements */,
 				5327D285287C697400F76ADF /* dime */,
 				53B1D18F288ED7E500E28062 /* ExpenditureWidget */,
@@ -940,6 +952,7 @@
 				53E832E72B0B067B000CBBA0 /* TransactionCategoryPicker.swift in Sources */,
 				5327D2D6287C6B5E00F76ADF /* CategoryView.swift in Sources */,
 				53B9079B2AE818710001F496 /* RoundedTriangle.swift in Sources */,
+				49A74CD52B23F5CF00FCA467 /* StringConstants.swift in Sources */,
 				533D1C3C2AE7BB6900894764 /* DynamicType.swift in Sources */,
 				53A839C128D732E1006F227C /* TabBarHiding.swift in Sources */,
 				53D6BDC32AF668E700F5728E /* DetailedBudgetViewTopBarButtons.swift in Sources */,
@@ -1016,6 +1029,7 @@
 				53B1D191288ED7E500E28062 /* ExpenditureWidget.swift in Sources */,
 				5321E1DE291FE2CE00D5A931 /* CategoryCreationErrors.swift in Sources */,
 				53D520FC2AAF1190000AC055 /* TemplateTransactionWidget.swift in Sources */,
+				49E3745D2B2573C80044F240 /* StringConstants.swift in Sources */,
 				53980E5D28A77B62009CC4E2 /* Helper.swift in Sources */,
 				53D0298128C62BF600443F2B /* Currency.swift in Sources */,
 				53A32B3928AB6C8700628905 /* Line.swift in Sources */,

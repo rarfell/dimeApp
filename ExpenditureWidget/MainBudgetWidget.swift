@@ -28,7 +28,7 @@ struct MainBudgetWidget: Widget {
             MainBudgetWidgetEntryView(entry: entry)
         }
         .supportedFamilies(supportedFamilies)
-        .configurationDisplayName("Overall Budget")
+        .configurationDisplayName(String(.overallBudget))
         .description("Monitor how you are sticking to your overall budgets.")
     }
 }
@@ -84,15 +84,15 @@ struct MainBudgetWidgetEntryView: View {
     var budgetType: String {
         switch entry.type {
         case 1:
-            return String(localized: "today")
+            return String(.today)
         case 2:
-            return String(localized: "this week")
+            return String(.thisWeek)
         case 3:
-            return String(localized: "this month")
+            return String(.thisMonth)
         case 4:
-            return String(localized: "this year")
+            return String(.thisYear)
         default:
-            return "this week"
+            return String(.thisWeek)
         }
     }
 
@@ -141,9 +141,9 @@ struct MainBudgetWidgetEntryView: View {
 
     var systemSmallWidgetText: String {
         if entry.budgetAmount >= entry.totalSpent {
-            return String(localized: "left \(budgetType)")
+            return String(.leftCustom, for: budgetType)
         } else {
-            return String(localized: "over \(budgetType)")
+            return String(.overCustom, for: budgetType)
         }
     }
 
@@ -236,7 +236,8 @@ struct MainBudgetWidgetEntryView: View {
                             }
                             .font(.system(size: 15, weight: .semibold, design: .rounded))
 
-                            Text("\(currencySymbol)\(difference, specifier: (showCents && difference < 100) ? "%.2f" : "%.0f") \(entry.totalSpent > entry.budgetAmount ? String(localized: "over") : String(localized: "left")) \(budgetType)")
+                            // TODO: Completely localize this
+                            Text("\(currencySymbol)\(difference, specifier: (showCents && difference < 100) ? "%.2f" : "%.0f") \(String(entry.totalSpent > entry.budgetAmount ? .overCustom : .leftCustom, for: budgetType))")
                                 .font(.system(size: 14, weight: .regular, design: .rounded))
                                 .foregroundColor(Color.SubtitleText)
 
@@ -277,7 +278,8 @@ struct MainBudgetWidgetEntryView: View {
                             }
                             .font(.system(size: 15, weight: .semibold, design: .rounded))
 
-                            Text("\(currencySymbol)\(difference, specifier: (showCents && difference < 100) ? "%.2f" : "%.0f") \(entry.totalSpent > entry.budgetAmount ? String(localized: "over") : String(localized: "left")) \(budgetType)")
+                            // TODO: Completely localize this
+                            Text("\(currencySymbol)\(difference, specifier: (showCents && difference < 100) ? "%.2f" : "%.0f") \(String(entry.totalSpent > entry.budgetAmount ? .overCustom : .leftCustom, for: budgetType))")
                                 .font(.system(size: 14, weight: .regular, design: .rounded))
                                 .foregroundColor(Color.SubtitleText)
 
@@ -361,11 +363,11 @@ struct MainBudgetWidgetEntryView: View {
                                                 .foregroundColor(Color.SubtitleText)
                                         } else {
                                             if entry.budgetAmount >= entry.totalSpent {
-                                                Text("left")
+                                                Text(.left)
                                                     .font(.system(size: 10, weight: .medium, design: .rounded))
                                                     .foregroundColor(Color.SubtitleText)
                                             } else {
-                                                Text("over")
+                                                Text(.over)
                                                     .font(.system(size: 10, weight: .medium, design: .rounded))
                                                     .foregroundColor(Color.SubtitleText)
                                             }
@@ -456,11 +458,11 @@ struct MainBudgetWidgetEntryView: View {
                                                 .foregroundColor(Color.SubtitleText)
                                         } else {
                                             if entry.budgetAmount >= entry.totalSpent {
-                                                Text("left")
+                                                Text(.left)
                                                     .font(.system(size: 10, weight: .medium, design: .rounded))
                                                     .foregroundColor(Color.SubtitleText)
                                             } else {
-                                                Text("over")
+                                                Text(.over)
                                                     .font(.system(size: 10, weight: .medium, design: .rounded))
                                                     .foregroundColor(Color.SubtitleText)
                                             }
