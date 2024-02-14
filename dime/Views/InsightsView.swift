@@ -460,6 +460,10 @@ struct FilteredDateInsightsView: View {
 
     @AppStorage("swapTimeLabel", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var swapTimeLabel: Bool = false
     @AppStorage("showCents", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var showCents: Bool = true
+    
+    @AppStorage("showExpenseOrIncomeSign", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime"))
+    var showExpenseOrIncomeSign: Bool = true
+
 
     var body: some View {
         VStack(spacing: 0) {
@@ -467,7 +471,7 @@ struct FilteredDateInsightsView: View {
                 NoResultsView(fullscreen: false)
             }
             ForEach(transactions) { transaction in
-                SingleTransactionView(transaction: transaction, showCents: showCents, currencySymbol: currencySymbol, currency: currency, swapTimeLabel: swapTimeLabel, future: false)
+                SingleTransactionView(transaction: transaction, showCents: showCents, currencySymbol: currencySymbol, currency: currency, swapTimeLabel: swapTimeLabel, future: false, showExpenseOrIncomeSign: showExpenseOrIncomeSign)
             }
         }
         .frame(maxHeight: .infinity)
