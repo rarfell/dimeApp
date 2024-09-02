@@ -32,6 +32,8 @@ struct NewCategoryPickerView: View {
                             .font(.system(.body, design: .rounded).weight(.semibold))
                             .lineLimit(1)
                     }
+                    .accessibilityLabel("\(item.wrappedName) category")
+                    .accessibilityHint("Double tap to select the \(item.wrappedName) category.")
                     .id(item.id)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal, 11)
