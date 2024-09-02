@@ -908,6 +908,7 @@ struct TransactionView: View {
         }
         .sheet(isPresented: $showCategorySheet) {
             CategoryView(mode: .transaction, income: income)
+            .accessibilityLabel("Category Selection")
         }
         .sheet(isPresented: $showPicker) {
             if #available(iOS 16.0, *) {
@@ -915,9 +916,11 @@ struct TransactionView: View {
                     repeatType: $repeatType, repeatCoefficient: $repeatCoefficient, showPicker: $showPicker
                 )
                 .presentationDetents([.height(230)])
+                .accessibilityLabel("Recurring Transaction Settings")
             } else {
                 CustomRecurringView(
                     repeatType: $repeatType, repeatCoefficient: $repeatCoefficient, showPicker: $showPicker)
+                .accessibilityLabel("Recurring Transaction Settings")
             }
         }
         .onChange(of: dynamicTypeSize) { _ in
