@@ -53,7 +53,6 @@
 		5327D2DD287C6B5F00F76ADF /* InsightsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5327D2D4287C6B5E00F76ADF /* InsightsView.swift */; };
 		5327D2DE287C6B5F00F76ADF /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5327D2D5287C6B5E00F76ADF /* CustomTabBar.swift */; };
 		5327D2E0287C6B7D00F76ADF /* DeviceModels.json in Resources */ = {isa = PBXBuildFile; fileRef = 5327D2DF287C6B7C00F76ADF /* DeviceModels.json */; };
-		5327D2E3287C6B9300F76ADF /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = 5327D2E2287C6B9300F76ADF /* Introspect */; };
 		5327D2E6287C6CC300F76ADF /* Popovers in Frameworks */ = {isa = PBXBuildFile; productRef = 5327D2E5287C6CC300F76ADF /* Popovers */; };
 		5328588B29B502C400CB64D0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5328588929B4F8D500CB64D0 /* Localizable.strings */; };
 		532C58BC2A629C3900DA2C81 /* NewBudgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 532C58BB2A629C3900DA2C81 /* NewBudgetView.swift */; };
@@ -92,7 +91,6 @@
 		5383D85E287D9A0100D1B9BA /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5383D85D287D9A0100D1B9BA /* CloudKit.framework */; };
 		538A32AA2A505AC6008AEF8C /* BottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538A32A92A505AC6008AEF8C /* BottomSheet.swift */; };
 		538D10752A5AB7E7008F1AFB /* IsScrolling in Frameworks */ = {isa = PBXBuildFile; productRef = 538D10742A5AB7E7008F1AFB /* IsScrolling */; };
-		538D10782A5ABC72008F1AFB /* ScrollViewStyle in Frameworks */ = {isa = PBXBuildFile; productRef = 538D10772A5ABC72008F1AFB /* ScrollViewStyle */; };
 		53980E5C28A77B62009CC4E2 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53980E5B28A77B62009CC4E2 /* Helper.swift */; };
 		53980E5D28A77B62009CC4E2 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53980E5B28A77B62009CC4E2 /* Helper.swift */; };
 		53A32B3828AB6C6400628905 /* Line.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53A32B3728AB6C6400628905 /* Line.swift */; };
@@ -156,6 +154,7 @@
 		53E832E72B0B067B000CBBA0 /* TransactionCategoryPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53E832E62B0B067B000CBBA0 /* TransactionCategoryPicker.swift */; };
 		53EB930E28A65A570026BE28 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5327D2B5287C6AFB00F76ADF /* Color.swift */; };
 		53EB930F28A65B250026BE28 /* FontExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B1D1A4289383B100E28062 /* FontExtension.swift */; };
+		800EE6B52CCEBA8300AACFE5 /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = 800EE6B42CCEBA8300AACFE5 /* SwiftUIIntrospect */; };
 		AE5B3D792AEE99E000AB364E /* NumberPad.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE5B3D782AEE99E000AB364E /* NumberPad.swift */; };
 		AEADEF6F2AE94DA3006EB614 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEADEF6E2AE94DA3006EB614 /* Toast.swift */; };
 		AEADEF712AE94DA8006EB614 /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEADEF702AE94DA8006EB614 /* BackButton.swift */; };
@@ -350,6 +349,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				800EE6B52CCEBA8300AACFE5 /* SwiftUIIntrospect in Frameworks */,
 				53A4148028B7DA4C008C30E7 /* ConfettiSwiftUI in Frameworks */,
 				5383D85E287D9A0100D1B9BA /* CloudKit.framework in Frameworks */,
 				53DCFAA12A498FBF0063FCDE /* CloudKitSyncMonitor in Frameworks */,
@@ -357,9 +357,7 @@
 				538D10752A5AB7E7008F1AFB /* IsScrolling in Frameworks */,
 				533A38F42AA49E5900F66957 /* Alamofire in Frameworks */,
 				536715ED28E1E9A3008461F2 /* StoreKit.framework in Frameworks */,
-				5327D2E3287C6B9300F76ADF /* Introspect in Frameworks */,
 				53B1D1A8289A60D500E28062 /* CrookedText in Frameworks */,
-				538D10782A5ABC72008F1AFB /* ScrollViewStyle in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -718,14 +716,13 @@
 			);
 			name = dime;
 			packageProductDependencies = (
-				5327D2E2287C6B9300F76ADF /* Introspect */,
 				5327D2E5287C6CC300F76ADF /* Popovers */,
 				53B1D1A7289A60D500E28062 /* CrookedText */,
 				53A4147F28B7DA4C008C30E7 /* ConfettiSwiftUI */,
 				53DCFAA02A498FBF0063FCDE /* CloudKitSyncMonitor */,
 				538D10742A5AB7E7008F1AFB /* IsScrolling */,
-				538D10772A5ABC72008F1AFB /* ScrollViewStyle */,
 				533A38F32AA49E5900F66957 /* Alamofire */,
+				800EE6B42CCEBA8300AACFE5 /* SwiftUIIntrospect */,
 			);
 			productName = dime;
 			productReference = 5327D283287C697400F76ADF /* dime.app */;
@@ -782,14 +779,13 @@
 			);
 			mainGroup = 5327D27A287C697400F76ADF;
 			packageReferences = (
-				5327D2E1287C6B9300F76ADF /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 				5327D2E4287C6CC300F76ADF /* XCRemoteSwiftPackageReference "Popovers" */,
 				53B1D1A6289A60D500E28062 /* XCRemoteSwiftPackageReference "CrookedText" */,
 				53A4147E28B7DA4C008C30E7 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */,
 				53DCFA9F2A498FBF0063FCDE /* XCRemoteSwiftPackageReference "CloudKitSyncMonitor" */,
 				538D10732A5AB7E7008F1AFB /* XCRemoteSwiftPackageReference "IsScrolling" */,
-				538D10762A5ABC72008F1AFB /* XCRemoteSwiftPackageReference "ScrollViewStyle" */,
 				533A38F22AA49E0100F66957 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				809FCC292CCB9115008A14BB /* XCRemoteSwiftPackageReference "swiftui-introspect" */,
 			);
 			productRefGroup = 5327D284287C697400F76ADF /* Products */;
 			projectDirPath = "";
@@ -1507,14 +1503,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		5327D2E1287C6B9300F76ADF /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/siteline/SwiftUI-Introspect.git";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
 		5327D2E4287C6CC300F76ADF /* XCRemoteSwiftPackageReference "Popovers" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/aheze/Popovers";
@@ -1537,14 +1525,6 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 1.1.2;
-			};
-		};
-		538D10762A5ABC72008F1AFB /* XCRemoteSwiftPackageReference "ScrollViewStyle" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/TimmysApp/ScrollViewStyle";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
 			};
 		};
 		53A4147E28B7DA4C008C30E7 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */ = {
@@ -1571,14 +1551,17 @@
 				minimumVersion = 1.2.1;
 			};
 		};
+		809FCC292CCB9115008A14BB /* XCRemoteSwiftPackageReference "swiftui-introspect" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/siteline/swiftui-introspect.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.3.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		5327D2E2287C6B9300F76ADF /* Introspect */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 5327D2E1287C6B9300F76ADF /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
-			productName = Introspect;
-		};
 		5327D2E5287C6CC300F76ADF /* Popovers */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 5327D2E4287C6CC300F76ADF /* XCRemoteSwiftPackageReference "Popovers" */;
@@ -1594,11 +1577,6 @@
 			package = 538D10732A5AB7E7008F1AFB /* XCRemoteSwiftPackageReference "IsScrolling" */;
 			productName = IsScrolling;
 		};
-		538D10772A5ABC72008F1AFB /* ScrollViewStyle */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 538D10762A5ABC72008F1AFB /* XCRemoteSwiftPackageReference "ScrollViewStyle" */;
-			productName = ScrollViewStyle;
-		};
 		53A4147F28B7DA4C008C30E7 /* ConfettiSwiftUI */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 53A4147E28B7DA4C008C30E7 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */;
@@ -1613,6 +1591,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 53DCFA9F2A498FBF0063FCDE /* XCRemoteSwiftPackageReference "CloudKitSyncMonitor" */;
 			productName = CloudKitSyncMonitor;
+		};
+		800EE6B42CCEBA8300AACFE5 /* SwiftUIIntrospect */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 809FCC292CCB9115008A14BB /* XCRemoteSwiftPackageReference "swiftui-introspect" */;
+			productName = SwiftUIIntrospect;
 		};
 /* End XCSwiftPackageProductDependency section */
 
