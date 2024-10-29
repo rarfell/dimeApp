@@ -8,7 +8,7 @@
 import CloudKitSyncMonitor
 import CoreData
 import Foundation
-import SwiftUIIntrospect
+@_spi(Advanced) import SwiftUIIntrospect
 import Popovers
 import SwiftUI
 
@@ -657,8 +657,8 @@ struct SearchView: View {
                         .foregroundColor(Color.DarkIcon.opacity(0.8))
                         .accessibility(hidden: true)
                     TextField("Search entry by note", text: $searchQuery)
-                        .introspectTextField { textField in
-                            textField.becomeFirstResponder()
+                        .introspect(.textField, on: .iOS(.v13...)) {
+                            textField in textField.becomeFirstResponder()
                         }
                         .font(.system(.body, design: .rounded).weight(.regular))
                         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
