@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Introspect
 import Popovers
 import SwiftUI
 

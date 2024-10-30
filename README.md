@@ -65,8 +65,6 @@ A 100% free personal finance tracker built with iOS design guidelines in mind. [
 - [SwiftUI Introspect](https://github.com/siteline/swiftui-introspect)
 - [IsScrolling](https://github.com/fatbobman/IsScrolling)
 - [Popovers](https://github.com/aheze/Popovers/)
-- ScrollViewStyle
-- STools
 
 ## Licence
 
