@@ -961,6 +961,9 @@ struct ListView: View {
     var currencySymbol: String {
         return Locale.current.localizedCurrencySymbol(forCurrencyCode: currency)!
     }
+    
+    @AppStorage("showExpenseOrIncomeSign", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime"))
+    var showExpenseOrIncomeSign: Bool = true
 
     @AppStorage("swapTimeLabel", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var swapTimeLabel: Bool = false
 
@@ -995,7 +998,7 @@ struct ListView: View {
                     .padding(.top, 10)
 
                     ForEach(filtered.transactions, id: \.id) { transaction in
-                        SingleTransactionView(transaction: transaction, showCents: showCents, currencySymbol: currencySymbol, currency: currency, swapTimeLabel: swapTimeLabel, future: false)
+                        SingleTransactionView(transaction: transaction, showCents: showCents, currencySymbol: currencySymbol, currency: currency, swapTimeLabel: swapTimeLabel, future: false, showExpenseOrIncomeSign: showExpenseOrIncomeSign)
                     }
                 }
                 .contentShape(RoundedRectangle(cornerRadius: 10))
@@ -1097,6 +1100,9 @@ struct FutureListView: View {
     var currencySymbol: String {
         return Locale.current.localizedCurrencySymbol(forCurrencyCode: currency)!
     }
+    
+    @AppStorage("showExpenseOrIncomeSign", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime"))
+    var showExpenseOrIncomeSign: Bool = true
 
     @AppStorage("swapTimeLabel", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var swapTimeLabel: Bool = false
 
@@ -1150,7 +1156,7 @@ struct FutureListView: View {
                 .padding(.horizontal, 10)
 
                 ForEach(transactions) { transaction in
-                    SingleTransactionView(transaction: transaction, showCents: showCents, currencySymbol: currencySymbol, currency: currency, swapTimeLabel: swapTimeLabel, future: true)
+                    SingleTransactionView(transaction: transaction, showCents: showCents, currencySymbol: currencySymbol, currency: currency, swapTimeLabel: swapTimeLabel, future: true, showExpenseOrIncomeSign: showExpenseOrIncomeSign)
                 }
             }
             .padding(.bottom, 18)
@@ -1181,6 +1187,7 @@ struct SingleTransactionView: View {
     let currency: String
     let swapTimeLabel: Bool
     let future: Bool
+    let showExpenseOrIncomeSign: Bool
 
     @State var refreshID = UUID()
 
@@ -1278,7 +1285,7 @@ struct SingleTransactionView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
 
                 if transaction.income {
-                    Text("+\(transactionAmountString)")
+                    Text(showExpenseOrIncomeSign ? "+\(transactionAmountString)" : transactionAmountString)
                         .font(.system(.title3, design: .rounded).weight(.medium))
                         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
                         .foregroundColor(future ? Color.SubtitleText : Color.IncomeGreen)
@@ -1287,7 +1294,7 @@ struct SingleTransactionView: View {
                         .layoutPriority(1)
 
                 } else {
-                    Text("-\(transactionAmountString)")
+                    Text(showExpenseOrIncomeSign ? "-\(transactionAmountString)" : transactionAmountString)
                         .font(.system(.title3, design: .rounded).weight(.medium))
                         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
                         .foregroundColor(future ? Color.SubtitleText : Color.PrimaryText)
@@ -1706,6 +1713,9 @@ struct FilteredDateView: View {
     @AppStorage("swapTimeLabel", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var swapTimeLabel: Bool = false
 
     @AppStorage("showCents", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var showCents: Bool = true
+    
+    @AppStorage("showExpenseOrIncomeSign", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime"))
+    var showExpenseOrIncomeSign: Bool = true
 
     var body: some View {
         VStack(spacing: 0) {
@@ -1713,7 +1723,7 @@ struct FilteredDateView: View {
                 NoResultsView(fullscreen: true)
             }
             ForEach(transactions) { transaction in
-                SingleTransactionView(transaction: transaction, showCents: showCents, currencySymbol: currencySymbol, currency: currency, swapTimeLabel: swapTimeLabel, future: false)
+                SingleTransactionView(transaction: transaction, showCents: showCents, currencySymbol: currencySymbol, currency: currency, swapTimeLabel: swapTimeLabel, future: false, showExpenseOrIncomeSign: showExpenseOrIncomeSign)
             }
         }
         .frame(maxHeight: .infinity)
