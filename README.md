@@ -4,7 +4,7 @@
   <img src="./ReadmeAssets/hero.png" width="451" style="max-width: 100%; height: auto;" />
 </p>
 
-A 100% free personal finance tracker built with iOS design guidelines in mind. [Download Dime on the App Store.](https://apps.apple.com/sg/app/dime-budget-expense-tracker/id1635280255)
+Dime is a 100% free, open-source personal finance tracker built with iOS design guidelines in mind. [Download Dime on the App Store.](https://apps.apple.com/sg/app/dime-budget-expense-tracker/id1635280255)
 
 ## App Preview
 
@@ -38,7 +38,8 @@ A 100% free personal finance tracker built with iOS design guidelines in mind. [
 
 - Please feel free to raise [issues](https://github.com/rarfell/dimeApp/issues) for any inquiries, suggestions for improvements, or bugs you encounter.
 - You're welcome to fork the repository and propose changes through a pull request, although the decision to merge it rests with the project maintainers.
-- If you would like to discuss with the contributors, do drop [Rafael](https://x.com/rarfell) or [Yumi](https://x.com/izyumidev) a DM and we'll add you into our Discord server!
+- To follow along with app updates, follow [@budgetwithdime](https://x.com/budgetwithdime) on X / Twitter
+- If you would like to discuss with the contributors, feel free to drop [Rafael](https://x.com/rarfell) or [Jeffrey](https://x.com/jefcodes) a DM!
 
 ## How to build
 
