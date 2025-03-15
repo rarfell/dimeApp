@@ -173,17 +173,6 @@ struct SettingsView: View {
               .frame(maxWidth: .infinity, alignment: .leading)
 
             VStack(spacing: 13) {
-              NavigationLink(destination: SettingsAppearanceView()) {
-                SettingsRowView(
-                  systemImage: "circle.righthalf.filled", title: "Appearance", colour: 100,
-                  optionalText: colourSchemeString)
-              }
-
-              NavigationLink(destination: SettingsAppIconView()) {
-                SettingsRowView(
-                  systemImage: "app.badge.fill", title: "App Icon", colour: 101,
-                  optionalText: appIconString)
-              }
 
               NavigationLink(destination: SettingsNotificationsView()) {
                 SettingsRowView(
@@ -235,6 +224,48 @@ struct SettingsView: View {
                   }
                 })
 
+              NavigationLink(destination: SettingsWeekStartView()) {
+                SettingsRowView(systemImage: "calendar", title: "Time Frames", colour: 109)
+              }
+                
+            }
+            .padding(10)
+            .background(Color.SettingsBackground, in: RoundedRectangle(cornerRadius: 9))
+          }
+          .padding(.horizontal, 20)
+          .padding(.bottom, 25)
+          .onChange(of: currency) { _ in
+            WidgetCenter.shared.reloadAllTimelines()
+          }
+          .onChange(of: firstWeekday) { _ in
+            WidgetCenter.shared.reloadAllTimelines()
+          }
+          .onChange(of: showCents) { _ in
+            WidgetCenter.shared.reloadAllTimelines()
+          }
+
+          VStack(spacing: 5) {
+            Text("APPEARANCE")
+              .font(.system(.footnote, design: .rounded).weight(.semibold))
+
+              //                            .font(.system(size: 12, weight: .semibold, design: .rounded))
+              .foregroundColor(Color.SubtitleText)
+              .padding(.horizontal, 10)
+              .frame(maxWidth: .infinity, alignment: .leading)
+
+            VStack(spacing: 13) {
+              NavigationLink(destination: SettingsAppearanceView()) {
+                SettingsRowView(
+                  systemImage: "circle.righthalf.filled", title: "Theme", colour: 100,
+                  optionalText: colourSchemeString)
+              }
+
+              NavigationLink(destination: SettingsAppIconView()) {
+                SettingsRowView(
+                  systemImage: "app.badge.fill", title: "App Icon", colour: 101,
+                  optionalText: appIconString)
+              }
+
               ToggleRow(
                 icon: "centsign.circle.fill", color: "107", text: "Display Cents", bool: showCents,
                 onTap: {
@@ -246,16 +277,19 @@ struct SettingsView: View {
                   systemImage: "sun.min.fill", title: "Upcoming Logs", colour: 108,
                   optionalText: upcomingString)
               }
-
-              NavigationLink(destination: SettingsWeekStartView()) {
-                SettingsRowView(systemImage: "calendar", title: "Time Frames", colour: 109)
-              }
                 
               ToggleRow(
-                icon: "plus.forwardslash.minus", color: "123", text: "Display Expense/income sign", bool: showExpenseOrIncomeSign,
+                icon: "plusminus", color: "123", text: "Display +/- Symbol", bool: showExpenseOrIncomeSign,
                 onTap: {
                     showExpenseOrIncomeSign.toggle()
                 })
+
+              ToggleRow(
+                icon: "hare.fill", color: "121", text: "Animated Charts", bool: animated, smaller: true,
+                onTap: {
+                  animated.toggle()
+                })
+
             }
             .padding(10)
             .background(Color.SettingsBackground, in: RoundedRectangle(cornerRadius: 9))
@@ -345,11 +379,6 @@ struct SettingsView: View {
               .frame(maxWidth: .infinity, alignment: .leading)
 
             VStack(spacing: 13) {
-              ToggleRow(
-                icon: "hare.fill", color: "121", text: "Animated Charts", bool: animated, smaller: true,
-                onTap: {
-                  animated.toggle()
-                })
 
                 NavigationLink(destination: SettingsHapticsView()) {
                   SettingsRowView(
