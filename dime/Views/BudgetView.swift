@@ -1688,6 +1688,8 @@ struct FilteredCategoryDayBudgetView: View {
     @EnvironmentObject var dataController: DataController
     @AppStorage("showCents", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var showCents: Bool = true
     @AppStorage("swapTimeLabel", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime")) var swapTimeLabel: Bool = false
+    @AppStorage("showExpenseOrIncomeSign", store: UserDefaults(suiteName: "group.com.rafaelsoh.dime"))
+    var showExpenseOrIncomeSign: Bool = true
 
     var body: some View {
         VStack(spacing: 0) {
@@ -1695,7 +1697,7 @@ struct FilteredCategoryDayBudgetView: View {
                 NoResultsView(fullscreen: false)
             } else {
                 ForEach(transactions, id: \.id) { transaction in
-                    SingleTransactionView(transaction: transaction, showCents: showCents, currencySymbol: currencySymbol, currency: currency, swapTimeLabel: swapTimeLabel, future: false)
+                    SingleTransactionView(transaction: transaction, showCents: showCents, currencySymbol: currencySymbol, currency: currency, swapTimeLabel: swapTimeLabel, future: false, showExpenseOrIncomeSign: showExpenseOrIncomeSign)
                 }
             }
         }
