@@ -1,7 +1,7 @@
 # Dime
 
 <p align="center">
-  <img src="./ReadmeAssets/hero.png" width="451" style="max-width: 100%; height: auto;" />
+  <img src="./docs/assets/hero.png" width="451" style="max-width: 100%; height: auto;" />
 </p>
 
 Dime is a 100% free, open-source personal finance tracker built with iOS design guidelines in mind. [Download Dime on the App Store.](https://apps.apple.com/sg/app/dime-budget-expense-tracker/id1635280255)
@@ -9,15 +9,15 @@ Dime is a 100% free, open-source personal finance tracker built with iOS design 
 ## App Preview
 
 <p align="center">
-  <img src="./ReadmeAssets/3.png" height="300" /> 
-  <img src="./ReadmeAssets/4.png" height="300" /> 
-  <img src="./ReadmeAssets/5.png" height="300" />
-  <img src="./ReadmeAssets/6.png" height="300" />
+  <img src="./docs/assets/3.png" height="300" /> 
+  <img src="./docs/assets/4.png" height="300" /> 
+  <img src="./docs/assets/5.png" height="300" />
+  <img src="./docs/assets/6.png" height="300" />
 </p>
 <p align="center">
-  <img src="./ReadmeAssets/7.png" height="300" />
-  <img src="./ReadmeAssets/8.png" height="300" />
-  <img src="./ReadmeAssets/9.png" height="300" />
+  <img src="./docs/assets/7.png" height="300" />
+  <img src="./docs/assets/8.png" height="300" />
+  <img src="./docs/assets/9.png" height="300" />
 </p>
 
 ## Why You’ll Love Dime
