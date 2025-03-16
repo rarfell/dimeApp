@@ -162,10 +162,10 @@ struct NumberPad: View {
         } else {
             switch decimalValuesAssigned {
                 case .none:
+                    isEditingDecimal = false
                     return
                 case .first:
                     price = Double(Int(price))
-                    isEditingDecimal = false
                     decimalValuesAssigned = .none
                 case .second:
                     price = Double(Int(price * 10)) / 10
