@@ -336,7 +336,7 @@ struct NumberPadTextView: View {
            .background(Color.SecondaryBackground, in: Circle())
            .contentShape(Circle())
        }
-       .disabled(price == 0)
+       .disabled(price == 0 && !isEditingDecimal)
    }
 
     public func deleteLastDigit() {
